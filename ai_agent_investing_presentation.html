@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주식 투자에 있어서 AI 에이전트 활용</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#09090b;--t:#f0f0f0;--mu:#a1a1aa;--c:#00d4ff;--a:#f59e0b;--e:#10b981}
+body{background:var(--bg);color:var(--t);font-family:'Pretendard',sans-serif;overflow:hidden;width:1920px;height:1080px;transform-origin:0 0;word-break:keep-all;position:relative}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:88px 88px;pointer-events:none;z-index:0}
+
+.t-hero{font-size:112px;font-weight:800;letter-spacing:-.034em}
+.t-xl{font-size:80px;font-weight:700;letter-spacing:-.026em}
+.t-lg{font-size:60px;font-weight:700;letter-spacing:-.020em}
+.t-md{font-size:42px;font-weight:600}
+.t-sm{font-size:30px;font-weight:500}
+.t-xs{font-size:24px;font-weight:400;color:var(--mu)}
+
+.gc{color:#00d4ff;text-shadow:0 0 28px #00d4ff,0 0 56px rgba(0,212,255,.45)}
+.ga{color:#f59e0b;text-shadow:0 0 28px #f59e0b,0 0 56px rgba(245,158,11,.45)}
+.ge{color:#10b981;text-shadow:0 0 28px #10b981,0 0 56px rgba(16,185,129,.45)}
+
+.glass{background:rgba(255,255,255,.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.13);border-radius:24px;box-shadow:0 8px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12)}
+.glass-c{background:rgba(0,212,255,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(0,212,255,.32);border-radius:24px;box-shadow:0 0 48px rgba(0,212,255,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(0,212,255,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-a{background:rgba(245,158,11,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(245,158,11,.32);border-radius:24px;box-shadow:0 0 48px rgba(245,158,11,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(245,158,11,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-e{background:rgba(16,185,129,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(16,185,129,.32);border-radius:24px;box-shadow:0 0 48px rgba(16,185,129,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(16,185,129,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+
+[data-step]{opacity:0;transform:translateY(22px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+[data-step].revealed{opacity:1;transform:translateY(0)}
+[data-step="2"].revealed{transition-delay:.08s}
+[data-step="3"].revealed{transition-delay:.16s}
+[data-step="4"].revealed{transition-delay:.24s}
+[data-step="5"].revealed{transition-delay:.32s}
+
+#blobs{position:fixed;inset:0;z-index:0;pointer-events:none}
+#slide{position:relative;z-index:1;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center}
+#nav{position:fixed;bottom:36px;right:48px;z-index:10;display:flex;align-items:center;gap:16px}
+#nav span{color:var(--mu);font-size:18px;font-weight:500}
+#progress{position:fixed;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--c),var(--e));z-index:10;transition:width .3s ease}
+</style>
+</head>
+<body>
+<div id="blobs">
+  <div style="position:absolute;width:900px;height:900px;top:-280px;left:-280px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.07) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:700px;height:700px;bottom:-180px;right:80px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.055) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:600px;height:600px;top:280px;right:-180px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.045) 0%,transparent 70%)"></div>
+</div>
+<div id="slide"></div>
+<div id="nav"><span id="counter"></span></div>
+<div id="progress"></div>
+
+<script>
+const slides=[
+
+// ── 씬 1: 타이틀 ──
+{n:2,html:`
+<div style="text-align:center;width:1400px">
+  <div style="display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(0,212,255,.13);border:1px solid rgba(0,212,255,.35);color:var(--c);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px">AI AGENT × STOCK INVESTING</div>
+  <h1 class="t-hero">주식 투자의 <span class="gc">AI 에이전트</span></h1>
+  <p data-step="1" class="t-md" style="color:var(--mu);margin-top:36px">자율 판단하는 AI, 투자의 게임체인저</p>
+  <p data-step="2" class="t-xs" style="margin-top:28px">2026 · AI 시대의 스마트 투자 전략</p>
+</div>`},
+
+// ── 씬 2: 투자 패러다임 변화 ──
+{n:2,html:`
+<div style="width:1440px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">투자 패러다임의 전환</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-a" style="padding:52px 56px">
+      <iconify-icon icon="solar:clock-circle-bold" style="font-size:52px;color:var(--a);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">과거의 투자</div>
+      <div class="t-sm" style="margin-bottom:16px">수동 분석 · 감에 의존</div>
+      <div class="t-xs">뉴스 읽기 → 차트 분석 → 수동 주문<br>하루 2~3시간 소요</div>
+    </div>
+    <div style="display:flex;align-items:center"><span class="gc" style="font-size:52px">→</span></div>
+    <div data-step="2" class="glass-e" style="padding:52px 56px">
+      <iconify-icon icon="solar:cpu-bolt-bold" style="font-size:52px;color:var(--e);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">AI 에이전트 투자</div>
+      <div class="t-sm" style="margin-bottom:16px">자율 판단 · 데이터 기반</div>
+      <div class="t-xs">실시간 모니터링 → 자동 분석 → 조건 실행<br>24/7 무중단 운영</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 3: AI 에이전트 시대 선언 ──
+{n:2,html:`
+<div style="text-align:center;width:1400px">
+  <div style="display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(16,185,129,.13);border:1px solid rgba(16,185,129,.35);color:var(--e);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px">SECTION 01</div>
+  <h2 class="t-xl"><span class="ge">AI 에이전트</span>란 무엇인가</h2>
+  <p data-step="1" class="t-md" style="color:var(--mu);margin-top:36px">단순 도구를 넘어, 스스로 판단하고 행동하는 AI</p>
+  <p data-step="2" class="t-xs" style="margin-top:20px">Autonomous Agent — 자율적 인식·추론·실행 시스템</p>
+</div>`},
+
+// ── 씬 4: AI 에이전트 정의 ──
+{n:3,html:`
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:stretch;width:1400px">
+  <div class="glass" style="padding:56px 64px">
+    <div class="t-md gc" style="margin-bottom:32px">AI 에이전트 핵심 정의</div>
+    <div data-step="1" class="t-sm" style="margin-bottom:24px;padding-left:20px;border-left:3px solid rgba(0,212,255,.4)">목표를 부여받으면 <span class="gc">자율적으로</span> 계획을 수립</div>
+    <div data-step="2" class="t-sm" style="margin-bottom:24px;padding-left:20px;border-left:3px solid rgba(0,212,255,.4)">외부 도구(API, DB)를 <span class="gc">직접 호출</span>하여 정보 수집</div>
+    <div data-step="3" class="t-sm" style="padding-left:20px;border-left:3px solid rgba(0,212,255,.4)">결과를 평가하고 <span class="gc">다음 행동</span>을 스스로 결정</div>
+  </div>
+  <div data-step="1" class="glass-c" style="padding:64px;display:flex;flex-direction:column;justify-content:center;align-items:center">
+    <div class="gc" style="font-size:100px;font-weight:800;line-height:1">Agent</div>
+    <div class="t-md" style="margin-top:20px;color:var(--mu)">자율 행동 AI 시스템</div>
+    <div class="t-xs" style="margin-top:16px">Perceive → Reason → Act → Learn</div>
+  </div>
+</div>`},
+
+// ── 씬 5: 기존 도구 vs 에이전트 ──
+{n:2,html:`
+<div style="width:1440px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">기존 AI 도구 vs AI 에이전트</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass" style="padding:52px 56px">
+      <div class="t-md" style="color:var(--mu);margin-bottom:24px">기존 AI 도구</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(255,255,255,.2)">질문하면 답변 (1회성)</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(255,255,255,.2)">도구 호출 불가</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(255,255,255,.2)">사람이 매번 지시</div>
+    </div>
+    <div style="display:flex;align-items:center"><span class="gc" style="font-size:52px">→</span></div>
+    <div data-step="2" class="glass-c" style="padding:52px 56px">
+      <div class="t-md gc" style="margin-bottom:24px">AI 에이전트</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(0,212,255,.4)">목표 기반 자율 실행</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(0,212,255,.4)">API·DB 직접 연동</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(0,212,255,.4)">판단 → 행동 → 학습 루프</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 6: 에이전트 핵심 루프 ──
+{n:3,html:`
+<div style="width:1420px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">AI 에이전트 동작 루프</div>
+  <div style="display:flex;align-items:center;justify-content:center">
+    <div class="glass-c" style="padding:36px 40px;text-align:center;flex-shrink:0;min-width:240px;border-radius:24px">
+      <iconify-icon icon="solar:eye-bold" style="font-size:44px;color:var(--c);display:block;margin-bottom:12px"></iconify-icon>
+      <div class="t-sm gc">인식</div>
+      <div class="t-xs" style="margin-top:8px">데이터 수집</div>
+    </div>
+    <div data-step="1" style="display:flex;flex-direction:column;align-items:center;padding:0 16px">
+      <div class="gc" style="font-size:36px">→</div>
+    </div>
+    <div data-step="1" class="glass" style="padding:36px 40px;text-align:center;flex-shrink:0;min-width:240px;border-radius:24px">
+      <iconify-icon icon="solar:brain-bold" style="font-size:44px;color:var(--a);display:block;margin-bottom:12px"></iconify-icon>
+      <div class="t-sm ga">추론</div>
+      <div class="t-xs" style="margin-top:8px">분석·판단</div>
+    </div>
+    <div data-step="2" style="display:flex;flex-direction:column;align-items:center;padding:0 16px">
+      <div class="gc" style="font-size:36px">→</div>
+    </div>
+    <div data-step="2" class="glass-e" style="padding:36px 40px;text-align:center;flex-shrink:0;min-width:240px;border-radius:24px">
+      <iconify-icon icon="solar:play-bold" style="font-size:44px;color:var(--e);display:block;margin-bottom:12px"></iconify-icon>
+      <div class="t-sm ge">행동</div>
+      <div class="t-xs" style="margin-top:8px">매매·알림</div>
+    </div>
+    <div data-step="3" style="display:flex;flex-direction:column;align-items:center;padding:0 16px">
+      <div class="gc" style="font-size:36px">→</div>
+    </div>
+    <div data-step="3" class="glass-a" style="padding:36px 40px;text-align:center;flex-shrink:0;min-width:240px;border-radius:24px">
+      <iconify-icon icon="solar:chart-bold" style="font-size:44px;color:var(--a);display:block;margin-bottom:12px"></iconify-icon>
+      <div class="t-sm ga">학습</div>
+      <div class="t-xs" style="margin-top:8px">피드백 반영</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 7: 섹션2 헤더 ──
+{n:2,html:`
+<div style="text-align:center;width:1400px">
+  <div style="display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(0,212,255,.13);border:1px solid rgba(0,212,255,.35);color:var(--c);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px">SECTION 02</div>
+  <h2 class="t-xl">투자 영역별 <span class="gc">AI 에이전트</span> 활용</h2>
+  <p data-step="1" class="t-md" style="color:var(--mu);margin-top:36px">정보 수집 · 분석 · 리스크 관리 · 매매 실행</p>
+  <p data-step="2" class="t-xs" style="margin-top:20px">각 단계를 전담하는 전문 에이전트 구성</p>
+</div>`},
+
+// ── 씬 8: 정보 수집 에이전트 ──
+{n:3,html:`
+<div style="width:1460px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">정보 수집 에이전트</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-c" style="padding:52px 48px">
+      <iconify-icon icon="solar:document-text-bold" style="font-size:56px;color:var(--c);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:20px">공시 모니터링</div>
+      <div class="t-sm" style="margin-bottom:16px">DART 실시간 감시</div>
+      <div class="t-xs">사업보고서, 주요사항보고서, 지분변동 등 자동 파싱</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:52px 48px">
+      <iconify-icon icon="solar:chat-round-dots-bold" style="font-size:56px;color:var(--a);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">뉴스·소셜 크롤링</div>
+      <div class="t-sm" style="margin-bottom:16px">감성분석 자동화</div>
+      <div class="t-xs">주요 뉴스, 애널리스트 리포트, 커뮤니티 여론 실시간 수집</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:52px 48px">
+      <iconify-icon icon="solar:global-bold" style="font-size:56px;color:var(--e);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">글로벌 매크로</div>
+      <div class="t-sm" style="margin-bottom:16px">경제지표 추적</div>
+      <div class="t-xs">환율, 금리, 원자재 가격 등 거시경제 데이터 통합 수집</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 9: 실시간 모니터링 효과 (바차트) ──
+{n:4,html:`
+<div style="width:1320px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">정보 수집 에이전트 도입 효과</div>
+  <div class="glass" style="padding:52px 64px">
+    <div data-step="1" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">정보 수집 속도</span><span class="t-sm gc">95%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="95%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">수동 대비 20배 이상 빠른 실시간 수집</div>
+    </div>
+    <div data-step="2" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">커버리지 범위</span><span class="t-sm ge">88%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="88%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">국내외 주요 소스 통합 모니터링</div>
+    </div>
+    <div data-step="3" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">이벤트 감지 정확도</span><span class="t-sm ga">82%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="82%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">핵심 이벤트 자동 분류·알림</div>
+    </div>
+    <div data-step="4">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">시간 절감률</span><span class="t-sm gc">78%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="78%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">개인 투자자 주당 평균 12시간 절감</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 10: 분석 에이전트 ──
+{n:3,html:`
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:stretch;width:1400px">
+  <div class="glass" style="padding:56px 64px">
+    <div class="t-md ge" style="margin-bottom:32px">분석 에이전트</div>
+    <div data-step="1" class="t-sm" style="margin-bottom:24px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">재무제표 <span class="ge">자동 파싱</span> 및 핵심 지표 추출</div>
+    <div data-step="2" class="t-sm" style="margin-bottom:24px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">동종업계 <span class="ge">비교 분석</span> 자동 수행</div>
+    <div data-step="3" class="t-sm" style="padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">적정 주가 <span class="ge">밸류에이션</span> 산출</div>
+  </div>
+  <div data-step="1" class="glass-e" style="padding:64px;display:flex;flex-direction:column;justify-content:center;align-items:center">
+    <div class="ge" style="font-size:100px;font-weight:800;line-height:1">5분</div>
+    <div class="t-md" style="margin-top:20px;color:var(--mu)">1개 종목 분석 완료</div>
+    <div class="t-xs" style="margin-top:16px">수동 분석 대비 60배 단축</div>
+  </div>
+</div>`},
+
+// ── 씬 11: 재무제표 자동 분석 ──
+{n:4,html:`
+<div style="width:1380px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">재무제표 자동 분석 항목</div>
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div data-step="1" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="gc" style="font-size:28px;font-weight:800">01</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm gc" style="margin-bottom:8px">수익성 분석</div>
+        <div class="t-xs">ROE, ROA, 영업이익률, 순이익률 자동 산출 및 추세 분석</div>
+      </div>
+      <iconify-icon icon="solar:graph-up-bold" style="font-size:40px;color:var(--c);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+    <div data-step="2" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-e" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ge" style="font-size:28px;font-weight:800">02</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ge" style="margin-bottom:8px">안정성 분석</div>
+        <div class="t-xs">부채비율, 유동비율, 이자보상배율 등 재무 건전성 체크</div>
+      </div>
+      <iconify-icon icon="solar:shield-check-bold" style="font-size:40px;color:var(--e);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+    <div data-step="3" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-a" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ga" style="font-size:28px;font-weight:800">03</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ga" style="margin-bottom:8px">성장성 분석</div>
+        <div class="t-xs">매출 성장률, EPS 성장률, R&D 투자 비중 트렌드</div>
+      </div>
+      <iconify-icon icon="solar:rocket-bold" style="font-size:40px;color:var(--a);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+    <div data-step="4" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="gc" style="font-size:28px;font-weight:800">04</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm gc" style="margin-bottom:8px">밸류에이션</div>
+        <div class="t-xs">PER, PBR, EV/EBITDA 기반 적정주가 레인지 산출</div>
+      </div>
+      <iconify-icon icon="solar:tag-price-bold" style="font-size:40px;color:var(--c);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 12: 밸류에이션 자동 산출 ──
+{n:3,html:`
+<div style="width:1400px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">AI 에이전트 밸류에이션 산출 사례</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass" style="padding:48px 44px;text-align:center">
+      <iconify-icon icon="solar:calculator-bold" style="font-size:52px;color:var(--c);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="gc" style="font-size:72px;font-weight:800;line-height:1;margin-bottom:16px">PER</div>
+      <div class="t-sm" style="margin-bottom:12px">상대가치 분석</div>
+      <div class="t-xs">동종업계 평균 PER 대비 할인·프리미엄 자동 산출</div>
+    </div>
+    <div data-step="2" class="glass-e" style="padding:48px 44px;text-align:center">
+      <iconify-icon icon="solar:chart-2-bold" style="font-size:52px;color:var(--e);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="ge" style="font-size:72px;font-weight:800;line-height:1;margin-bottom:16px">DCF</div>
+      <div class="t-sm" style="margin-bottom:12px">절대가치 분석</div>
+      <div class="t-xs">미래 현금흐름 할인 모델 자동 구성 및 민감도 분석</div>
+    </div>
+    <div data-step="3" class="glass-a" style="padding:48px 44px;text-align:center">
+      <iconify-icon icon="solar:target-bold" style="font-size:52px;color:var(--a);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="ga" style="font-size:72px;font-weight:800;line-height:1;margin-bottom:16px">EV</div>
+      <div class="t-sm" style="margin-bottom:12px">기업가치 분석</div>
+      <div class="t-xs">EV/EBITDA 기반 사업가치 평가 및 피어 비교</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 13: 리스크 관리 에이전트 ──
+{n:2,html:`
+<div style="width:1440px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">리스크 관리 에이전트</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-a" style="padding:52px 56px">
+      <iconify-icon icon="solar:danger-triangle-bold" style="font-size:52px;color:var(--a);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">리스크 감지</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">급격한 변동성 감지</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">섹터 상관관계 분석</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">뉴스 리스크 스코어링</div>
+    </div>
+    <div style="display:flex;align-items:center"><span class="gc" style="font-size:52px">→</span></div>
+    <div data-step="2" class="glass-e" style="padding:52px 56px">
+      <iconify-icon icon="solar:shield-bold" style="font-size:52px;color:var(--e);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">자동 대응</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">손절선 자동 조정</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">포지션 비중 조절</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">헷지 포지션 제안</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 14: 포트폴리오 리밸런싱 플로우 ──
+{n:3,html:`
+<div style="width:1420px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">포트폴리오 리밸런싱 프로세스</div>
+  <div style="display:flex;align-items:center;justify-content:center">
+    <div class="glass-c" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:pie-chart-2-bold" style="font-size:40px;color:var(--c);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm gc">현재 포트폴리오</div>
+      <div class="t-xs" style="margin-top:6px">비중 분석</div>
+    </div>
+    <div data-step="1" style="padding:0 14px"><div class="gc" style="font-size:32px">→</div></div>
+    <div data-step="1" class="glass" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:tuning-2-bold" style="font-size:40px;color:var(--a);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm ga">리스크 평가</div>
+      <div class="t-xs" style="margin-top:6px">VaR·변동성</div>
+    </div>
+    <div data-step="2" style="padding:0 14px"><div class="gc" style="font-size:32px">→</div></div>
+    <div data-step="2" class="glass-a" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:sort-bold" style="font-size:40px;color:var(--a);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm ga">최적 배분</div>
+      <div class="t-xs" style="margin-top:6px">비중 재산정</div>
+    </div>
+    <div data-step="3" style="padding:0 14px"><div class="gc" style="font-size:32px">→</div></div>
+    <div data-step="3" class="glass-e" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:check-circle-bold" style="font-size:40px;color:var(--e);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm ge">자동 실행</div>
+      <div class="t-xs" style="margin-top:6px">주문 생성</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 15: 매매 실행 에이전트 ──
+{n:3,html:`
+<div style="width:1380px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">매매 실행 에이전트 유형</div>
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div data-step="1" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="gc" style="font-size:28px;font-weight:800">조건부</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm gc" style="margin-bottom:8px">조건부 주문 에이전트</div>
+        <div class="t-xs">특정 가격·거래량·기술적 지표 조건 충족 시 자동 매수/매도</div>
+      </div>
+      <div class="gc" style="font-size:36px;font-weight:700;flex-shrink:0">IF → THEN</div>
+    </div>
+    <div data-step="2" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-e" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ge" style="font-size:28px;font-weight:800">분할</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ge" style="margin-bottom:8px">분할 매수/매도 에이전트</div>
+        <div class="t-xs">TWAP/VWAP 알고리즘 기반 시장 충격 최소화 분할 주문</div>
+      </div>
+      <div class="ge" style="font-size:36px;font-weight:700;flex-shrink:0">VWAP</div>
+    </div>
+    <div data-step="3" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-a" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ga" style="font-size:28px;font-weight:800">이벤트</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ga" style="margin-bottom:8px">이벤트 드리븐 에이전트</div>
+        <div class="t-xs">실적 발표, 공시, 뉴스 이벤트 감지 후 즉시 포지션 조정</div>
+      </div>
+      <div class="ga" style="font-size:36px;font-weight:700;flex-shrink:0">EVENT</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 16: 알고리즘 트레이딩 성과 ──
+{n:4,html:`
+<div style="width:1320px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">AI 에이전트 매매 성과 비교</div>
+  <div class="glass" style="padding:52px 64px">
+    <div data-step="1" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">감정적 매매 제거율</span><span class="t-sm gc">92%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="92%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">공포·탐욕에 의한 비합리적 매매 차단</div>
+    </div>
+    <div data-step="2" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">주문 체결 속도 향상</span><span class="t-sm ge">85%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="85%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">밀리초 단위 시장 대응</div>
+    </div>
+    <div data-step="3" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">슬리피지 절감</span><span class="t-sm ga">68%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="68%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">최적 체결가 추적을 통한 비용 절감</div>
+    </div>
+    <div data-step="4">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">규칙 준수율</span><span class="t-sm gc">99%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="99%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">사전 설정된 투자 원칙 100% 이행</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 17: 섹션3 헤더 ──
+{n:2,html:`
+<div style="text-align:center;width:1400px">
+  <div style="display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(245,158,11,.13);border:1px solid rgba(245,158,11,.35);color:var(--a);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px">SECTION 03</div>
+  <h2 class="t-xl">실전 <span class="ga">구현</span> 방법</h2>
+  <p data-step="1" class="t-md" style="color:var(--mu);margin-top:36px">기술 스택 · 데이터 소스 · 아키텍처</p>
+  <p data-step="2" class="t-xs" style="margin-top:20px">개인 투자자도 구축 가능한 에이전트 시스템</p>
+</div>`},
+
+// ── 씬 18: 기술 스택 ──
+{n:3,html:`
+<div style="width:1460px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">핵심 기술 스택</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-c" style="padding:52px 48px">
+      <iconify-icon icon="solar:code-bold" style="font-size:56px;color:var(--c);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:20px">LangGraph</div>
+      <div class="t-sm" style="margin-bottom:16px">에이전트 오케스트레이션</div>
+      <div class="t-xs">상태 기반 워크플로우, 조건부 분기, 멀티에이전트 그래프 구성</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:52px 48px">
+      <iconify-icon icon="solar:users-group-rounded-bold" style="font-size:56px;color:var(--a);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">CrewAI</div>
+      <div class="t-sm" style="margin-bottom:16px">팀 기반 에이전트</div>
+      <div class="t-xs">역할 기반 에이전트 팀 구성, 자동 태스크 위임·협업</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:52px 48px">
+      <iconify-icon icon="solar:link-round-bold" style="font-size:56px;color:var(--e);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">MCP</div>
+      <div class="t-sm" style="margin-bottom:16px">외부 시스템 연동</div>
+      <div class="t-xs">증권사 API, DART, KRX 등 외부 도구 표준 프로토콜 연결</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 19: 데이터 소스 ──
+{n:4,html:`
+<div style="width:1380px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">주요 데이터 소스</div>
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div data-step="1" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="gc" style="font-size:28px;font-weight:800">DART</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm gc" style="margin-bottom:8px">전자공시 시스템</div>
+        <div class="t-xs">사업보고서, 감사보고서, 주요사항보고서 등 공시 데이터 API</div>
+      </div>
+      <iconify-icon icon="solar:document-bold" style="font-size:40px;color:var(--c);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+    <div data-step="2" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-e" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ge" style="font-size:28px;font-weight:800">KRX</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ge" style="margin-bottom:8px">한국거래소</div>
+        <div class="t-xs">실시간 시세, 거래량, 시가총액, 외국인·기관 매매동향</div>
+      </div>
+      <iconify-icon icon="solar:chart-bold" style="font-size:40px;color:var(--e);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+    <div data-step="3" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-a" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ga" style="font-size:28px;font-weight:800">API</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ga" style="margin-bottom:8px">증권사 Open API</div>
+        <div class="t-xs">한국투자증권, 키움 등 증권사 API를 통한 실시간 조회·주문</div>
+      </div>
+      <iconify-icon icon="solar:server-bold" style="font-size:40px;color:var(--a);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+    <div data-step="4" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="gc" style="font-size:28px;font-weight:800">NEWS</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm gc" style="margin-bottom:8px">뉴스·소셜 데이터</div>
+        <div class="t-xs">네이버 금융, 한경, 매경 뉴스 및 투자 커뮤니티 크롤링</div>
+      </div>
+      <iconify-icon icon="solar:chat-round-bold" style="font-size:40px;color:var(--c);flex-shrink:0;display:block"></iconify-icon>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 20: MCP 연동 구조 ──
+{n:3,html:`
+<div style="width:1420px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">MCP 기반 에이전트 연동 구조</div>
+  <div style="display:flex;align-items:center;justify-content:center">
+    <div class="glass-c" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:brain-bold" style="font-size:40px;color:var(--c);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm gc">LLM 에이전트</div>
+      <div class="t-xs" style="margin-top:6px">판단·추론</div>
+    </div>
+    <div data-step="1" style="padding:0 14px"><div class="gc" style="font-size:32px">↔</div></div>
+    <div data-step="1" class="glass" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:link-round-bold" style="font-size:40px;color:var(--a);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm ga">MCP Server</div>
+      <div class="t-xs" style="margin-top:6px">표준 프로토콜</div>
+    </div>
+    <div data-step="2" style="padding:0 14px"><div class="gc" style="font-size:32px">↔</div></div>
+    <div data-step="2" class="glass-a" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:server-bold" style="font-size:40px;color:var(--a);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm ga">증권사 API</div>
+      <div class="t-xs" style="margin-top:6px">시세·주문</div>
+    </div>
+    <div data-step="3" style="padding:0 14px"><div class="gc" style="font-size:32px">↔</div></div>
+    <div data-step="3" class="glass-e" style="padding:32px 36px;text-align:center;flex-shrink:0;min-width:220px;border-radius:24px">
+      <iconify-icon icon="solar:wallet-bold" style="font-size:40px;color:var(--e);display:block;margin-bottom:10px"></iconify-icon>
+      <div class="t-sm ge">계좌·포트폴리오</div>
+      <div class="t-xs" style="margin-top:6px">실행·관리</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 21: 멀티 에이전트 아키텍처 ──
+{n:3,html:`
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:stretch;width:1400px">
+  <div class="glass" style="padding:56px 64px">
+    <div class="t-md gc" style="margin-bottom:32px">멀티 에이전트 구성</div>
+    <div data-step="1" class="t-sm" style="margin-bottom:24px;padding-left:20px;border-left:3px solid rgba(0,212,255,.4)"><span class="gc">오케스트레이터</span>가 전체 흐름 조율</div>
+    <div data-step="2" class="t-sm" style="margin-bottom:24px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)"><span class="ge">전문 에이전트</span>가 각자 역할 수행</div>
+    <div data-step="3" class="t-sm" style="padding-left:20px;border-left:3px solid rgba(245,158,11,.4)"><span class="ga">공유 메모리</span>로 컨텍스트 유지</div>
+  </div>
+  <div data-step="1" class="glass-c" style="padding:64px;display:flex;flex-direction:column;justify-content:center;align-items:center">
+    <div class="gc" style="font-size:100px;font-weight:800;line-height:1">4+1</div>
+    <div class="t-md" style="margin-top:20px;color:var(--mu)">에이전트 구성</div>
+    <div class="t-xs" style="margin-top:16px">수집·분석·리스크·실행 + 오케스트레이터</div>
+  </div>
+</div>`},
+
+// ── 씬 22: 구현 사례 ──
+{n:3,html:`
+<div style="width:1380px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">에이전트 구현 사례</div>
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div data-step="1" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-e" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ge" style="font-size:28px;font-weight:800">사례 1</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ge" style="margin-bottom:8px">실적 시즌 자동 분석봇</div>
+        <div class="t-xs">분기 실적 공시 → 자동 파싱 → 컨센서스 대비 분석 → 알림까지 5분 내 완료</div>
+      </div>
+      <div class="ge" style="font-size:36px;font-weight:700;flex-shrink:0">5분</div>
+    </div>
+    <div data-step="2" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="gc" style="font-size:28px;font-weight:800">사례 2</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm gc" style="margin-bottom:8px">뉴스 기반 매매 시그널</div>
+        <div class="t-xs">주요 뉴스 감성분석 → 임팩트 스코어링 → 매매 시그널 생성 → 텔레그램 알림</div>
+      </div>
+      <div class="gc" style="font-size:36px;font-weight:700;flex-shrink:0">24/7</div>
+    </div>
+    <div data-step="3" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+      <div class="glass-a" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:120px">
+        <div class="ga" style="font-size:28px;font-weight:800">사례 3</div>
+      </div>
+      <div style="flex:1">
+        <div class="t-sm ga" style="margin-bottom:8px">포트폴리오 일일 리포트</div>
+        <div class="t-xs">매일 장 마감 후 보유 종목 분석 → 리스크 점검 → 리밸런싱 제안 보고서 자동 생성</div>
+      </div>
+      <div class="ga" style="font-size:36px;font-weight:700;flex-shrink:0">Daily</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 23: 섹션4 헤더 ──
+{n:2,html:`
+<div style="text-align:center;width:1400px">
+  <div style="display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(245,158,11,.13);border:1px solid rgba(245,158,11,.35);color:var(--a);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px">SECTION 04</div>
+  <h2 class="t-xl"><span class="ga">주의사항</span>과 한계</h2>
+  <p data-step="1" class="t-md" style="color:var(--mu);margin-top:36px">만능이 아닌 AI, 알아야 할 리스크</p>
+  <p data-step="2" class="t-xs" style="margin-top:20px">환각 · 과최적화 · 규제 · 비용</p>
+</div>`},
+
+// ── 씬 24: 환각 리스크 ──
+{n:2,html:`
+<div style="width:1440px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">환각(Hallucination) 리스크</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-a" style="padding:52px 56px">
+      <iconify-icon icon="solar:danger-circle-bold" style="font-size:52px;color:var(--a);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">위험 요인</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">존재하지 않는 데이터 생성</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">잘못된 재무수치 산출</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">자신감 있는 오답 제시</div>
+    </div>
+    <div style="display:flex;align-items:center"><span class="gc" style="font-size:52px">→</span></div>
+    <div data-step="2" class="glass-e" style="padding:52px 56px">
+      <iconify-icon icon="solar:shield-check-bold" style="font-size:52px;color:var(--e);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">대응 전략</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">팩트체크 레이어 필수</div>
+      <div class="t-sm" style="margin-bottom:16px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">원천 데이터 검증 로직</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">Human-in-the-Loop 적용</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 25: 과최적화·규제 ──
+{n:3,html:`
+<div style="width:1400px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">추가 리스크 요인</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-a" style="padding:48px 44px;text-align:center">
+      <iconify-icon icon="solar:refresh-circle-bold" style="font-size:52px;color:var(--a);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="ga" style="font-size:72px;font-weight:800;line-height:1;margin-bottom:16px">Overfit</div>
+      <div class="t-sm" style="margin-bottom:12px">과최적화</div>
+      <div class="t-xs">백테스트에서만 좋은 성과, 실전에서 큰 손실 가능성</div>
+    </div>
+    <div data-step="2" class="glass" style="padding:48px 44px;text-align:center">
+      <iconify-icon icon="solar:scale-bold" style="font-size:52px;color:var(--mu);margin-bottom:24px;display:block"></iconify-icon>
+      <div style="color:var(--mu);font-size:72px;font-weight:800;line-height:1;margin-bottom:16px">규제</div>
+      <div class="t-sm" style="margin-bottom:12px">컴플라이언스</div>
+      <div class="t-xs">자동매매 규정, 시세조종 금지, 알고리즘 신고 의무 확인</div>
+    </div>
+    <div data-step="3" class="glass-c" style="padding:48px 44px;text-align:center">
+      <iconify-icon icon="solar:wallet-money-bold" style="font-size:52px;color:var(--c);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="gc" style="font-size:72px;font-weight:800;line-height:1;margin-bottom:16px">Cost</div>
+      <div class="t-sm" style="margin-bottom:12px">운영 비용</div>
+      <div class="t-xs">LLM API 비용, 데이터 구독료, 서버 운영비 등 고려</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 26: 비용 대비 효과 ──
+{n:4,html:`
+<div style="width:1320px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">AI 에이전트 운영 비용 구조 (월간)</div>
+  <div class="glass" style="padding:52px 64px">
+    <div data-step="1" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">LLM API 비용</span><span class="t-sm gc">40%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="80%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">Claude/GPT API 호출 비용 — 월 5~15만원 예상</div>
+    </div>
+    <div data-step="2" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">데이터 구독</span><span class="t-sm ga">30%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="60%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">실시간 시세, 뉴스 API 등 데이터 피드 비용</div>
+    </div>
+    <div data-step="3" style="margin-bottom:36px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">서버·인프라</span><span class="t-sm ge">20%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="40%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">클라우드 서버, 스케줄러, 모니터링 도구</div>
+    </div>
+    <div data-step="4">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span class="t-sm">기타 (유지보수)</span><span class="t-sm" style="color:var(--mu)">10%</span>
+      </div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+        <div class="bar-fill" data-w="20%" style="height:100%;width:0%;background:linear-gradient(90deg,rgba(255,255,255,.3),rgba(255,255,255,.15));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(255,255,255,.1)"></div>
+      </div>
+      <div class="t-xs" style="margin-top:6px">코드 유지보수, 모델 업데이트, 전략 튜닝</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 27: 섹션5 헤더 ──
+{n:2,html:`
+<div style="text-align:center;width:1400px">
+  <div style="display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(16,185,129,.13);border:1px solid rgba(16,185,129,.35);color:var(--e);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px">SECTION 05</div>
+  <h2 class="t-xl">AI 에이전트의 <span class="ge">미래</span></h2>
+  <p data-step="1" class="t-md" style="color:var(--mu);margin-top:36px">자율 투자 시스템의 진화 방향</p>
+  <p data-step="2" class="t-xs" style="margin-top:20px">개인 투자자의 새로운 무기</p>
+</div>`},
+
+// ── 씬 28: 에이전트 진화 로드맵 ──
+{n:4,html:`
+<div style="width:1440px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">AI 투자 에이전트 진화 로드맵</div>
+  <div style="display:flex;align-items:center;justify-content:center">
+    <div class="glass" style="padding:32px 32px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-sm" style="color:var(--mu)">Level 1</div>
+      <div class="t-sm gc" style="margin-top:8px">규칙 기반</div>
+      <div class="t-xs" style="margin-top:6px">단순 조건 매매</div>
+    </div>
+    <div data-step="1" style="padding:0 10px"><div class="gc" style="font-size:28px">→</div></div>
+    <div data-step="1" class="glass-c" style="padding:32px 32px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-sm" style="color:var(--mu)">Level 2</div>
+      <div class="t-sm gc" style="margin-top:8px">LLM 기반</div>
+      <div class="t-xs" style="margin-top:6px">자연어 추론 매매</div>
+    </div>
+    <div data-step="2" style="padding:0 10px"><div class="gc" style="font-size:28px">→</div></div>
+    <div data-step="2" class="glass-a" style="padding:32px 32px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-sm" style="color:var(--mu)">Level 3</div>
+      <div class="t-sm ga" style="margin-top:8px">멀티 에이전트</div>
+      <div class="t-xs" style="margin-top:6px">협업 기반 의사결정</div>
+    </div>
+    <div data-step="3" style="padding:0 10px"><div class="gc" style="font-size:28px">→</div></div>
+    <div data-step="3" class="glass-e" style="padding:32px 32px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-sm" style="color:var(--mu)">Level 4</div>
+      <div class="t-sm ge" style="margin-top:8px">자율 포트폴리오</div>
+      <div class="t-xs" style="margin-top:6px">완전 자동 운용</div>
+    </div>
+    <div data-step="4" style="padding:0 10px"><div class="gc" style="font-size:28px">→</div></div>
+    <div data-step="4" class="glass" style="padding:32px 32px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px;border:1px solid rgba(255,255,255,.3)">
+      <div class="t-sm" style="color:var(--mu)">Level 5</div>
+      <div class="t-sm" style="margin-top:8px;color:var(--t)">AGI 투자</div>
+      <div class="t-xs" style="margin-top:6px">범용 금융 AI</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 29: AI 네이티브 투자 생태계 ──
+{n:3,html:`
+<div style="width:1460px">
+  <div class="t-md" style="color:var(--mu);margin-bottom:48px;text-align:center">AI 네이티브 투자 생태계</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-c" style="padding:52px 48px">
+      <iconify-icon icon="solar:user-bold" style="font-size:56px;color:var(--c);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:20px">개인의 기관화</div>
+      <div class="t-sm" style="margin-bottom:16px">1인 펀드매니저 시대</div>
+      <div class="t-xs">AI 에이전트로 개인이 기관급 리서치·매매 인프라 구축</div>
+    </div>
+    <div data-step="2" class="glass-e" style="padding:52px 48px">
+      <iconify-icon icon="solar:share-circle-bold" style="font-size:56px;color:var(--e);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">에이전트 마켓플레이스</div>
+      <div class="t-sm" style="margin-bottom:16px">전략 공유·거래</div>
+      <div class="t-xs">검증된 투자 에이전트를 구독·공유하는 생태계 형성</div>
+    </div>
+    <div data-step="3" class="glass-a" style="padding:52px 48px">
+      <iconify-icon icon="solar:shield-star-bold" style="font-size:56px;color:var(--a);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">신뢰 가능한 AI</div>
+      <div class="t-sm" style="margin-bottom:16px">투명성·설명 가능성</div>
+      <div class="t-xs">모든 의사결정 과정이 추적·설명 가능한 투명한 AI 투자</div>
+    </div>
+  </div>
+</div>`},
+
+// ── 씬 30: 클로징 ──
+{n:3,html:`
+<div style="text-align:center;width:1400px">
+  <div style="display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(0,212,255,.13);border:1px solid rgba(0,212,255,.35);color:var(--c);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px">CONCLUSION</div>
+  <h2 class="t-xl">에이전트는 <span class="gc">도구</span>,<br>판단은 <span class="ge">사람</span></h2>
+  <div data-step="1" class="t-md" style="color:var(--mu);margin-top:44px">AI가 분석과 실행을 맡되, 최종 의사결정은 투자자의 몫</div>
+  <div data-step="2" style="margin-top:48px;display:flex;justify-content:center;gap:36px">
+    <div class="glass-c" style="padding:28px 40px;border-radius:20px;text-align:center">
+      <div class="t-sm gc">Step 1</div>
+      <div class="t-xs" style="margin-top:8px">소규모 에이전트 제작</div>
+    </div>
+    <div class="glass-e" style="padding:28px 40px;border-radius:20px;text-align:center">
+      <div class="t-sm ge">Step 2</div>
+      <div class="t-xs" style="margin-top:8px">백테스트 + 검증</div>
+    </div>
+    <div class="glass-a" style="padding:28px 40px;border-radius:20px;text-align:center">
+      <div class="t-sm ga">Step 3</div>
+      <div class="t-xs" style="margin-top:8px">점진적 실전 적용</div>
+    </div>
+  </div>
+  <p data-step="3" class="t-xs" style="margin-top:48px">Thank you · Q&A</p>
+</div>`}
+
+];
+
+// ── 네비게이션 엔진 ──
+let cur=0,step=0;
+function applySteps(){document.querySelectorAll('[data-step]').forEach(el=>{const n=parseInt(el.dataset.step),on=n<=step;el.classList.toggle('revealed',on);el.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=on?b.dataset.w:'0%'})})}
+function updateNav(){const total=slides.length;document.getElementById('counter').textContent=`${cur+1} / ${total}`;document.getElementById('progress').style.width=((cur)/(total-1)*100)+'%'}
+function render(){step=0;const sl=slides[cur];document.getElementById('slide').innerHTML=sl.html;if(sl.after)setTimeout(sl.after,50);applySteps();updateNav()}
+function go(d){const max=slides[cur].n;if(d===1){if(step<max){step++;applySteps();updateNav()}else if(cur<slides.length-1){cur++;render()}}else{if(step>0){step--;applySteps();updateNav()}else if(cur>0){cur--;render();step=slides[cur].n;applySteps();updateNav()}}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}else if(e.key==='ArrowDown'){e.preventDefault();if(cur<slides.length-1){cur++;render()}}else if(e.key==='ArrowUp'){e.preventDefault();if(cur>0){cur--;render()}}});
+
+// ── 화면 스케일 ──
+function scale(){const s=Math.min(window.innerWidth/1920,window.innerHeight/1080);const tx=(window.innerWidth-1920*s)/2,ty=(window.innerHeight-1080*s)/2;document.body.style.transform=`translate(${tx}px,${ty}px) scale(${s})`}
+window.addEventListener('resize',scale);scale();
+render();
+</script>
+</body>
+</html>
