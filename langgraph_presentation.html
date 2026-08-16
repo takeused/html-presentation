@@ -150,10 +150,77 @@ body::before{
   color:var(--c);
   transform:scale(1.06);
 }
-#nav span{color:var(--mu);font-size:18px;font-weight:600;min-width:80px;text-align:center}
-#progress{position:fixed;bottom:0;left:0;height:4px;background:linear-gradient(90deg,var(--c),var(--p),var(--b),var(--e));z-index:10;transition:width .3s ease}
+#nav span{
+  color:var(--mu);
+  font-size:18px;
+  font-weight:600;
+  min-width:84px;
+  text-align:center;
+  cursor:pointer;
+  padding:4px 8px;
+  border-radius:8px;
+  transition:all .2s ease;
+}
+#nav span:hover{
+  background:rgba(255,255,255,.1);
+  color:var(--c);
+}
+#page-input{
+  width:50px;
+  background:rgba(0,0,0,.6);
+  border:1px solid var(--c);
+  border-radius:8px;
+  color:var(--c);
+  font-size:18px;
+  font-weight:700;
+  text-align:center;
+  outline:none;
+  padding:2px 4px;
+}
 
-.badge{
+/* Quick Jump Toast Indicator */
+#jump-indicator{
+  position:fixed;
+  top:36px;
+  right:48px;
+  z-index:200;
+  background:rgba(19,27,49,.92);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--c);
+  box-shadow:0 0 30px rgba(0,212,255,.35);
+  border-radius:14px;
+  padding:12px 24px;
+  display:none;
+  align-items:center;
+  gap:12px;
+  font-size:18px;
+  font-weight:600;
+  color:var(--t);
+  animation:popIn .2s cubic-bezier(.16,1,.3,1);
+}
+#jump-indicator span{color:var(--c);font-weight:800;font-size:22px}
+@keyframes popIn{from{opacity:0;transform:translateY(-10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Jump Modal */
+#jump-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(12px);
+  z-index:300;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+#jump-modal{
+  background:rgba(20,28,50,.95);
+  border:1px solid rgba(0,212,255,.4);
+  box-shadow:0 16px 60px rgba(0,0,0,.8),0 0 50px rgba(0,212,255,.2);
+  border-radius:24px;
+  padding:36px 44px;
+  text-align:center;
+  width:420px;
+}
   display:inline-flex;
   align-items:center;
   gap:8px;
@@ -198,11 +265,38 @@ code{
 </div>
 
 <div id="slide"></div>
+
+<!-- Quick Jump Toast -->
+<div id="jump-indicator">
+  <iconify-icon icon="solar:round-alt-arrow-right-bold" style="color:var(--c);font-size:24px"></iconify-icon>
+  <span>Go to Page : </span>
+  <span id="jump-number">14</span>
+  <span style="font-size:14px;color:var(--mu);margin-left:8px">(Enter 또는 자동 이동)</span>
+</div>
+
+<!-- Quick Jump Modal -->
+<div id="jump-modal-overlay">
+  <div id="jump-modal">
+    <div style="font-size:24px;font-weight:700;margin-bottom:8px;color:var(--c);display:flex;align-items:center;justify-content:center;gap:8px">
+      <iconify-icon icon="solar:routing-2-bold"></iconify-icon> 페이지 바로 이동
+    </div>
+    <p style="font-size:15px;color:var(--mu);margin-bottom:24px">이동할 페이지 번호를 입력하세요 (1 ~ 28)</p>
+    <div style="display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:24px">
+      <input type="number" id="modal-page-input" min="1" max="28" placeholder="예: 14" style="width:140px;background:rgba(0,0,0,.5);border:2px solid var(--c);border-radius:14px;color:var(--t);font-size:28px;font-weight:800;text-align:center;padding:10px;outline:none">
+      <span style="font-size:22px;color:var(--mu)">/ 28</span>
+    </div>
+    <div style="display:flex;justify-content:center;gap:14px">
+      <button id="modal-jump-cancel" style="padding:10px 24px;border-radius:12px;background:rgba(255,255,255,.1);border:none;color:var(--t);font-size:16px;cursor:pointer;font-weight:600">취소 (ESC)</button>
+      <button id="modal-jump-btn" style="padding:10px 28px;border-radius:12px;background:linear-gradient(135deg,var(--c),var(--p));border:none;color:#000;font-size:16px;cursor:pointer;font-weight:700">이동 (Enter)</button>
+    </div>
+  </div>
+</div>
+
 <div id="nav">
   <button class="nav-btn" id="btn-prev" title="이전 (← / Backspace)">
     <iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon>
   </button>
-  <span id="counter">1 / 28</span>
+  <span id="counter" title="클릭하여 페이지 직접 입력 / 단축키: 숫자 입력 or G">1 / 28</span>
   <button class="nav-btn" id="btn-next" title="다음 (→ / Space / Click)">
     <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon>
   </button>
@@ -1266,9 +1360,129 @@ function go(d) {
   }
 }
 
+// ── 특정 페이지 직접 이동 함수 (1 ~ N) ──
+function goToPage(targetPage) {
+  let p = parseInt(targetPage);
+  if (isNaN(p)) return;
+  if (p < 1) p = 1;
+  if (p > slides.length) p = slides.length;
+  cur = p - 1;
+  render();
+}
+
+// ── 숫자 키보드 입력 점프 버퍼 ──
+let jumpBuffer = '';
+let jumpTimer = null;
+const jumpIndicator = document.getElementById('jump-indicator');
+const jumpNumber = document.getElementById('jump-number');
+
+function clearJumpBuffer() {
+  jumpBuffer = '';
+  if (jumpTimer) clearTimeout(jumpTimer);
+  jumpTimer = null;
+  if (jumpIndicator) jumpIndicator.style.display = 'none';
+}
+
+function handleDigitInput(digit) {
+  jumpBuffer += digit;
+  if (jumpIndicator && jumpNumber) {
+    jumpNumber.textContent = jumpBuffer;
+    jumpIndicator.style.display = 'flex';
+  }
+  if (jumpTimer) clearTimeout(jumpTimer);
+  jumpTimer = setTimeout(() => {
+    if (jumpBuffer.length > 0) {
+      goToPage(jumpBuffer);
+      clearJumpBuffer();
+    }
+  }, 1200);
+}
+
+// ── 점프 모달 관리 ──
+const modalOverlay = document.getElementById('jump-modal-overlay');
+const modalInput = document.getElementById('modal-page-input');
+const modalJumpBtn = document.getElementById('modal-jump-btn');
+const modalCancelBtn = document.getElementById('modal-jump-cancel');
+
+function openJumpModal() {
+  clearJumpBuffer();
+  modalOverlay.style.display = 'flex';
+  modalInput.value = cur + 1;
+  setTimeout(() => {
+    modalInput.focus();
+    modalInput.select();
+  }, 50);
+}
+
+function closeJumpModal() {
+  modalOverlay.style.display = 'none';
+  window.focus();
+}
+
+function executeModalJump() {
+  const val = modalInput.value.trim();
+  if (val) {
+    goToPage(val);
+  }
+  closeJumpModal();
+}
+
+modalJumpBtn.addEventListener('click', executeModalJump);
+modalCancelBtn.addEventListener('click', closeJumpModal);
+modalOverlay.addEventListener('click', e => {
+  if (e.target === modalOverlay) closeJumpModal();
+});
+modalInput.addEventListener('keydown', e => {
+  e.stopPropagation();
+  if (e.key === 'Enter') {
+    executeModalJump();
+  } else if (e.key === 'Escape') {
+    closeJumpModal();
+  }
+});
+
+// 하단 카운터 클릭 시 모달 열기
+document.getElementById('counter').addEventListener('click', e => {
+  e.stopPropagation();
+  openJumpModal();
+});
+
 // ── 키보드 이벤트 (다양한 브라우저/키 호환) ──
 window.addEventListener('keydown', e => {
+  // 모달이 열려있으면 모달 입력 우선
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+
   const k = e.key;
+
+  // 1. 숫자 키 입력 시 퀵 점프 버퍼 처리 (0~9)
+  if (/^[0-9]$/.test(k)) {
+    e.preventDefault();
+    handleDigitInput(k);
+    return;
+  }
+
+  // 2. 점프 버퍼 활성화 중 Enter 누르면 즉시 점프
+  if (jumpBuffer.length > 0) {
+    if (k === 'Enter') {
+      e.preventDefault();
+      goToPage(jumpBuffer);
+      clearJumpBuffer();
+      return;
+    } else if (k === 'Escape' || k === 'Backspace') {
+      e.preventDefault();
+      clearJumpBuffer();
+      return;
+    }
+  }
+
+  // 3. 'G' 또는 'g' 키 누르면 점프 모달 열기
+  if (k === 'g' || k === 'G') {
+    e.preventDefault();
+    openJumpModal();
+    return;
+  }
+
+  // 4. 일반 내비게이션 키
   if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter' || k === 'n' || k === 'N' || k === 'j' || k === 'J') {
     e.preventDefault();
     go(1);
@@ -1301,9 +1515,10 @@ document.getElementById('btn-prev').addEventListener('click', e => {
   go(-1);
 });
 
-// 슬라이드 화면 클릭 시 다음으로 진행 (버튼 제외)
+// 슬라이드 화면 클릭 시 다음으로 진행 (버튼 및 모달 제외)
 document.addEventListener('click', e => {
-  if (!e.target.closest('#nav') && !e.target.closest('button') && !e.target.closest('a')) {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+  if (!e.target.closest('#nav') && !e.target.closest('button') && !e.target.closest('a') && !e.target.closest('#jump-modal')) {
     go(1);
   }
 });
@@ -1311,6 +1526,7 @@ document.addEventListener('click', e => {
 // 마우스 휠 스크롤 지원
 let wheelTimeout;
 window.addEventListener('wheel', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
   if (wheelTimeout) return;
   if (e.deltaY > 30) {
     go(1);
