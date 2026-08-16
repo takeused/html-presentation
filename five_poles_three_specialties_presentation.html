@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5극 3특 체제 완벽 이해 — 대한민국 균형발전 대전환</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;
+  --t:#f0f0f0;
+  --mu:#a1a1aa;
+  --c:#00d4ff;  /* Cyan: 수도권 / 메가시티 */
+  --a:#f59e0b;  /* Amber: 중부권 / 에너지 / 기회 */
+  --e:#10b981;  /* Emerald: 동남권 / 생태 / 성장 */
+  --p:#a78bfa;  /* Purple: 호남권 / AI / 자치 */
+  --r:#f43f5e;  /* Rose: 대경권 / 경고 / 혁신 */
+  --b:#3b82f6;  /* Blue: 3특 강소권 / 해양 */
+}
+body{
+  background:var(--bg);
+  color:var(--t);
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  overflow:hidden;
+  width:1920px;
+  height:1080px;
+  transform-origin:0 0;
+  word-break:keep-all;
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:88px 88px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Typography */
+.t-hero{font-size:96px;font-weight:800;letter-spacing:-.034em;line-height:1.12}
+.t-xl{font-size:72px;font-weight:700;letter-spacing:-.026em;line-height:1.18}
+.t-lg{font-size:52px;font-weight:700;letter-spacing:-.020em;line-height:1.24}
+.t-md{font-size:36px;font-weight:600;line-height:1.32}
+.t-sm{font-size:26px;font-weight:500;line-height:1.45}
+.t-xs{font-size:20px;font-weight:400;color:var(--mu);line-height:1.55}
+
+/* Glow Text */
+.gc{color:#00d4ff;text-shadow:0 0 28px #00d4ff,0 0 56px rgba(0,212,255,.45)}
+.ga{color:#f59e0b;text-shadow:0 0 28px #f59e0b,0 0 56px rgba(245,158,11,.45)}
+.ge{color:#10b981;text-shadow:0 0 28px #10b981,0 0 56px rgba(16,185,129,.45)}
+.gp{color:#a78bfa;text-shadow:0 0 28px #a78bfa,0 0 56px rgba(167,139,250,.45)}
+.gr{color:#f43f5e;text-shadow:0 0 28px #f43f5e,0 0 56px rgba(244,63,94,.45)}
+.gb{color:#3b82f6;text-shadow:0 0 28px #3b82f6,0 0 56px rgba(59,130,246,.45)}
+
+/* Glass Cards */
+.glass{
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:24px;
+  box-shadow:0 8px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.glass-c{
+  background:rgba(0,212,255,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(0,212,255,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(0,212,255,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-a{
+  background:rgba(245,158,11,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(245,158,11,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(245,158,11,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-e{
+  background:rgba(16,185,129,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(16,185,129,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(16,185,129,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-p{
+  background:rgba(167,139,250,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(167,139,250,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(167,139,250,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-r{
+  background:rgba(244,63,94,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(244,63,94,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(244,63,94,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-b{
+  background:rgba(59,130,246,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(59,130,246,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(59,130,246,.12),0 8px 40px rgba(0,0,0,.5);
+}
+
+/* Animations */
+[data-step]{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);
+}
+[data-step].revealed{opacity:1;transform:translateY(0)}
+[data-step="2"].revealed{transition-delay:.06s}
+[data-step="3"].revealed{transition-delay:.12s}
+[data-step="4"].revealed{transition-delay:.18s}
+[data-step="5"].revealed{transition-delay:.24s}
+
+/* Layout Elements */
+#blobs{position:fixed;inset:0;z-index:0;pointer-events:none}
+#slide{position:relative;z-index:1;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center}
+#nav{position:fixed;bottom:24px;right:48px;z-index:100;display:flex;align-items:center;gap:12px;user-select:none}
+#nav .nav-btn{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);
+  color:var(--t);
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:20px;
+  transition:all .2s ease;
+}
+#nav .nav-btn:hover{
+  background:rgba(0,212,255,.2);
+  border-color:var(--c);
+  color:var(--c);
+  transform:scale(1.06);
+}
+#nav span{
+  color:var(--mu);
+  font-size:18px;
+  font-weight:600;
+  min-width:84px;
+  text-align:center;
+  cursor:pointer;
+  padding:4px 8px;
+  border-radius:8px;
+  transition:all .2s ease;
+}
+#nav span:hover{
+  background:rgba(255,255,255,.1);
+  color:var(--c);
+}
+#progress{position:fixed;bottom:0;left:0;height:4px;background:linear-gradient(90deg,var(--c),var(--e),var(--a),var(--p));z-index:10;transition:width .3s ease}
+
+/* Quick Jump Toast Indicator */
+#jump-indicator{
+  position:fixed;
+  top:36px;
+  right:48px;
+  z-index:200;
+  background:rgba(19,27,49,.92);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--c);
+  box-shadow:0 0 30px rgba(0,212,255,.35);
+  border-radius:14px;
+  padding:12px 24px;
+  display:none;
+  align-items:center;
+  gap:12px;
+  font-size:18px;
+  font-weight:600;
+  color:var(--t);
+  animation:popIn .2s cubic-bezier(.16,1,.3,1);
+}
+#jump-indicator span{color:var(--c);font-weight:800;font-size:22px}
+@keyframes popIn{from{opacity:0;transform:translateY(-10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Jump Modal */
+#jump-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(12px);
+  z-index:300;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+#jump-modal{
+  background:rgba(20,28,50,.95);
+  border:1px solid rgba(0,212,255,.4);
+  box-shadow:0 16px 60px rgba(0,0,0,.8),0 0 50px rgba(0,212,255,.2);
+  border-radius:24px;
+  padding:36px 44px;
+  text-align:center;
+  width:420px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 20px;
+  border-radius:100px;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+.badge-c{background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.35);color:var(--c)}
+.badge-p{background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.35);color:var(--p)}
+.badge-e{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);color:var(--e)}
+.badge-a{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--a)}
+.badge-r{background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.35);color:var(--r)}
+.badge-b{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.35);color:var(--b)}
+
+.tag{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:600;
+  background:rgba(255,255,255,.1);
+}
+</style>
+</head>
+<body>
+
+<div id="blobs">
+  <div style="position:absolute;width:950px;height:950px;top:-280px;left:-200px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.07) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:850px;height:850px;bottom:-200px;right:40px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.06) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:700px;height:700px;top:250px;right:-180px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.05) 0%,transparent 70%)"></div>
+</div>
+
+<div id="slide"></div>
+
+<!-- Quick Jump Toast -->
+<div id="jump-indicator">
+  <iconify-icon icon="solar:round-alt-arrow-right-bold" style="color:var(--c);font-size:24px"></iconify-icon>
+  <span>Go to Page : </span>
+  <span id="jump-number">1</span>
+  <span style="font-size:14px;color:var(--mu);margin-left:8px">(Enter 또는 자동 이동)</span>
+</div>
+
+<!-- Quick Jump Modal -->
+<div id="jump-modal-overlay">
+  <div id="jump-modal">
+    <div style="font-size:24px;font-weight:700;margin-bottom:8px;color:var(--c);display:flex;align-items:center;justify-content:center;gap:8px">
+      <iconify-icon icon="solar:routing-2-bold"></iconify-icon> 페이지 바로 이동
+    </div>
+    <p style="font-size:15px;color:var(--mu);margin-bottom:24px">이동할 페이지 번호를 입력하세요 (1 ~ 18)</p>
+    <div style="display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:24px">
+      <input type="number" id="modal-page-input" min="1" max="18" placeholder="예: 7" style="width:140px;background:rgba(0,0,0,.5);border:2px solid var(--c);border-radius:14px;color:var(--t);font-size:28px;font-weight:800;text-align:center;padding:10px;outline:none">
+      <span style="font-size:22px;color:var(--mu)">/ 18</span>
+    </div>
+    <div style="display:flex;justify-content:center;gap:14px">
+      <button id="modal-jump-cancel" style="padding:10px 24px;border-radius:12px;background:rgba(255,255,255,.1);border:none;color:var(--t);font-size:16px;cursor:pointer;font-weight:600">취소 (ESC)</button>
+      <button id="modal-jump-btn" style="padding:10px 28px;border-radius:12px;background:linear-gradient(135deg,var(--c),var(--e));border:none;color:#000;font-size:16px;cursor:pointer;font-weight:700">이동 (Enter)</button>
+    </div>
+  </div>
+</div>
+
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" title="이전 (← / Backspace)">
+    <iconify-icon icon="solar:alt-arrow-left-bold"></iconify-icon>
+  </button>
+  <span id="counter" title="클릭하여 페이지 직접 입력 / 단축키: 숫자 입력 or G">1 / 18</span>
+  <button class="nav-btn" id="btn-next" title="다음 (→ / Space / Click)">
+    <iconify-icon icon="solar:alt-arrow-right-bold"></iconify-icon>
+  </button>
+</div>
+<div id="progress"></div>
+
+<script>
+const slides = [
+
+// ── 01. 타이틀 ──
+{n:2, html:`
+<div style="text-align:center;width:1500px">
+  <div class="badge badge-c">
+    <iconify-icon icon="solar:map-point-bold"></iconify-icon> NATIONAL BALANCED DEVELOPMENT
+  </div>
+  <h1 class="t-hero">대한민국 신성장 지도 : <span class="gc">5극 3특</span></h1>
+  <p data-step="1" class="t-md" style="color:var(--mu);margin-top:28px">
+    수도권 1극 집중을 넘어, <span class="ge">5대 메가시티와 3대 특별자치도</span>의 다핵 성장 체제로
+  </p>
+  <div data-step="2" style="margin-top:48px;display:flex;justify-content:center;gap:24px">
+    <div class="glass-c" style="padding:18px 36px;display:flex;align-items:center;gap:12px">
+      <iconify-icon icon="solar:city-bold" style="font-size:32px;color:var(--c)"></iconify-icon>
+      <span class="t-sm" style="color:var(--t)"><strong>5극</strong> : 5대 초광역 메가시티</span>
+    </div>
+    <div class="glass-b" style="padding:18px 36px;display:flex;align-items:center;gap:12px">
+      <iconify-icon icon="solar:star-fall-bold" style="font-size:32px;color:var(--b)"></iconify-icon>
+      <span class="t-sm" style="color:var(--t)"><strong>3특</strong> : 3대 특별자치권</span>
+    </div>
+  </div>
+</div>`},
+
+// ── 02. 문제 제기: 왜 5극 3특인가? ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:40px">
+    <div class="badge badge-r"><iconify-icon icon="solar:danger-triangle-bold"></iconify-icon> CRISIS & OPPORTUNITY</div>
+    <h2 class="t-lg">왜 지금 <span class="gr">5극 3특 체제</span>인가?</h2>
+    <p class="t-xs" style="margin-top:10px">수도권 블랙홀 현상과 지방 소멸 위기를 돌파하기 위한 국가 생존 전략</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+    <div data-step="1" class="glass-r" style="padding:40px">
+      <div class="t-md gr" style="margin-bottom:18px">수도권 1극 집중의 한계</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px" class="t-xs">
+        <li style="display:flex;gap:10px;align-items:center">
+          <iconify-icon icon="solar:close-circle-bold" style="color:var(--r);font-size:24px"></iconify-icon>
+          <span>국토 면적의 <strong>12%</strong>에 전체 인구의 <strong>50.6%</strong> 밀집</span>
+        </li>
+        <li style="display:flex;gap:10px;align-items:center">
+          <iconify-icon icon="solar:close-circle-bold" style="color:var(--r);font-size:24px"></iconify-icon>
+          <span>극심한 부동산 과열, 출산율 저하, 교통 혼잡 비용 급증</span>
+        </li>
+        <li style="display:flex;gap:10px;align-items:center">
+          <iconify-icon icon="solar:close-circle-bold" style="color:var(--r);font-size:24px"></iconify-icon>
+          <span>지방 청년 인구 유출 가속화 및 지방대·지역 산업 붕괴</span>
+        </li>
+      </ul>
+    </div>
+    <div data-step="2" class="glass-e" style="padding:40px">
+      <div class="t-md ge" style="margin-bottom:18px">5극 3특이 제시하는 해법</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px" class="t-xs">
+        <li style="display:flex;gap:10px;align-items:center">
+          <iconify-icon icon="solar:check-circle-bold" style="color:var(--e);font-size:24px"></iconify-icon>
+          <span>전국 어디서나 살기 좋은 <strong>다핵(Multi-polar) 네트워크</strong> 구축</span>
+        </li>
+        <li style="display:flex;gap:10px;align-items:center">
+          <iconify-icon icon="solar:check-circle-bold" style="color:var(--e);font-size:24px"></iconify-icon>
+          <span>행정구역 경계를 넘어서는 <strong>규모의 경제(초광역권)</strong> 확보</span>
+        </li>
+        <li style="display:flex;gap:10px;align-items:center">
+          <iconify-icon icon="solar:check-circle-bold" style="color:var(--e);font-size:24px"></iconify-icon>
+          <span>지역 특화 산업과 파격적 자치 권한으로 <strong>지방 자생력</strong> 완성</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div data-step="3" class="glass" style="margin-top:24px;padding:16px 28px;text-align:center">
+    <span class="t-sm gc">💡 5극 3특 = <strong>"지방이 주도하고 중앙이 지원하는"</strong> 대한민국의 새로운 성장 패러다임</span>
+  </div>
+</div>`},
+
+// ── 03. 패러다임 전환: 17개 쪼개기 vs 초광역 묶기 ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:40px">
+    <div class="badge badge-a"><iconify-icon icon="solar:refresh-circle-bold"></iconify-icon> STRUCTURAL REFORM</div>
+    <h2 class="t-lg">행정구역 분절에서 <span class="ga">초광역 경제생활권</span>으로</h2>
+    <p class="t-xs" style="margin-top:10px">17개 시도별 각자도생 경쟁에서, 기능과 경제로 묶는 거대 메가 블록화</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center">
+    <div data-step="1" class="glass" style="padding:40px">
+      <div class="t-md" style="color:var(--mu);margin-bottom:14px">과거: 17개 시도별 분절적 대응</div>
+      <p class="t-sm" style="color:var(--r);margin-bottom:16px">소규모 지자체 간 중복 투자와 출혈 경쟁</p>
+      <p class="t-xs">
+        · 지자체마다 비슷한 산단·R&D 센터를 따로 지어 예산 낭비<br>
+        · 좁은 행정구역 안에 갇혀 글로벌 기업 유치 및 규모의 경제 실패<br>
+        · 교통망과 일자리가 연계되지 못해 인구 유출 지속
+      </p>
+    </div>
+    <div data-step="2" class="glass-c" style="padding:40px">
+      <div class="t-md gc" style="margin-bottom:14px">미래: 5극 3특 초광역 협력체계</div>
+      <p class="t-sm gc" style="margin-bottom:16px">권역별 통합 경제생태계 & 광역 인프라</p>
+      <p class="t-xs" style="color:var(--t)">
+        · <strong>5대 초광역권</strong> : 광역교통망 1시간 생활권으로 인구 500만+ 메가시티 형성<br>
+        · <strong>3대 특별자치권</strong> : 고도의 자치권과 지역 고유 자원을 특성화한 강소벨트<br>
+        · 연대와 협력을 통한 글로벌 경쟁력 확보
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 04. 5극 3특 한눈에 보기 (전국 지도 구상) ──
+{n:3, html:`
+<div style="width:1480px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-c"><iconify-icon icon="solar:globus-bold"></iconify-icon> SPATIAL STRUCTURE</div>
+    <h2 class="t-lg">대한민국 공간 대개조 : <span class="gc">5극 3특 총괄 구상</span></h2>
+    <p class="t-xs" style="margin-top:8px">5대 거점 메가시티와 3대 특별자치도의 유기적 조화</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:28px">
+    <div data-step="1" class="glass-c" style="padding:32px 36px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+        <span class="badge-c tag" style="font-size:18px">5대 메가시티 (5극)</span>
+        <span class="t-sm gc" style="font-weight:700">국가 경제를 이끄는 거대 성장축</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px" class="t-xs">
+        <div>🔹 <strong>수도권</strong> (서울·경기·인천) : 글로벌 경제 & 첨단 혁신 메가클러스터</div>
+        <div>🔹 <strong>동남권</strong> (부산·울산·경남) : 해양물류 & 친환경 미래모빌리티</div>
+        <div>🔹 <strong>대경권</strong> (대구·경북) : 첨단 로봇·미래차 & 바이오 융합</div>
+        <div>🔹 <strong>중부권</strong> (대전·세종·충남·충북) : 국가 행정수도 & 과학기술 R&D 수도</div>
+        <div>🔹 <strong>호남권</strong> (광주·전남) : 에너지 신산업 & 미래 AI 벨트</div>
+      </div>
+    </div>
+    <div data-step="2" class="glass-b" style="padding:32px 36px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+        <span class="badge-b tag" style="font-size:18px">3대 특별자치도 (3특)</span>
+        <span class="t-sm gb" style="font-weight:700">고유 자원 기반의 강소 발전축</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px" class="t-xs">
+        <div>🔸 <strong>강원특별자치도</strong> : 미래산업 글로벌도시 & 청정 바이오/관광</div>
+        <div>🔸 <strong>전북특별자치도</strong> : 글로벌 생명경제도시 & 새만금 첨단산업</div>
+        <div>🔸 <strong>제주특별자치도</strong> : 탄소중립 2035 & UAM·글로벌 청정허브</div>
+      </div>
+    </div>
+  </div>
+</div>`},
+
+// ── 05. 5극 3특의 본질: 상생과 역할 분담 ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:40px">
+    <div class="badge badge-e"><iconify-icon icon="solar:hand-shake-bold"></iconify-icon> CORE PHILOSOPHY</div>
+    <h2 class="t-lg">5극과 3특의 본질 : <span class="ge">"따로 또 같이"</span></h2>
+    <p class="t-xs" style="margin-top:10px">획일적 개발이 아닌, 각 지역의 장점과 정체성을 극대화하는 분업과 협업</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+    <div data-step="1" class="glass-c" style="padding:36px">
+      <iconify-icon icon="solar:city-bold" style="font-size:44px;color:var(--c);margin-bottom:14px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:12px">5극 (Mega-Regions)의 역할</div>
+      <div class="t-sm" style="margin-bottom:14px">광역 네트워크 & 글로벌 스케일</div>
+      <p class="t-xs">
+        수도권과 당당히 경쟁할 수 있는 500만 이상의 인구 규모와 산업 인프라를 결집하여 해외 자본과 인재를 유치합니다.
+      </p>
+    </div>
+    <div data-step="2" class="glass-b" style="padding:36px">
+      <iconify-icon icon="solar:shield-star-bold" style="font-size:44px;color:var(--b);margin-bottom:14px;display:block"></iconify-icon>
+      <div class="t-md gb" style="margin-bottom:12px">3특 (Special Autonomy)의 역할</div>
+      <div class="t-sm" style="margin-bottom:14px">규제 혁파 & 특화 강소모델</div>
+      <p class="t-xs">
+        인구 규모의 한계를 뛰어넘어, 특별법에 기반한 고도의 자치권과 규제 샌드박스를 통해 신산업의 테스트베드가 됩니다.
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 06. 5극 ①: 수도권 (글로벌 메가클러스터) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-c"><iconify-icon icon="solar:buildings-3-bold"></iconify-icon> 5극 ① 수도권</div>
+    <h2 class="t-lg"><span class="gc">수도권</span> : 글로벌 비즈니스 & 첨단 지식허브</h2>
+    <p class="t-xs" style="margin-top:8px">서울 · 경기 · 인천을 잇는 대한민국 글로벌 경제의 관문</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">글로벌 금융 & IT</div>
+      <p class="t-xs">
+        서울 여의도·강남을 중심으로 글로벌 금융 허브 및 판교 테크노밸리의 AI·소프트웨어 R&D 집적화
+      </p>
+    </div>
+    <div data-step="2" class="glass" style="padding:36px 30px">
+      <div class="t-md" style="margin-bottom:12px;color:var(--t)">반도체 메가 클러스터</div>
+      <p class="t-xs">
+        용인·평택·이천을 잇는 세계 최대 규모의 첨단 시스템 반도체 및 메모리 생산·설계 벨트
+      </p>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">인천 항공·바이오 관문</div>
+      <p class="t-xs">
+        인천공항의 글로벌 물류 거점화 및 송도 바이오 클러스터의 글로벌 CDMO 생산 기지화
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 07. 5극 ②: 동남권 (해양물류 & 모빌리티) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-e"><iconify-icon icon="solar:ship-bold"></iconify-icon> 5극 ② 동남권 (부울경)</div>
+    <h2 class="t-lg"><span class="ge">동남권</span> : 해양수도 & 친환경 미래모빌리티 벨트</h2>
+    <p class="t-xs" style="margin-top:8px">부산 · 울산 · 경남이 결집한 동북아 스마트 물류 및 중화학·모빌리티 중심</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">부산: 글로벌 해양 금융·물류</div>
+      <p class="t-xs">
+        가덕도신공항과 부산항 신항을 연계한 트라이포트(Tri-Port) 구축 및 디지털 금융·블록체인 허브
+      </p>
+    </div>
+    <div data-step="2" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">울산: 친환경 수소·미래차</div>
+      <p class="t-xs">
+        수소 에너지 생태계 실증, 전기차 전용 공장 및 친환경 스마트 선박(조선) 고도화
+      </p>
+    </div>
+    <div data-step="3" class="glass-a" style="padding:36px 30px">
+      <div class="t-md ga" style="margin-bottom:12px">경남: 우주항공 & 방산 메카</div>
+      <p class="t-xs">
+        우주항공청(KASA) 중심의 항공우주 클러스터(사천·진주) 및 K-방산 스마트 정밀제조(창원)
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 08. 5극 ③: 대경권 (로봇 & 미래차 & 첨단바이오) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-r"><iconify-icon icon="solar:cpu-bolt-bold"></iconify-icon> 5극 ③ 대경권</div>
+    <h2 class="t-lg"><span class="gr">대경권</span> : 첨단 로봇·미래차 & 바이오 신산업 벨트</h2>
+    <p class="t-xs" style="margin-top:8px">대구 · 경북을 아우르는 국가 신산업 제조 및 신공항 경제권</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-r" style="padding:36px 30px">
+      <div class="t-md gr" style="margin-bottom:12px">대구: 국가로봇테스트필드</div>
+      <p class="t-xs">
+        서비스 로봇 및 첨단 모빌리티 부품 생태계, UAM 실증 도시 및 ABB(AI·빅데이터·블록체인) 육성
+      </p>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:36px 30px">
+      <div class="t-md ga" style="margin-bottom:12px">경북: 이차전지 & 원자력 수소</div>
+      <p class="t-xs">
+        포항 이차전지 특화단지, 구미 반도체 소재·부품단지, 울진 원자력 청정수소 국가산단
+      </p>
+    </div>
+    <div data-step="3" class="glass-p" style="padding:36px 30px">
+      <div class="t-md gp" style="margin-bottom:12px">대구경북통합신공항</div>
+      <p class="t-xs">
+        TK 통합신공항 개항을 통한 미주·유럽 직항 항공물류망 확보 및 공항경제권 배후단지 조성
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 09. 5극 ④: 중부권 (국가 행정수도 & 과학기술 R&D 수도) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-a"><iconify-icon icon="solar:atom-bold"></iconify-icon> 5극 ④ 중부권 (충청권)</div>
+    <h2 class="t-lg"><span class="ga">중부권</span> : 국가 행정수도 & 과학기술 혁신 브레인</h2>
+    <p class="t-xs" style="margin-top:8px">대전 · 세종 · 충남 · 충북의 국가 거버넌스 및 첨단 R&D 집적지</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">세종: 실질적 행정수도</div>
+      <p class="t-xs">
+        국회 세종의사당 및 대통령 제2집무실 건립을 통한 국가 균형발전의 정치·행정 핵심 컨트롤타워
+      </p>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:36px 30px">
+      <div class="t-md ga" style="margin-bottom:12px">대전: 대덕특구 과학 R&D</div>
+      <p class="t-xs">
+        정부출연연구기관 집적지, 우주산업 연구개발 삼각벨트, KAIST 연계 첨단 딥테크 창업 허브
+      </p>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">충남·충북: 바이오 & 모빌리티</div>
+      <p class="t-xs">
+        오송 K-바이오 스퀘어, 오창 방사광가속기 및 천안·아산 디스플레이·미래 모빌리티 벨트
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 10. 5극 ⑤: 호남권 (에너지 대전환 & AI 미래축) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-p"><iconify-icon icon="solar:sun-bold"></iconify-icon> 5극 ⑤ 호남권</div>
+    <h2 class="t-lg"><span class="gp">호남권</span> : 신재생에너지 대전환 & 국가 AI 실증 밸리</h2>
+    <p class="t-xs" style="margin-top:8px">광주 · 전남이 주도하는 에너지 고속도로와 인공지능 미래 먹거리</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-p" style="padding:36px 30px">
+      <div class="t-md gp" style="margin-bottom:12px">광주: 국가 AI 집적단지</div>
+      <p class="t-xs">
+        국가 AI 데이터센터 중심의 고성능 컴퓨팅 인프라, 자율주행 모빌리티 실증 및 모빌리티 산단
+      </p>
+    </div>
+    <div data-step="2" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">전남: 해상풍력 & 친환경 에너지</div>
+      <p class="t-xs">
+        신안 8.2GW 해상풍력 발전단지, 솔라시도 탄소중립 스마트도시, 분산에너지 특구 선도
+      </p>
+    </div>
+    <div data-step="3" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">우주발사체 & 철강/석화 혁신</div>
+      <p class="t-xs">
+        고흥 우주발사체 국가산단 및 광양·여수 철강/석유화학의 친환경·수소환원 고도화
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 11. 3특 ①: 강원특별자치도 (미래산업 글로벌도시) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-b"><iconify-icon icon="solar:mountains-bold"></iconify-icon> 3특 ① 강원특별자치도</div>
+    <h2 class="t-lg"><span class="gb">강원특별자치도</span> : 미래산업 글로벌도시 & 청정 웰니스</h2>
+    <p class="t-xs" style="margin-top:8px">4대 규제(환경·산림·군사·농희) 혁파를 통한 미래 바이오·반도체 거점</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-b" style="padding:36px 30px">
+      <div class="t-md gb" style="margin-bottom:12px">바이오·헬스케어 벨트</div>
+      <p class="t-xs">
+        춘천 바이오 의약품 및 원주 디지털 헬스케어·의료기기 산업 생태계 확장
+      </p>
+    </div>
+    <div data-step="2" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">반도체·수소 클러스터</div>
+      <p class="t-xs">
+        원주 반도체 교육원 및 소부장 유치, 삼척·동해 액화수소 저장·운송 클러스터
+      </p>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">글로벌 관광·산악 웰니스</div>
+      <p class="t-xs">
+        설악산 오색케이블카 착공 등 산림이용진흥지구를 활용한 사계절 웰니스 산악관광 메카
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 12. 3특 ②: 전북특별자치도 (글로벌 생명경제도시) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-e"><iconify-icon icon="solar:leaf-bold"></iconify-icon> 3특 ② 전북특별자치도</div>
+    <h2 class="t-lg"><span class="ge">전북특별자치도</span> : 글로벌 생명경제 & 새만금 첨단산업</h2>
+    <p class="t-xs" style="margin-top:8px">농생명 바이오 수도와 새만금 이차전지·국제투자진흥지구의 대도약</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">농생명·푸드테크 수도</div>
+      <p class="t-xs">
+        익산 국가식품클러스터 및 전주·완주 그린바이오, 종자·스마트팜 산업의 글로벌 허브화
+      </p>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:36px 30px">
+      <div class="t-md ga" style="margin-bottom:12px">새만금 이차전지 & 신산업</div>
+      <p class="t-xs">
+        10조 원대 민간 투자 유치, 이차전지 핵심소재 메가팩토리 및 무탄소 무세금 투자특구
+      </p>
+    </div>
+    <div data-step="3" class="glass-p" style="padding:36px 30px">
+      <div class="t-md gp" style="margin-bottom:12px">방위·탄소소재 밸리</div>
+      <p class="t-xs">
+        전주 탄소국가산단 고도화 및 군산·익산 자율주행 상용차, 방위산업 특화 생태계 구축
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 13. 3특 ③: 제주특별자치도 (탄소중립 2035 & UAM 글로벌 허브) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-c"><iconify-icon icon="solar:wind-bold"></iconify-icon> 3특 ③ 제주특별자치도</div>
+    <h2 class="t-lg"><span class="gc">제주특별자치도</span> : 탄소중립 2035 & 미래 모빌리티 청정허브</h2>
+    <p class="t-xs" style="margin-top:8px">친환경 그린수소, 도심항공교통(UAM), 글로벌 분산에너지 선도도시</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">그린수소 글로벌 거점</div>
+      <p class="t-xs">
+        풍력·태양광 잉여전력 기반의 대규모 그린수소 생산 실증 및 수소 트램·버스 상용화
+      </p>
+    </div>
+    <div data-step="2" class="glass-b" style="padding:36px 30px">
+      <div class="t-md gb" style="margin-bottom:12px">제주형 UAM(도심항공) 선도</div>
+      <p class="t-xs">
+        공항-관광지를 잇는 전국 최초 관광형 UAM 상용화 및 미래 에어로스페이스 생태계
+      </p>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">청정 바이오 & 워케이션</div>
+      <p class="t-xs">
+        제주 천연자원 기반 코스메슈티컬 바이오 및 글로벌 디지털 노마드를 위한 워케이션 메카
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 14. 핵심 추진 동력 1: 초광역 교통망 (메가 트래픽) ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:40px">
+    <div class="badge badge-c"><iconify-icon icon="solar:train-bold"></iconify-icon> ENABLER 1 : CONNECTIVITY</div>
+    <h2 class="t-lg">초광역 교통망 : <span class="gc">전국 1시간 생활권</span> 구축</h2>
+    <p class="t-xs" style="margin-top:10px">메가시티의 성패를 가르는 핏줄, 광역철도망과 고속도로망의 대대적 확충</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">지방권 광역급행철도(x-TX)</div>
+      <p class="t-xs">
+        대전·세종·충북을 잇는 CTX 및 대구경북 신공항철도, 부울경 광역철도로 권역 내 30분대 이동
+      </p>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:36px 30px">
+      <div class="t-md ga" style="margin-bottom:12px">동서 횡단 고속철도망</div>
+      <p class="t-xs">
+        달빛철도(대구~광주) 착공을 통해 영호남 동서 교류 활성화 및 남부 거대경제권 연계
+      </p>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">복합 교통 환승허브</div>
+      <p class="t-xs">
+        KTX 거점역 및 신공항과 시내 대중교통을 입체 연계하여 끊김 없는(Seamless) 모빌리티 구현
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 15. 핵심 추진 동력 2: 기회발전특구 & 권한 이양 ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:40px">
+    <div class="badge badge-a"><iconify-icon icon="solar:shield-warning-bold"></iconify-icon> ENABLER 2 : INCENTIVES</div>
+    <h2 class="t-lg">파격적 혜택 : <span class="ga">기회발전특구 & 재정·규제 혁신</span></h2>
+    <p class="t-xs" style="margin-top:10px">기업이 지방으로 스스로 이전하게 만드는 파격적인 세제 감면과 규제 특례</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-a" style="padding:36px 30px">
+      <div class="t-md ga" style="margin-bottom:12px">파격적 세제 감면</div>
+      <p class="t-xs">
+        지방 이전 기업에 대한 소득세·법인세 5년간 100% 감면, 가업상속공제 한도 폐지급 확대
+      </p>
+    </div>
+    <div data-step="2" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">규제 샌드박스</div>
+      <p class="t-xs">
+        지자체가 직접 신청하는 맞춤형 규제 완화(신산업 실증 특례)로 인허가 기간 획기적 단축
+      </p>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">재정 자율권 확대</div>
+      <p class="t-xs">
+        지방소멸대응기금(연 1조 원) 및 지자체 자율편성 포괄보조금 대폭 확대로 현장 맞춤 투자
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 16. 핵심 추진 동력 3: 지산학(地産學) 인재 양성 ──
+{n:3, html:`
+<div style="width:1450px">
+  <div style="text-align:center;margin-bottom:40px">
+    <div class="badge badge-p"><iconify-icon icon="solar:diploma-bold"></iconify-icon> ENABLER 3 : HUMAN TALENT</div>
+    <h2 class="t-lg">지산학(地産學) 혁신 : <span class="gp">지역 인재 육성 & 정주</span></h2>
+    <p class="t-xs" style="margin-top:10px">"지역에서 공부하고, 지역 기업에 취업하여, 지역에 정착하는" 선순환</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+    <div data-step="1" class="glass-p" style="padding:36px 30px">
+      <div class="t-md gp" style="margin-bottom:12px">글로컬대학30 & RISE</div>
+      <p class="t-xs">
+        지방 거점대학에 대학당 1,000억 원 지원, 지역 전략 산업과 커리큘럼 100% 일체화
+      </p>
+    </div>
+    <div data-step="2" class="glass-c" style="padding:36px 30px">
+      <div class="t-md gc" style="margin-bottom:12px">교육발전특구</div>
+      <p class="t-xs">
+        유아 돌봄부터 초중고 자율형 명문고 육성까지, 지방에서도 최고 수준의 공교육 제공
+      </p>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:36px 30px">
+      <div class="t-md ge" style="margin-bottom:12px">청년 정주 여건 지원</div>
+      <p class="t-xs">
+        청년 주거 지원(공공임대), 문화·복지 인프라 확충으로 수도권 유출 방지 및 U턴 청년 유치
+      </p>
+    </div>
+  </div>
+</div>`},
+
+// ── 17. 기대 효과 & 미래상: 균형발전 성공 시나리오 ──
+{n:3, html:`
+<div style="width:1480px">
+  <div style="text-align:center;margin-bottom:36px">
+    <div class="badge badge-e"><iconify-icon icon="solar:crown-bold"></iconify-icon> FUTURE VISION</div>
+    <h2 class="t-lg">5극 3특이 완성할 <span class="ge">대한민국의 미래상</span></h2>
+    <p class="t-xs" style="margin-top:8px">1극 집중의 피로를 덜고, 8개 다핵 엔진이 함께 뛰는 경제 선진국</p>
+  </div>
+  <div class="glass" style="padding:32px;border-radius:24px">
+    <table style="width:100%;border-collapse:collapse;text-align:left">
+      <thead>
+        <tr style="border-bottom:1px solid rgba(255,255,255,.15)">
+          <th style="padding:14px 18px;font-size:19px;color:var(--mu)">구분</th>
+          <th style="padding:14px 18px;font-size:19px;color:var(--r)">현재 (수도권 1극)</th>
+          <th style="padding:14px 18px;font-size:19px;color:var(--e)">미래 (5극 3특 다핵 체제)</th>
+        </tr>
+      </thead>
+      <tbody style="font-size:17px">
+        <tr data-step="1" style="border-bottom:1px solid rgba(255,255,255,.08)">
+          <td style="padding:16px 18px;font-weight:600">인구 분포</td>
+          <td style="padding:16px 18px;color:var(--mu)">수도권 50.6% 초집중</td>
+          <td style="padding:16px 18px;color:var(--e);font-weight:700">전국 8대 권역 균형 분산 & 정주</td>
+        </tr>
+        <tr data-step="2" style="border-bottom:1px solid rgba(255,255,255,.08)">
+          <td style="padding:16px 18px;font-weight:600">성장 엔진</td>
+          <td style="padding:16px 18px;color:var(--mu)">수도권 단일 엔진 (성장 정체)</td>
+          <td style="padding:16px 18px;color:var(--c);font-weight:700">5대 메가시티 + 3특 특화 다중 엔진</td>
+        </tr>
+        <tr data-step="3" style="border-bottom:1px solid rgba(255,255,255,.08)">
+          <td style="padding:16px 18px;font-weight:600">국민 삶의 질</td>
+          <td style="padding:16px 18px;color:var(--mu)">수도권 과열·지방 소멸의 악순환</td>
+          <td style="padding:16px 18px;color:var(--a);font-weight:700">어디서나 좋은 일자리·교육·문화 향유</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div data-step="3" style="text-align:center;margin-top:22px">
+    <p class="t-sm" style="color:var(--e)">"대한민국 어디에 살든 행복하고 풍요로운 <strong>기회의 나라</strong>로 도약합니다."</p>
+  </div>
+</div>`},
+
+// ── 18. 결론 및 메시지 ──
+{n:3, html:`
+<div style="text-align:center;width:1450px">
+  <div class="badge badge-c"><iconify-icon icon="solar:star-bold"></iconify-icon> CONCLUSION</div>
+  <h2 class="t-xl">대한민국의 새로운 심장, <span class="gc">5극 3특</span></h2>
+  <div data-step="1" class="t-md" style="color:var(--mu);margin-top:32px">
+    <span class="gc">5대 초광역 메가시티</span> + <span class="gb">3대 특별자치권</span>의 성공적인 안착
+  </div>
+  <div data-step="2" style="margin-top:44px;display:flex;justify-content:center;gap:28px">
+    <div class="glass-c" style="padding:28px 36px;border-radius:20px;text-align:center;width:340px">
+      <div class="t-sm gc" style="margin-bottom:8px">1. 초광역 연대</div>
+      <div class="t-xs">경계를 넘어서는 규모의 경제</div>
+    </div>
+    <div class="glass-a" style="padding:28px 36px;border-radius:20px;text-align:center;width:340px">
+      <div class="t-sm ga" style="margin-bottom:8px">2. 특화 신산업</div>
+      <div class="t-xs">지역 맞춤형 자생 생태계 완성</div>
+    </div>
+    <div class="glass-e" style="padding:28px 36px;border-radius:20px;text-align:center;width:340px">
+      <div class="t-sm ge" style="margin-bottom:8px">3. 국가 균형발전</div>
+      <div class="t-xs">지속 가능한 대한민국 신성장동력</div>
+    </div>
+  </div>
+  <div data-step="3" style="margin-top:48px">
+    <p class="t-sm" style="color:var(--t)">감사합니다 · Q&A</p>
+    <p class="t-xs" style="margin-top:8px">모두가 잘사는 대한민국, 5극 3특으로 완성합니다.</p>
+  </div>
+</div>`}
+
+];
+
+// ── 슬라이드 엔진 ──
+let cur = 0, step = 0;
+
+function applySteps() {
+  document.querySelectorAll('[data-step]').forEach(el => {
+    const n = parseInt(el.dataset.step);
+    const on = n <= step;
+    el.classList.toggle('revealed', on);
+  });
+}
+
+function updateNav() {
+  const total = slides.length;
+  document.getElementById('counter').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('progress').style.width = ((cur) / (total - 1) * 100) + '%';
+}
+
+function render() {
+  step = 0;
+  const sl = slides[cur];
+  document.getElementById('slide').innerHTML = sl.html;
+  if (sl.after) setTimeout(sl.after, 50);
+  applySteps();
+  updateNav();
+}
+
+function go(d) {
+  const max = slides[cur].n || 0;
+  if (d === 1) {
+    if (step < max) {
+      step++;
+      applySteps();
+      updateNav();
+    } else if (cur < slides.length - 1) {
+      cur++;
+      render();
+    }
+  } else {
+    if (step > 0) {
+      step--;
+      applySteps();
+      updateNav();
+    } else if (cur > 0) {
+      cur--;
+      render();
+      step = slides[cur].n || 0;
+      applySteps();
+      updateNav();
+    }
+  }
+}
+
+// ── 특정 페이지 직접 이동 함수 (1 ~ N) ──
+function goToPage(targetPage) {
+  let p = parseInt(targetPage);
+  if (isNaN(p)) return;
+  if (p < 1) p = 1;
+  if (p > slides.length) p = slides.length;
+  cur = p - 1;
+  render();
+}
+
+// ── 숫자 키보드 입력 점프 버퍼 ──
+let jumpBuffer = '';
+let jumpTimer = null;
+const jumpIndicator = document.getElementById('jump-indicator');
+const jumpNumber = document.getElementById('jump-number');
+
+function clearJumpBuffer() {
+  jumpBuffer = '';
+  if (jumpTimer) clearTimeout(jumpTimer);
+  jumpTimer = null;
+  if (jumpIndicator) jumpIndicator.style.display = 'none';
+}
+
+function handleDigitInput(digit) {
+  jumpBuffer += digit;
+  if (jumpIndicator && jumpNumber) {
+    jumpNumber.textContent = jumpBuffer;
+    jumpIndicator.style.display = 'flex';
+  }
+  if (jumpTimer) clearTimeout(jumpTimer);
+  jumpTimer = setTimeout(() => {
+    if (jumpBuffer.length > 0) {
+      goToPage(jumpBuffer);
+      clearJumpBuffer();
+    }
+  }, 1200);
+}
+
+// ── 점프 모달 관리 ──
+const modalOverlay = document.getElementById('jump-modal-overlay');
+const modalInput = document.getElementById('modal-page-input');
+const modalJumpBtn = document.getElementById('modal-jump-btn');
+const modalCancelBtn = document.getElementById('modal-jump-cancel');
+
+function openJumpModal() {
+  clearJumpBuffer();
+  modalOverlay.style.display = 'flex';
+  modalInput.value = cur + 1;
+  setTimeout(() => {
+    modalInput.focus();
+    modalInput.select();
+  }, 50);
+}
+
+function closeJumpModal() {
+  modalOverlay.style.display = 'none';
+  window.focus();
+}
+
+function executeModalJump() {
+  const val = modalInput.value.trim();
+  if (val) {
+    goToPage(val);
+  }
+  closeJumpModal();
+}
+
+modalJumpBtn.addEventListener('click', executeModalJump);
+modalCancelBtn.addEventListener('click', closeJumpModal);
+modalOverlay.addEventListener('click', e => {
+  if (e.target === modalOverlay) closeJumpModal();
+});
+modalInput.addEventListener('keydown', e => {
+  e.stopPropagation();
+  if (e.key === 'Enter') {
+    executeModalJump();
+  } else if (e.key === 'Escape') {
+    closeJumpModal();
+  }
+});
+
+// 하단 카운터 클릭 시 모달 열기
+document.getElementById('counter').addEventListener('click', e => {
+  e.stopPropagation();
+  openJumpModal();
+});
+
+// ── 키보드 이벤트 ──
+window.addEventListener('keydown', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+
+  const k = e.key;
+
+  // 1. 숫자 키 입력 시 퀵 점프 버퍼 처리 (0~9)
+  if (/^[0-9]$/.test(k)) {
+    e.preventDefault();
+    handleDigitInput(k);
+    return;
+  }
+
+  // 2. 점프 버퍼 활성화 중 Enter 누르면 즉시 점프
+  if (jumpBuffer.length > 0) {
+    if (k === 'Enter') {
+      e.preventDefault();
+      goToPage(jumpBuffer);
+      clearJumpBuffer();
+      return;
+    } else if (k === 'Escape' || k === 'Backspace') {
+      e.preventDefault();
+      clearJumpBuffer();
+      return;
+    }
+  }
+
+  // 3. 'G' 또는 'g' 키 누르면 점프 모달 열기
+  if (k === 'g' || k === 'G') {
+    e.preventDefault();
+    openJumpModal();
+    return;
+  }
+
+  // 4. 일반 내비게이션 키
+  if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter' || k === 'n' || k === 'N' || k === 'j' || k === 'J') {
+    e.preventDefault();
+    go(1);
+  } else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'Backspace' || k === 'p' || k === 'P' || k === 'k' || k === 'K') {
+    e.preventDefault();
+    go(-1);
+  } else if (k === 'ArrowDown') {
+    e.preventDefault();
+    if (cur < slides.length - 1) {
+      cur++;
+      render();
+    }
+  } else if (k === 'ArrowUp') {
+    e.preventDefault();
+    if (cur > 0) {
+      cur--;
+      render();
+    }
+  }
+}, true);
+
+// ── 마우스 클릭 & 버튼 이벤트 ──
+document.getElementById('btn-next').addEventListener('click', e => {
+  e.stopPropagation();
+  go(1);
+});
+
+document.getElementById('btn-prev').addEventListener('click', e => {
+  e.stopPropagation();
+  go(-1);
+});
+
+// 슬라이드 화면 클릭 시 다음으로 진행
+document.addEventListener('click', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+  if (!e.target.closest('#nav') && !e.target.closest('button') && !e.target.closest('a') && !e.target.closest('#jump-modal')) {
+    go(1);
+  }
+});
+
+// 마우스 휠 스크롤 지원
+let wheelTimeout;
+window.addEventListener('wheel', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+  if (wheelTimeout) return;
+  if (e.deltaY > 30) {
+    go(1);
+    wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 250);
+  } else if (e.deltaY < -30) {
+    go(-1);
+    wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 250);
+  }
+}, { passive: true });
+
+// ── 화면 스케일링 & 포커스 ──
+function scale() {
+  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const tx = (window.innerWidth - 1920 * s) / 2;
+  const ty = (window.innerHeight - 1080 * s) / 2;
+  document.body.style.transform = `translate(${tx}px,${ty}px) scale(${s})`;
+}
+
+window.addEventListener('resize', scale);
+window.addEventListener('load', () => {
+  window.focus();
+  document.body.focus();
+});
+
+// 초기화
+scale();
+render();
+window.focus();
+</script>
+</body>
+</html>
