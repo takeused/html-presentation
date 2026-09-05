@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEPSA Presentation</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#09090b;--t:#f0f0f0;--mu:#a1a1aa;--c:#00d4ff;--a:#f59e0b;--e:#10b981;--p:#a78bfa}
+body{width:1920px;height:1080px;background:var(--bg);color:var(--t);font-family:'Pretendard',sans-serif;overflow:hidden;transform-origin:0 0;word-break:keep-all}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:88px 88px;pointer-events:none;z-index:0}
+
+.t-hero{font-size:112px;font-weight:800;letter-spacing:-.034em}
+.t-xl{font-size:80px;font-weight:700;letter-spacing:-.026em}
+.t-lg{font-size:60px;font-weight:700;letter-spacing:-.020em}
+.t-md{font-size:42px;font-weight:600}
+.t-sm{font-size:30px;font-weight:500}
+.t-xs{font-size:24px;font-weight:400;color:var(--mu)}
+
+.gc{color:#00d4ff;text-shadow:0 0 28px #00d4ff,0 0 56px rgba(0,212,255,.45)}
+.ga{color:#f59e0b;text-shadow:0 0 28px #f59e0b,0 0 56px rgba(245,158,11,.45)}
+.ge{color:#10b981;text-shadow:0 0 28px #10b981,0 0 56px rgba(16,185,129,.45)}
+.gp{color:#a78bfa;text-shadow:0 0 28px #a78bfa,0 0 56px rgba(167,139,250,.45)}
+
+.glass{background:rgba(255,255,255,.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.13);border-radius:24px;box-shadow:0 8px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12)}
+.glass-c{background:rgba(0,212,255,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(0,212,255,.32);border-radius:24px;box-shadow:0 0 48px rgba(0,212,255,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(0,212,255,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-a{background:rgba(245,158,11,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(245,158,11,.32);border-radius:24px;box-shadow:0 0 48px rgba(245,158,11,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(245,158,11,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-e{background:rgba(16,185,129,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(16,185,129,.32);border-radius:24px;box-shadow:0 0 48px rgba(16,185,129,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(16,185,129,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-p{background:rgba(167,139,250,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(167,139,250,.32);border-radius:24px;box-shadow:0 0 48px rgba(167,139,250,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(167,139,250,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+
+[data-step]{opacity:0;transform:translateY(22px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+[data-step].revealed{opacity:1;transform:translateY(0)}
+[data-step="2"].revealed{transition-delay:.08s}
+[data-step="3"].revealed{transition-delay:.16s}
+[data-step="4"].revealed{transition-delay:.24s}
+
+.badge{display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(0,212,255,.13);border:1px solid rgba(0,212,255,.35);color:var(--c);font-size:14px;font-weight:600;letter-spacing:.14em;margin-bottom:44px}
+.cell{border-radius:18px;padding:22px 10px;text-align:center;font-weight:800;font-size:32px}
+
+#blobs{position:fixed;inset:0;z-index:0;pointer-events:none}
+#stage{position:relative;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center;z-index:1}
+#prog{position:fixed;top:0;left:0;height:4px;background:var(--c);box-shadow:0 0 12px var(--c);transition:width .4s ease;z-index:10}
+#pg{position:fixed;bottom:32px;right:44px;font-size:18px;color:var(--mu);z-index:10}
+</style>
+</head>
+<body>
+<div id="blobs">
+  <div style="position:absolute;width:900px;height:900px;top:-280px;left:-280px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.07) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:700px;height:700px;bottom:-180px;right:80px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.055) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:600px;height:600px;top:280px;right:-180px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.045) 0%,transparent 70%)"></div>
+</div>
+<div id="prog"></div>
+<div id="pg"></div>
+<div id="stage"><div id="slide"></div></div>
+<script>
+const slides=[
+
+/* 1. 타이틀 — 임팩트 타이포 */
+{n:0,html:`<div style="width:1440px;text-align:center">
+  <div class="badge">R&amp;D PORTFOLIO MANAGEMENT</div>
+  <h2 class="t-hero">어떤 과제를 <span class="gc">먼저</span> 할 것인가</h2>
+  <p class="t-md" style="color:var(--mu);margin-top:40px">R&amp;D 기획과제 우선순위 선정 방법론 — NEPSA</p>
+  <p class="t-sm" style="color:var(--mu);margin-top:18px">한국산업기술평가관리원(KEIT) PD Issue Report, 2013.10 (Vol. 13-10)</p>
+</div>`},
+
+/* 2. 오늘의 구성 — 3열 피처 카드 */
+{n:3,html:`<div style="width:1460px">
+  <div class="t-lg" style="text-align:center;margin-bottom:64px">오늘 <span class="gc">세 단계</span>로 이해합니다</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-c" style="padding:52px 48px">
+      <iconify-icon icon="solar:sticker-smile-square-bold" style="font-size:56px;color:var(--c);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:20px">PART 1 · 쉽게</div>
+      <div class="t-sm" style="margin-bottom:16px">10살 눈높이 비유로 원리 파악</div>
+      <div class="t-xs">용돈, 성적표, 보물지도로 설명한다</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:52px 48px">
+      <iconify-icon icon="solar:ruler-cross-pen-bold" style="font-size:56px;color:var(--a);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">PART 2 · 정확히</div>
+      <div class="t-sm" style="margin-bottom:16px">12개 검증지표와 등급 부여 규칙</div>
+      <div class="t-xs">기대성과 6개 + 위험 6개, 가중치까지</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:52px 48px">
+      <iconify-icon icon="solar:target-bold" style="font-size:56px;color:var(--e);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">PART 3 · 적용</div>
+      <div class="t-sm" style="margin-bottom:16px">실제 검증 사례와 국가R&amp;D 유의점</div>
+      <div class="t-xs">숫자로 순위가 나오는 과정을 본다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 3. 쉬운 설명 ① — 임팩트 타이포 */
+{n:2,html:`<div style="width:1460px;text-align:center">
+  <div class="badge">PART 1 · 10살도 아는 이야기</div>
+  <h2 class="t-xl">하고 싶은 건 <span class="ga">10개</span>,<br>돈은 <span class="gc">5개</span>어치밖에 없다면?</h2>
+  <p data-step="1" class="t-md" style="margin-top:48px">그럼 우리는 "무엇을 먼저 할지" 줄을 세워야 한다</p>
+  <p data-step="2" class="t-sm" style="color:var(--mu);margin-top:24px">NEPSA는 나라가 연구과제에 돈을 줄 때, 그 줄을 <span class="ge">공평하게 세우는 방법</span>이다</p>
+</div>`},
+
+/* 4. 쉬운 설명 ② — 2열 비교 카드 */
+{n:3,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">줄을 세울 땐 <span class="gc">딱 두 가지</span>만 물어본다</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-c" style="padding:52px 56px">
+      <div class="t-md gc" style="margin-bottom:28px">질문 1 — "얼마나 좋은 일이 생겨?"</div>
+      <div class="t-sm" style="margin-bottom:18px">· 성공하면 뭐가 얼마나 좋아지나</div>
+      <div class="t-sm" style="margin-bottom:18px">· 나 말고 다른 사람도 좋아지나</div>
+      <div class="t-sm" style="margin-bottom:18px">· 오래오래 도움이 되나</div>
+      <div class="t-xs" style="margin-top:28px">어른 말로는 <span class="gc">기대성과(Return)</span></div>
+    </div>
+    <div data-step="2" style="display:flex;align-items:center"><span class="ga" style="font-size:52px">+</span></div>
+    <div data-step="3" class="glass-a" style="padding:52px 56px">
+      <div class="t-md ga" style="margin-bottom:28px">질문 2 — "잘 안 될 수도 있어?"</div>
+      <div class="t-sm" style="margin-bottom:18px">· 너무 어려워서 실패할 수 있나</div>
+      <div class="t-sm" style="margin-bottom:18px">· 만들어도 아무도 안 쓰면 어쩌나</div>
+      <div class="t-sm" style="margin-bottom:18px">· 돈과 시간이 얼마나 더 드나</div>
+      <div class="t-xs" style="margin-top:28px">어른 말로는 <span class="ga">위험(Risk)</span></div>
+    </div>
+  </div>
+</div>`},
+
+/* 5. 쉬운 설명 ③ — 2x2 매트릭스(비유판) */
+{n:4,html:`<div style="width:1420px">
+  <div class="t-lg" style="text-align:center;margin-bottom:48px">두 가지 답을 <span class="ge">가로·세로</span>로 놓으면 방이 네 칸</div>
+  <div style="display:grid;grid-template-columns:120px 1fr 1fr;grid-template-rows:auto auto auto;gap:24px;align-items:stretch">
+    <div style="display:flex;align-items:center;justify-content:center"><div class="t-sm gc" style="writing-mode:vertical-rl;transform:rotate(180deg)">좋은 일이 크다</div></div>
+    <div data-step="1" class="glass-c" style="padding:40px 44px">
+      <div class="t-md gc" style="margin-bottom:14px">가장 먼저 할 일</div>
+      <div class="t-sm" style="margin-bottom:10px">좋은 일 크고 · 어렵지도 않다</div>
+      <div class="t-xs">망설일 이유가 없는 최우선 과제 (S등급)</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:40px 44px">
+      <div class="t-md ga" style="margin-bottom:14px">용감하게 도전할 일</div>
+      <div class="t-sm" style="margin-bottom:10px">좋은 일 크지만 · 많이 어렵다</div>
+      <div class="t-xs">나라가 대신 모험해 주는 자리 — 도전적 R&amp;D</div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center"><div class="t-sm ga" style="writing-mode:vertical-rl;transform:rotate(180deg)">좋은 일이 작다</div></div>
+    <div data-step="3" class="glass-e" style="padding:40px 44px">
+      <div class="t-md ge" style="margin-bottom:14px">시간 나면 할 일</div>
+      <div class="t-sm" style="margin-bottom:10px">쉽지만 · 좋은 일이 크지 않다</div>
+      <div class="t-xs">해도 되지만 순서는 뒤로</div>
+    </div>
+    <div data-step="4" class="glass-p" style="padding:40px 44px">
+      <div class="t-md gp" style="margin-bottom:14px">하지 않는 게 나은 일</div>
+      <div class="t-sm" style="margin-bottom:10px">어렵기만 하고 · 좋은 일도 작다</div>
+      <div class="t-xs">과감히 접거나 다른 과제와 합친다 (D등급)</div>
+    </div>
+    <div></div>
+    <div class="t-sm gc" style="text-align:center">어렵지 않다</div>
+    <div class="t-sm ga" style="text-align:center">많이 어렵다</div>
+  </div>
+</div>`},
+
+/* 6. 쉬운 설명 ④ — 플로우(등급) */
+{n:4,html:`<div style="width:1500px">
+  <div class="t-lg" style="text-align:center;margin-bottom:72px">그래서 과제도 <span class="gc">성적표</span>처럼 등급을 받는다</div>
+  <div style="display:flex;align-items:center;justify-content:center">
+    <div class="glass-c" style="padding:34px 34px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-md gc">S</div>
+      <div class="t-xs" style="margin-top:10px">최우선</div>
+    </div>
+    <div data-step="1" style="display:flex;align-items:center;padding:0 14px"><div class="gc" style="font-size:36px">›</div></div>
+    <div data-step="1" class="glass" style="padding:34px 34px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-md">A</div>
+      <div class="t-xs" style="margin-top:10px">우수</div>
+    </div>
+    <div data-step="2" style="display:flex;align-items:center;padding:0 14px"><div class="gc" style="font-size:36px">›</div></div>
+    <div data-step="2" class="glass" style="padding:34px 34px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-md">B</div>
+      <div class="t-xs" style="margin-top:10px">보통</div>
+    </div>
+    <div data-step="3" style="display:flex;align-items:center;padding:0 14px"><div class="gc" style="font-size:36px">›</div></div>
+    <div data-step="3" class="glass" style="padding:34px 34px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-md">C</div>
+      <div class="t-xs" style="margin-top:10px">미흡</div>
+    </div>
+    <div data-step="4" style="display:flex;align-items:center;padding:0 14px"><div class="gc" style="font-size:36px">›</div></div>
+    <div data-step="4" class="glass-a" style="padding:34px 34px;text-align:center;flex-shrink:0;min-width:200px;border-radius:24px">
+      <div class="t-md ga">D</div>
+      <div class="t-xs" style="margin-top:10px">후순위</div>
+    </div>
+  </div>
+  <div data-step="4" class="t-sm" style="text-align:center;margin-top:64px;color:var(--mu)">같은 등급이면 <span class="ge">기대성과가 높은 과제</span>가 앞선다 — 이 한 문장이 NEPSA 순위의 마지막 규칙</div>
+</div>`},
+
+/* 7. 정의 — 임팩트 타이포 */
+{n:2,html:`<div style="width:1500px;text-align:center">
+  <div class="badge">PART 2 · DEFINITION</div>
+  <h2 class="t-xl">NEPSA는 기획과제를<br><span class="gc">2배수에서 1배수로</span> 걸러내는 검증툴</h2>
+  <p data-step="1" class="t-md" style="margin-top:48px">기대성과(Return) × 위험(Risk) 2×2 Matrix · 12개 검증지표 · 5등급(S&gt;A&gt;B&gt;C&gt;D)</p>
+  <p data-step="2" class="t-sm" style="color:var(--mu);margin-top:24px">금융의 기대수익·위험 개념을 국가 R&amp;D 과제 선정에 확장 적용한 모델<br>산업융합원천기술개발사업의 기획대상과제 우선순위 선정에 적용 · 원문 표기 Nest yEar Projects Selection Analysis</p>
+</div>`},
+
+/* 8. 기대성과 3단계 — 3열 피처 카드 */
+{n:3,html:`<div style="width:1460px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">기대성과는 <span class="gc">세 겹</span>으로 본다</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-c" style="padding:48px 44px">
+      <iconify-icon icon="solar:document-text-bold" style="font-size:52px;color:var(--c);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:16px">Output · 1차 성과</div>
+      <div class="t-sm" style="margin-bottom:12px">R&amp;D 직후 손에 잡히는 결과물</div>
+      <div class="t-xs">기술의 차별성·독창성, 경쟁우위 확보 및 유지기간,<br>타 분야 응용가능성, 우수 IP 확보 가능성</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:48px 44px">
+      <iconify-icon icon="solar:banknote-2-bold" style="font-size:52px;color:var(--a);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:16px">Outcome · 2차 성과</div>
+      <div class="t-sm" style="margin-bottom:12px">기술이전·사업화로 벌어들이는 수익</div>
+      <div class="t-xs">NPV·IRR·ROI·BCR, 시장(창출)규모 및 성장률,<br>제품 영업이익률, 매출액 및 수익구조</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:48px 44px">
+      <iconify-icon icon="solar:share-circle-bold" style="font-size:52px;color:var(--e);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:16px">Impact · 파급효과</div>
+      <div class="t-sm" style="margin-bottom:12px">의도하지 않은 형태로 번지는 영향</div>
+      <div class="t-xs">타 산업·기술로의 파급, 공정혁신 등 비용절감 효과,<br>사회에 대한 긍정적 외부효과</div>
+    </div>
+  </div>
+</div>`},
+
+/* 9. 기대성과 6개 지표 가중치 — 수평 바차트 */
+{n:3,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:16px">기대성과 검증지표 <span class="gc">6개</span>와 가중치</div>
+  <div class="t-xs" style="text-align:center;margin-bottom:44px">막대 길이는 가중치를 4배 확대해 표시 · 숫자는 실제 가중치</div>
+
+  <div data-step="1" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">Output · 정성 — 기술이 가지는 독창성 및 차별성</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">기술적 수월성</span><span class="t-sm gc">15%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="60%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+    </div>
+  </div>
+  <div data-step="1" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">Output · 정성 — 개발 기술·지식이 타 분야로 활용될 가능성</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">타 분야 응용가능성</span><span class="t-sm gc">10%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="40%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+    </div>
+  </div>
+  <div data-step="2" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">Output · 정량 — 국내 출원인의 IP 확보 정도(IP 우수성 대용지표)</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">IP 부상도</span><span class="t-sm gc">15%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="60%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div>
+    </div>
+  </div>
+  <div data-step="2" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">Outcome · 정량 — 타깃 제품의 시장규모 및 장기성장률 (최대 가중치)</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">시장규모 및 성장률</span><span class="t-sm ga">25%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="100%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+    </div>
+  </div>
+  <div data-step="3" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">Outcome · 정량 — 관련 타깃 제품 업종의 영업이익률</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">연관업종 영업이익률</span><span class="t-sm ga">15%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="60%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+    </div>
+  </div>
+  <div data-step="3">
+    <div class="t-xs" style="margin-bottom:6px">Impact · 정성 — 타 산업·기술에 미치는 긍정적 외부효과</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">파급효과</span><span class="t-sm ge">20%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="80%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div>
+    </div>
+  </div>
+</div>`},
+
+/* 10. 위험 2종 — 2열 비교 카드 */
+{n:3,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">위험은 <span class="ga">개발 중</span>과 <span class="ge">개발 후</span>로 나눈다</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-a" style="padding:52px 56px">
+      <div class="t-md ga" style="margin-bottom:28px">기술적 위험 (Technology Risk)</div>
+      <div class="t-sm" style="margin-bottom:18px">목표한 기술개발 성과를 달성하지 못할 위험</div>
+      <div class="t-sm" style="margin-bottom:18px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">기술수준 및 기술격차(기술역량)</div>
+      <div class="t-sm" style="margin-bottom:18px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">기술인프라 구축 정도</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">IP 확보 가능성, 개발 기간·투입 비용</div>
+    </div>
+    <div data-step="2" style="display:flex;align-items:center"><span class="gc" style="font-size:52px">→</span></div>
+    <div data-step="3" class="glass-e" style="padding:52px 56px">
+      <div class="t-md ge" style="margin-bottom:28px">시장 위험 (Market Risk)</div>
+      <div class="t-sm" style="margin-bottom:18px">개발 후 사업화 단계에서 발생하는 위험</div>
+      <div class="t-sm" style="margin-bottom:18px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">시장구조 및 경쟁강도(진입 가능성)</div>
+      <div class="t-sm" style="margin-bottom:18px;padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">사업화 소요기간 및 소요비용</div>
+      <div class="t-sm" style="padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">제품 수명주기상의 위치, 시장 점유율</div>
+    </div>
+  </div>
+</div>`},
+
+/* 11. 위험 6개 지표 가중치 — 수평 바차트 */
+{n:3,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:16px">위험 검증지표 <span class="ga">6개</span>와 가중치</div>
+  <div class="t-xs" style="text-align:center;margin-bottom:44px">막대 길이는 가중치를 4배 확대해 표시 · 숫자는 실제 가중치</div>
+
+  <div data-step="1" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">기술위험 · 정량 — 현 기술수준 대비 목표 기술수준과의 격차</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">기술수준 및 기술격차</span><span class="t-sm ga">20%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="80%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+    </div>
+  </div>
+  <div data-step="1" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">기술위험 · 정성 — 연구인력·장비 등 역량과 관련 법·제도의 영향</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">기술인프라</span><span class="t-sm ga">15%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="60%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+    </div>
+  </div>
+  <div data-step="2" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">기술위험 · 정성 — 선행특허 조사를 통한 특허 권리 확보 가능성</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">IP 장벽도</span><span class="t-sm ga">15%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="60%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div>
+    </div>
+  </div>
+  <div data-step="2" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">시장위험 · 정성 — 경쟁자 수·진입장벽·경쟁구조 등 경쟁 환경 (최대 가중치)</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">시장경쟁강도</span><span class="t-sm ge">25%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="100%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div>
+    </div>
+  </div>
+  <div data-step="3" style="margin-bottom:28px">
+    <div class="t-xs" style="margin-bottom:6px">시장위험 · 정량 — 사업화 소요기간과 소요비용의 평균 점수</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">사업화 요구자원</span><span class="t-sm ge">10%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="40%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div>
+    </div>
+  </div>
+  <div data-step="3">
+    <div class="t-xs" style="margin-bottom:6px">시장위험 · 정성 — 적용 제품의 S-커브 수명주기상 위치</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px"><span class="t-sm">기술(제품) 수명주기</span><span class="t-sm ge">15%</span></div>
+    <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden">
+      <div class="bar-fill" data-w="60%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div>
+    </div>
+  </div>
+</div>`},
+
+/* 12. 정성 vs 정량 — 수평 아이템 카드 */
+{n:3,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">지표는 <span class="gc">정량</span>과 <span class="ga">정성</span>이 섞여 있다</div>
+  <div data-step="1" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px;margin-bottom:28px">
+    <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:170px">
+      <div class="gc" style="font-size:28px;font-weight:800">정량지표</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm gc" style="margin-bottom:8px">데이터에 근거해 객관적으로 평가 — 점수기준표를 그대로 적용</div>
+      <div class="t-xs">IP 부상도 · 시장규모 및 성장률 · 연관업종 영업이익률 · 기술수준 및 기술격차 · 사업화 요구자원</div>
+    </div>
+    <div class="gc" style="font-size:36px;font-weight:700;flex-shrink:0">5개</div>
+  </div>
+  <div data-step="2" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px;margin-bottom:28px">
+    <div class="glass-a" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:170px">
+      <div class="ga" style="font-size:28px;font-weight:800">정성지표</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm ga" style="margin-bottom:8px">데이터와 전문가 의견을 수렴해 주관적으로 평가 — 5점 척도</div>
+      <div class="t-xs">기술적 수월성 · 타 분야 응용가능성 · 파급효과 · 기술인프라 · IP 장벽도 · 시장경쟁강도 · 기술수명주기</div>
+    </div>
+    <div class="ga" style="font-size:36px;font-weight:700;flex-shrink:0">7개</div>
+  </div>
+  <div data-step="3" class="glass-e" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+    <div class="glass-e" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:170px">
+      <div class="ge" style="font-size:28px;font-weight:800">쏠림 방지</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm ge" style="margin-bottom:8px">정성지표는 상대평가 — 후한 점수가 몰리지 않도록 비율을 제한</div>
+      <div class="t-xs">기대성과 지표 3점 이상, 위험 지표 3점 미만인 과제 비율을 전체의 60% 이하로 제한</div>
+    </div>
+  </div>
+</div>`},
+
+/* 13. 2x2 Matrix 12개 영역 — 등급 격자 */
+{n:4,html:`<div style="width:1360px">
+  <div class="t-lg" style="text-align:center;margin-bottom:14px">두 점수를 격자에 놓으면 <span class="gc">12개 영역 · 5등급</span></div>
+  <div class="t-xs" style="text-align:center;margin-bottom:40px">기업주관(혁신제품형) 과제 기준 · 세로축 기대성과 / 가로축 위험</div>
+  <div style="display:grid;grid-template-columns:110px repeat(3,1fr);gap:18px">
+    <div class="t-sm gc" style="display:flex;align-items:center;justify-content:flex-end">100</div>
+    <div data-step="1" class="cell glass-c"><span class="gc">S</span></div>
+    <div data-step="1" class="cell glass-c"><span class="gc">A1</span></div>
+    <div data-step="1" class="cell glass"><span>B1</span></div>
+
+    <div class="t-sm gc" style="display:flex;align-items:center;justify-content:flex-end">75</div>
+    <div data-step="2" class="cell glass-c"><span class="gc">A2</span></div>
+    <div data-step="2" class="cell glass"><span>B2</span></div>
+    <div data-step="2" class="cell glass-a"><span class="ga">C1</span></div>
+
+    <div class="t-sm gc" style="display:flex;align-items:center;justify-content:flex-end">50</div>
+    <div data-step="3" class="cell glass"><span>B3</span></div>
+    <div data-step="3" class="cell glass-a"><span class="ga">C2</span></div>
+    <div data-step="3" class="cell glass-p"><span class="gp">D1</span></div>
+
+    <div class="t-sm gc" style="display:flex;align-items:center;justify-content:flex-end">25</div>
+    <div data-step="4" class="cell glass"><span>B4</span></div>
+    <div data-step="4" class="cell glass-a"><span class="ga">C3</span></div>
+    <div data-step="4" class="cell glass-p"><span class="gp">D2</span></div>
+
+    <div class="t-xs" style="text-align:right;padding-top:12px">기대성과</div>
+    <div class="t-xs" style="text-align:center;padding-top:12px">위험 낮음 (0~25)</div>
+    <div class="t-xs" style="text-align:center;padding-top:12px">위험 보통 (25~50)</div>
+    <div class="t-xs" style="text-align:center;padding-top:12px">위험 높음 (50~100)</div>
+  </div>
+  <div data-step="4" class="t-sm" style="text-align:center;margin-top:40px;color:var(--mu)">지배원리 — <span class="ge">위험은 낮고 기대성과는 높은</span> 과제에 높은 우선순위를 부여한다</div>
+</div>`},
+
+/* 14. 등급 부여 5대 기준 — 수직 스택 아이템 카드 */
+{n:3,html:`<div style="width:1420px">
+  <div class="t-lg" style="text-align:center;margin-bottom:48px">등급 부여의 <span class="ge">다섯 가지 기준</span></div>
+  <div style="display:flex;flex-direction:column;gap:22px">
+    <div data-step="1" class="glass" style="padding:30px 48px;display:flex;align-items:center;gap:36px">
+      <div class="glass-c" style="padding:16px 24px;border-radius:16px;flex-shrink:0;text-align:center;min-width:100px"><div class="gc" style="font-size:28px;font-weight:800">1</div></div>
+      <div style="flex:1"><div class="t-sm gc" style="margin-bottom:6px">지배원리 충족</div><div class="t-xs">위험이 낮고 기대성과가 높은 과제에 높은 우선순위 부여</div></div>
+    </div>
+    <div data-step="1" class="glass" style="padding:30px 48px;display:flex;align-items:center;gap:36px">
+      <div class="glass-c" style="padding:16px 24px;border-radius:16px;flex-shrink:0;text-align:center;min-width:100px"><div class="gc" style="font-size:28px;font-weight:800">2</div></div>
+      <div style="flex:1"><div class="t-sm gc" style="margin-bottom:6px">과제유형 구분</div><div class="t-xs">기업주관(혁신제품형)과 제한없음(원천기술형)을 나눠 유형별로 우선순위 부여</div></div>
+    </div>
+    <div data-step="2" class="glass" style="padding:30px 48px;display:flex;align-items:center;gap:36px">
+      <div class="glass-a" style="padding:16px 24px;border-radius:16px;flex-shrink:0;text-align:center;min-width:100px"><div class="ga" style="font-size:28px;font-weight:800">3</div></div>
+      <div style="flex:1"><div class="t-sm ga" style="margin-bottom:6px">5등급 체계</div><div class="t-xs">S&gt;A&gt;B&gt;C&gt;D로 구분하되, 동일 등급이면 기대성과가 높은 과제를 우선</div></div>
+    </div>
+    <div data-step="2" class="glass" style="padding:30px 48px;display:flex;align-items:center;gap:36px">
+      <div class="glass-a" style="padding:16px 24px;border-radius:16px;flex-shrink:0;text-align:center;min-width:100px"><div class="ga" style="font-size:28px;font-weight:800">4</div></div>
+      <div style="flex:1"><div class="t-sm ga" style="margin-bottom:6px">정성지표는 상대평가</div><div class="t-xs">기대성과 3점 이상·위험 3점 미만 점수비율을 전체 과제의 60% 이하로 제한</div></div>
+    </div>
+    <div data-step="3" class="glass" style="padding:30px 48px;display:flex;align-items:center;gap:36px">
+      <div class="glass-e" style="padding:16px 24px;border-radius:16px;flex-shrink:0;text-align:center;min-width:100px"><div class="ge" style="font-size:28px;font-weight:800">5</div></div>
+      <div style="flex:1"><div class="t-sm ge" style="margin-bottom:6px">정량지표는 객관적 기준표</div><div class="t-xs">기술격차·시장규모·영업이익률·사업화 요구자원 등은 사전에 제시된 점수기준표로 산정</div></div>
+    </div>
+  </div>
+</div>`},
+
+/* 15. 과제유형별 차이 — 2열 비교 카드 */
+{n:3,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">같은 툴, <span class="ga">다른 잣대</span> — 과제유형별 적용</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-c" style="padding:52px 56px">
+      <div class="t-md gc" style="margin-bottom:28px">기업주관 · 혁신제품형</div>
+      <div class="t-sm" style="margin-bottom:18px">· 전체 격자를 그대로 사용</div>
+      <div class="t-sm" style="margin-bottom:18px">· 총 5등급 12개 영역으로 구분</div>
+      <div class="t-sm" style="margin-bottom:18px">· S &gt; A1·A2 &gt; B1~B4 &gt; C1~C3 &gt; D1·D2</div>
+      <div class="t-xs" style="margin-top:28px">시장에 가까운 과제 — 위험이 낮을수록 유리</div>
+    </div>
+    <div data-step="2" style="display:flex;align-items:center"><span class="ge" style="font-size:52px">vs</span></div>
+    <div data-step="3" class="glass-e" style="padding:52px 56px">
+      <div class="t-md ge" style="margin-bottom:28px">제한없음 · 원천기술형</div>
+      <div class="t-sm" style="margin-bottom:18px">· 도전적 R&amp;D 영역 안에서만 신규과제 발굴</div>
+      <div class="t-sm" style="margin-bottom:18px">· 기대성과 60점 이상 &amp; 위험 40점 이상</div>
+      <div class="t-sm" style="margin-bottom:18px">· 그 영역 안에서 다시 지배원리 적용</div>
+      <div class="t-xs" style="margin-top:28px">High Risk, High Return — 위험이 높아도 기대성과가 크면 간다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 16. 도전적 R&D 영역 — Large Metric */
+{n:3,html:`<div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:stretch;width:1420px">
+  <div class="glass" style="padding:56px 64px">
+    <div class="t-md gc" style="margin-bottom:32px">왜 위험이 높은 쪽을 일부러 보는가</div>
+    <div data-step="1" class="t-sm" style="margin-bottom:22px;padding-left:20px;border-left:3px solid rgba(0,212,255,.4)">기업이 감당하기엔 위험이 커서 <span class="ga">시장실패</span>가 나타나는 영역</div>
+    <div data-step="2" class="t-sm" style="margin-bottom:22px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">추격형 R&amp;D에서 세계시장 선도형 <span class="ge">창조형 R&amp;D</span>로의 전환</div>
+    <div data-step="3" class="t-sm" style="padding-left:20px;border-left:3px solid rgba(16,185,129,.4)">위험이 낮은 과제만 고르면 도전적 R&amp;D가 사라진다</div>
+    <div data-step="3" class="t-xs" style="margin-top:32px">국가 R&amp;D 예산은 '04년 이후 연평균 12% 성장, '13년 16조 8,000억 원 규모 (2013년 보고서 기준)</div>
+  </div>
+  <div data-step="3" class="glass-e" style="padding:64px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+    <div class="t-sm" style="color:var(--mu);margin-bottom:20px">도전적 R&amp;D 영역 진입 요건</div>
+    <div class="ge" style="font-size:100px;font-weight:800;line-height:1">60 / 40</div>
+    <div class="t-md" style="margin-top:20px;color:var(--mu)">기대성과 60점 이상<br>&amp; 위험 40점 이상</div>
+    <div class="t-xs" style="margin-top:28px">제한없음(원천기술형) 과제에 적용되는 문턱</div>
+  </div>
+</div>`},
+
+/* 17. 실제 검증 예시 — 산점도 */
+{n:3,html:`<div style="width:1460px">
+  <div class="t-lg" style="text-align:center;margin-bottom:14px">실제로 돌려보면 <span class="gc">이렇게</span> 흩어진다</div>
+  <div class="t-xs" style="text-align:center;margin-bottom:32px">기업주관 과제 10건 NEPSA 검증결과 예시 (보고서 수록 값)</div>
+  <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:48px;align-items:stretch">
+    <div data-step="1" class="glass" style="padding:40px 44px">
+      <svg viewBox="0 0 1080 560" style="display:block;width:100%">
+        <line x1="140" y1="70" x2="140" y2="480" stroke="rgba(255,255,255,.16)" stroke-width="2"/>
+        <line x1="140" y1="480" x2="1020" y2="480" stroke="rgba(255,255,255,.16)" stroke-width="2"/>
+        <line x1="140" y1="275" x2="1020" y2="275" stroke="rgba(255,255,255,.06)"/>
+        <line x1="570" y1="70" x2="570" y2="480" stroke="rgba(255,255,255,.06)"/>
+        <circle class="dot-pop" cx="329" cy="132" r="11" fill="#00d4ff" style="opacity:0;transition:opacity .4s ease 1.2s;filter:drop-shadow(0 0 12px #00d4ff)"/>
+        <text class="dot-pop" x="349" y="141" fill="#00d4ff" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">CCC · S</text>
+        <circle class="dot-pop" cx="561" cy="164" r="11" fill="#10b981" style="opacity:0;transition:opacity .4s ease 1.2s;filter:drop-shadow(0 0 12px #10b981)"/>
+        <text class="dot-pop" x="581" y="173" fill="#10b981" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">EEE · A</text>
+        <circle class="dot-pop" cx="450" cy="177" r="9" fill="#a1a1aa" style="opacity:0;transition:opacity .4s ease 1.2s"/>
+        <text class="dot-pop" x="468" y="186" fill="#a1a1aa" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">FFF</text>
+        <circle class="dot-pop" cx="369" cy="183" r="9" fill="#a1a1aa" style="opacity:0;transition:opacity .4s ease 1.2s"/>
+        <text class="dot-pop" x="270" y="192" fill="#a1a1aa" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">BBB</text>
+        <circle class="dot-pop" cx="506" cy="190" r="9" fill="#a1a1aa" style="opacity:0;transition:opacity .4s ease 1.2s"/>
+        <text class="dot-pop" x="524" y="210" fill="#a1a1aa" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">AAA</text>
+        <circle class="dot-pop" cx="665" cy="205" r="9" fill="#a1a1aa" style="opacity:0;transition:opacity .4s ease 1.2s"/>
+        <text class="dot-pop" x="683" y="214" fill="#a1a1aa" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">JJJ</text>
+        <circle class="dot-pop" cx="734" cy="226" r="9" fill="#a1a1aa" style="opacity:0;transition:opacity .4s ease 1.2s"/>
+        <text class="dot-pop" x="752" y="235" fill="#a1a1aa" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">HHH</text>
+        <circle class="dot-pop" cx="579" cy="234" r="9" fill="#a1a1aa" style="opacity:0;transition:opacity .4s ease 1.2s"/>
+        <text class="dot-pop" x="480" y="255" fill="#a1a1aa" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">DDD</text>
+        <circle class="dot-pop" cx="690" cy="250" r="9" fill="#a1a1aa" style="opacity:0;transition:opacity .4s ease 1.2s"/>
+        <text class="dot-pop" x="596" y="272" fill="#a1a1aa" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">GGG</text>
+        <circle class="dot-pop" cx="690" cy="300" r="11" fill="#f59e0b" style="opacity:0;transition:opacity .4s ease 1.2s;filter:drop-shadow(0 0 12px #f59e0b)"/>
+        <text class="dot-pop" x="710" y="309" fill="#f59e0b" font-size="24" style="opacity:0;transition:opacity .4s ease 1.2s">III · C</text>
+        <text x="140" y="520" fill="#a1a1aa" font-size="24" text-anchor="middle">0</text>
+        <text x="570" y="520" fill="#a1a1aa" font-size="24" text-anchor="middle">50</text>
+        <text x="1020" y="520" fill="#a1a1aa" font-size="24" text-anchor="middle">100</text>
+        <text x="580" y="552" fill="#a1a1aa" font-size="24" text-anchor="middle">위험 (Risk)</text>
+        <text x="112" y="79" fill="#a1a1aa" font-size="24" text-anchor="end">100</text>
+        <text x="112" y="284" fill="#a1a1aa" font-size="24" text-anchor="end">50</text>
+        <text x="112" y="489" fill="#a1a1aa" font-size="24" text-anchor="end">0</text>
+      </svg>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <div data-step="2" class="glass-c" style="padding:34px 38px;flex:1;display:flex;flex-direction:column;justify-content:center">
+        <div class="t-md gc" style="margin-bottom:10px">1위 · CCC 기술개발</div>
+        <div class="t-sm" style="margin-bottom:8px">기대성과 85.00 / 위험 22.00 → S</div>
+        <div class="t-xs">왼쪽 위에 홀로 떨어져 있는 과제가 최우선</div>
+      </div>
+      <div data-step="3" class="glass-e" style="padding:34px 38px;flex:1;display:flex;flex-direction:column;justify-content:center">
+        <div class="t-md ge" style="margin-bottom:10px">2위 · EEE 기술개발</div>
+        <div class="t-sm" style="margin-bottom:8px">기대성과 77.00 / 위험 49.00 → A</div>
+        <div class="t-xs">위험은 있으나 기대성과가 이를 상쇄</div>
+      </div>
+      <div data-step="3" class="glass-a" style="padding:34px 38px;flex:1;display:flex;flex-direction:column;justify-content:center">
+        <div class="t-md ga" style="margin-bottom:10px">10위 · III 기술개발</div>
+        <div class="t-sm" style="margin-bottom:8px">기대성과 44.00 / 위험 64.00 → C</div>
+        <div class="t-xs">오른쪽 아래 — 재검토·통합·퇴출 대상</div>
+      </div>
+    </div>
+  </div>
+</div>`},
+
+/* 18. NEPSA의 성격 4가지 — 4색 2x2 */
+{n:4,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">NEPSA는 <span class="gc">어떤 툴</span>인가</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px">
+    <div data-step="1" class="glass-c" style="padding:44px 48px">
+      <iconify-icon icon="solar:chart-square-bold" style="font-size:48px;color:var(--c);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:14px">점수화 + 포트폴리오 맵</div>
+      <div class="t-sm" style="margin-bottom:10px">Scoring Method와 R-R Matrix의 결합</div>
+      <div class="t-xs">가중치 점수로 두 축을 만들고 그 좌표로 등급을 매긴다</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:44px 48px">
+      <iconify-icon icon="solar:wallet-money-bold" style="font-size:48px;color:var(--a);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:14px">금융 개념의 이식</div>
+      <div class="t-sm" style="margin-bottom:10px">기대수익·위험, 지배원리, 자본시장선</div>
+      <div class="t-xs">민간 자산배분 논리를 국가 R&amp;D 과제 선정으로 확장</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:44px 48px">
+      <iconify-icon icon="solar:filter-bold" style="font-size:48px;color:var(--e);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:14px">기획 단계의 검증툴</div>
+      <div class="t-sm" style="margin-bottom:10px">2배수 기획대상 과제를 1배수로 압축</div>
+      <div class="t-xs">평가가 아니라 '무엇을 신규과제로 올릴지'의 선별</div>
+    </div>
+    <div data-step="4" class="glass-p" style="padding:44px 48px">
+      <iconify-icon icon="solar:hand-stars-bold" style="font-size:48px;color:var(--p);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md gp" style="margin-bottom:14px">PD의 판단을 남긴다</div>
+      <div class="t-sm" style="margin-bottom:10px">정성지표 7개는 전문가 의견 기반</div>
+      <div class="t-xs">완전 자동화가 아니라 전문가 판단을 구조화하는 도구</div>
+    </div>
+  </div>
+</div>`},
+
+/* 19. 국가R&D 적용 유의점 — 3열 피처 카드 */
+{n:3,html:`<div style="width:1460px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">국가 R&amp;D에 옮길 때 <span class="ga">반드시 짚을 것</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-a" style="padding:48px 44px">
+      <iconify-icon icon="solar:danger-triangle-bold" style="font-size:52px;color:var(--a);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:16px">시장실패 영역의 특수성</div>
+      <div class="t-sm" style="margin-bottom:12px">투자 당위성 고려 없는 적용은 역효과</div>
+      <div class="t-xs">수익성만으로 줄을 세우면 정부가 해야 할 일이 탈락한다</div>
+    </div>
+    <div data-step="2" class="glass-c" style="padding:48px 44px">
+      <iconify-icon icon="solar:compass-square-bold" style="font-size:52px;color:var(--c);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:16px">추진목적과의 정합성</div>
+      <div class="t-sm" style="margin-bottom:12px">R&amp;D 목표·전략 → 포트폴리오 → 개별과제</div>
+      <div class="t-xs">세 층위가 끊기면 우선순위 결과도 전략과 어긋난다</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:48px 44px">
+      <iconify-icon icon="solar:scale-bold" style="font-size:52px;color:var(--e);margin-bottom:24px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:16px">개별 우수성 ≠ 전체 최적</div>
+      <div class="t-sm" style="margin-bottom:12px">사업 전체 포트폴리오의 가치 극대화</div>
+      <div class="t-xs">기간·예산·개발방식의 균형까지 함께 조정해야 한다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 20. 마무리 — 임팩트 타이포 + 3카드 */
+{n:3,html:`<div style="width:1460px;text-align:center">
+  <div class="badge">SUMMARY</div>
+  <h2 class="t-hero">두 가지 질문이 <span class="gc">순서</span>를 만든다</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:64px">
+    <div data-step="1" class="glass-c" style="padding:40px 36px">
+      <div class="t-md gc" style="margin-bottom:12px">얼마나 좋아지나</div>
+      <div class="t-sm" style="margin-bottom:8px">기대성과 6개 지표</div>
+      <div class="t-xs">Output · Outcome · Impact</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:40px 36px">
+      <div class="t-md ga" style="margin-bottom:12px">얼마나 위태로운가</div>
+      <div class="t-sm" style="margin-bottom:8px">위험 6개 지표</div>
+      <div class="t-xs">기술위험 · 시장위험</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:40px 36px">
+      <div class="t-md ge" style="margin-bottom:12px">그래서 무엇부터</div>
+      <div class="t-sm" style="margin-bottom:8px">2×2 격자의 5등급</div>
+      <div class="t-xs">S &gt; A &gt; B &gt; C &gt; D</div>
+    </div>
+  </div>
+  <div data-step="3" class="t-sm" style="color:var(--mu);margin-top:48px">출처 — 백승철·박동규·박진우, 「R&amp;D Portfolio Management」, KEIT PD Issue Report, 2013.10 (Vol. 13-10)</div>
+</div>`}
+
+];
+
+function scale(){const s=Math.min(window.innerWidth/1920,window.innerHeight/1080);const tx=(window.innerWidth-1920*s)/2,ty=(window.innerHeight-1080*s)/2;document.body.style.transform=`translate(${tx}px,${ty}px) scale(${s})`}
+window.addEventListener('resize',scale);scale();
+
+let cur=0,step=0;
+function applySteps(){document.querySelectorAll('[data-step]').forEach(el=>{const n=parseInt(el.dataset.step),on=n<=step;el.classList.toggle('revealed',on);
+el.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=on?b.dataset.w:'0%'});
+el.querySelectorAll('.ring-fill[data-v]').forEach(r=>{const C=2*Math.PI*r.r.baseVal.value;r.style.strokeDasharray=C;r.style.strokeDashoffset=on?C*(1-parseFloat(r.dataset.v)/100):C});
+el.querySelectorAll('.line-draw').forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=on?0:L});
+el.querySelectorAll('.dot-pop').forEach(d=>{d.style.opacity=on?1:0})})}
+function updateNav(){const pb=document.getElementById('prog');if(pb)pb.style.width=((cur+1)/slides.length*100)+'%';const pg=document.getElementById('pg');if(pg)pg.textContent=(cur+1)+' / '+slides.length}
+function render(){step=0;const sl=slides[cur];document.getElementById('slide').innerHTML=sl.html;if(sl.after)setTimeout(sl.after,50);applySteps();updateNav()}
+function go(d){const max=slides[cur].n;if(d===1){if(step<max){step++;applySteps();updateNav()}else if(cur<slides.length-1){cur++;render()}}else{if(step>0){step--;applySteps();updateNav()}else if(cur>0){cur--;render();step=slides[cur].n;applySteps();updateNav()}}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}else if(e.key==='ArrowDown'){e.preventDefault();if(cur<slides.length-1){cur++;render()}}else if(e.key==='ArrowUp'){e.preventDefault();if(cur>0){cur--;render()}}});
+render();
+</script>
+</body>
+</html>
