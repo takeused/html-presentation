@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>생명안전기본법: 생명과 존엄을 위한 새로운 사회계약</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+<style>
+:root{
+  --bg:#090d16;
+  --c:#00d4ff;
+  --a:#f59e0b;
+  --e:#10b981;
+  --p:#a78bfa;
+  --r:#f43f5e;
+  --b:#3b82f6;
+  --t:#f1f5f9;
+  --mu:#94a3b8;
+  --card-bg:rgba(255,255,255,.04);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  width:1920px;
+  height:1080px;
+  overflow:hidden;
+  background:var(--bg);
+  font-family:"Pretendard",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:var(--t);
+  user-select:none;
+  transform-origin:top left;
+}
+
+/* Neon Glows */
+.gc{color:var(--c);text-shadow:0 0 24px var(--c),0 0 48px rgba(0,212,255,.45)}
+.ga{color:var(--a);text-shadow:0 0 24px var(--a),0 0 48px rgba(245,158,11,.45)}
+.ge{color:var(--e);text-shadow:0 0 24px var(--e),0 0 48px rgba(16,185,129,.45)}
+.gp{color:var(--p);text-shadow:0 0 24px var(--p),0 0 48px rgba(167,139,250,.45)}
+.gr{color:var(--r);text-shadow:0 0 24px var(--r),0 0 48px rgba(244,63,94,.45)}
+.gb{color:var(--b);text-shadow:0 0 24px var(--b),0 0 48px rgba(59,130,246,.45)}
+
+/* Glassmorphism */
+.glass{
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;
+  box-shadow:0 8px 36px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.1);
+}
+.glass-c{
+  background:rgba(0,212,255,.06);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(0,212,255,.28);
+  border-radius:24px;
+  box-shadow:0 0 44px rgba(0,212,255,.12),0 8px 36px rgba(0,0,0,.5);
+}
+.glass-a{
+  background:rgba(245,158,11,.06);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(245,158,11,.28);
+  border-radius:24px;
+  box-shadow:0 0 44px rgba(245,158,11,.12),0 8px 36px rgba(0,0,0,.5);
+}
+.glass-e{
+  background:rgba(16,185,129,.06);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(16,185,129,.28);
+  border-radius:24px;
+  box-shadow:0 0 44px rgba(16,185,129,.12),0 8px 36px rgba(0,0,0,.5);
+}
+.glass-p{
+  background:rgba(167,139,250,.06);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(167,139,250,.28);
+  border-radius:24px;
+  box-shadow:0 0 44px rgba(167,139,250,.12),0 8px 36px rgba(0,0,0,.5);
+}
+.glass-r{
+  background:rgba(244,63,94,.06);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(244,63,94,.28);
+  border-radius:24px;
+  box-shadow:0 0 44px rgba(244,63,94,.12),0 8px 36px rgba(0,0,0,.5);
+}
+.glass-b{
+  background:rgba(59,130,246,.06);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(59,130,246,.28);
+  border-radius:24px;
+  box-shadow:0 0 44px rgba(59,130,246,.12),0 8px 36px rgba(0,0,0,.5);
+}
+
+/* Animations */
+[data-step]{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);
+}
+[data-step].revealed{opacity:1;transform:translateY(0)}
+[data-step="2"].revealed{transition-delay:.05s}
+[data-step="3"].revealed{transition-delay:.1s}
+[data-step="4"].revealed{transition-delay:.15s}
+[data-step="5"].revealed{transition-delay:.2s}
+[data-step="6"].revealed{transition-delay:.25s}
+
+/* Layout Elements */
+#blobs{position:fixed;inset:0;z-index:0;pointer-events:none}
+#slide{position:relative;z-index:1;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center}
+#nav{position:fixed;bottom:24px;right:48px;z-index:100;display:flex;align-items:center;gap:12px;user-select:none}
+#nav .nav-btn{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);
+  color:var(--t);
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:20px;
+  transition:all .2s ease;
+}
+#nav .nav-btn:hover{
+  background:rgba(0,212,255,.2);
+  border-color:var(--c);
+  color:var(--c);
+  transform:scale(1.06);
+}
+#nav span{
+  color:var(--mu);
+  font-size:18px;
+  font-weight:600;
+  min-width:84px;
+  text-align:center;
+  cursor:pointer;
+  padding:4px 8px;
+  border-radius:8px;
+  transition:all .2s ease;
+}
+#nav span:hover{
+  background:rgba(255,255,255,.1);
+  color:var(--c);
+}
+#progress{position:fixed;bottom:0;left:0;height:4px;background:linear-gradient(90deg,var(--c),var(--e),var(--a),var(--r),var(--p));z-index:10;transition:width .3s ease}
+
+/* Quick Jump Toast Indicator */
+#jump-indicator{
+  position:fixed;
+  top:36px;
+  right:48px;
+  z-index:200;
+  background:rgba(15,23,42,.92);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--c);
+  box-shadow:0 0 30px rgba(0,212,255,.35);
+  border-radius:14px;
+  padding:12px 24px;
+  display:none;
+  align-items:center;
+  gap:12px;
+  font-size:18px;
+  font-weight:600;
+  color:var(--t);
+  animation:popIn .2s cubic-bezier(.16,1,.3,1);
+}
+#jump-indicator span{color:var(--c);font-weight:800;font-size:22px}
+@keyframes popIn{from{opacity:0;transform:translateY(-10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Jump Modal */
+#jump-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.68);
+  backdrop-filter:blur(12px);
+  z-index:300;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+#jump-modal{
+  background:rgba(15,23,42,.96);
+  border:1px solid rgba(0,212,255,.45);
+  box-shadow:0 16px 60px rgba(0,0,0,.8),0 0 50px rgba(0,212,255,.25);
+  border-radius:24px;
+  padding:36px 44px;
+  text-align:center;
+  width:440px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 20px;
+  border-radius:100px;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+.badge-c{background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.35);color:var(--c)}
+.badge-p{background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.35);color:var(--p)}
+.badge-e{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);color:var(--e)}
+.badge-a{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--a)}
+.badge-r{background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.35);color:var(--r)}
+.badge-b{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.35);color:var(--b)}
+
+.slide-content{
+  width:1680px;
+  height:920px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.slide-header{
+  margin-bottom:24px;
+}
+.slide-header h2{
+  font-size:52px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  line-height:1.2;
+}
+.slide-header p{
+  font-size:22px;
+  color:var(--mu);
+  margin-top:10px;
+  font-weight:400;
+}
+</style>
+</head>
+<body>
+
+<div id="blobs">
+  <div style="position:absolute;width:1000px;height:1000px;top:-300px;left:-200px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.08) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:900px;height:900px;bottom:-200px;right:-100px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.07) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:750px;height:750px;top:250px;right:25%;border-radius:50%;background:radial-gradient(circle,rgba(244,63,94,.05) 0%,transparent 70%)"></div>
+</div>
+
+<div id="slide"></div>
+
+<!-- Quick Jump Toast -->
+<div id="jump-indicator">
+  <iconify-icon icon="solar:round-alt-arrow-right-bold" style="color:var(--c);font-size:24px"></iconify-icon>
+  <span>Go to Page : </span>
+  <span id="jump-number">1</span>
+  <span style="font-size:14px;color:var(--mu);margin-left:8px">(Enter 또는 자동 이동)</span>
+</div>
+
+<!-- Quick Jump Modal -->
+<div id="jump-modal-overlay">
+  <div id="jump-modal">
+    <div style="font-size:24px;font-weight:700;margin-bottom:8px;color:var(--c);display:flex;align-items:center;justify-content:center;gap:8px">
+      <iconify-icon icon="solar:routing-2-bold"></iconify-icon> 페이지 바로 이동
+    </div>
+    <div style="font-size:15px;color:var(--mu);margin-bottom:24px">이동할 슬라이드 번호(1~20)를 입력하세요</div>
+    <input type="number" id="modal-page-input" min="1" max="20" placeholder="1~20" style="width:100%;padding:14px 20px;font-size:20px;font-weight:700;text-align:center;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(0,212,255,.4);color:var(--t);outline:none;margin-bottom:24px;box-sizing:border-box;">
+    <div style="display:flex;gap:12px;justify-content:center">
+      <button id="modal-cancel-btn" style="padding:12px 28px;border-radius:12px;background:rgba(255,255,255,.1);border:none;color:var(--t);font-size:16px;cursor:pointer;font-weight:600">취소</button>
+      <button id="modal-jump-btn" style="padding:12px 28px;border-radius:12px;background:var(--c);border:none;color:#000;font-size:16px;cursor:pointer;font-weight:700">이동</button>
+    </div>
+  </div>
+</div>
+
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" title="이전 (←, Backspace, P)">◀</button>
+  <span id="counter" title="클릭하여 페이지 이동 (단축키: G)">1 / 20</span>
+  <button class="nav-btn" id="btn-next" title="다음 (→, Space, Enter, N)">▶</button>
+</div>
+<div id="progress"></div>
+
+<script>
+const slides = [
+  // ── 01. 표지 ──
+  {
+    n: 1,
+    html: `
+    <div class="slide-content" style="justify-content:center;align-items:center;text-align:center;">
+      <div class="badge badge-e" style="font-size:16px;padding:8px 24px;margin-bottom:32px;">
+        <iconify-icon icon="solar:shield-check-bold" style="font-size:20px;"></iconify-icon>
+        LEGISLATION & HUMAN RIGHTS FRAMEWORK
+      </div>
+      <h1 style="font-size:82px;font-weight:900;letter-spacing:-0.03em;line-height:1.2;margin-bottom:28px;">
+        생명과 존엄을 위한 새로운 사회계약<br>
+        <span class="ge">생명안전기본법</span>
+      </h1>
+      <p style="font-size:28px;color:var(--mu);max-width:1100px;line-height:1.6;margin-bottom:56px;font-weight:400;">
+        재난의 '사후 관리'에서 모든 사람의 <span style="color:var(--c);font-weight:700;">'안전권 보장'</span>으로의 국가적 대전환<br>
+        대한민국 안전 거버넌스의 근본적 재설계와 인권 중심 재난안전 프레임워크
+      </p>
+      <div style="display:flex;gap:36px;align-items:center;justify-content:center;">
+        <div class="glass" style="padding:18px 36px;border-radius:16px;display:flex;align-items:center;gap:14px;">
+          <iconify-icon icon="solar:user-hand-up-bold" style="color:var(--e);font-size:28px;"></iconify-icon>
+          <span style="font-size:20px;font-weight:600;">헌법적 안전권 명문화</span>
+        </div>
+        <div class="glass" style="padding:18px 36px;border-radius:16px;display:flex;align-items:center;gap:14px;">
+          <iconify-icon icon="solar:heart-angle-bold" style="color:var(--r);font-size:28px;"></iconify-icon>
+          <span style="font-size:20px;font-weight:600;">피해자 권리 보장 & 2차 피해 방지</span>
+        </div>
+        <div class="glass" style="padding:18px 36px;border-radius:16px;display:flex;align-items:center;gap:14px;">
+          <iconify-icon icon="solar:scale-bold" style="color:var(--c);font-size:28px;"></iconify-icon>
+          <span style="font-size:20px;font-weight:600;">상설 독립 재난조사기구</span>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 02. 문제의식: 반복되는 사회적 참사 ──
+  {
+    n: 4,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-r"><iconify-icon icon="solar:danger-triangle-bold"></iconify-icon> CRITICAL PROBLEM</div>
+        <h2>끝나지 않는 비극: 되풀이된 참사의 연쇄</h2>
+        <p>대한민국 사회를 뒤흔든 대형 참사들은 왜 유사한 패턴으로 반복되는가?</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;flex:1;align-items:stretch;">
+        <div class="glass-r" data-step="1" style="padding:32px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--r);font-weight:700;margin-bottom:8px;">2014. 04. 16</div>
+            <h3 style="font-size:32px;font-weight:800;margin-bottom:16px;">세월호 참사</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.6;margin-bottom:20px;">
+              304명 희생. 국가 위기 컨트롤타워의 총체적 부재, 승객 퇴선 유도 실패 및 초동 구조 무능이 부른 국가적 비극.
+            </p>
+          </div>
+          <div style="background:rgba(244,63,94,.12);padding:14px 18px;border-radius:12px;font-size:16px;color:#fca5a5;border-left:4px solid var(--r);">
+            <strong>구조적 실패:</strong> 위험 경고 무시와 무책임한 관료주의
+          </div>
+        </div>
+
+        <div class="glass-r" data-step="2" style="padding:32px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--r);font-weight:700;margin-bottom:8px;">2022. 10. 29</div>
+            <h3 style="font-size:32px;font-weight:800;margin-bottom:16px;">10·29 이태원 참사</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.6;margin-bottom:20px;">
+              159명 희생. 좁은 골목길에 집중된 다중인파 사전 관리 계획 전무, 112 긴급신고 접수 후에도 현장 통제 실패.
+            </p>
+          </div>
+          <div style="background:rgba(244,63,94,.12);padding:14px 18px;border-radius:12px;font-size:16px;color:#fca5a5;border-left:4px solid var(--r);">
+            <strong>예방 부재:</strong> 주최자 유무를 핑계 댄 안전 공백
+          </div>
+        </div>
+
+        <div class="glass-r" data-step="3" style="padding:32px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--r);font-weight:700;margin-bottom:8px;">2023. 07. 15</div>
+            <h3 style="font-size:32px;font-weight:800;margin-bottom:16px;">오송 지하차도 참사</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.6;margin-bottom:20px;">
+              14명 희생. 미호강 제방 붕괴 위험 경고가 수차례 전파되었음에도 지자체·경찰·행정기관 간 책임 핑퐁과 통제 미실시.
+            </p>
+          </div>
+          <div style="background:rgba(244,63,94,.12);padding:14px 18px;border-radius:12px;font-size:16px;color:#fca5a5;border-left:4px solid var(--r);">
+            <strong>지휘 공백:</strong> 기관 간 단절과 안이한 매뉴얼 맹신
+          </div>
+        </div>
+
+        <div class="glass-r" data-step="4" style="padding:32px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--r);font-weight:700;margin-bottom:8px;">2024. 06. 24</div>
+            <h3 style="font-size:32px;font-weight:800;margin-bottom:16px;">화성 아리셀 화재</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.6;margin-bottom:20px;">
+              23명 희생. 리튬배터리 위험성 교육 및 기본 피난로 확보 미비, 위험의 외주화와 이주노동자 안전 불평등의 민낯.
+            </p>
+          </div>
+          <div style="background:rgba(244,63,94,.12);padding:14px 18px;border-radius:12px;font-size:16px;color:#fca5a5;border-left:4px solid var(--r);">
+            <strong>취약계층 소외:</strong> 이윤 우선주의와 위험의 전가
+          </div>
+        </div>
+      </div>
+      <div class="glass" style="margin-top:24px;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:20px;font-weight:700;color:var(--t);">
+          🚨 <strong>참사의 교훈:</strong> 사고는 우연이 아닌, 제도의 결함과 안전 불감증, 그리고 책무성 부재가 누적된 필연적 결과였습니다.
+        </div>
+        <div class="tag" style="background:rgba(244,63,94,.2);color:var(--r);font-size:16px;">구조적 입법 개혁의 절박성</div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 03. 기존 안전 체계의 한계 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-a"><iconify-icon icon="solar:clipboard-remove-bold"></iconify-icon> SYSTEM LIMITATION</div>
+        <h2>왜 기존 '재난안전법' 체계로는 막지 못했는가?</h2>
+        <p>1995년 삼풍백화점, 2003년 대구지하철 참사 이후 만들어진 법 체계의 한계</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;">
+        <div class="glass-a" data-step="1" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:60px;height:60px;border-radius:16px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:document-text-bold" style="font-size:32px;color:var(--a);"></iconify-icon>
+            </div>
+            <h3 style="font-size:28px;font-weight:700;margin-bottom:16px;">행정 편의적 관료주의</h3>
+            <p style="font-size:19px;color:var(--mu);line-height:1.7;margin-bottom:24px;">
+              기존 법률은 국가와 관료 조직의 시각에서 재난을 규정합니다. '관리'와 '통제'에 치중하여, 현장의 생생한 위험 징후와 시민들의 절박한 목소리를 수용하지 못했습니다.
+            </p>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;font-size:17px;color:#fde68a;">
+            <li style="display:flex;align-items:center;gap:8px;"><iconify-icon icon="solar:close-circle-bold"></iconify-icon> 매뉴얼 중심의 면피성 행정</li>
+            <li style="display:flex;align-items:center;gap:8px;"><iconify-icon icon="solar:close-circle-bold"></iconify-icon> 현장 지휘관의 권한 부재</li>
+          </ul>
+        </div>
+
+        <div class="glass-a" data-step="2" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:60px;height:60px;border-radius:16px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:hammer-bold" style="font-size:32px;color:var(--a);"></iconify-icon>
+            </div>
+            <h3 style="font-size:28px;font-weight:700;margin-bottom:16px;">사후 수습 & 말단 처벌</h3>
+            <p style="font-size:19px;color:var(--mu);line-height:1.7;margin-bottom:24px;">
+              사고가 터진 뒤에야 허둥지둥 수습하고, 현장 실무자 몇 명을 처벌하는 것으로 마무리되었습니다. 시스템의 근본 결함과 상급 정책결정권자의 구조적 책임은 묻지 못했습니다.
+            </p>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;font-size:17px;color:#fde68a;">
+            <li style="display:flex;align-items:center;gap:8px;"><iconify-icon icon="solar:close-circle-bold"></iconify-icon> 꼬리 자르기식 사법처리</li>
+            <li style="display:flex;align-items:center;gap:8px;"><iconify-icon icon="solar:close-circle-bold"></iconify-icon> 재발방지 대책의 용두사미</li>
+          </ul>
+        </div>
+
+        <div class="glass-a" data-step="3" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:60px;height:60px;border-radius:16px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:users-group-rounded-bold" style="font-size:32px;color:var(--a);"></iconify-icon>
+            </div>
+            <h3 style="font-size:28px;font-weight:700;margin-bottom:16px;">피해자의 철저한 소외</h3>
+            <p style="font-size:19px;color:var(--mu);line-height:1.7;margin-bottom:24px;">
+              피해자와 유가족을 주권자가 아닌 '보상금 지급 대상자'나 '잠재적 민원인'으로 대우했습니다. 조사 과정에서 배제되고, 정보 접근이 차단되며 고통이 가중되었습니다.
+            </p>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;font-size:17px;color:#fde68a;">
+            <li style="display:flex;align-items:center;gap:8px;"><iconify-icon icon="solar:close-circle-bold"></iconify-icon> 정보 비공개와 불통</li>
+            <li style="display:flex;align-items:center;gap:8px;"><iconify-icon icon="solar:close-circle-bold"></iconify-icon> 2차 가해에 무방비 노출</li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px;font-size:20px;color:var(--mu);">
+        결론: 기존 <span style="color:#fff;font-weight:700;">'재난및안전관리기본법'</span>은 행정 절차법에 불과하여, 헌법적 가치로서의 생명권을 실질적으로 보장할 수 없었습니다.
+      </div>
+    </div>
+    `
+  },
+
+  // ── 04. 패러다임 대전환 ──
+  {
+    n: 2,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-c"><iconify-icon icon="solar:refresh-circle-bold"></iconify-icon> PARADIGM SHIFT</div>
+        <h2>재난 철학의 근본적 전환: 관리에서 '안전권'으로</h2>
+        <p>국가 통제의 객체에서 인간 존엄을 보장하는 인권의 주체로 도약합니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;flex:1;align-items:stretch;">
+        <div class="glass" data-step="1" style="padding:44px;border:1px solid rgba(244,63,94,.3);background:rgba(244,63,94,.03);">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px;">
+            <span style="background:rgba(244,63,94,.2);color:var(--r);padding:6px 16px;border-radius:8px;font-weight:800;font-size:18px;">PAST</span>
+            <h3 style="font-size:32px;font-weight:800;color:#fca5a5;">기존 체계: 행정 통제 패러다임</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <div style="background:rgba(255,255,255,.03);padding:18px 24px;border-radius:14px;">
+              <div style="font-size:16px;color:var(--mu);margin-bottom:4px;">철학과 관점</div>
+              <div style="font-size:22px;font-weight:700;">치안·행정 위주의 소극적 위험 관리</div>
+            </div>
+            <div style="background:rgba(255,255,255,.03);padding:18px 24px;border-radius:14px;">
+              <div style="font-size:16px;color:var(--mu);margin-bottom:4px;">참사 원인 조사</div>
+              <div style="font-size:22px;font-weight:700;">소관 부처의 '셀프 조사' 및 사법 수사 중심</div>
+            </div>
+            <div style="background:rgba(255,255,255,.03);padding:18px 24px;border-radius:14px;">
+              <div style="font-size:16px;color:var(--mu);margin-bottom:4px;">피해자의 위치</div>
+              <div style="font-size:22px;font-weight:700;">구호 및 배·보상의 수동적 수혜자</div>
+            </div>
+            <div style="background:rgba(255,255,255,.03);padding:18px 24px;border-radius:14px;">
+              <div style="font-size:16px;color:var(--mu);margin-bottom:4px;">정보 정책</div>
+              <div style="font-size:22px;font-weight:700;">혼란 방지 명목의 정보 비공개와 통제</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-c" data-step="2" style="padding:44px;">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px;">
+            <span style="background:rgba(0,212,255,.2);color:var(--c);padding:6px 16px;border-radius:8px;font-weight:800;font-size:18px;">FUTURE</span>
+            <h3 style="font-size:32px;font-weight:800;" class="gc">생명안전기본법: 인권 보장 패러다임</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <div style="background:rgba(0,212,255,.08);padding:18px 24px;border-radius:14px;border-left:4px solid var(--c);">
+              <div style="font-size:16px;color:var(--c);margin-bottom:4px;">철학과 관점</div>
+              <div style="font-size:22px;font-weight:700;">모든 사람의 천부적 '안전권' 보장 책무</div>
+            </div>
+            <div style="background:rgba(0,212,255,.08);padding:18px 24px;border-radius:14px;border-left:4px solid var(--c);">
+              <div style="font-size:16px;color:var(--c);margin-bottom:4px;">참사 원인 조사</div>
+              <div style="font-size:22px;font-weight:700;">상설 독립 전문조사기구의 구조적 결함 규명</div>
+            </div>
+            <div style="background:rgba(0,212,255,.08);padding:18px 24px;border-radius:14px;border-left:4px solid var(--c);">
+              <div style="font-size:16px;color:var(--c);margin-bottom:4px;">피해자의 위치</div>
+              <div style="font-size:22px;font-weight:700;">진상규명 참여권 및 알 권리를 가진 주권자</div>
+            </div>
+            <div style="background:rgba(0,212,255,.08);padding:18px 24px;border-radius:14px;border-left:4px solid var(--c);">
+              <div style="font-size:16px;color:var(--c);margin-bottom:4px;">정보 정책</div>
+              <div style="font-size:22px;font-weight:700;">안전 정보의 전면 공개 및 사전 안전영향평가</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 05. 법안 개요 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-p"><iconify-icon icon="solar:diploma-verified-bold"></iconify-icon> LEGAL ARCHITECTURE</div>
+        <h2>생명안전기본법의 법적 위상과 6대 핵심 기둥</h2>
+        <p>개별 법령을 통할하는 재난안전 분야의 '최상위 헌법적 기본법'</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:24px;flex:1;">
+        <div class="glass-e" data-step="1" style="padding:28px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <iconify-icon icon="solar:user-bold" style="font-size:32px;color:var(--e);"></iconify-icon>
+            <h4 style="font-size:24px;font-weight:700;">1. 안전권 명문화</h4>
+          </div>
+          <p style="font-size:17px;color:var(--mu);line-height:1.6;">모든 사람이 안전하게 살 권리를 헌법적 기본권으로 규정하고 국가의 무한 보장 책무 천명</p>
+        </div>
+
+        <div class="glass-a" data-step="1" style="padding:28px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <iconify-icon icon="solar:buildings-bold" style="font-size:32px;color:var(--a);"></iconify-icon>
+            <h4 style="font-size:24px;font-weight:700;">2. 국가·기업 책무 강화</h4>
+          </div>
+          <p style="font-size:17px;color:var(--mu);line-height:1.6;">국가안전권보장종합계획 수립(5년) 및 영리 추구보다 인간 생명을 우선시하는 기업의 의무</p>
+        </div>
+
+        <div class="glass-r" data-step="2" style="padding:28px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <iconify-icon icon="solar:heart-bold" style="font-size:32px;color:var(--r);"></iconify-icon>
+            <h4 style="font-size:24px;font-weight:700;">3. 피해자의 권리 보장</h4>
+          </div>
+          <p style="font-size:17px;color:var(--mu);line-height:1.6;">알 권리, 구조받을 권리, 인도적 처우, 생활·치유 지원 및 조사 참여권 등 5대 권리 명문화</p>
+        </div>
+
+        <div class="glass-c" data-step="2" style="padding:28px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <iconify-icon icon="solar:magnifer-bold" style="font-size:32px;color:var(--c);"></iconify-icon>
+            <h4 style="font-size:24px;font-weight:700;">4. 상설 독립 조사기구</h4>
+          </div>
+          <p style="font-size:17px;color:var(--mu);line-height:1.6;">외압 없는 독립적 전문조사기구를 상설화하여 셀프 조사를 배제하고 재발방지 권고권 확립</p>
+        </div>
+
+        <div class="glass-b" data-step="3" style="padding:28px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <iconify-icon icon="solar:shield-warning-bold" style="font-size:32px;color:var(--b);"></iconify-icon>
+            <h4 style="font-size:24px;font-weight:700;">5. 안전영향평가제도</h4>
+          </div>
+          <p style="font-size:17px;color:var(--mu);line-height:1.6;">주요 정책·개발사업이 시민 안전에 미칠 영향을 사전 분석·시뮬레이션하는 예방 시스템</p>
+        </div>
+
+        <div class="glass-p" data-step="3" style="padding:28px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <iconify-icon icon="solar:candle-bold" style="font-size:32px;color:var(--p);"></iconify-icon>
+            <h4 style="font-size:24px;font-weight:700;">6. 기억과 추모의 권리</h4>
+          </div>
+          <p style="font-size:17px;color:var(--mu);line-height:1.6;">4월 16일 생명안전의 날 법제화, 참사 아카이브 구축, 추모사업 및 2차 가해 방지 의무화</p>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 06. 핵심 기둥 1: 안전권 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-e"><iconify-icon icon="solar:hand-stars-bold"></iconify-icon> PILLAR 1: HUMAN RIGHTS</div>
+        <h2>헌법적 기본권으로서의 '안전권(Right to Safety)'</h2>
+        <p>"모든 사람은 위험으로부터 안전하게 보호받을 권리를 가진다"</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:36px;flex:1;align-items:center;">
+        <div class="glass-e" style="padding:48px;">
+          <div style="font-size:20px;color:var(--e);font-weight:700;margin-bottom:12px;">생명안전기본법 핵심 조항</div>
+          <blockquote style="font-size:30px;font-weight:800;line-height:1.6;letter-spacing:-0.01em;margin-bottom:28px;border-left:5px solid var(--e);padding-left:24px;">
+            "모든 사람은 성별, 연령, 종교, 장애, 인종, 사회적 신분이나 고용 형태 등에 관계없이 일상생활과 일터에서 생명과 안전을 위협받지 않고 살아갈 권리를 가진다."
+          </blockquote>
+          <div style="font-size:18px;color:var(--mu);line-height:1.7;">
+            안전은 국가가 베푸는 시혜적 복지가 아닙니다. 헌법 제10조(인간의 존엄과 가치, 행복추구권) 및 헌법 제34조 제6항(재해 예방과 국민 보호)을 구체화한 <strong style="color:var(--t);">양도할 수 없는 주권자의 기본권</strong>입니다.
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div class="glass" data-step="1" style="padding:28px;">
+            <h4 style="font-size:22px;font-weight:700;color:var(--e);margin-bottom:8px;display:flex;align-items:center;gap:10px;">
+              <iconify-icon icon="solar:check-circle-bold"></iconify-icon> 보편적 비차별 원칙
+            </h4>
+            <p style="font-size:17px;color:var(--mu);line-height:1.6;">
+              정규직/비정규직, 내국인/외국인 노동자, 노약자/장애인을 불문하고 어떠한 안전 사각지대도 허용하지 않습니다.
+            </p>
+          </div>
+
+          <div class="glass" data-step="2" style="padding:28px;">
+            <h4 style="font-size:22px;font-weight:700;color:var(--c);margin-bottom:8px;display:flex;align-items:center;gap:10px;">
+              <iconify-icon icon="solar:check-circle-bold"></iconify-icon> 일상과 일터의 통합 보장
+            </h4>
+            <p style="font-size:17px;color:var(--mu);line-height:1.6;">
+              공공장소, 교통수단, 축제·행사뿐 아니라 노동 현장에서의 안전까지 삶의 전 영역을 포괄하는 포괄적 권리입니다.
+            </p>
+          </div>
+
+          <div class="glass" data-step="3" style="padding:28px;">
+            <h4 style="font-size:22px;font-weight:700;color:var(--p);margin-bottom:8px;display:flex;align-items:center;gap:10px;">
+              <iconify-icon icon="solar:check-circle-bold"></iconify-icon> 국가의 적극적 보호 의무
+            </h4>
+            <p style="font-size:17px;color:var(--mu);line-height:1.6;">
+              위험 발생 시 소극적 대처를 넘어, 위험을 사전에 인지·예방·제거할 법적 작위의무가 국가에 부여됩니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 07. 주체별 책무 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-a"><iconify-icon icon="solar:shield-network-bold"></iconify-icon> GOVERNANCE & RESPONSIBILITY</div>
+        <h2>국가, 지자체, 기업의 3각 안전 책무 구조</h2>
+        <p>권한이 있는 곳에 명확한 책임을 부여하여 위험의 외주화를 원천 차단합니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;">
+        <div class="glass-c" data-step="1" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="badge badge-c" style="margin-bottom:16px;">CENTRAL GOVERNMENT</div>
+            <h3 style="font-size:30px;font-weight:800;margin-bottom:20px;">국가 (중앙정부)</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--t);line-height:1.6;">
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--c);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>5년 주기 종합계획 수립:</strong> 국가안전권보장종합계획 수립 및 국회 보고</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--c);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>재원 확충 의무:</strong> 안전예산 법정 확보 및 취약 부문 우선 배정</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--c);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>통합 컨트롤타워:</strong> 범정부 차원의 신속 지휘 및 기관 간 공조</span>
+              </li>
+            </ul>
+          </div>
+          <div style="background:rgba(0,212,255,.1);padding:14px 18px;border-radius:12px;font-size:16px;color:#bae6fd;">
+            <strong>핵심 역할:</strong> 국가 총괄 제도화 및 무한 책임 원칙
+          </div>
+        </div>
+
+        <div class="glass-e" data-step="2" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="badge badge-e" style="margin-bottom:16px;">LOCAL GOVERNMENTS</div>
+            <h3 style="font-size:30px;font-weight:800;margin-bottom:20px;">지방자치단체</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--t);line-height:1.6;">
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--e);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>지역 실행계획 수립:</strong> 지자체 특성에 맞는 재난 예방 및 현장 매뉴얼 정비</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--e);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>다중인파·취약시설 관리:</strong> 주최자 없는 행사도 지자체가 안전 관리 책임</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--e);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>시민참여 네트워크:</strong> 주민 안전자치기구 운영 및 신속 대피 지원</span>
+              </li>
+            </ul>
+          </div>
+          <div style="background:rgba(16,185,129,.1);padding:14px 18px;border-radius:12px;font-size:16px;color:#a7f3d0;">
+            <strong>핵심 역할:</strong> 현장 밀착형 예방 및 주민 참여형 안전망
+          </div>
+        </div>
+
+        <div class="glass-a" data-step="3" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="badge badge-a" style="margin-bottom:16px;">ENTERPRISES & BIZ</div>
+            <h3 style="font-size:30px;font-weight:800;margin-bottom:20px;">기업 및 사업자</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--t);line-height:1.6;">
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--a);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>생명 우선 경영:</strong> 이윤 추구 활동에 앞서 노동자 및 시민 안전 우선</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--a);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>원청의 공동 책임:</strong> 하청·파견 노동자의 안전보건 의무 원청에 동일 부여</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-read-bold" style="color:var(--a);font-size:24px;flex-shrink:0;"></iconify-icon>
+                <span><strong>위험 정보 공개:</strong> 작업장 위험 요인 노동자 및 인근 주민에게 사전 고지</span>
+              </li>
+            </ul>
+          </div>
+          <div style="background:rgba(245,158,11,.1);padding:14px 18px;border-radius:12px;font-size:16px;color:#fde68a;">
+            <strong>핵심 역할:</strong> 위험의 외주화 금지 및 사회적 안전책무 실천
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 08. 핵심 기둥 2: 피해자의 권리 5대 원칙 ──
+  {
+    n: 5,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-r"><iconify-icon icon="solar:heart-circle-bold"></iconify-icon> PILLAR 2: VICTIMS' RIGHTS</div>
+        <h2>재난 참사 피해자의 5대 기본 권리</h2>
+        <p>시혜와 동정의 대상에서 벗어나 당당한 권리의 주체로 바로 섭니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:20px;flex:1;">
+        <div class="glass-r" data-step="1" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:44px;font-weight:900;color:var(--r);margin-bottom:12px;">01</div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">구조받을 권리</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              골든타임 내 차별 없는 신속한 수색·구조와 응급 의료 지원을 받을 절대적 권리
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(244,63,94,.15);color:#fecdd3;font-size:14px;">생명 직결 보장</div>
+        </div>
+
+        <div class="glass-r" data-step="2" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:44px;font-weight:900;color:var(--r);margin-bottom:12px;">02</div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">알 권리 (정보접근)</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              사고 원인, 수색 현황, 정부 대응 및 조사 진행 상황을 실시간 투명하게 브리핑받을 권리
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(244,63,94,.15);color:#fecdd3;font-size:14px;">비밀주의 철폐</div>
+        </div>
+
+        <div class="glass-r" data-step="3" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:44px;font-weight:900;color:var(--r);margin-bottom:12px;">03</div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">인도적 처우와 존엄</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              희생자의 신원 확인, 유류품 인도, 장례 절차 전반에서 인간으로서의 존엄을 보호받을 권리
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(244,63,94,.15);color:#fecdd3;font-size:14px;">인간 존엄 수호</div>
+        </div>
+
+        <div class="glass-r" data-step="4" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:44px;font-weight:900;color:var(--r);margin-bottom:12px;">04</div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">생활·치유 지원</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              외상후스트레스장애(PTSD) 심리치료, 의료·법률 지원 및 일상 복귀를 위한 생계 안정권
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(244,63,94,.15);color:#fecdd3;font-size:14px;">장기 지속 지원</div>
+        </div>
+
+        <div class="glass-r" data-step="5" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:44px;font-weight:900;color:var(--r);margin-bottom:12px;">05</div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">진상규명 참여권</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              조사기구에 의견을 진술하고 증거 제출 및 청문회 참관을 통해 진실 규명에 주체로 참여할 권리
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(244,63,94,.15);color:#fecdd3;font-size:14px;">주체적 참여</div>
+        </div>
+      </div>
+      <div class="glass" style="margin-top:20px;padding:18px 30px;font-size:18px;color:var(--mu);display:flex;align-items:center;gap:14px;">
+        <iconify-icon icon="solar:info-circle-bold" style="color:var(--r);font-size:24px;"></iconify-icon>
+        <span>피해자의 범위에는 직접 희생자뿐만 아니라 유가족, 생존자, 구조 참여자 및 참사 목격자까지 포괄적으로 포함됩니다.</span>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 09. 피해자 보호: 2차 가해 방지 ──
+  {
+    n: 2,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-r"><iconify-icon icon="solar:shield-cross-bold"></iconify-icon> PROTECTION SYSTEM</div>
+        <h2>2차 피해 방지: 혐오와 모욕으로부터의 제도적 방패</h2>
+        <p>참사 이후 피해자와 유가족의 영혼을 갉아먹는 악의적 왜곡과 혐오를 국가가 차단합니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;flex:1;align-items:stretch;">
+        <div class="glass" data-step="1" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:22px;color:var(--r);font-weight:700;margin-bottom:16px;">현실의 심각한 실태</div>
+            <h3 style="font-size:30px;font-weight:800;margin-bottom:20px;">사회적 참사 때마다 반복된 잔인한 2차 가해</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:18px;font-size:18px;color:var(--mu);line-height:1.7;">
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:close-square-bold" style="color:var(--r);font-size:22px;flex-shrink:0;"></iconify-icon>
+                <span><strong>피해자 유책론(Victim Blaming):</strong> "놀러 갔다가 당한 사고", "개인의 부주의"라며 참사의 구조적 책임을 은폐</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:close-square-bold" style="color:var(--r);font-size:22px;flex-shrink:0;"></iconify-icon>
+                <span><strong>악의적 가짜뉴스와 모욕:</strong> 유가족에 대한 온라인 악플, 현수막 테러 및 허위 음모론 유포</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:close-square-bold" style="color:var(--r);font-size:22px;flex-shrink:0;"></iconify-icon>
+                <span><strong>공권력의 방조:</strong> 현행 형법상 모욕죄나 명예훼손죄로는 집단적 혐오와 2차 가해를 차단하는 데 역부족</span>
+              </li>
+            </ul>
+          </div>
+          <div style="background:rgba(244,63,94,.1);padding:16px 20px;border-radius:14px;color:#fca5a5;font-size:17px;">
+            ⚠️ 2차 가해는 생존자와 유가족의 일상 회복을 가로막는 사회적 살인입니다.
+          </div>
+        </div>
+
+        <div class="glass-r" data-step="2" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:22px;color:var(--r);font-weight:700;margin-bottom:16px;">생명안전기본법의 법적 대응</div>
+            <h3 style="font-size:30px;font-weight:800;margin-bottom:20px;">국가·지자체의 2차 피해 방지 의무 법제화</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:18px;font-size:18px;color:var(--t);line-height:1.7;">
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-circle-bold" style="color:var(--r);font-size:22px;flex-shrink:0;"></iconify-icon>
+                <span><strong>상시 모니터링 & 신속 삭제:</strong> 참사 피해자에 대한 허위사실 및 혐오 표현 즉각 삭제·차단 요청</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-circle-bold" style="color:var(--r);font-size:22px;flex-shrink:0;"></iconify-icon>
+                <span><strong>피해자 인권 옴부즈만 설치:</strong> 법률·행정 구제 절차를 국가 예산으로 전폭 지원</span>
+              </li>
+              <li style="display:flex;gap:12px;">
+                <iconify-icon icon="solar:check-circle-bold" style="color:var(--r);font-size:22px;flex-shrink:0;"></iconify-icon>
+                <span><strong>재난보도 가이드라인 의무화:</strong> 무분별한 현장 촬영 및 피해자 사생활 침해 보도 강력 제재</span>
+              </li>
+            </ul>
+          </div>
+          <div style="background:rgba(244,63,94,.2);padding:16px 20px;border-radius:14px;color:#fff;font-weight:700;font-size:17px;">
+            🛡️ 국가가 피해자 인권 보호의 최전선 방어선이 됩니다.
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 10. 기억과 연대: 기억과 추모의 권리 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-p"><iconify-icon icon="solar:candle-bold"></iconify-icon> MEMORY & SOLIDARITY</div>
+        <h2>기억과 추모의 권리: 망각을 넘어선 사회적 치유</h2>
+        <p>"참사를 기억하지 않는 사회는 반드시 같은 비극을 다시 맞이하게 됩니다"</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;">
+        <div class="glass-p" data-step="1" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:64px;height:64px;border-radius:18px;background:rgba(167,139,250,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:calendar-bold" style="font-size:36px;color:var(--p);"></iconify-icon>
+            </div>
+            <h3 style="font-size:26px;font-weight:700;margin-bottom:16px;">생명안전의 날 법제화</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              매년 <strong>4월 16일</strong>을 국가 차원의 공식 <span style="color:var(--p);font-weight:700;">'국민생명안전의 날'</span>로 정립하여, 희생자를 기리고 국가적 안전 결의를 다지는 공식 기념행사를 거행합니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(167,139,250,.15);color:#ddd6fe;font-size:15px;">국가적 추모 정례화</div>
+        </div>
+
+        <div class="glass-p" data-step="2" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:64px;height:64px;border-radius:18px;background:rgba(167,139,250,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:monument-bold" style="font-size:36px;color:var(--p);"></iconify-icon>
+            </div>
+            <h3 style="font-size:26px;font-weight:700;margin-bottom:16px;">추모 공간 & 기억관 건립</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              참사 현장 및 도심에 추모 공간, 기억공원, 생명안전복합체험관을 조성하여 참사의 아픔을 사회적 치유와 시민 안전 교육의 산실로 승화시킵니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(167,139,250,.15);color:#ddd6fe;font-size:15px;">사회적 기억 인프라</div>
+        </div>
+
+        <div class="glass-p" data-step="3" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:64px;height:64px;border-radius:18px;background:rgba(167,139,250,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:archive-bold" style="font-size:36px;color:var(--p);"></iconify-icon>
+            </div>
+            <h3 style="font-size:26px;font-weight:700;margin-bottom:16px;">국가 재난 아카이브 구축</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              참사의 발생 과정, 수습 기록, 독립조사위원회 보고서, 유가족의 구술 기록을 영구 보존하고 국민에게 전면 공개하여 미래 세대를 위한 교훈으로 삼습니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(167,139,250,.15);color:#ddd6fe;font-size:15px;">역사적 기록 영구화</div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 11. 핵심 기둥 3: 상설 독립적 재난 참사 조사기구 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-c"><iconify-icon icon="solar:scale-bold"></iconify-icon> PILLAR 3: INDEPENDENT INVESTIGATION</div>
+        <h2>상설 '독립적 재난조사기구'의 설치</h2>
+        <p>참사 때마다 임시 특조위를 만들다 해산하는 비효율과 정쟁을 끝냅니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;flex:1;align-items:stretch;">
+        <div class="glass" data-step="1" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--a);font-weight:700;margin-bottom:12px;">비정상적 기존 방식</div>
+            <h3 style="font-size:28px;font-weight:800;margin-bottom:20px;">사후 임시 특별조사위원회의 한계</h3>
+            <div style="display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--mu);line-height:1.6;">
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:close-circle-bold" style="color:var(--r);font-size:22px;"></iconify-icon> 참사 발생 후 특별법 통과까지 수개월~수년 소요</div>
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:close-circle-bold" style="color:var(--r);font-size:22px;"></iconify-icon> 조사 기간 만료 압박 및 정권 교체에 따른 외압과 방해</div>
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:close-circle-bold" style="color:var(--r);font-size:22px;"></iconify-icon> 조사 완료 후 조직 해산으로 전문 인력과 노하우 사장</div>
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:close-circle-bold" style="color:var(--r);font-size:22px;"></iconify-icon> 권고안을 정부가 이행하지 않아도 강제할 수단 전무</div>
+            </div>
+          </div>
+          <div style="background:rgba(245,158,11,.1);padding:16px 20px;border-radius:12px;color:#fde68a;font-size:16px;">
+            결과: 사회적 갈등 장기화와 진상규명 표류
+          </div>
+        </div>
+
+        <div class="glass-c" data-step="2" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--c);font-weight:700;margin-bottom:12px;">생명안전기본법의 해법</div>
+            <h3 style="font-size:28px;font-weight:800;margin-bottom:20px;" class="gc">상설 전문 '생명안전조사위원회'</h3>
+            <div style="display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--t);line-height:1.6;">
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--c);font-size:22px;"></iconify-icon> <strong>상시 즉각 투입:</strong> 참사 발생 즉시 전문 조사관 골든타임 현장 투입</div>
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--c);font-size:22px;"></iconify-icon> <strong>고도의 독립성:</strong> 대통령·국회·사법부 어디에도 종속되지 않는 헌법적 독립성</div>
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--c);font-size:22px;"></iconify-icon> <strong>전문성 축적:</strong> 재난 유형별 상설 전문조사 풀 및 국제 표준 조사 기법 활용</div>
+              <div style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--c);font-size:22px;"></iconify-icon> <strong>제도개선 강제력:</strong> 권고안 이행 실태를 정기적으로 국회에 의무 보고</div>
+            </div>
+          </div>
+          <div data-step="3" style="background:rgba(0,212,255,.15);padding:16px 20px;border-radius:12px;color:#bae6fd;font-size:16px;">
+            해외 모델: 미국 NTSB(국가교통안전위), 영국 RAIB 수준의 상설 독립 조사관 체계
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 12. 조사기구 권한 ──
+  {
+    n: 4,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-c"><iconify-icon icon="solar:shield-keyhole-bold"></iconify-icon> INVESTIGATION POWER</div>
+        <h2>'셀프 조사'의 종식과 강력한 조사 권한</h2>
+        <p>조사 대상자가 스스로를 조사하는 모순을 깨고, 실질적인 진실 규명 칼자루를 쥡니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;flex:1;">
+        <div class="glass-c" data-step="1" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:56px;height:56px;border-radius:14px;background:rgba(0,212,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <iconify-icon icon="solar:box-minimalistic-bold" style="font-size:30px;color:var(--c);"></iconify-icon>
+            </div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">독립적 현장 보존 & 압수</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              사고 현장 즉시 봉쇄권, 블랙박스·CCTV·통화녹음 등 핵심 증거에 대한 최우선 보전 및 수거 권한
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(0,212,255,.12);color:var(--c);">증거 인멸 차단</div>
+        </div>
+
+        <div class="glass-c" data-step="2" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:56px;height:56px;border-radius:14px;background:rgba(0,212,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <iconify-icon icon="solar:document-bold" style="font-size:30px;color:var(--c);"></iconify-icon>
+            </div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">자료제출 & 동행명령권</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              정부 부처·지자체·기업의 내부 문건 제출 요구권 및 정당한 사유 없는 불응 시 과태료·동행명령 발부
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(0,212,255,.12);color:var(--c);">비밀주의 타파</div>
+        </div>
+
+        <div class="glass-c" data-step="3" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:56px;height:56px;border-radius:14px;background:rgba(0,212,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <iconify-icon icon="solar:microphone-3-bold" style="font-size:30px;color:var(--c);"></iconify-icon>
+            </div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">공개 청문회 개최권</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              최고 책임자 및 현장 관계자를 증인으로 소환하여 국민과 피해자 앞에서 실시간 증언을 청취하는 공개 청문회
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(0,212,255,.12);color:var(--c);">투명한 진상규명</div>
+        </div>
+
+        <div class="glass-c" data-step="4" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:56px;height:56px;border-radius:14px;background:rgba(0,212,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+              <iconify-icon icon="solar:diploma-bold" style="font-size:30px;color:var(--c);"></iconify-icon>
+            </div>
+            <h4 style="font-size:22px;font-weight:700;margin-bottom:14px;">재발방지 권고 강제력</h4>
+            <p style="font-size:16px;color:var(--mu);line-height:1.6;">
+              정부와 지자체는 조사위원회의 시정 권고를 의무적으로 이행해야 하며, 불이행 시 사유를 국회에 공식 소명
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(0,212,255,.12);color:var(--c);">실질적 제도개선</div>
+        </div>
+      </div>
+      <div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);padding:18px 30px;border-radius:16px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:18px;color:var(--t);">🎯 <strong>원칙:</strong> 단순 개인의 과실 처벌을 넘어, 법령·조직문화·예산 등 <strong>'구조적 원인'</strong>을 밝혀내는 데 집중합니다.</span>
+        <span class="badge badge-c" style="margin-bottom:0;">원인 규명 ➔ 구조 개혁</span>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 13. 핵심 기둥 4: 사전 예방 - 안전영향평가 제도 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-e"><iconify-icon icon="solar:shield-check-bold"></iconify-icon> PILLAR 4: PREVENTIVE ASSESSMENT</div>
+        <h2>사전 예방의 핵심: '안전영향평가' 제도 도입</h2>
+        <p>환경영향평가처럼, 주요 정책·개발·제도 도입 시 위험을 사전 시뮬레이션합니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;flex:1;align-items:stretch;">
+        <div class="glass-e" data-step="1" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--e);font-weight:700;margin-bottom:12px;">개념 및 도입 취지</div>
+            <h3 style="font-size:30px;font-weight:800;margin-bottom:20px;">사고 후 대책 마련(소 잃고 외양간 고치기)의 종식</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;margin-bottom:20px;">
+              지금까지는 도시 개발, 대형 행사, 신기술 규제 완화가 추진될 때 '효율성'과 '경제성'만 따졌습니다.
+            </p>
+            <p style="font-size:18px;color:var(--t);line-height:1.7;">
+              <strong>안전영향평가(Safety Impact Assessment)</strong>는 국가·지자체의 대규모 정책, 인프라 공사, 도시 재개발, 다중밀집 행사 기획 단계에서 <strong>'위험이 시민에게 미칠 영향'을 과학적으로 사전 검증</strong>하는 제도입니다.
+            </p>
+          </div>
+          <div style="background:rgba(16,185,129,.15);padding:16px 20px;border-radius:14px;color:#a7f3d0;font-size:17px;font-weight:600;">
+            💡 위험 요소 미해소 시 사업 승인 보류 및 설계 변경 의무화
+          </div>
+        </div>
+
+        <div class="glass" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="font-size:20px;color:var(--c);font-weight:700;margin-bottom:16px;">평가 프로세스 (4단계)</div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div data-step="2" style="background:rgba(255,255,255,.03);padding:16px 20px;border-radius:12px;display:flex;align-items:center;gap:16px;">
+              <span style="font-size:24px;font-weight:900;color:var(--c);">01</span>
+              <div>
+                <div style="font-size:18px;font-weight:700;">위험 식별 및 시나리오 구축</div>
+                <div style="font-size:15px;color:var(--mu);">최악의 기상 이변, 인파 집중, 시설 결함 등 복합 시나리오 도출</div>
+              </div>
+            </div>
+            <div data-step="2" style="background:rgba(255,255,255,.03);padding:16px 20px;border-radius:12px;display:flex;align-items:center;gap:16px;">
+              <span style="font-size:24px;font-weight:900;color:var(--e);">02</span>
+              <div>
+                <div style="font-size:18px;font-weight:700;">취약성 평가 & 주민 의견 수렴</div>
+                <div style="font-size:15px;color:var(--mu);">어린이·노약자 등 안전취약계층 접근성 및 공청회를 통한 주민 참여</div>
+              </div>
+            </div>
+            <div data-step="3" style="background:rgba(255,255,255,.03);padding:16px 20px;border-radius:12px;display:flex;align-items:center;gap:16px;">
+              <span style="font-size:24px;font-weight:900;color:var(--a);">03</span>
+              <div>
+                <div style="font-size:18px;font-weight:700;">비상대피 및 감쇄 대책 수립</div>
+                <div style="font-size:15px;color:var(--mu);">병목구간 해소, 비상탈출로 확보, 소방·의료 긴급 이송로 검증</div>
+              </div>
+            </div>
+            <div data-step="3" style="background:rgba(255,255,255,.03);padding:16px 20px;border-radius:12px;display:flex;align-items:center;gap:16px;">
+              <span style="font-size:24px;font-weight:900;color:var(--p);">04</span>
+              <div>
+                <div style="font-size:18px;font-weight:700;">평가서 공개 및 사후 모니터링</div>
+                <div style="font-size:15px;color:var(--mu);">결과 보고서 대국민 공개 및 준공·운영 후 안전 기준 준수 검증</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 14. 시민의 알 권리와 정보 공개 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-b"><iconify-icon icon="solar:eye-bold"></iconify-icon> TRANSPARENCY & CITIZEN</div>
+        <h2>시민의 알 권리: 안전 정보의 전면 공개</h2>
+        <p>"내가 사는 동네, 내가 일하는 일터가 안전한지 알 권리가 곧 살 권리입니다"</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;">
+        <div class="glass-b" data-step="1" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:64px;height:64px;border-radius:18px;background:rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:database-bold" style="font-size:36px;color:var(--b);"></iconify-icon>
+            </div>
+            <h3 style="font-size:26px;font-weight:700;margin-bottom:16px;">국가안전정보통합포털</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              유해화학물질 취급 사업장, 노후 교량·터널, 침수 위험구역, 건축물 화재등급 등 분산된 위험 정보를 하나의 지도 기반 공공 플랫폼으로 통합 구축·공개합니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(59,130,246,.15);color:#bfdbfe;font-size:15px;">정보의 일원화</div>
+        </div>
+
+        <div class="glass-b" data-step="2" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:64px;height:64px;border-radius:18px;background:rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:lock-keyhole-minimalistic-unlocked-bold" style="font-size:36px;color:var(--b);"></iconify-icon>
+            </div>
+            <h3 style="font-size:26px;font-weight:700;margin-bottom:16px;">영업비밀 핑계 차단</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              가습기살균제 참사나 화학물질 누출 사고처럼 '기업 영업비밀'을 이유로 국민 생명과 직결된 위험물질 성분 및 위험성 정보를 은폐하는 행위를 법적으로 엄단합니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(59,130,246,.15);color:#bfdbfe;font-size:15px;">생명 우선 정보공개</div>
+        </div>
+
+        <div class="glass-b" data-step="3" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="width:64px;height:64px;border-radius:18px;background:rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+              <iconify-icon icon="solar:users-group-two-rounded-bold" style="font-size:36px;color:var(--b);"></iconify-icon>
+            </div>
+            <h3 style="font-size:26px;font-weight:700;margin-bottom:16px;">시민 안전모니터링권</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              주민과 노동자가 직접 일상 공간의 위험 요소를 발견하여 지자체에 조사 및 시정을 요구할 수 있으며, 지자체는 30일 이내에 조치 결과를 의무 통보해야 합니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(59,130,246,.15);color:#bfdbfe;font-size:15px;">시민 주도 감시망</div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 15. 위험 제보자 보호와 작업중지권 ──
+  {
+    n: 2,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-a"><iconify-icon icon="solar:shield-warning-bold"></iconify-icon> WHISTLEBLOWER & WORKER</div>
+        <h2>위험을 멈출 권리: 제보자 보호와 작업중지권</h2>
+        <p>위험을 알린 사람이 불이익을 당하고, 멈추지 못한 기계에 사람이 끼이는 비극을 끝냅니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;flex:1;align-items:stretch;">
+        <div class="glass-a" data-step="1" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+              <iconify-icon icon="solar:volume-loud-bold" style="font-size:32px;color:var(--a);"></iconify-icon>
+              <h3 style="font-size:28px;font-weight:800;">위험인지 신고자(내부고발자) 강력 보호</h3>
+            </div>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;margin-bottom:24px;">
+              참사의 징후를 사전에 알고도 침묵할 수밖에 없었던 내부 고발자들을 국가가 든든하게 지켜줍니다.
+            </p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--t);">
+              <li style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--a);font-size:22px;"></iconify-icon> <strong>보복 조치 원천 무효:</strong> 해고, 징계, 전보, 따돌림 등 일체의 불이익 금지</li>
+              <li style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--a);font-size:22px;"></iconify-icon> <strong>입증 책임 전환:</strong> 불이익 조치가 신고 때문이 아니라는 것을 사용자가 증명</li>
+              <li style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--a);font-size:22px;"></iconify-icon> <strong>면책 및 보상:</strong> 신고로 인한 비밀준수 의무 위반 면책 및 공익 포상금 지급</li>
+            </ul>
+          </div>
+          <div style="background:rgba(245,158,11,.15);padding:14px 18px;border-radius:12px;color:#fde68a;font-size:16px;">
+            안전 제보는 조직에 대한 배신이 아닌, 생명을 살리는 가장 고귀한 용기입니다.
+          </div>
+        </div>
+
+        <div class="glass" data-step="2" style="padding:40px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+              <iconify-icon icon="solar:hand-pills-bold" style="font-size:32px;color:var(--r);"></iconify-icon>
+              <h3 style="font-size:28px;font-weight:800;">실질적 '작업중지권'과 긴급 대피권</h3>
+            </div>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;margin-bottom:24px;">
+              위험이 눈앞에 보일 때 스스로 작업을 멈추고 대피할 수 있는 권리를 확실하게 법으로 보장합니다.
+            </p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:16px;font-size:18px;color:var(--t);">
+              <li style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--r);font-size:22px;"></iconify-icon> <strong>급박한 위험 시 즉각 중지:</strong> 폭우·침수, 유해가스 누출, 붕괴 징후 시 작업 중단</li>
+              <li style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--r);font-size:22px;"></iconify-icon> <strong>손해배상 청구 금지:</strong> 작업 중지로 인한 생산 차질에 대한 손해배상 청구 전면 금지</li>
+              <li style="display:flex;gap:10px;"><iconify-icon icon="solar:check-circle-bold" style="color:var(--r);font-size:22px;"></iconify-icon> <strong>시민 대피 유도권:</strong> 위험 지역에 있는 시민 누구나 안전지대로 대피할 권리</li>
+            </ul>
+          </div>
+          <div style="background:rgba(244,63,94,.15);padding:14px 18px;border-radius:12px;color:#fca5a5;font-size:16px;">
+            "위험하면 멈춘다"가 노동자와 시민의 상식이 되는 안전 문화 확립
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 16. 법률 간 연계 및 시너지 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-p"><iconify-icon icon="solar:layers-bold"></iconify-icon> LEGAL SYNERGY</div>
+        <h2>안전 3법의 상호 보완적 트라이앵글 체계</h2>
+        <p>생명안전기본법, 중대재해처벌법, 재난안전기본법의 완벽한 톱니바퀴 조화</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;">
+        <div class="glass-p" data-step="1" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="badge badge-p" style="margin-bottom:16px;">PHILOSOPHY & RIGHTS</div>
+            <h3 style="font-size:28px;font-weight:800;margin-bottom:18px;">생명안전기본법</h3>
+            <div style="font-size:18px;color:var(--p);font-weight:700;margin-bottom:12px;">최상위 기본법 (헌법적 권리)</div>
+            <p style="font-size:17px;color:var(--mu);line-height:1.7;">
+              - 보편적 안전권 및 피해자 권리 선언<br>
+              - 상설 독립적 재난 참사 조사기구 운영<br>
+              - 사전 안전영향평가 및 알 권리 보장<br>
+              - 참사 기억·추모 및 2차 가해 방지
+            </p>
+          </div>
+          <div style="background:rgba(167,139,250,.15);padding:14px 18px;border-radius:12px;color:#ddd6fe;font-size:16px;font-weight:600;">
+            역할: 안전 정책의 철학, 방향타 및 진상규명
+          </div>
+        </div>
+
+        <div class="glass-r" data-step="2" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="badge badge-r" style="margin-bottom:16px;">PUNISHMENT & DETERRENCE</div>
+            <h3 style="font-size:28px;font-weight:800;margin-bottom:18px;">중대재해처벌법</h3>
+            <div style="font-size:18px;color:var(--r);font-weight:700;margin-bottom:12px;">형사 처벌 및 징벌적 배상</div>
+            <p style="font-size:17px;color:var(--mu);line-height:1.7;">
+              - 경영책임자의 안전보건확보의무 규정<br>
+              - 중대시민·산업재해 발생 시 경영진 처벌<br>
+              - 징벌적 손해배상(최대 5배)을 통한 예방<br>
+              - 영리 활동 중 안전비용 투자 유도
+            </p>
+          </div>
+          <div style="background:rgba(244,63,94,.15);padding:14px 18px;border-radius:12px;color:#fecdd3;font-size:16px;font-weight:600;">
+            역할: 안전 의무 위반에 대한 강력한 억제력
+          </div>
+        </div>
+
+        <div class="glass-b" data-step="3" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="badge badge-b" style="margin-bottom:16px;">ADMINISTRATION & ACTION</div>
+            <h3 style="font-size:28px;font-weight:800;margin-bottom:18px;">재난및안전관리기본법</h3>
+            <div style="font-size:18px;color:var(--b);font-weight:700;margin-bottom:12px;">행정 집행 및 수습 실무</div>
+            <p style="font-size:17px;color:var(--mu);line-height:1.7;">
+              - 중앙·지역 재난안전대책본부 가동<br>
+              - 소방, 경찰, 군 등 긴급구조기관 동원<br>
+              - 특별재난지역 선포 및 재정 복구 지원<br>
+              - 재난관리자원 비축 및 현장 매뉴얼 집행
+            </p>
+          </div>
+          <div style="background:rgba(59,130,246,.15);padding:14px 18px;border-radius:12px;color:#bfdbfe;font-size:16px;font-weight:600;">
+            역할: 재난 발생 시 행정적 대응 및 복구 실행
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px;font-size:19px;color:var(--t);">
+        🔗 <strong>시너지:</strong> 생명안전기본법이 <strong>방향과 원칙</strong>을 세우고, 중대재해법이 <strong>강제력</strong>을 부여하며, 재난안전법이 <strong>현장 수습</strong>을 집행합니다.
+      </div>
+    </div>
+    `
+  },
+
+  // ── 17. 입법 추진 경과 ──
+  {
+    n: 4,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-c"><iconify-icon icon="solar:history-bold"></iconify-icon> HISTORICAL MILESTONE</div>
+        <h2>연대와 눈물의 여정: 생명안전기본법 입법 히스토리</h2>
+        <p>유가족들의 눈물과 5만 시민의 청원이 마침내 국회의 벽을 넘었습니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;flex:1;align-items:stretch;">
+        <div class="glass" data-step="1" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="tag" style="background:rgba(255,255,255,.1);margin-bottom:14px;">2020년 11월</div>
+            <h4 style="font-size:24px;font-weight:800;color:var(--mu);margin-bottom:14px;">21대 국회 최초 발의</h4>
+            <p style="font-size:17px;color:var(--mu);line-height:1.6;">
+              세월호 참사 6주기를 맞아 우원식 의원 등 여야 의원 60명이 공동 발의. 하지만 정부 부처의 이견과 정쟁 속에 법안 심사 중단.
+            </p>
+          </div>
+          <div style="font-size:15px;color:#94a3b8;">임기만료 폐기 위기 직면</div>
+        </div>
+
+        <div class="glass-a" data-step="2" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="tag" style="background:rgba(245,158,11,.2);color:var(--a);margin-bottom:14px;">2023년 6월</div>
+            <h4 style="font-size:24px;font-weight:800;color:var(--a);margin-bottom:14px;">5만 국민동의청원 성사</h4>
+            <p style="font-size:17px;color:var(--mu);line-height:1.6;">
+              이태원 참사 유가족과 생명안전 시민넷의 전국 도보 행진 및 범국민 서명운동 전개. 단기간에 5만 명 동의를 돌파하며 국회 강제 회부.
+            </p>
+          </div>
+          <div style="font-size:15px;color:#fde68a;">시민사회가 일궈낸 동력</div>
+        </div>
+
+        <div class="glass-p" data-step="3" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="tag" style="background:rgba(167,139,250,.2);color:var(--p);margin-bottom:14px;">2024~2025년</div>
+            <h4 style="font-size:24px;font-weight:800;color:var(--p);margin-bottom:14px;">22대 국회 재발의 & 공청회</h4>
+            <p style="font-size:17px;color:var(--mu);line-height:1.6;">
+              22대 국회 개원 직후 박주민, 용혜인, 한창민 의원 등이 초당적 재발의. 국회 행정안전위원회 공청회와 조문 축조 심사 본격화.
+            </p>
+          </div>
+          <div style="font-size:15px;color:#ddd6fe;">입법 쟁점 조율 및 완성도 제고</div>
+        </div>
+
+        <div class="glass-e" data-step="4" style="padding:32px 24px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="tag" style="background:rgba(16,185,129,.2);color:var(--e);margin-bottom:14px;">2026년 5월</div>
+            <h4 style="font-size:24px;font-weight:800;color:var(--e);margin-bottom:14px;">국회 본회의 역사적 통과</h4>
+            <p style="font-size:17px;color:var(--mu);line-height:1.6;">
+              발의 6년 만에 국회 본회의 통과! 대한민국 헌정사 최초로 '안전권'을 국가 기본권으로 법제화한 기념비적 이정표 수립.
+            </p>
+          </div>
+          <div style="font-size:15px;color:#a7f3d0;font-weight:700;">안전 사회 대전환 시작</div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 18. 당면 과제 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-a"><iconify-icon icon="solar:settings-bold"></iconify-icon> NEXT CHALLENGES</div>
+        <h2>법 제정 그 이후: 제도 안착을 위한 3대 당면 과제</h2>
+        <p>법률 제정은 끝이 아닌 시작입니다. 하위 법령과 거버넌스가 바로 서야 합니다</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;">
+        <div class="glass-a" data-step="1" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--a);font-weight:700;margin-bottom:12px;">CHALLENGE 01</div>
+            <h3 style="font-size:26px;font-weight:800;margin-bottom:18px;">독립적 시행령 마련</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;margin-bottom:20px;">
+              관료들의 입김으로 독립조사기구의 권한이 축소되거나, 공무원 파견 중심의 '무늬만 독립기구'가 되지 않도록 민간 전문가와 유가족이 참여하는 시행령 제정위원회가 가동되어야 합니다.
+            </p>
+          </div>
+          <div style="background:rgba(245,158,11,.1);padding:14px 18px;border-radius:12px;color:#fde68a;font-size:16px;">
+            ⚠️ 행정 편의주의 독소조항 삽입 경계
+          </div>
+        </div>
+
+        <div class="glass-c" data-step="2" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--c);font-weight:700;margin-bottom:12px;">CHALLENGE 02</div>
+            <h3 style="font-size:26px;font-weight:800;margin-bottom:18px;">충분한 예산과 전문 인력</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;margin-bottom:20px;">
+              안전영향평가를 정밀하게 수행할 전문 연구 인력과 최첨단 시뮬레이션 장비, 상설 조사기구의 독립적 특별회계 예산이 기재부의 칼질 없이 안정적으로 배정되어야 합니다.
+            </p>
+          </div>
+          <div style="background:rgba(0,212,255,.1);padding:14px 18px;border-radius:12px;color:#bae6fd;font-size:16px;">
+            💰 독립 예산권과 특별회계 신설
+          </div>
+        </div>
+
+        <div class="glass-e" data-step="3" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:20px;color:var(--e);font-weight:700;margin-bottom:12px;">CHALLENGE 03</div>
+            <h3 style="font-size:26px;font-weight:800;margin-bottom:18px;">법체계 정합성 & 후속 입법</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;margin-bottom:20px;">
+              기존 '재난안전법', '산업안전보건법'과의 충돌과 중복 규정을 정비하고, 지자체 표준 안전 조례를 제정하여 중앙과 지방의 현장 집행 공백을 메우는 후속 법 정비가 필수적입니다.
+            </p>
+          </div>
+          <div style="background:rgba(16,185,129,.1);padding:14px 18px;border-radius:12px;color:#a7f3d0;font-size:16px;">
+            📑 2026 후속 정합성 개정안 연계
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 19. 미래 비전 ──
+  {
+    n: 3,
+    html: `
+    <div class="slide-content">
+      <div class="slide-header">
+        <div class="badge badge-e"><iconify-icon icon="solar:rocket-bold"></iconify-icon> FUTURE STRATEGY</div>
+        <h2>생명존중 대한민국을 향한 3대 도약 전략</h2>
+        <p>생명안전기본법이 만들어낼 대한민국의 지속 가능한 안전 미래상</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;">
+        <div class="glass-e" data-step="1" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:36px;font-weight:900;color:var(--e);margin-bottom:16px;">STRATEGY 1</div>
+            <h3 style="font-size:26px;font-weight:800;margin-bottom:18px;">'비용'에서 '가치'로의 인식 전환</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              안전은 기업의 발목을 잡는 불필요한 규제나 비용이 아닙니다. 국민의 신뢰를 얻고 국가의 지속 가능성을 보장하는 <strong>가장 수익성 높은 사회적 투자</strong>입니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(16,185,129,.15);color:#a7f3d0;font-size:15px;">안전 투자 인프라화</div>
+        </div>
+
+        <div class="glass-c" data-step="2" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:36px;font-weight:900;color:var(--c);margin-bottom:16px;">STRATEGY 2</div>
+            <h3 style="font-size:26px;font-weight:800;margin-bottom:18px;">시민 참여형 상시 위험 감시망</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              관료 주도의 일방적 지시를 넘어, 시민과 노동자가 현장의 위험을 실시간으로 감시하고 제보하는 <strong>열린 안전 플랫폼 생태계</strong>를 완성합니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(0,212,255,.15);color:#bae6fd;font-size:15px;">참여형 안전 민주주의</div>
+        </div>
+
+        <div class="glass-p" data-step="3" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:36px;font-weight:900;color:var(--p);margin-bottom:16px;">STRATEGY 3</div>
+            <h3 style="font-size:26px;font-weight:800;margin-bottom:18px;">글로벌 안전 선진국 표준 정립</h3>
+            <p style="font-size:18px;color:var(--mu);line-height:1.7;">
+              OECD 수준을 뛰어넘는 상설 독립 재난 조사 체계와 피해자 권리 보장 모델을 구축하여, 아시아를 선도하는 <strong>글로벌 인권·안전 거버넌스 롤모델</strong>로 도약합니다.
+            </p>
+          </div>
+          <div class="tag" style="background:rgba(167,139,250,.15);color:#ddd6fe;font-size:15px;">글로벌 안전 스탠다드</div>
+        </div>
+      </div>
+    </div>
+    `
+  },
+
+  // ── 20. 에필로그 ──
+  {
+    n: 1,
+    html: `
+    <div class="slide-content" style="justify-content:center;align-items:center;text-align:center;">
+      <div class="badge badge-c" style="font-size:16px;padding:8px 24px;margin-bottom:32px;">
+        <iconify-icon icon="solar:sun-2-bold" style="font-size:20px;"></iconify-icon>
+        EPILOGUE & OUR PROMISE
+      </div>
+      <h2 style="font-size:68px;font-weight:900;letter-spacing:-0.02em;line-height:1.3;margin-bottom:32px;">
+        "안전은 결코 특권이 아니라,<br>
+        <span class="gc">모두가 누려야 할 가장 존엄한 기본권입니다</span>"
+      </h2>
+      <p style="font-size:26px;color:var(--mu);max-width:1100px;line-height:1.7;margin-bottom:60px;">
+        생명안전기본법은 차가운 법 조문이 아닙니다.<br>
+        더 이상 무고한 생명이 국가의 방관 속에 스러지지 않기를 바라는,<br>
+        수많은 희생자와 유가족의 눈물로 쓴 <strong style="color:var(--t);">우리 사회의 가장 엄숙한 약속</strong>입니다.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;width:100%;max-width:1400px;">
+        <div class="glass" style="padding:24px;border-radius:18px;">
+          <div style="font-size:20px;font-weight:700;color:var(--e);margin-bottom:8px;">생명 존엄</div>
+          <div style="font-size:16px;color:var(--mu);">이윤보다 생명이 언제나 우선하는 사회</div>
+        </div>
+        <div class="glass" style="padding:24px;border-radius:18px;">
+          <div style="font-size:20px;font-weight:700;color:var(--c);margin-bottom:8px;">투명한 진실</div>
+          <div style="font-size:16px;color:var(--mu);">성역 없는 독립 조사로 밝혀지는 진실</div>
+        </div>
+        <div class="glass" style="padding:24px;border-radius:18px;">
+          <div style="font-size:20px;font-weight:700;color:var(--r);margin-bottom:8px;">피해자 보호</div>
+          <div style="font-size:16px;color:var(--mu);">차별과 혐오 없는 온전한 치유와 권리</div>
+        </div>
+        <div class="glass" style="padding:24px;border-radius:18px;">
+          <div style="font-size:20px;font-weight:700;color:var(--p);margin-bottom:8px;">기억과 연대</div>
+          <div style="font-size:16px;color:var(--mu);">망각에 맞서 더 안전한 내일을 여는 약속</div>
+        </div>
+      </div>
+      <div style="margin-top:48px;font-size:18px;color:#64748b;letter-spacing:0.05em;">
+        THANK YOU · 대한민국 국회 및 시민사회 생명안전기본법 제정 네트워크
+      </div>
+    </div>
+    `
+  }
+];
+
+// ── 슬라이드 엔진 & 상태 관리 ──
+let cur = 0;
+let step = 1;
+const slideEl = document.getElementById('slide');
+const counterEl = document.getElementById('counter');
+const progressEl = document.getElementById('progress');
+
+function render() {
+  const s = slides[cur];
+  slideEl.innerHTML = s.html;
+  counterEl.textContent = (cur + 1) + ' / ' + slides.length;
+  progressEl.style.width = (((cur + 1) / slides.length) * 100) + '%';
+  step = 1;
+  applyStep();
+}
+
+function applyStep() {
+  const els = slideEl.querySelectorAll('[data-step]');
+  els.forEach(el => {
+    const st = parseInt(el.getAttribute('data-step'), 10);
+    if (st <= step) {
+      el.classList.add('revealed');
+    } else {
+      el.classList.remove('revealed');
+    }
+  });
+}
+
+function go(dir) {
+  const s = slides[cur];
+  if (dir > 0) {
+    if (step < s.n) {
+      step++;
+      applyStep();
+    } else {
+      if (cur < slides.length - 1) {
+        cur++;
+        render();
+      }
+    }
+  } else {
+    if (step > 1) {
+      step--;
+      applyStep();
+    } else {
+      if (cur > 0) {
+        cur--;
+        render();
+        step = slides[cur].n;
+        applyStep();
+      }
+    }
+  }
+}
+
+// ── 직접 숫자 입력 점프 시스템 ──
+let jumpBuffer = '';
+let jumpTimeout = null;
+const jumpIndicator = document.getElementById('jump-indicator');
+const jumpNumber = document.getElementById('jump-number');
+
+function handleDigitInput(digit) {
+  jumpBuffer += digit;
+  const pageNum = parseInt(jumpBuffer, 10);
+
+  jumpNumber.textContent = jumpBuffer;
+  jumpIndicator.style.display = 'flex';
+
+  if (jumpTimeout) clearTimeout(jumpTimeout);
+
+  if (pageNum > slides.length) {
+    jumpNumber.textContent = jumpBuffer + ' (최대 ' + slides.length + 'p)';
+    jumpTimeout = setTimeout(clearJumpBuffer, 1200);
+    return;
+  }
+
+  jumpTimeout = setTimeout(() => {
+    goToPage(jumpBuffer);
+    clearJumpBuffer();
+  }, 1200);
+}
+
+function clearJumpBuffer() {
+  jumpBuffer = '';
+  jumpIndicator.style.display = 'none';
+  if (jumpTimeout) {
+    clearTimeout(jumpTimeout);
+    jumpTimeout = null;
+  }
+}
+
+function goToPage(numStr) {
+  const page = parseInt(numStr, 10);
+  if (!isNaN(page) && page >= 1 && page <= slides.length) {
+    cur = page - 1;
+    render();
+  }
+}
+
+// ── Quick Jump Modal 시스템 ──
+const modalOverlay = document.getElementById('jump-modal-overlay');
+const modalInput = document.getElementById('modal-page-input');
+const modalJumpBtn = document.getElementById('modal-jump-btn');
+const modalCancelBtn = document.getElementById('modal-cancel-btn');
+
+function openJumpModal() {
+  clearJumpBuffer();
+  modalOverlay.style.display = 'flex';
+  modalInput.value = cur + 1;
+  modalInput.focus();
+  modalInput.select();
+}
+
+function closeJumpModal() {
+  modalOverlay.style.display = 'none';
+  window.focus();
+}
+
+modalJumpBtn.addEventListener('click', () => {
+  goToPage(modalInput.value);
+  closeJumpModal();
+});
+
+modalCancelBtn.addEventListener('click', closeJumpModal);
+
+modalOverlay.addEventListener('click', e => {
+  if (e.target === modalOverlay) closeJumpModal();
+});
+
+modalInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    goToPage(modalInput.value);
+    closeJumpModal();
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    closeJumpModal();
+  }
+});
+
+counterEl.addEventListener('click', openJumpModal);
+
+// ── 키보드 이벤트 리스너 ──
+window.addEventListener('keydown', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+
+  const k = e.key;
+
+  // 1. 숫자 키 (0~9) 입력 시 점프 버퍼 처리
+  if (/^[0-9]$/.test(k) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    e.preventDefault();
+    handleDigitInput(k);
+    return;
+  }
+
+  // 2. 점프 버퍼 활성화 중 Enter 누르면 즉시 점프
+  if (jumpBuffer.length > 0) {
+    if (k === 'Enter') {
+      e.preventDefault();
+      goToPage(jumpBuffer);
+      clearJumpBuffer();
+      return;
+    } else if (k === 'Escape' || k === 'Backspace') {
+      e.preventDefault();
+      clearJumpBuffer();
+      return;
+    }
+  }
+
+  // 3. 'G' 또는 'g' 키 누르면 점프 모달 열기
+  if (k === 'g' || k === 'G') {
+    e.preventDefault();
+    openJumpModal();
+    return;
+  }
+
+  // 4. 일반 내비게이션 키
+  if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter' || k === 'n' || k === 'N' || k === 'j' || k === 'J') {
+    e.preventDefault();
+    go(1);
+  } else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'Backspace' || k === 'p' || k === 'P' || k === 'k' || k === 'K') {
+    e.preventDefault();
+    go(-1);
+  } else if (k === 'ArrowDown') {
+    e.preventDefault();
+    if (cur < slides.length - 1) {
+      cur++;
+      render();
+    }
+  } else if (k === 'ArrowUp') {
+    e.preventDefault();
+    if (cur > 0) {
+      cur--;
+      render();
+    }
+  }
+}, true);
+
+// ── 마우스 클릭 & 버튼 이벤트 ──
+document.getElementById('btn-next').addEventListener('click', e => {
+  e.stopPropagation();
+  go(1);
+});
+
+document.getElementById('btn-prev').addEventListener('click', e => {
+  e.stopPropagation();
+  go(-1);
+});
+
+document.addEventListener('click', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+  if (!e.target.closest('#nav') && !e.target.closest('button') && !e.target.closest('a') && !e.target.closest('#jump-modal')) {
+    go(1);
+  }
+});
+
+// 마우스 휠 스크롤 지원
+let wheelTimeout;
+window.addEventListener('wheel', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+  if (wheelTimeout) return;
+  if (e.deltaY > 30) {
+    go(1);
+    wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 250);
+  } else if (e.deltaY < -30) {
+    go(-1);
+    wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 250);
+  }
+}, { passive: true });
+
+// ── 화면 스케일링 & 포커스 ──
+function scale() {
+  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const tx = (window.innerWidth - 1920 * s) / 2;
+  const ty = (window.innerHeight - 1080 * s) / 2;
+  document.body.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+}
+
+window.addEventListener('resize', scale);
+window.addEventListener('load', () => {
+  window.focus();
+  document.body.focus();
+});
+
+// 초기화
+scale();
+render();
+window.focus();
+</script>
+</body>
+</html>
