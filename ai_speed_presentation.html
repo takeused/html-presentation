@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 개발 속도 조절 Presentation</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#09090b;--t:#f0f0f0;--mu:#a1a1aa;--c:#00d4ff;--a:#f59e0b;--e:#10b981;--p:#a78bfa}
+body{width:1920px;height:1080px;background:var(--bg);color:var(--t);font-family:'Pretendard',sans-serif;overflow:hidden;transform-origin:0 0;word-break:keep-all}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:88px 88px;pointer-events:none;z-index:0}
+
+.t-hero{font-size:112px;font-weight:800;letter-spacing:-.034em}
+.t-xl{font-size:80px;font-weight:700;letter-spacing:-.026em}
+.t-lg{font-size:60px;font-weight:700;letter-spacing:-.020em}
+.t-md{font-size:42px;font-weight:600}
+.t-sm{font-size:30px;font-weight:500}
+.t-xs{font-size:24px;font-weight:400;color:var(--mu)}
+
+.gc{color:#00d4ff;text-shadow:0 0 28px #00d4ff,0 0 56px rgba(0,212,255,.45)}
+.ga{color:#f59e0b;text-shadow:0 0 28px #f59e0b,0 0 56px rgba(245,158,11,.45)}
+.ge{color:#10b981;text-shadow:0 0 28px #10b981,0 0 56px rgba(16,185,129,.45)}
+.gp{color:#a78bfa;text-shadow:0 0 28px #a78bfa,0 0 56px rgba(167,139,250,.45)}
+
+.glass{background:rgba(255,255,255,.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.13);border-radius:24px;box-shadow:0 8px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12)}
+.glass-c{background:rgba(0,212,255,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(0,212,255,.32);border-radius:24px;box-shadow:0 0 48px rgba(0,212,255,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(0,212,255,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-a{background:rgba(245,158,11,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(245,158,11,.32);border-radius:24px;box-shadow:0 0 48px rgba(245,158,11,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(245,158,11,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-e{background:rgba(16,185,129,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(16,185,129,.32);border-radius:24px;box-shadow:0 0 48px rgba(16,185,129,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(16,185,129,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.glass-p{background:rgba(167,139,250,.09);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(167,139,250,.32);border-radius:24px;box-shadow:0 0 48px rgba(167,139,250,.14),0 8px 40px rgba(0,0,0,.5),inset 0 0 48px rgba(167,139,250,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+
+[data-step]{opacity:0;transform:translateY(22px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+[data-step].revealed{opacity:1;transform:translateY(0)}
+[data-step="2"].revealed{transition-delay:.08s}
+[data-step="3"].revealed{transition-delay:.16s}
+[data-step="4"].revealed{transition-delay:.24s}
+
+.badge{display:inline-block;padding:8px 26px;border-radius:100px;background:rgba(0,212,255,.13);border:1px solid rgba(0,212,255,.35);color:var(--c);font-size:24px;font-weight:600;letter-spacing:.14em;margin-bottom:44px}
+
+#blobs{position:fixed;inset:0;z-index:0;pointer-events:none}
+#stage{position:relative;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center;z-index:1}
+#prog{position:fixed;top:0;left:0;height:4px;background:var(--c);box-shadow:0 0 12px var(--c);transition:width .4s ease;z-index:10}
+#pg{position:fixed;bottom:32px;right:44px;font-size:24px;color:var(--mu);z-index:10}
+</style>
+</head>
+<body>
+<div id="blobs">
+  <div style="position:absolute;width:900px;height:900px;top:-280px;left:-280px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.07) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:700px;height:700px;bottom:-180px;right:80px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.055) 0%,transparent 70%)"></div>
+  <div style="position:absolute;width:600px;height:600px;top:280px;right:-180px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.045) 0%,transparent 70%)"></div>
+</div>
+<div id="prog"></div>
+<div id="pg"></div>
+<div id="stage"><div id="slide"></div></div>
+<script>
+const slides=[
+
+/* 1. 타이틀 */
+{n:0,html:`<div style="width:1500px;text-align:center">
+  <div class="badge">AI GOVERNANCE</div>
+  <h2 class="t-hero">AI 개발 속도,<br><span class="gc">조절</span>해야 할까</h2>
+  <p class="t-sm" style="color:var(--mu);margin-top:40px">혁신과 안전 사이에서 우리가 던져야 할 진짜 질문</p>
+</div>`},
+
+/* 2. 왜 지금 논쟁인가 — 3열 피처 카드 */
+{n:3,html:`<div style="width:1460px">
+  <div class="t-lg" style="text-align:center;margin-bottom:64px">왜 지금 <span class="gc">논쟁</span>이 뜨거운가</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-c" style="padding:52px 48px">
+      <iconify-icon icon="solar:rocket-bold" style="font-size:56px;color:var(--c);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:20px">빠른 역량 향상</div>
+      <div class="t-sm" style="margin-bottom:16px">모델 성능이 짧은 주기로 갱신</div>
+      <div class="t-xs">검증보다 출시가 앞서는 경우가 늘고 있다</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:52px 48px">
+      <iconify-icon icon="solar:danger-triangle-bold" style="font-size:56px;color:var(--a);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">커지는 위험</div>
+      <div class="t-sm" style="margin-bottom:16px">오남용 · 오류 · 통제의 문제</div>
+      <div class="t-xs">사회 전반에 미치는 영향이 함께 커진다</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:52px 48px">
+      <iconify-icon icon="solar:lightbulb-bolt-bold" style="font-size:56px;color:var(--e);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">큰 기대 효과</div>
+      <div class="t-sm" style="margin-bottom:16px">의료 · 과학 · 재난 대응 혁신</div>
+      <div class="t-xs">늦출수록 혜택도 함께 늦어진다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 3. 무엇을 늦추나 — 임팩트 타이포 */
+{n:2,html:`<div style="width:1500px;text-align:center">
+  <div class="badge">QUESTION</div>
+  <h2 class="t-xl">'속도 조절'은 정확히<br><span class="gc">무엇</span>을 늦추자는 말인가</h2>
+  <p data-step="1" class="t-md" style="margin-top:52px;color:var(--mu)">모델 개발 · 상용 배포 · 고위험 분야 적용</p>
+  <p data-step="2" class="t-sm" style="color:var(--mu);margin-top:24px">어느 단계를 말하는지 구분해야 논의가 성립한다</p>
+</div>`},
+
+/* 4. 논쟁의 흐름 — 플로우 다이어그램 */
+{n:3,html:`<div style="width:1500px">
+  <div class="t-lg" style="text-align:center;margin-bottom:72px">논쟁은 어떻게 <span class="ga">제도</span>로 이어졌나</div>
+  <div style="display:flex;align-items:stretch;justify-content:center">
+    <div class="glass-c" style="padding:36px 28px;text-align:center;flex:1;border-radius:24px">
+      <div class="t-xs">2023.03</div>
+      <div class="t-md gc" style="margin:12px 0">공개서한</div>
+      <div class="t-xs">개발 6개월 중단 촉구</div>
+    </div>
+    <div data-step="1" style="display:flex;align-items:center;padding:0 16px"><div class="gc" style="font-size:36px">→</div></div>
+    <div data-step="1" class="glass" style="padding:36px 28px;text-align:center;flex:1;border-radius:24px">
+      <div class="t-xs">2023.11</div>
+      <div class="t-md" style="margin:12px 0">안전 정상회의</div>
+      <div class="t-xs">영국 블레츨리 개최</div>
+    </div>
+    <div data-step="2" style="display:flex;align-items:center;padding:0 16px"><div class="gc" style="font-size:36px">→</div></div>
+    <div data-step="2" class="glass" style="padding:36px 28px;text-align:center;flex:1;border-radius:24px">
+      <div class="t-xs">2024.08</div>
+      <div class="t-md" style="margin:12px 0">EU AI Act</div>
+      <div class="t-xs">세계 첫 포괄적 법률 발효</div>
+    </div>
+    <div data-step="3" style="display:flex;align-items:center;padding:0 16px"><div class="gc" style="font-size:36px">→</div></div>
+    <div data-step="3" class="glass-e" style="padding:36px 28px;text-align:center;flex:1;border-radius:24px">
+      <div class="t-xs">2026.01</div>
+      <div class="t-md ge" style="margin:12px 0">AI 기본법</div>
+      <div class="t-xs">한국 시행</div>
+    </div>
+  </div>
+  <div data-step="3" class="t-sm" style="text-align:center;margin-top:60px;color:var(--mu)">'멈추자'는 호소에서 '어떻게 관리할까'라는 제도 논의로 이동했다</div>
+</div>`},
+
+/* 5. 조절 찬성 — 4색 2x2 */
+{n:4,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">속도 조절 <span class="gc">찬성</span> 논거</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px">
+    <div data-step="1" class="glass-c" style="padding:44px 48px">
+      <iconify-icon icon="solar:danger-circle-bold" style="font-size:48px;color:var(--c);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:14px">위험의 누적</div>
+      <div class="t-sm" style="margin-bottom:10px">검증되지 않은 시스템이 먼저 확산</div>
+      <div class="t-xs">오류·오남용이 발견되기 전에 피해가 커진다</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:44px 48px">
+      <iconify-icon icon="solar:shield-warning-bold" style="font-size:48px;color:var(--a);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:14px">안전 연구의 격차</div>
+      <div class="t-sm" style="margin-bottom:10px">성능 향상이 안전 연구를 앞선다</div>
+      <div class="t-xs">평가·해석 기술이 역량 성장을 따라가지 못한다</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:44px 48px">
+      <iconify-icon icon="solar:hourglass-bold" style="font-size:48px;color:var(--e);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:14px">사회의 적응 시간</div>
+      <div class="t-sm" style="margin-bottom:10px">일자리·교육·법제도 정비에 시간 필요</div>
+      <div class="t-xs">변화 속도가 제도 개편 속도를 넘어서면 혼란이 커진다</div>
+    </div>
+    <div data-step="4" class="glass-p" style="padding:44px 48px">
+      <iconify-icon icon="solar:lock-bold" style="font-size:48px;color:var(--p);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md gp" style="margin-bottom:14px">통제력 상실 우려</div>
+      <div class="t-sm" style="margin-bottom:10px">고도화될수록 예측·통제가 어렵다</div>
+      <div class="t-xs">되돌리기 어려운 문제가 생기기 전에 대비해야 한다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 6. 조절 반대 — 수평 아이템 카드 */
+{n:3,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">속도 조절 <span class="ga">반대</span> — 늦추면 치르는 비용</div>
+  <div data-step="1" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px;margin-bottom:28px">
+    <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:190px">
+      <div class="gc" style="font-size:28px;font-weight:800">편익 지연</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm gc" style="margin-bottom:8px">의료·과학·재난 대응 혜택이 늦어진다</div>
+      <div class="t-xs">활용을 기다리는 현장의 문제 해결도 함께 미뤄진다</div>
+    </div>
+    <div class="gc" style="font-size:36px;font-weight:700;flex-shrink:0">DELAY</div>
+  </div>
+  <div data-step="2" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px;margin-bottom:28px">
+    <div class="glass-a" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:190px">
+      <div class="ga" style="font-size:28px;font-weight:800">경쟁력 약화</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm ga" style="margin-bottom:8px">국가·기업 간 경쟁에서 뒤처질 수 있다</div>
+      <div class="t-xs">기술·인재·투자가 규제가 느슨한 곳으로 이동한다</div>
+    </div>
+    <div class="ga" style="font-size:36px;font-weight:700;flex-shrink:0">GAP</div>
+  </div>
+  <div data-step="3" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+    <div class="glass-e" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:190px">
+      <div class="ge" style="font-size:28px;font-weight:800">실효성 한계</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm ge" style="margin-bottom:8px">규제를 우회하거나 해외로 옮기면 무력하다</div>
+      <div class="t-xs">오픈소스 확산 시 사실상 통제가 어렵다</div>
+    </div>
+    <div class="ge" style="font-size:36px;font-weight:700;flex-shrink:0">LEAK</div>
+  </div>
+</div>`},
+
+/* 7. 격차 개념도 — 라인 차트 */
+{n:2,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:40px">역량과 안전장치의 <span class="ga">격차</span>가 쟁점이다</div>
+  <div data-step="1" class="glass" style="padding:48px 64px 40px;width:1400px">
+    <div style="display:flex;gap:56px;margin-bottom:24px">
+      <span class="t-sm gc">— AI 역량 성장</span>
+      <span class="t-sm ga">— 안전·거버넌스 정비</span>
+    </div>
+    <svg viewBox="0 0 1272 380" style="display:block;width:100%">
+      <defs><linearGradient id="gradC1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(0,212,255,.22)"/><stop offset="100%" stop-color="rgba(0,212,255,0)"/>
+      </linearGradient></defs>
+      <line x1="0" y1="95" x2="1272" y2="95" stroke="rgba(255,255,255,.06)"/>
+      <line x1="0" y1="190" x2="1272" y2="190" stroke="rgba(255,255,255,.06)"/>
+      <line x1="0" y1="330" x2="1272" y2="330" stroke="rgba(255,255,255,.14)"/>
+      <polygon points="60,310 360,270 660,200 960,110 1212,40 1212,330 60,330" fill="url(#gradC1)"/>
+      <polyline class="line-draw" points="60,310 360,270 660,200 960,110 1212,40" fill="none" stroke="var(--c)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="transition:stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1) .15s;filter:drop-shadow(0 0 10px rgba(0,212,255,.5))"/>
+      <polyline class="line-draw" points="60,320 360,300 660,270 960,235 1212,200" fill="none" stroke="var(--a)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="transition:stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1) .3s;filter:drop-shadow(0 0 10px rgba(245,158,11,.5))"/>
+      <line x1="1212" y1="52" x2="1212" y2="188" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-dasharray="8 8"/>
+      <text x="1190" y="128" fill="#f0f0f0" font-size="28" font-weight="700" text-anchor="end">격차</text>
+      <circle class="dot-pop" cx="1212" cy="40" r="9" fill="var(--c)" style="opacity:0;transition:opacity .4s ease 1.2s;filter:drop-shadow(0 0 12px var(--c))"/>
+      <circle class="dot-pop" cx="1212" cy="200" r="9" fill="var(--a)" style="opacity:0;transition:opacity .4s ease 1.2s;filter:drop-shadow(0 0 12px var(--a))"/>
+      <text x="60" y="372" fill="#a1a1aa" font-size="24" text-anchor="middle">현재</text>
+      <text x="1212" y="372" fill="#a1a1aa" font-size="24" text-anchor="middle">미래</text>
+    </svg>
+    <div class="t-xs" style="margin-top:16px">※ 논지 설명을 위한 개념도이며 실측 데이터가 아님</div>
+  </div>
+</div>`},
+
+/* 8. 잘못된 질문 — 2열 비교 */
+{n:3,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">'멈출까 말까'는 <span class="gc">잘못된 질문</span></div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-a" style="padding:52px 56px">
+      <div class="t-md ga" style="margin-bottom:28px">이분법 — Stop or Go</div>
+      <div class="t-sm" style="margin-bottom:18px">· 전면 중단 아니면 무제한 경쟁</div>
+      <div class="t-sm" style="margin-bottom:18px">· 위험의 크기를 구분하지 않음</div>
+      <div class="t-sm" style="margin-bottom:18px">· 합의도 실행도 어려움</div>
+      <div class="t-xs" style="margin-top:28px">논쟁만 커지고 대안은 남지 않는다</div>
+    </div>
+    <div data-step="2" style="display:flex;align-items:center"><span class="gc" style="font-size:52px">→</span></div>
+    <div data-step="3" class="glass-e" style="padding:52px 56px">
+      <div class="t-md ge" style="margin-bottom:28px">위험 기반 — 어디에, 얼마나</div>
+      <div class="t-sm" style="margin-bottom:18px">· 위험이 큰 영역만 엄격하게</div>
+      <div class="t-sm" style="margin-bottom:18px">· 나머지 영역은 혁신을 허용</div>
+      <div class="t-sm" style="margin-bottom:18px">· 단계별로 검증하며 확대</div>
+      <div class="t-xs" style="margin-top:28px">속도가 아닌 위험 수준을 기준으로 삼는다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 9. 위험 등급 — Large Metric */
+{n:4,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">위험 <span class="gc">등급</span>에 따라 강도를 달리한다</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:stretch">
+    <div class="glass" style="padding:56px 64px">
+      <div data-step="1" class="t-sm" style="margin-bottom:32px">· 허용 불가 — <span style="font-weight:800">금지</span></div>
+      <div data-step="2" class="t-sm" style="margin-bottom:32px">· 고위험 — <span style="font-weight:800">엄격한 의무</span></div>
+      <div data-step="3" class="t-sm" style="margin-bottom:32px">· 제한적 위험 — <span style="font-weight:800">투명성 고지</span></div>
+      <div data-step="4" class="t-sm">· 최소 위험 — <span style="font-weight:800">자율</span></div>
+    </div>
+    <div data-step="1" class="glass-c" style="padding:64px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+      <div class="gc" style="font-size:100px;font-weight:800;line-height:1">4단계</div>
+      <div class="t-md" style="margin-top:20px;color:var(--mu)">EU AI Act의 위험 기반 분류</div>
+    </div>
+  </div>
+</div>`},
+
+/* 10. 조절 수단 — 3열 피처 카드 */
+{n:3,html:`<div style="width:1460px">
+  <div class="t-lg" style="text-align:center;margin-bottom:64px">멈추지 않고 <span class="ge">통제</span>하는 세 가지 도구</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px">
+    <div data-step="1" class="glass-c" style="padding:52px 48px">
+      <iconify-icon icon="solar:clipboard-check-bold" style="font-size:56px;color:var(--c);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:20px">사전 평가</div>
+      <div class="t-sm" style="margin-bottom:16px">배포 전 안전성 시험·레드팀</div>
+      <div class="t-xs">기준을 통과한 시스템만 시장에 나온다</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:52px 48px">
+      <iconify-icon icon="solar:eye-bold" style="font-size:56px;color:var(--a);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:20px">투명성 공개</div>
+      <div class="t-sm" style="margin-bottom:16px">성능 한계와 위험을 고지</div>
+      <div class="t-xs">사용자와 감독기관이 판단할 근거를 제공한다</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:52px 48px">
+      <iconify-icon icon="solar:bell-bing-bold" style="font-size:56px;color:var(--e);margin-bottom:28px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:20px">사고 보고</div>
+      <div class="t-sm" style="margin-bottom:16px">중대 사고 신고와 사후 감독</div>
+      <div class="t-xs">사례를 공유해 같은 실수를 되풀이하지 않는다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 11. 현실적 난관 — 4색 2x2 */
+{n:4,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">조절의 <span class="ga">현실적 난관</span></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px">
+    <div data-step="1" class="glass-c" style="padding:44px 48px">
+      <iconify-icon icon="solar:global-bold" style="font-size:48px;color:var(--c);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md gc" style="margin-bottom:14px">국가 간 경쟁</div>
+      <div class="t-sm" style="margin-bottom:10px">한 나라만 늦추면 격차가 벌어진다</div>
+      <div class="t-xs">국제 공조 없이는 실효성이 떨어진다</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:44px 48px">
+      <iconify-icon icon="solar:code-square-bold" style="font-size:48px;color:var(--a);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md ga" style="margin-bottom:14px">오픈소스 확산</div>
+      <div class="t-sm" style="margin-bottom:10px">공개된 모델은 회수·통제가 어렵다</div>
+      <div class="t-xs">배포 이후의 관리 체계가 마땅치 않다</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:44px 48px">
+      <iconify-icon icon="solar:ruler-bold" style="font-size:48px;color:var(--e);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md ge" style="margin-bottom:14px">측정의 어려움</div>
+      <div class="t-sm" style="margin-bottom:10px">위험·역량을 재는 지표가 미확립</div>
+      <div class="t-xs">기준이 없으면 '어디까지 허용'인지 정하기 어렵다</div>
+    </div>
+    <div data-step="4" class="glass-p" style="padding:44px 48px">
+      <iconify-icon icon="solar:users-group-two-rounded-bold" style="font-size:48px;color:var(--p);margin-bottom:22px;display:block"></iconify-icon>
+      <div class="t-md gp" style="margin-bottom:14px">집행 역량 부족</div>
+      <div class="t-sm" style="margin-bottom:10px">기술을 이해하는 감독 인력이 부족</div>
+      <div class="t-xs">법이 있어도 현장에서 작동하지 않을 수 있다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 12. 정책 스펙트럼 — 수평 바차트 */
+{n:4,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:48px">정책 선택지의 <span class="gc">강도</span> 스펙트럼</div>
+  <div class="glass" style="padding:44px 64px 20px">
+    <div data-step="1" style="margin-bottom:34px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="t-sm">자율규제</span><span class="t-sm gc">강도 1</span></div>
+      <div class="t-xs" style="margin-bottom:12px">업계 자율 가이드라인 · 권고 중심</div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden"><div class="bar-fill" data-w="25%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--c),rgba(0,212,255,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(0,212,255,.35)"></div></div>
+    </div>
+    <div data-step="2" style="margin-bottom:34px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="t-sm">위험 기반 규제</span><span class="t-sm ga">강도 2</span></div>
+      <div class="t-xs" style="margin-bottom:12px">고위험 영역에만 의무 부과</div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden"><div class="bar-fill" data-w="50%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--a),rgba(245,158,11,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(245,158,11,.35)"></div></div>
+    </div>
+    <div data-step="3" style="margin-bottom:34px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="t-sm">조건부 지연</span><span class="t-sm ge">강도 3</span></div>
+      <div class="t-xs" style="margin-bottom:12px">안전 기준 충족 시까지 출시 유보</div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden"><div class="bar-fill" data-w="75%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--e),rgba(16,185,129,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(16,185,129,.35)"></div></div>
+    </div>
+    <div data-step="4" style="margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="t-sm">전면 중단</span><span class="t-sm gp">강도 4</span></div>
+      <div class="t-xs" style="margin-bottom:12px">개발 자체를 일정 기간 유예 (모라토리엄)</div>
+      <div style="height:28px;background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden"><div class="bar-fill" data-w="100%" style="height:100%;width:0%;background:linear-gradient(90deg,var(--p),rgba(167,139,250,.5));border-radius:14px;transition:width 1.2s cubic-bezier(.16,1,.3,1) .1s;box-shadow:0 0 16px rgba(167,139,250,.35)"></div></div>
+    </div>
+  </div>
+  <div class="t-xs" style="text-align:center;margin-top:20px">※ 강도는 이해를 돕기 위한 개념적 4단계이며 정량 지표가 아님</div>
+</div>`},
+
+/* 13. 재난안전 시사점 — 수평 아이템 카드 */
+{n:3,html:`<div style="width:1400px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">재난안전 분야에 주는 <span class="ge">시사점</span></div>
+  <div data-step="1" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px;margin-bottom:28px">
+    <div class="glass-c" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:150px">
+      <div class="gc" style="font-size:28px;font-weight:800">1. 통제</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm gc" style="margin-bottom:8px">경보·대피 등 핵심 판단은 사람이 최종 승인</div>
+      <div class="t-xs">AI는 지원하고, 책임 있는 결정은 사람이 유지한다</div>
+    </div>
+    <div class="gc" style="font-size:36px;font-weight:700;flex-shrink:0">HITL</div>
+  </div>
+  <div data-step="2" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px;margin-bottom:28px">
+    <div class="glass-a" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:150px">
+      <div class="ga" style="font-size:28px;font-weight:800">2. 실증</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm ga" style="margin-bottom:8px">실증 → 검증 → 확산의 단계적 도입</div>
+      <div class="t-xs">현장 적용 전 제한된 환경에서 성능과 부작용을 확인한다</div>
+    </div>
+    <div class="ga" style="font-size:36px;font-weight:700;flex-shrink:0">PILOT</div>
+  </div>
+  <div data-step="3" class="glass" style="padding:36px 52px;display:flex;align-items:center;gap:40px">
+    <div class="glass-e" style="padding:20px 28px;border-radius:16px;flex-shrink:0;text-align:center;min-width:150px">
+      <div class="ge" style="font-size:28px;font-weight:800">3. 기준</div>
+    </div>
+    <div style="flex:1">
+      <div class="t-sm ge" style="margin-bottom:8px">오탐·미탐 허용 수준과 평가 지표 사전 정의</div>
+      <div class="t-xs">R&amp;D 기획 단계부터 성과·안전 기준을 함께 설계한다</div>
+    </div>
+    <div class="ge" style="font-size:36px;font-weight:700;flex-shrink:0">KPI</div>
+  </div>
+</div>`},
+
+/* 14. 공백과 제안 — 2열 비교 */
+{n:3,html:`<div style="width:1440px">
+  <div class="t-lg" style="text-align:center;margin-bottom:56px">지금 필요한 것은 <span class="ge">공백 메우기</span></div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:stretch">
+    <div data-step="1" class="glass-a" style="padding:52px 56px">
+      <div class="t-md ga" style="margin-bottom:28px">현재의 공백</div>
+      <div class="t-sm" style="margin-bottom:18px">· 공통 평가 기준의 부재</div>
+      <div class="t-sm" style="margin-bottom:18px">· 사고 시 책임 소재 불명확</div>
+      <div class="t-sm" style="margin-bottom:18px">· 국제 공조·표준 참여 미흡</div>
+      <div class="t-xs" style="margin-top:28px">기술 속도만 빠르고 안전망은 뒤따르는 상태</div>
+    </div>
+    <div data-step="2" style="display:flex;align-items:center"><span class="gc" style="font-size:52px">→</span></div>
+    <div data-step="3" class="glass-e" style="padding:52px 56px">
+      <div class="t-md ge" style="margin-bottom:28px">제안</div>
+      <div class="t-sm" style="margin-bottom:18px">· 위험 기반 평가체계 구축</div>
+      <div class="t-sm" style="margin-bottom:18px">· 사고 보고·공유 제도 마련</div>
+      <div class="t-sm" style="margin-bottom:18px">· 국제 표준 논의에 적극 참여</div>
+      <div class="t-xs" style="margin-top:28px">늦추기보다 안전장치를 함께 앞당긴다</div>
+    </div>
+  </div>
+</div>`},
+
+/* 15. 마무리 */
+{n:3,html:`<div style="width:1440px;text-align:center">
+  <div class="badge">SUMMARY</div>
+  <h2 class="t-hero">속도보다 <span class="gc">방향</span>과 통제</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:72px">
+    <div data-step="1" class="glass-c" style="padding:40px 36px">
+      <div class="t-md gc" style="margin-bottom:12px">위험 기반</div>
+      <div class="t-sm">위험 수준에 맞춰 조절하고</div>
+    </div>
+    <div data-step="2" class="glass-a" style="padding:40px 36px">
+      <div class="t-md ga" style="margin-bottom:12px">단계적 도입</div>
+      <div class="t-sm">검증하며 확대하고</div>
+    </div>
+    <div data-step="3" class="glass-e" style="padding:40px 36px">
+      <div class="t-md ge" style="margin-bottom:12px">국제 공조</div>
+      <div class="t-sm">함께 기준을 만든다</div>
+    </div>
+  </div>
+</div>`}
+
+];
+
+function scale(){const s=Math.min(window.innerWidth/1920,window.innerHeight/1080);const tx=(window.innerWidth-1920*s)/2,ty=(window.innerHeight-1080*s)/2;document.body.style.transform=`translate(${tx}px,${ty}px) scale(${s})`}
+window.addEventListener('resize',scale);scale();
+
+let cur=0,step=0;
+function applySteps(){document.querySelectorAll('[data-step]').forEach(el=>{const n=parseInt(el.dataset.step),on=n<=step;el.classList.toggle('revealed',on);
+el.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=on?b.dataset.w:'0%'});
+el.querySelectorAll('.ring-fill[data-v]').forEach(r=>{const C=2*Math.PI*r.r.baseVal.value;r.style.strokeDasharray=C;r.style.strokeDashoffset=on?C*(1-parseFloat(r.dataset.v)/100):C});
+el.querySelectorAll('.line-draw').forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=on?0:L});
+el.querySelectorAll('.dot-pop').forEach(d=>{d.style.opacity=on?1:0})})}
+function updateNav(){const pb=document.getElementById('prog');if(pb)pb.style.width=((cur+1)/slides.length*100)+'%';const pg=document.getElementById('pg');if(pg)pg.textContent=(cur+1)+' / '+slides.length}
+function render(){step=0;const sl=slides[cur];document.getElementById('slide').innerHTML=sl.html;if(sl.after)setTimeout(sl.after,50);applySteps();updateNav()}
+function go(d){const max=slides[cur].n;if(d===1){if(step<max){step++;applySteps();updateNav()}else if(cur<slides.length-1){cur++;render()}}else{if(step>0){step--;applySteps();updateNav()}else if(cur>0){cur--;render();step=slides[cur].n;applySteps();updateNav()}}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}else if(e.key==='ArrowDown'){e.preventDefault();if(cur<slides.length-1){cur++;render()}}else if(e.key==='ArrowUp'){e.preventDefault();if(cur>0){cur--;render()}}});
+render();
+</script>
+</body>
+</html>
