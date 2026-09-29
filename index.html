@@ -8,21 +8,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Mono:wght@400&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --c-bg: #fbfaf7;
-            --c-surface: #ffffff;
-            --c-line: rgba(20, 22, 31, 0.09);
-            --c-accent: #a9762a;
-            --c-ink: #14161f;
-            --c-fg: #14161f;
-            --c-fg-muted: #6a7080;
-            --f-display: "Source Serif 4", "Noto Serif KR", Georgia, serif;
-            --f-body: "DM Sans", "Noto Sans KR", system-ui, sans-serif;
+            --canvas: #ffffff;
+            --surface-1: #f4f4f4;
+            --surface-2: #e0e0e0;
+            --hairline: #e0e0e0;
+            --ink: #161616;
+            --ink-muted: #525252;
+            --ink-subtle: #8c8c8c;
+            --primary: #0f62fe;
+            --primary-hover: #0043ce;
+            --cat-ai: #7c3aed;
+            --cat-plan: #b45309;
+            --cat-policy: #0369a1;
+            --cat-life: #0d9488;
+            --f-body: "IBM Plex Sans", "IBM Plex Sans KR", "Helvetica Neue", Arial, sans-serif;
             --f-mono: "IBM Plex Mono", monospace;
-            --bar-h: 56px;
+            --strip-h: 32px;
+            --bar-h: 48px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,454 +37,365 @@
 
         body {
             font-family: var(--f-body);
-            background: var(--c-bg);
-            color: var(--c-fg);
+            font-size: 16px;
+            line-height: 1.5;
+            letter-spacing: 0.16px;
+            background: var(--canvas);
+            color: var(--ink);
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== 배경: 오로라 + 그리드 ===== */
-        .bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(55% 45% at 12% 0%, rgba(255, 196, 120, 0.35), transparent 70%),
-                radial-gradient(45% 40% at 92% 8%, rgba(120, 160, 255, 0.28), transparent 70%),
-                radial-gradient(55% 45% at 65% 105%, rgba(255, 140, 190, 0.20), transparent 70%),
-                var(--c-bg);
-        }
+        button { font-family: inherit; }
+        button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
 
-        .bg::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(20, 22, 31, 0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(20, 22, 31, 0.045) 1px, transparent 1px);
-            background-size: 56px 56px;
-            mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 75%);
-            -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 75%);
-        }
-
-        /* ===== 허브(갤러리) ===== */
-        #hub {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            overflow-y: auto;
-            padding: 0 clamp(20px, 5vw, 72px) 80px;
-            transition: opacity 0.35s ease, transform 0.35s ease;
-        }
-
-        body.viewing #hub {
-            opacity: 0;
-            transform: scale(0.985);
-            pointer-events: none;
-        }
-
-        .hub-inner { max-width: 1240px; margin: 0 auto; }
-
-        .hub-top {
+        /* ===== 상단 유틸리티 스트립 ===== */
+        .strip {
+            position: relative;
+            z-index: 5;
+            height: var(--strip-h);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 28px 0 0;
-            font-family: var(--f-mono);
-            font-size: 0.75rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--c-fg-muted);
+            padding: 0 32px;
+            background: var(--surface-1);
+            border-bottom: 1px solid var(--hairline);
+            color: var(--ink-muted);
+            font-size: 12px;
+            letter-spacing: 0.32px;
         }
 
-        .hub-top .dot {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--c-accent);
-            box-shadow: 0 0 12px var(--c-accent);
-            margin-right: 10px;
-            animation: pulse 2.4s ease-in-out infinite;
+        .strip b { font-weight: 600; color: var(--ink); }
+
+        /* ===== 허브 ===== */
+        #hub {
+            position: absolute;
+            inset: var(--strip-h) 0 0 0;
+            overflow-y: auto;
+            transition: opacity 0.3s ease;
         }
 
-        @keyframes pulse { 50% { opacity: 0.35; } }
+        body.viewing #hub { opacity: 0; pointer-events: none; }
 
-        .hero { padding: clamp(48px, 9vh, 96px) 0 40px; }
+        .container { max-width: 1312px; margin: 0 auto; padding: 0 32px; }
+
+        .hero {
+            padding: 56px 0 28px;
+            text-align: center;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        .eyebrow { display: block; font-size: 14px; color: var(--ink-muted); margin-bottom: 16px; }
 
         .hero h1 {
-            font-family: var(--f-display);
-            font-weight: 700;
-            font-size: clamp(2.8rem, 8vw, 6rem);
-            line-height: 1.02;
-            letter-spacing: -0.03em;
-        }
-
-        .hero h1 em {
-            font-style: italic;
-            font-weight: 400;
-            background: linear-gradient(100deg, #e08a2c, #d4526e 55%, #5b6cff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero p {
-            margin-top: 22px;
-            max-width: 560px;
-            font-size: 1.05rem;
-            line-height: 1.7;
-            color: var(--c-fg-muted);
+            font-size: clamp(1.7rem, 4.2vw, 2.4rem);
             font-weight: 300;
+            line-height: 1.25;
+            letter-spacing: -0.4px;
             word-break: keep-all;
         }
 
-        /* 툴바: 검색 + 필터 */
-        .toolbar {
+        .hero h1 em { font-style: normal; color: var(--primary); }
+
+        /* 개요 패널 */
+        .panel {
+            margin: 32px 0;
+            padding: 16px;
+            background: var(--surface-1);
+            border: 1px solid var(--hairline);
+            border-radius: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 8px;
+        }
+
+        .stat {
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 28px;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--canvas);
+            color: var(--ink-muted);
+            font-size: 13px;
+            cursor: pointer;
+            text-align: left;
+            transition: box-shadow 0.15s;
         }
 
-        .search {
-            flex: 1 1 260px;
-            max-width: 360px;
-            position: relative;
+        .stat:hover { box-shadow: inset 0 0 0 1px var(--ink-subtle); }
+        .stat.on { box-shadow: inset 0 0 0 2px var(--ink); }
+        .stat .l { display: inline-flex; align-items: center; gap: 8px; }
+        .stat .v { font-size: 20px; font-weight: 600; color: var(--ink); }
+
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--ink)); flex: none; }
+
+        .dist {
+            display: flex;
+            height: 8px;
+            margin-top: 12px;
+            border-radius: 4px;
+            overflow: hidden;
+            gap: 2px;
+            background: var(--canvas);
         }
 
-        .search input {
-            width: 100%;
-            height: 42px;
-            padding: 0 16px 0 40px;
-            border-radius: 999px;
-            border: 1px solid var(--c-line);
-            background: var(--c-surface);
-            color: var(--c-fg);
-            font: 400 0.92rem var(--f-body);
-            outline: none;
-            transition: border-color 0.25s, background 0.25s;
-        }
+        .dist i { display: block; background: var(--c); transition: flex 0.3s; }
 
-        .search input:focus { border-color: var(--c-ink); background: #fff; box-shadow: 0 0 0 4px rgba(20, 22, 31, 0.06); }
-        .search input::placeholder { color: var(--c-fg-muted); }
+        /* 검색 */
+        .search { position: relative; margin-bottom: 20px; }
 
         .search svg {
             position: absolute;
-            left: 14px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
             width: 16px;
             height: 16px;
-            stroke: var(--c-fg-muted);
+            stroke: var(--ink-subtle);
             fill: none;
             stroke-width: 2;
+            pointer-events: none;
         }
 
-        .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        #q {
+            width: 100%;
+            padding: 11px 64px 11px 44px;
+            border: none;
+            border-bottom: 1px solid var(--ink-subtle);
+            background: var(--surface-1);
+            color: var(--ink);
+            font: 400 16px var(--f-body);
+            letter-spacing: 0.16px;
+            outline: none;
+        }
 
-        .chip {
-            height: 34px;
-            padding: 0 16px;
+        #q:focus { border-bottom: 2px solid var(--primary); }
+        #q::placeholder { color: var(--ink-subtle); }
+
+        .kbd {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 1px 7px;
+            border: 1px solid var(--hairline);
+            background: var(--canvas);
+            font: 400 11px var(--f-mono);
+            color: var(--ink-subtle);
+            pointer-events: none;
+        }
+
+        /* 필터 */
+        .filters { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 28px; }
+
+        .flabel {
+            padding: 4px 10px;
             border-radius: 999px;
-            border: 1px solid var(--c-line);
-            background: transparent;
-            color: var(--c-fg-muted);
-            font: 500 0.82rem var(--f-body);
-            cursor: pointer;
-            transition: all 0.2s ease;
+            background: #0f62fe;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
         }
 
-        .chip:hover { color: var(--c-fg); border-color: rgba(20, 22, 31, 0.35); }
-        .chip.on { color: #fff; background: var(--c-ink); border-color: var(--c-ink); }
+        .pills { display: flex; flex-wrap: wrap; gap: 4px; }
 
-        .count { margin-left: auto; font: 400 0.78rem var(--f-mono); color: var(--c-fg-muted); }
+        .pill {
+            padding: 5px 12px;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            background: var(--canvas);
+            color: var(--ink-muted);
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.1s, color 0.1s;
+        }
 
-        /* 카드 그리드 */
+        .pill:hover { background: var(--surface-2); color: var(--ink); }
+
+        .pill.on {
+            background: linear-gradient(#f5f5f7, #d2d2d7);
+            border-color: #c0c0c5;
+            color: #1d1d1f;
+        }
+
+        .count { margin-left: auto; font: 400 12px var(--f-mono); color: var(--ink-subtle); }
+
+        /* 카드 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 16px;
+            padding-bottom: 8px;
         }
 
         .card {
-            --mx: 50%;
-            --my: 0%;
             position: relative;
             display: flex;
             flex-direction: column;
-            min-height: 230px;
-            padding: 26px 26px 22px;
+            min-height: 200px;
+            padding: 20px 24px;
             text-align: left;
-            border-radius: 20px;
-            border: 1px solid var(--c-line);
-            background: var(--c-surface);
+            background: var(--canvas);
+            border: 1px solid var(--hairline);
+            border-left: 4px solid var(--c);
             color: inherit;
             font: inherit;
             cursor: pointer;
-            overflow: hidden;
             opacity: 0;
-            transform: translateY(18px);
-            animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            animation-delay: calc(var(--i) * 55ms + 120ms);
-            box-shadow: 0 1px 2px rgba(20, 22, 31, 0.04), 0 8px 24px -14px rgba(20, 22, 31, 0.12);
-            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            transform: translateY(8px);
+            animation: rise 0.45s ease forwards;
+            animation-delay: calc(var(--i) * 40ms);
+            transition: background 0.12s, box-shadow 0.2s;
         }
 
         @keyframes rise { to { opacity: 1; transform: none; } }
 
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(320px circle at var(--mx) var(--my), color-mix(in srgb, var(--hue) 16%, transparent), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
+        .card:hover { background: var(--surface-1); box-shadow: 0 6px 20px -10px rgba(22, 22, 22, 0.25); }
 
-        .card::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--hue), transparent 70%);
-            opacity: 0.85;
-        }
+        .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 
-        .card:hover, .card:focus-visible {
-            transform: translateY(-4px);
-            border-color: color-mix(in srgb, var(--hue) 55%, transparent);
-            box-shadow: 0 24px 50px -22px color-mix(in srgb, var(--hue) 65%, transparent);
-            outline: none;
-        }
-
-        .card:hover::before, .card:focus-visible::before { opacity: 1; }
-
-        .card-head {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
+        .no { font: 400 12px var(--f-mono); color: var(--ink-subtle); }
 
         .tag {
-            font: 500 0.68rem var(--f-mono);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 5px 10px;
-            border-radius: 999px;
-            color: color-mix(in srgb, var(--hue) 62%, #000);
-            background: color-mix(in srgb, var(--hue) 16%, #fff);
+            padding: 1px 8px;
+            border: 1px solid var(--c);
+            color: var(--c);
+            font-size: 12px;
+            letter-spacing: 0.16px;
         }
 
-        .num { font: 400 0.8rem var(--f-mono); color: var(--c-fg-muted); }
-
-        .card h2 {
-            position: relative;
-            font-family: var(--f-display);
-            font-size: 1.5rem;
-            line-height: 1.3;
-            font-weight: 700;
-            letter-spacing: -0.015em;
-            word-break: keep-all;
-        }
+        .card h2 { font-size: 20px; font-weight: 400; line-height: 1.35; letter-spacing: 0; word-break: keep-all; }
 
         .card p {
-            position: relative;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            line-height: 1.65;
-            color: var(--c-fg-muted);
-            font-weight: 300;
+            margin-top: 8px;
+            color: var(--ink-muted);
+            font-size: 14px;
+            line-height: 1.6;
             word-break: keep-all;
         }
 
-        .card-foot {
-            position: relative;
+        .open {
             margin-top: auto;
-            padding-top: 22px;
+            padding-top: 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font: 500 0.8rem var(--f-body);
-            color: var(--c-fg-muted);
+            font-size: 13px;
+            color: var(--primary);
         }
 
-        .arrow {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            border: 1px solid var(--c-line);
-            transition: all 0.3s;
-        }
+        .open svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; transition: transform 0.2s; }
+        .card:hover .open svg { transform: translateX(4px); }
 
-        .arrow svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
-
-        .card:hover .arrow {
-            background: var(--hue);
-            border-color: var(--hue);
-            color: #fff;
-            transform: translateX(3px);
-        }
-
-        .card:hover .card-foot { color: var(--c-fg); }
-
-        .empty { display: none; padding: 60px 0; text-align: center; color: var(--c-fg-muted); }
+        .empty { display: none; padding: 64px 0; text-align: center; color: var(--ink-subtle); }
         .empty.show { display: block; }
 
-        footer.hub-foot {
-            margin-top: 64px;
-            padding-top: 22px;
-            border-top: 1px solid var(--c-line);
-            font: 400 0.75rem var(--f-mono);
-            color: var(--c-fg-muted);
+        .foot {
+            margin-top: 56px;
+            padding: 20px 0 40px;
+            border-top: 1px solid var(--hairline);
             display: flex;
             justify-content: space-between;
-            gap: 12px;
             flex-wrap: wrap;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--ink-subtle);
         }
 
         /* ===== 뷰어 ===== */
         #viewer {
             position: absolute;
-            inset: 0;
-            z-index: 2;
+            inset: var(--strip-h) 0 0 0;
             display: flex;
             flex-direction: column;
+            background: var(--canvas);
             opacity: 0;
             pointer-events: none;
-            transform: translateY(14px);
-            transition: opacity 0.35s ease, transform 0.35s ease;
+            transition: opacity 0.3s ease;
         }
 
-        body.viewing #viewer { opacity: 1; pointer-events: auto; transform: none; }
+        body.viewing #viewer { opacity: 1; pointer-events: auto; }
 
         .bar {
-            height: var(--bar-h);
             flex: none;
+            height: var(--bar-h);
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             padding: 0 16px;
-            background: rgba(255, 255, 255, 0.86);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--c-line);
+            background: var(--canvas);
+            border-bottom: 1px solid var(--hairline);
         }
 
         .back {
             flex: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            height: 36px;
-            padding: 0 14px 0 10px;
+            gap: 6px;
+            height: 32px;
+            padding: 0 14px 0 8px;
+            border: 1px solid var(--hairline);
             border-radius: 999px;
-            border: 1px solid var(--c-line);
-            background: var(--c-surface);
-            color: var(--c-fg);
-            font: 500 0.85rem var(--f-body);
+            background: var(--canvas);
+            color: var(--ink);
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.1s;
         }
 
-        .back:hover { border-color: var(--c-ink); background: var(--c-ink); color: #fff; }
-        .back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .back:hover { background: var(--surface-2); }
+        .back svg, .step svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-        .now {
-            flex: none;
-            max-width: 26vw;
-            font: 700 1rem var(--f-display);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .rail { flex: 1; min-width: 0; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+        .rail::-webkit-scrollbar { display: none; }
+        .rail .pill { flex: none; }
+
+        .rail .pill.active {
+            background: linear-gradient(#f5f5f7, #d2d2d7);
+            border-color: #c0c0c5;
+            color: #1d1d1f;
         }
 
-        nav.rail {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            gap: 4px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            padding: 0 4px;
-        }
-
-        nav.rail::-webkit-scrollbar { display: none; }
-
-        .pill {
-            flex: none;
-            height: 34px;
-            padding: 0 14px;
-            border-radius: 999px;
-            border: 1px solid transparent;
-            background: none;
-            color: var(--c-fg-muted);
-            font: 500 0.82rem var(--f-body);
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .pill:hover { color: var(--c-fg); background: var(--c-surface); }
-
-        .pill.active {
-            color: color-mix(in srgb, var(--hue) 55%, #000);
-            background: color-mix(in srgb, var(--hue) 16%, #fff);
-            border-color: color-mix(in srgb, var(--hue) 45%, transparent);
-        }
-
-        .step { flex: none; display: flex; gap: 6px; }
+        .step { flex: none; display: flex; gap: 4px; }
 
         .step button {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 1px solid var(--c-line);
-            background: var(--c-surface);
-            color: var(--c-fg);
-            cursor: pointer;
+            width: 32px;
+            height: 32px;
             display: grid;
             place-items: center;
-            transition: all 0.2s;
+            border: 1px solid var(--hairline);
+            border-radius: 50%;
+            background: var(--canvas);
+            color: var(--ink);
+            cursor: pointer;
         }
 
-        .step button:hover { border-color: var(--c-ink); background: var(--c-ink); color: #fff; }
-        .step svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .step button:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
 
-        .stage { flex: 1; position: relative; background: var(--c-bg); }
+        .stage { flex: 1; position: relative; }
 
-        .frame {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s ease;
-        }
-
+        .frame { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .frame.active { opacity: 1; pointer-events: auto; }
-
         iframe { width: 100%; height: 100%; border: none; background: #fff; }
 
-        @media (max-width: 860px) {
-            .now { display: none; }
-            .count { display: none; }
-        }
-
-        @media (max-width: 560px) {
+        @media (max-width: 720px) {
+            .strip { padding: 0 16px; }
+            .container { padding: 0 16px; }
+            .hero { padding-top: 40px; }
             .grid { grid-template-columns: 1fr; }
+            .count { display: none; }
             .step { display: none; }
             .back span { display: none; }
-            .back { padding: 0 10px; }
-            .search { max-width: none; }
+            .back { padding: 0 8px; }
+            .kbd { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -489,47 +406,52 @@
 </head>
 
 <body>
-    <div class="bg"></div>
+    <div class="strip">
+        <span><b>Signal</b> Presentation Hub</span>
+        <span id="meta"></span>
+    </div>
 
-    <!-- 허브: 카드 갤러리 -->
+    <!-- 허브 -->
     <section id="hub">
-        <div class="hub-inner">
-            <div class="hub-top">
-                <span><span class="dot"></span>Presentation Archive</span>
-                <span id="year"></span>
-            </div>
-
+        <div class="container">
             <div class="hero">
-                <h1>Signal <em>Hub</em></h1>
-                <p>AI, 국가 정책, 일과 삶까지. 주제별로 정리한 발표 자료를 한곳에서 바로 열어보세요.</p>
+                <span class="eyebrow">Presentation Archive</span>
+                <h1>AI, 정책, 그리고 삶까지 정리한 <em>발표 자료</em></h1>
             </div>
 
-            <div class="toolbar">
-                <label class="search">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
-                    <input id="q" type="search" placeholder="발표 검색" aria-label="발표 검색" autocomplete="off">
-                </label>
-                <div class="chips" id="chips"></div>
+            <div class="panel">
+                <div class="stats" id="stats"></div>
+                <div class="dist" id="dist" aria-hidden="true"></div>
+            </div>
+
+            <div class="search">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+                <input id="q" type="search" placeholder="발표 제목, 설명, 카테고리 검색..." aria-label="발표 검색" autocomplete="off">
+                <span class="kbd">/</span>
+            </div>
+
+            <div class="filters">
+                <span class="flabel">카테고리</span>
+                <div class="pills" id="pills"></div>
                 <span class="count" id="count"></span>
             </div>
 
             <div class="grid" id="grid"></div>
             <div class="empty" id="empty">검색 결과가 없습니다.</div>
 
-            <footer class="hub-foot">
+            <div class="foot">
                 <span>Signal Presentation Hub</span>
-                <span>카드를 클릭하거나 키보드로 Enter</span>
-            </footer>
+                <span>카드를 선택하면 발표가 열립니다 · 검색 단축키 /</span>
+            </div>
         </div>
     </section>
 
-    <!-- 뷰어: 슬림 바 + iframe -->
+    <!-- 뷰어 -->
     <section id="viewer" aria-label="발표 뷰어">
         <div class="bar">
             <button class="back" id="back" type="button" aria-label="허브로 돌아가기">
                 <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg><span>Hub</span>
             </button>
-            <div class="now" id="now"></div>
             <nav class="rail" id="rail"></nav>
             <div class="step">
                 <button id="prev" type="button" aria-label="이전 발표"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg></button>
@@ -540,32 +462,47 @@
     </section>
 
     <script>
+        // 카테고리별 색상
+        const CATS = { 'AI': '#7c3aed', '기획': '#b45309', '정책': '#0369a1', '라이프': '#0d9488' };
+
         // 발표 목록: 새 발표는 여기에 한 줄만 추가하면 카드·탭·뷰어가 자동 생성됨
         const DECKS = [
-            { id: 'investing', src: 'ai_agent_investing_presentation.html', cat: 'AI', hue: '#14b8a6', title: '주식 투자 AI 에이전트', desc: '투자 의사결정에 AI 에이전트를 어떻게 활용할 수 있는지 살펴봅니다.' },
-            { id: 'speed', src: 'ai_speed_presentation.html', cat: 'AI', hue: '#0ea5e9', title: 'AI 개발 속도 조절', desc: 'AI로 빨라진 개발 속도를 어떻게 조절하고 관리할지 다룹니다.' },
-            { id: 'langgraph', src: 'langgraph_presentation.html', cat: 'AI', hue: '#a78bfa', title: 'LangGraph 에이전트', desc: '기초부터 엔터프라이즈 고도화까지 이어지는 LangGraph 마스터클래스.' },
-            { id: 'nemotron', src: 'nemotron_personas_korea_presentation.html', cat: 'AI', hue: '#65a30d', title: 'Nemotron 가상설문', desc: 'Nemotron Personas Korea 기반 가상설문의 활용법과 한계.' },
-            { id: 'rnd', src: 'ax_rnd_presentation_3.html', cat: '기획', hue: '#f59e0b', title: 'AX R&D 기획 혁신', desc: 'AX 전환 흐름에 맞춰 R&D 기획을 혁신하는 방법.' },
-            { id: '5poles', src: 'five_poles_three_specialties_presentation.html', cat: '정책', hue: '#60a5fa', title: '5극 3특 체제', desc: '대한민국 균형발전 대전환, 5극 3특 체제를 완벽하게 이해하기.' },
-            { id: 'nepsa', src: 'nepsa_presentation.html', cat: '정책', hue: '#f472b6', title: 'NEPSA 과제 우선순위', desc: 'NEPSA 과제의 우선순위를 정리한 발표 자료.' },
-            { id: 'safety', src: 'life_safety_act_presentation.html', cat: '정책', hue: '#fb7185', title: '생명안전기본법', desc: '생명과 존엄을 위한 새로운 사회계약, 생명안전기본법.' },
-            { id: 'life', src: 'balanced_life_presentation.html', cat: '라이프', hue: '#d4a017', title: '균형 잡힌 삶', desc: '40대 후반, 일과 삶의 균형을 다시 생각해 봅니다.' }
+            { id: 'investing', src: 'ai_agent_investing_presentation.html', cat: 'AI', title: '주식 투자 AI 에이전트', desc: '투자 의사결정에 AI 에이전트를 어떻게 활용할 수 있는지 살펴봅니다.' },
+            { id: 'speed', src: 'ai_speed_presentation.html', cat: 'AI', title: 'AI 개발 속도 조절', desc: 'AI로 빨라진 개발 속도를 어떻게 조절하고 관리할지 다룹니다.' },
+            { id: 'langgraph', src: 'langgraph_presentation.html', cat: 'AI', title: 'LangGraph 에이전트', desc: '기초부터 엔터프라이즈 고도화까지 이어지는 LangGraph 마스터클래스.' },
+            { id: 'nemotron', src: 'nemotron_personas_korea_presentation.html', cat: 'AI', title: 'Nemotron 가상설문', desc: 'Nemotron Personas Korea 기반 가상설문의 활용법과 한계.' },
+            { id: 'rnd', src: 'ax_rnd_presentation_3.html', cat: '기획', title: 'AX R&D 기획 혁신', desc: 'AX 전환 흐름에 맞춰 R&D 기획을 혁신하는 방법.' },
+            { id: '5poles', src: 'five_poles_three_specialties_presentation.html', cat: '정책', title: '5극 3특 체제', desc: '대한민국 균형발전 대전환, 5극 3특 체제를 완벽하게 이해하기.' },
+            { id: 'nepsa', src: 'nepsa_presentation.html', cat: '정책', title: 'NEPSA 과제 우선순위', desc: 'NEPSA 과제의 우선순위를 정리한 발표 자료.' },
+            { id: 'safety', src: 'life_safety_act_presentation.html', cat: '정책', title: '생명안전기본법', desc: '생명과 존엄을 위한 새로운 사회계약, 생명안전기본법.' },
+            { id: 'life', src: 'balanced_life_presentation.html', cat: '라이프', title: '균형 잡힌 삶', desc: '40대 후반, 일과 삶의 균형을 다시 생각해 봅니다.' }
         ];
 
         const $ = id => document.getElementById(id);
         const ARROW = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>';
         const pad = n => String(n + 1).padStart(2, '0');
         const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        const color = d => CATS[d.cat] || '#525252';
+        const catNames = Object.keys(CATS);
 
         let filterCat = '전체';
         let currentId = null;
 
-        // ----- 허브 렌더링 -----
-        function renderChips() {
-            const cats = ['전체', ...new Set(DECKS.map(d => d.cat))];
-            $('chips').innerHTML = cats.map(c =>
-                `<button class="chip${c === filterCat ? ' on' : ''}" type="button" data-cat="${c}">${c}</button>`).join('');
+        // ----- 허브 -----
+        function renderStats() {
+            const stat = (name, n, c) =>
+                `<button class="stat${filterCat === name ? ' on' : ''}" type="button" data-cat="${name}">
+                    <span class="l"><i class="dot" style="--c:${c}"></i>${name === '전체' ? '총 발표' : name}</span><span class="v">${n}</span></button>`;
+            $('stats').innerHTML = stat('전체', DECKS.length, '#161616') +
+                catNames.map(c => stat(c, DECKS.filter(d => d.cat === c).length, CATS[c])).join('');
+            $('dist').innerHTML = catNames.map(c =>
+                `<i style="--c:${CATS[c]};flex:${DECKS.filter(d => d.cat === c).length}"></i>`).join('');
+            $('meta').textContent = `${DECKS.length} decks · ${catNames.length} categories`;
+        }
+
+        function renderPills() {
+            $('pills').innerHTML = ['전체', ...catNames].map(c =>
+                `<button class="pill${c === filterCat ? ' on' : ''}" type="button" data-cat="${c}">${c === '전체' ? '' : `<i class="dot" style="--c:${CATS[c]};display:inline-block;margin-right:6px"></i>`}${c}</button>`).join('');
         }
 
         function renderGrid() {
@@ -574,20 +511,27 @@
                 (filterCat === '전체' || d.cat === filterCat) &&
                 (!q || (d.title + d.desc + d.cat).toLowerCase().includes(q)));
             $('grid').innerHTML = list.map((d, i) => `
-                <button class="card" type="button" data-id="${d.id}" style="--hue:${d.hue};--i:${i}">
-                    <div class="card-head"><span class="tag">${esc(d.cat)}</span><span class="num">${pad(DECKS.indexOf(d))}</span></div>
+                <button class="card" type="button" data-id="${d.id}" style="--c:${color(d)};--i:${i}">
+                    <div class="card-top"><span class="tag">${esc(d.cat)}</span><span class="no">${pad(DECKS.indexOf(d))}</span></div>
                     <h2>${esc(d.title)}</h2>
                     <p>${esc(d.desc)}</p>
-                    <div class="card-foot"><span>발표 열기</span><span class="arrow">${ARROW}</span></div>
+                    <div class="open"><span>발표 열기</span>${ARROW}</div>
                 </button>`).join('');
             $('empty').classList.toggle('show', list.length === 0);
-            $('count').textContent = `${list.length} / ${DECKS.length} decks`;
+            $('count').textContent = `${list.length} / ${DECKS.length}`;
         }
 
-        // ----- 뷰어 구성 -----
+        function setCat(c) {
+            filterCat = c;
+            renderStats();
+            renderPills();
+            renderGrid();
+        }
+
+        // ----- 뷰어 -----
         function buildViewer() {
             $('rail').innerHTML = DECKS.map(d =>
-                `<button class="pill" type="button" data-id="${d.id}" style="--hue:${d.hue}">${esc(d.title)}</button>`).join('');
+                `<button class="pill" type="button" data-id="${d.id}"><i class="dot" style="--c:${color(d)};display:inline-block;margin-right:6px"></i>${esc(d.title)}</button>`).join('');
             $('stage').innerHTML = DECKS.map(d =>
                 `<div class="frame" id="frame-${d.id}"><iframe id="iframe-${d.id}" title="${esc(d.title)}"></iframe></div>`).join('');
         }
@@ -598,16 +542,15 @@
             currentId = id;
             document.body.classList.add('viewing');
 
-            document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.id === id));
+            document.querySelectorAll('.rail .pill').forEach(p => p.classList.toggle('active', p.dataset.id === id));
             document.querySelectorAll('.frame').forEach(f => f.classList.toggle('active', f.id === `frame-${id}`));
-            $('now').textContent = deck.title;
             document.title = `${deck.title} · Signal Hub`;
 
             // 지연 로딩
             const frame = $(`iframe-${id}`);
             if (!frame.getAttribute('src')) frame.src = deck.src;
 
-            const active = document.querySelector('.pill.active');
+            const active = document.querySelector('.rail .pill.active');
             if (active) active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
 
             // 키보드 조작이 바로 되도록 iframe에 포커스
@@ -635,42 +578,26 @@
         }
 
         // ----- 이벤트 -----
-        $('chips').addEventListener('click', e => {
-            const b = e.target.closest('.chip');
-            if (!b) return;
-            filterCat = b.dataset.cat;
-            renderChips();
-            renderGrid();
-        });
+        $('stats').addEventListener('click', e => { const b = e.target.closest('.stat'); if (b) setCat(b.dataset.cat); });
+        $('pills').addEventListener('click', e => { const b = e.target.closest('.pill'); if (b) setCat(b.dataset.cat); });
         $('q').addEventListener('input', renderGrid);
-
-        $('grid').addEventListener('click', e => {
-            const c = e.target.closest('.card');
-            if (c) openDeck(c.dataset.id);
-        });
-        // 마우스 위치 따라 움직이는 카드 글로우
-        $('grid').addEventListener('pointermove', e => {
-            const c = e.target.closest('.card');
-            if (!c) return;
-            const r = c.getBoundingClientRect();
-            c.style.setProperty('--mx', `${e.clientX - r.left}px`);
-            c.style.setProperty('--my', `${e.clientY - r.top}px`);
-        });
-
-        $('rail').addEventListener('click', e => {
-            const p = e.target.closest('.pill');
-            if (p) openDeck(p.dataset.id);
-        });
+        $('grid').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) openDeck(c.dataset.id); });
+        $('rail').addEventListener('click', e => { const p = e.target.closest('.pill'); if (p) openDeck(p.dataset.id); });
         $('back').addEventListener('click', () => showHub());
         $('prev').addEventListener('click', () => step(-1));
         $('next').addEventListener('click', () => step(1));
 
-        // 부모 창에 포커스가 있을 때 누른 키를 활성 iframe으로 전달
         window.addEventListener('keydown', e => {
-            if (!currentId || e.target === $('q')) return;
-            const frame = $(`iframe-${currentId}`);
+            // 허브에서 "/" 또는 Ctrl/⌘+K 로 검색창 포커스
+            if (!currentId && e.target !== $('q') && (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
+                e.preventDefault();
+                $('q').focus();
+                return;
+            }
+            // 부모 창에 포커스가 있을 때 누른 키를 활성 iframe으로 전달
+            if (!currentId) return;
             try {
-                frame.contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
+                $(`iframe-${currentId}`).contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
                     key: e.key, code: e.code, keyCode: e.keyCode, which: e.which, bubbles: true
                 }));
             } catch (err) { }
@@ -679,8 +606,8 @@
         window.addEventListener('hashchange', routeFromHash);
 
         // ----- 시작 -----
-        $('year').textContent = new Date().getFullYear();
-        renderChips();
+        renderStats();
+        renderPills();
         renderGrid();
         buildViewer();
         routeFromHash();

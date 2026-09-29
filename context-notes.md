@@ -7,3 +7,4 @@
 - history.replaceState에 location.pathname을 쓰면 data:/null origin 환경에서 SecurityError → 해시(`#hub`)만 사용하도록 수정.
 - 새 발표 추가 방법: index.html 스크립트의 DECKS 배열에 한 줄 추가.
 - 2026-09-29: 다크 → 라이트(흰 배경) 테마로 전환. 파스텔 오로라 배경, 흰 카드+소프트 섀도, 잉크색 활성 칩/버튼, hue는 흰 배경용으로 조정.
+- 2026-09-29: 레퍼런스(dashboard1-3st.pages.dev, IBM Carbon 스타일) 반영. IBM Plex Sans(KR), 헤어라인·각진 카드+좌측 컬러바, 유틸리티 스트립, 통계 패널(클릭 필터)+분포 바, 밑줄 검색(/ 단축키), 카테고리 색은 cat 단위(deck hue 제거). 다크 토글은 사용자가 다크 싫어해서 제외.
