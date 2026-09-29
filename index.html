@@ -12,13 +12,13 @@
         rel="stylesheet">
     <style>
         :root {
-            --c-bg: #0b1020;
-            --c-bg-2: #131b31;
-            --c-surface: rgba(255, 255, 255, 0.045);
-            --c-line: rgba(255, 255, 255, 0.09);
-            --c-accent: #c8a870;
-            --c-fg: #ece6da;
-            --c-fg-muted: #8f9ab0;
+            --c-bg: #fbfaf7;
+            --c-surface: #ffffff;
+            --c-line: rgba(20, 22, 31, 0.09);
+            --c-accent: #a9762a;
+            --c-ink: #14161f;
+            --c-fg: #14161f;
+            --c-fg-muted: #6a7080;
             --f-display: "Source Serif 4", "Noto Serif KR", Georgia, serif;
             --f-body: "DM Sans", "Noto Sans KR", system-ui, sans-serif;
             --f-mono: "IBM Plex Mono", monospace;
@@ -44,9 +44,9 @@
             z-index: 0;
             pointer-events: none;
             background:
-                radial-gradient(60% 50% at 15% 0%, rgba(200, 168, 112, 0.16), transparent 70%),
-                radial-gradient(50% 45% at 90% 10%, rgba(88, 130, 255, 0.16), transparent 70%),
-                radial-gradient(60% 50% at 60% 110%, rgba(167, 100, 255, 0.12), transparent 70%),
+                radial-gradient(55% 45% at 12% 0%, rgba(255, 196, 120, 0.35), transparent 70%),
+                radial-gradient(45% 40% at 92% 8%, rgba(120, 160, 255, 0.28), transparent 70%),
+                radial-gradient(55% 45% at 65% 105%, rgba(255, 140, 190, 0.20), transparent 70%),
                 var(--c-bg);
         }
 
@@ -55,8 +55,8 @@
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(20, 22, 31, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(20, 22, 31, 0.045) 1px, transparent 1px);
             background-size: 56px 56px;
             mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 75%);
             -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 75%);
@@ -118,7 +118,7 @@
         .hero h1 em {
             font-style: italic;
             font-weight: 400;
-            background: linear-gradient(100deg, #e9cf9d, #c8a870 40%, #8fa8ff);
+            background: linear-gradient(100deg, #e08a2c, #d4526e 55%, #5b6cff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -162,7 +162,7 @@
             transition: border-color 0.25s, background 0.25s;
         }
 
-        .search input:focus { border-color: rgba(200, 168, 112, 0.6); background: rgba(255, 255, 255, 0.07); }
+        .search input:focus { border-color: var(--c-ink); background: #fff; box-shadow: 0 0 0 4px rgba(20, 22, 31, 0.06); }
         .search input::placeholder { color: var(--c-fg-muted); }
 
         .search svg {
@@ -191,8 +191,8 @@
             transition: all 0.2s ease;
         }
 
-        .chip:hover { color: var(--c-fg); border-color: rgba(255, 255, 255, 0.25); }
-        .chip.on { color: #1a1408; background: var(--c-accent); border-color: var(--c-accent); }
+        .chip:hover { color: var(--c-fg); border-color: rgba(20, 22, 31, 0.35); }
+        .chip.on { color: #fff; background: var(--c-ink); border-color: var(--c-ink); }
 
         .count { margin-left: auto; font: 400 0.78rem var(--f-mono); color: var(--c-fg-muted); }
 
@@ -223,6 +223,7 @@
             transform: translateY(18px);
             animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             animation-delay: calc(var(--i) * 55ms + 120ms);
+            box-shadow: 0 1px 2px rgba(20, 22, 31, 0.04), 0 8px 24px -14px rgba(20, 22, 31, 0.12);
             transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
 
@@ -232,7 +233,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: radial-gradient(320px circle at var(--mx) var(--my), color-mix(in srgb, var(--hue) 22%, transparent), transparent 70%);
+            background: radial-gradient(320px circle at var(--mx) var(--my), color-mix(in srgb, var(--hue) 16%, transparent), transparent 70%);
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
@@ -252,7 +253,7 @@
         .card:hover, .card:focus-visible {
             transform: translateY(-4px);
             border-color: color-mix(in srgb, var(--hue) 55%, transparent);
-            box-shadow: 0 20px 50px -20px color-mix(in srgb, var(--hue) 45%, transparent);
+            box-shadow: 0 24px 50px -22px color-mix(in srgb, var(--hue) 65%, transparent);
             outline: none;
         }
 
@@ -272,8 +273,8 @@
             text-transform: uppercase;
             padding: 5px 10px;
             border-radius: 999px;
-            color: var(--hue);
-            background: color-mix(in srgb, var(--hue) 14%, transparent);
+            color: color-mix(in srgb, var(--hue) 62%, #000);
+            background: color-mix(in srgb, var(--hue) 16%, #fff);
         }
 
         .num { font: 400 0.8rem var(--f-mono); color: var(--c-fg-muted); }
@@ -324,7 +325,7 @@
         .card:hover .arrow {
             background: var(--hue);
             border-color: var(--hue);
-            color: #0b1020;
+            color: #fff;
             transform: translateX(3px);
         }
 
@@ -367,7 +368,7 @@
             align-items: center;
             gap: 14px;
             padding: 0 16px;
-            background: rgba(11, 16, 32, 0.82);
+            background: rgba(255, 255, 255, 0.86);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--c-line);
@@ -389,7 +390,7 @@
             transition: all 0.2s;
         }
 
-        .back:hover { border-color: var(--c-accent); color: var(--c-accent); }
+        .back:hover { border-color: var(--c-ink); background: var(--c-ink); color: #fff; }
         .back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
 
         .now {
@@ -430,9 +431,9 @@
         .pill:hover { color: var(--c-fg); background: var(--c-surface); }
 
         .pill.active {
-            color: var(--hue);
-            background: color-mix(in srgb, var(--hue) 14%, transparent);
-            border-color: color-mix(in srgb, var(--hue) 40%, transparent);
+            color: color-mix(in srgb, var(--hue) 55%, #000);
+            background: color-mix(in srgb, var(--hue) 16%, #fff);
+            border-color: color-mix(in srgb, var(--hue) 45%, transparent);
         }
 
         .step { flex: none; display: flex; gap: 6px; }
@@ -450,10 +451,10 @@
             transition: all 0.2s;
         }
 
-        .step button:hover { border-color: var(--c-accent); color: var(--c-accent); }
+        .step button:hover { border-color: var(--c-ink); background: var(--c-ink); color: #fff; }
         .step svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-        .stage { flex: 1; position: relative; background: #09090b; }
+        .stage { flex: 1; position: relative; background: var(--c-bg); }
 
         .frame {
             position: absolute;
@@ -465,7 +466,7 @@
 
         .frame.active { opacity: 1; pointer-events: auto; }
 
-        iframe { width: 100%; height: 100%; border: none; background: #09090b; }
+        iframe { width: 100%; height: 100%; border: none; background: #fff; }
 
         @media (max-width: 860px) {
             .now { display: none; }
@@ -541,15 +542,15 @@
     <script>
         // 발표 목록: 새 발표는 여기에 한 줄만 추가하면 카드·탭·뷰어가 자동 생성됨
         const DECKS = [
-            { id: 'investing', src: 'ai_agent_investing_presentation.html', cat: 'AI', hue: '#5eead4', title: '주식 투자 AI 에이전트', desc: '투자 의사결정에 AI 에이전트를 어떻게 활용할 수 있는지 살펴봅니다.' },
-            { id: 'speed', src: 'ai_speed_presentation.html', cat: 'AI', hue: '#00d4ff', title: 'AI 개발 속도 조절', desc: 'AI로 빨라진 개발 속도를 어떻게 조절하고 관리할지 다룹니다.' },
+            { id: 'investing', src: 'ai_agent_investing_presentation.html', cat: 'AI', hue: '#14b8a6', title: '주식 투자 AI 에이전트', desc: '투자 의사결정에 AI 에이전트를 어떻게 활용할 수 있는지 살펴봅니다.' },
+            { id: 'speed', src: 'ai_speed_presentation.html', cat: 'AI', hue: '#0ea5e9', title: 'AI 개발 속도 조절', desc: 'AI로 빨라진 개발 속도를 어떻게 조절하고 관리할지 다룹니다.' },
             { id: 'langgraph', src: 'langgraph_presentation.html', cat: 'AI', hue: '#a78bfa', title: 'LangGraph 에이전트', desc: '기초부터 엔터프라이즈 고도화까지 이어지는 LangGraph 마스터클래스.' },
-            { id: 'nemotron', src: 'nemotron_personas_korea_presentation.html', cat: 'AI', hue: '#76e04a', title: 'Nemotron 가상설문', desc: 'Nemotron Personas Korea 기반 가상설문의 활용법과 한계.' },
+            { id: 'nemotron', src: 'nemotron_personas_korea_presentation.html', cat: 'AI', hue: '#65a30d', title: 'Nemotron 가상설문', desc: 'Nemotron Personas Korea 기반 가상설문의 활용법과 한계.' },
             { id: 'rnd', src: 'ax_rnd_presentation_3.html', cat: '기획', hue: '#f59e0b', title: 'AX R&D 기획 혁신', desc: 'AX 전환 흐름에 맞춰 R&D 기획을 혁신하는 방법.' },
             { id: '5poles', src: 'five_poles_three_specialties_presentation.html', cat: '정책', hue: '#60a5fa', title: '5극 3특 체제', desc: '대한민국 균형발전 대전환, 5극 3특 체제를 완벽하게 이해하기.' },
             { id: 'nepsa', src: 'nepsa_presentation.html', cat: '정책', hue: '#f472b6', title: 'NEPSA 과제 우선순위', desc: 'NEPSA 과제의 우선순위를 정리한 발표 자료.' },
             { id: 'safety', src: 'life_safety_act_presentation.html', cat: '정책', hue: '#fb7185', title: '생명안전기본법', desc: '생명과 존엄을 위한 새로운 사회계약, 생명안전기본법.' },
-            { id: 'life', src: 'balanced_life_presentation.html', cat: '라이프', hue: '#c8a870', title: '균형 잡힌 삶', desc: '40대 후반, 일과 삶의 균형을 다시 생각해 봅니다.' }
+            { id: 'life', src: 'balanced_life_presentation.html', cat: '라이프', hue: '#d4a017', title: '균형 잡힌 삶', desc: '40대 후반, 일과 삶의 균형을 다시 생각해 봅니다.' }
         ];
 
         const $ = id => document.getElementById(id);
