@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jev AI 완전 정복 — 글을 쓰는 AI에서 판단하는 AI로</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;
+  --t:#f0f0f0;
+  --mu:#a1a1aa;
+  --c:#00d4ff;  /* Cyan: 코어 기술 / 속도 / Choice */
+  --a:#f59e0b;  /* Amber: 주의 / 벤치마크 / Score */
+  --e:#10b981;  /* Emerald: 성능 / 비즈니스 효과 / Noul */
+  --p:#a78bfa;  /* Purple: AI 모델 / 아키텍처 / System One */
+  --r:#f43f5e;  /* Rose: 문제점 / 보안 / 가드레일 */
+  --b:#3b82f6;  /* Blue: 엔터프라이즈 / 클라우드 / 통합 */
+}
+body{
+  background:var(--bg);
+  color:var(--t);
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  overflow:hidden;
+  width:1920px;
+  height:1080px;
+  transform-origin:0 0;
+  word-break:keep-all;
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:88px 88px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Typography */
+.t-hero{font-size:94px;font-weight:800;letter-spacing:-.034em;line-height:1.12}
+.t-xl{font-size:68px;font-weight:700;letter-spacing:-.026em;line-height:1.18}
+.t-lg{font-size:48px;font-weight:700;letter-spacing:-.020em;line-height:1.24}
+.t-md{font-size:32px;font-weight:600;line-height:1.32}
+.t-sm{font-size:24px;font-weight:500;line-height:1.45}
+.t-xs{font-size:18px;font-weight:400;color:var(--mu);line-height:1.55}
+
+/* Glow Text */
+.gc{color:#00d4ff;text-shadow:0 0 28px #00d4ff,0 0 56px rgba(0,212,255,.45)}
+.ga{color:#f59e0b;text-shadow:0 0 28px #f59e0b,0 0 56px rgba(245,158,11,.45)}
+.ge{color:#10b981;text-shadow:0 0 28px #10b981,0 0 56px rgba(16,185,129,.45)}
+.gp{color:#a78bfa;text-shadow:0 0 28px #a78bfa,0 0 56px rgba(167,139,250,.45)}
+.gr{color:#f43f5e;text-shadow:0 0 28px #f43f5e,0 0 56px rgba(244,63,94,.45)}
+.gb{color:#3b82f6;text-shadow:0 0 28px #3b82f6,0 0 56px rgba(59,130,246,.45)}
+
+/* Glass Cards */
+.glass{
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:24px;
+  box-shadow:0 8px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.glass-c{
+  background:rgba(0,212,255,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(0,212,255,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(0,212,255,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-a{
+  background:rgba(245,158,11,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(245,158,11,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(245,158,11,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-e{
+  background:rgba(16,185,129,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(16,185,129,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(16,185,129,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-p{
+  background:rgba(167,139,250,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(167,139,250,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(167,139,250,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-r{
+  background:rgba(244,63,94,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(244,63,94,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(244,63,94,.12),0 8px 40px rgba(0,0,0,.5);
+}
+.glass-b{
+  background:rgba(59,130,246,.07);
+  backdrop-filter:blur(24px);
+  border:1px solid rgba(59,130,246,.28);
+  border-radius:24px;
+  box-shadow:0 0 48px rgba(59,130,246,.12),0 8px 40px rgba(0,0,0,.5);
+}
+
+/* Animations */
+[data-step]{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);
+}
+[data-step].revealed{opacity:1;transform:translateY(0)}
+[data-step="2"].revealed{transition-delay:.06s}
+[data-step="3"].revealed{transition-delay:.12s}
+[data-step="4"].revealed{transition-delay:.18s}
+[data-step="5"].revealed{transition-delay:.24s}
+
+/* Layout Elements */
+#blobs{position:fixed;inset:0;z-index:0;pointer-events:none}
+#slide{position:relative;z-index:1;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center}
+#nav{position:fixed;bottom:24px;right:48px;z-index:100;display:flex;align-items:center;gap:12px;user-select:none}
+#nav .nav-btn{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);
+  color:var(--t);
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:20px;
+  transition:all .2s ease;
+}
+#nav .nav-btn:hover{
+  background:rgba(0,212,255,.2);
+  border-color:var(--c);
+  color:var(--c);
+  transform:scale(1.06);
+}
+#nav span{
+  color:var(--mu);
+  font-size:18px;
+  font-weight:600;
+  min-width:84px;
+  text-align:center;
+  cursor:pointer;
+  padding:4px 8px;
+  border-radius:8px;
+  transition:all .2s ease;
+}
+#nav span:hover{
+  background:rgba(255,255,255,.1);
+  color:var(--c);
+}
+#progress{position:fixed;bottom:0;left:0;height:4px;background:linear-gradient(90deg,var(--c),var(--p),var(--a),var(--e));z-index:10;transition:width .3s ease}
+
+/* Quick Jump Toast Indicator */
+#jump-indicator{
+  position:fixed;
+  top:36px;
+  right:48px;
+  z-index:200;
+  background:rgba(19,27,49,.92);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--c);
+  box-shadow:0 0 30px rgba(0,212,255,.35);
+  border-radius:14px;
+  padding:12px 24px;
+  display:none;
+  align-items:center;
+  gap:12px;
+  font-size:18px;
+  font-weight:600;
+  color:#fff;
+  letter-spacing:-.01em;
+}
+
+/* Quick Jump Modal */
+#jump-modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  background:rgba(9,9,11,.75);
+  backdrop-filter:blur(12px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+#jump-modal{
+  width:440px;
+  background:rgba(18,24,38,.92);
+  border:1px solid rgba(0,212,255,.35);
+  box-shadow:0 16px 50px rgba(0,0,0,.7),0 0 40px rgba(0,212,255,.2);
+  border-radius:24px;
+  padding:36px 32px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:20px;
+}
+#jump-modal input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:24px;
+  font-weight:700;
+  text-align:center;
+  outline:none;
+  transition:border .2s;
+}
+#jump-modal input:focus{
+  border-color:var(--c);
+  box-shadow:0 0 16px rgba(0,212,255,.3);
+}
+#modal-jump-btn{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  background:linear-gradient(135deg,var(--c),var(--p));
+  color:#000;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .15s,opacity .15s;
+}
+#modal-jump-btn:hover{
+  opacity:.9;
+  transform:scale(1.02);
+}
+
+/* Tag / Badge */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 18px;
+  border-radius:999px;
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.badge-c{background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.35);color:var(--c)}
+.badge-p{background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.35);color:var(--p)}
+.badge-a{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--a)}
+.badge-e{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);color:var(--e)}
+.badge-r{background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.35);color:var(--r)}
+
+/* Code Styling */
+code.inline{
+  font-family:'Consolas','Courier New',monospace;
+  background:rgba(255,255,255,.1);
+  padding:3px 8px;
+  border-radius:6px;
+  color:#00d4ff;
+  font-size:.9em;
+}
+pre.codebox{
+  font-family:'Consolas','Courier New',monospace;
+  background:rgba(10,14,24,.85);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;
+  padding:24px;
+  color:#e2e8f0;
+  font-size:18px;
+  line-height:1.6;
+  overflow-x:auto;
+  box-shadow:inset 0 2px 10px rgba(0,0,0,.5);
+}
+.kw{color:#f43f5e;font-weight:600}
+.fn{color:#00d4ff}
+.str{color:#10b981}
+.num{color:#f59e0b}
+.com{color:#64748b;font-style:italic}
+.type{color:#a78bfa}
+</style>
+</head>
+<body>
+<div id="blobs"></div>
+<div id="slide"></div>
+
+<!-- Quick Jump Toast -->
+<div id="jump-indicator">
+  <iconify-icon icon="solar:round-alt-arrow-right-bold" style="color:var(--c);font-size:24px"></iconify-icon>
+  <span>Go to Page : </span>
+  <span id="jump-number" style="color:var(--c);font-weight:800;font-size:22px">1</span>
+</div>
+
+<!-- Quick Jump Modal -->
+<div id="jump-modal-overlay">
+  <div id="jump-modal">
+    <div style="font-size:22px;font-weight:700;color:var(--c);display:flex;align-items:center;gap:10px">
+      <iconify-icon icon="solar:compass-bold" style="font-size:26px"></iconify-icon>
+      페이지 바로 이동
+    </div>
+    <div style="font-size:14px;color:var(--mu);text-align:center">1부터 20 사이의 슬라이드 번호를 입력하세요</div>
+    <input type="number" id="modal-page-input" min="1" max="20" placeholder="예: 7">
+    <button id="modal-jump-btn">이동하기</button>
+  </div>
+</div>
+
+<!-- Controls -->
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" title="이전 (←, Backspace)">◀</button>
+  <span id="counter" title="클릭하여 페이지 점프">1 / 20</span>
+  <button class="nav-btn" id="btn-next" title="다음 (→, Space)">▶</button>
+</div>
+<div id="progress"></div>
+
+<script>
+// 슬라이드 데이터 정의 (총 20장) - [주의: 백틱 내부 백틱 절대 금지!]
+const slides = [
+  // ── 1. 표지 (Cover) ──
+  {
+    n: 1,
+    html: '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px;height:100%">' +
+      '<div class="badge badge-c" style="margin-bottom:32px">' +
+        '<iconify-icon icon="solar:bolt-circle-bold" style="font-size:22px"></iconify-icon>' +
+        '<span>Next-Gen AI Decision Paradigm — 2026</span>' +
+      '</div>' +
+      '<div class="t-hero" style="margin-bottom:28px">' +
+        '글을 쓰는 AI에서,<br><span class="gc">판단하는 AI</span>로의 진화' +
+      '</div>' +
+      '<div class="t-md" style="color:var(--mu);font-weight:400;max-width:1100px;margin-bottom:56px;line-height:1.5">' +
+        '<strong style="color:#fff">Jev AI</strong> 완전 정복: TypeSafe AI가 연 초고속 System One 모델의 개념, 작동 원리, 실전 코드 및 프로덕션 활용 사례' +
+      '</div>' +
+      '<div style="display:flex;gap:20px">' +
+        '<div class="glass" style="padding:16px 28px;display:flex;align-items:center;gap:12px">' +
+          '<iconify-icon icon="solar:cpu-bolt-bold" style="color:var(--c);font-size:28px"></iconify-icon>' +
+          '<span style="font-size:20px;font-weight:600">70ms 초저지연 연산</span>' +
+        '</div>' +
+        '<div class="glass" style="padding:16px 28px;display:flex;align-items:center;gap:12px">' +
+          '<iconify-icon icon="solar:shield-check-bold" style="color:var(--e);font-size:28px"></iconify-icon>' +
+          '<span style="font-size:20px;font-weight:600">Type-Safe 구조화 결정</span>' +
+        '</div>' +
+        '<div class="glass" style="padding:16px 28px;display:flex;align-items:center;gap:12px">' +
+          '<iconify-icon icon="solar:wallet-money-bold" style="color:var(--a);font-size:28px"></iconify-icon>' +
+          '<span style="font-size:20px;font-weight:600">비용 95% 절감</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 2. 도입: 생성형 LLM의 보틀넥 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-r" style="margin-bottom:16px">THE BOTTLENECK OF GENERATIVE AI</div>' +
+          '<div class="t-xl">모든 문제에 <span class="gr">거대 LLM</span>을 쓰는 것이 정답일까?</div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">소프트웨어 백엔드의 90%는 긴 글이 아닌 빠른 판단을 요구합니다</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">' +
+        '<div class="glass-r" data-step="1" style="padding:44px 36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:64px;height:64px;border-radius:18px;background:rgba(244,63,94,.15);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:hourglass-line-bold" style="color:var(--r);font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">극심한 지연시간 (Latency)</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '단어 하나하나를 순차 생성(Next-Token Prediction)하느라 단순 분류 질문에도 <strong style="color:var(--r)">1.5초~5초</strong>가 소요되어 실시간 UX를 저해합니다.' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-a" data-step="2" style="padding:44px 36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:64px;height:64px;border-radius:18px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:dollar-minimalistic-bold" style="color:var(--a);font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">눈덩이처럼 불어나는 비용</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '단순한 예/아니오 판별이나 카테고리 태깅에도 수천 토큰의 프롬프트와 거대 파라미터가 구동되어 <strong style="color:var(--a)">API 비용이 폭증</strong>합니다.' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass" data-step="3" style="padding:44px 36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:danger-triangle-bold" style="color:#cbd5e1;font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">비결정론적 출력 불안정성</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            'JSON 파싱 실패, 장황한 서두 출력, 사소한 환각(Hallucination) 때문에 프로덕션 파이프라인의 <strong style="color:#fff">신뢰도 저하</strong>가 빈번합니다.' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 3. 배경: System 1 vs System 2 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-p" style="margin-bottom:16px">DUAL PROCESS THEORY</div>' +
+          '<div class="t-xl">인간의 뇌처럼: <span class="gp">System 1</span>과 <span class="gc">System 2</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">노벨경제학상 수상자 다니엘 카너먼의 사고 메커니즘을 AI에 적용하다</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">' +
+        '<div class="glass-p" data-step="1" style="padding:48px 44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="display:flex;align-items:center;gap:16px">' +
+            '<div style="width:56px;height:56px;border-radius:16px;background:rgba(167,139,250,.2);display:flex;align-items:center;justify-content:center">' +
+              '<iconify-icon icon="solar:flash-bold" style="color:var(--p);font-size:32px"></iconify-icon>' +
+            '</div>' +
+            '<div>' +
+              '<div style="font-size:18px;color:var(--p);font-weight:700">FAST & INTUITIVE</div>' +
+              '<div class="t-lg" style="color:#fff">System 1 : 직관적 즉답</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '무의식적이고 빠른 판단. 상황을 인지하자마자 0.1초 만에 패턴을 감지하고 결정을 내리는 사고 영역입니다.' +
+          '</div>' +
+          '<div style="background:rgba(0,0,0,.3);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">' +
+            '<div style="display:flex;align-items:center;gap:10px;font-size:18px;color:#fff">' +
+              '<iconify-icon icon="solar:check-circle-bold" style="color:var(--e)"></iconify-icon> "이 고객 요청은 긴급 장애인가 아닌가?"' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:10px;font-size:18px;color:#fff">' +
+              '<iconify-icon icon="solar:check-circle-bold" style="color:var(--e)"></iconify-icon> "이 이메일은 스팸인가 정상인가?"' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:10px;font-size:18px;color:var(--p);font-weight:600">' +
+              '<iconify-icon icon="solar:star-bold"></iconify-icon> ➔ Jev AI가 완벽하게 담당하는 핵심 영역' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass" data-step="2" style="padding:48px 44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="display:flex;align-items:center;gap:16px">' +
+            '<div style="width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center">' +
+              '<iconify-icon icon="solar:brain-bold" style="color:#cbd5e1;font-size:32px"></iconify-icon>' +
+            '</div>' +
+            '<div>' +
+              '<div style="font-size:18px;color:var(--mu);font-weight:700">SLOW & ANALYTICAL</div>' +
+              '<div class="t-lg" style="color:#fff">System 2 : 숙고적 추론</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '에너지를 많이 소모하며 논리적 단계와 문장을 구성하는 고차원적 사고 영역입니다.' +
+          '</div>' +
+          '<div style="background:rgba(0,0,0,.3);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">' +
+            '<div style="display:flex;align-items:center;gap:10px;font-size:18px;color:#fff">' +
+              '<iconify-icon icon="solar:chat-round-line-bold" style="color:var(--c)"></iconify-icon> "분기 매출 보고서를 요약 및 작성해줘"' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:10px;font-size:18px;color:#fff">' +
+              '<iconify-icon icon="solar:chat-round-line-bold" style="color:var(--c)"></iconify-icon> "새로운 비즈니스 전략 기획안 수립"' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:10px;font-size:18px;color:var(--c);font-weight:600">' +
+              '<iconify-icon icon="solar:star-bold"></iconify-icon> ➔ GPT-4, Claude 3.5 등 범용 대형 LLM의 영역' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="glass-c" data-step="3" style="padding:20px 32px;display:flex;align-items:center;justify-content:space-between">' +
+        '<div style="font-size:22px;font-weight:600;display:flex;align-items:center;gap:14px">' +
+          '<iconify-icon icon="solar:lightbulb-bold" style="color:var(--c);font-size:28px"></iconify-icon>' +
+          '<span>결론: 모든 작업에 System 2를 쓰는 낭비를 멈추고, 앞단에 <strong style="color:var(--c)">System 1 모델(Jev)</strong>을 배치해야 합니다!</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 4. Jev란 무엇인가? ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-c" style="margin-bottom:16px">CORE DEFINITION</div>' +
+          '<div class="t-xl"><span class="gc">Jev AI</span>란 무엇인가?</div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">2026년 9월, TypeSafe AI가 공개한 차세대 의사결정 모델</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:40px">' +
+        '<div class="glass" style="padding:48px 44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div class="t-md" style="color:var(--c)">"글을 쓰지 않고, 오직 판단만 내리는 AI"</div>' +
+          '<div class="t-sm" style="line-height:1.7;color:var(--mu)">' +
+            'Jev는 샌프란시스코의 <strong style="color:#fff">TypeSafe AI</strong>가 개발한 엔터프라이즈급 의사결정 전용 모델입니다. 텍스트 토큰을 줄줄이 늘어놓는 대신, 시스템의 상태(State)를 입력받아 프로그래밍 언어의 엄격한 타입(Choices, Scores, Probabilities)으로 즉각 반환합니다.' +
+          '</div>' +
+          '<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;flex-direction:column;gap:16px">' +
+            '<div style="display:flex;align-items:center;gap:12px;font-size:20px;color:#fff">' +
+              '<iconify-icon icon="solar:check-read-bold" style="color:var(--e);font-size:24px"></iconify-icon>' +
+              '<span><strong>단일 병렬 패스(Single Pass)</strong>로 연산하여 토큰 생성 딜레이 제거</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:12px;font-size:20px;color:#fff">' +
+              '<iconify-icon icon="solar:check-read-bold" style="color:var(--e);font-size:24px"></iconify-icon>' +
+              '<span>JSON 스키마 규격 100% 준수 (파싱 에러 0건 보장)</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:12px;font-size:20px;color:#fff">' +
+              '<iconify-icon icon="solar:check-read-bold" style="color:var(--e);font-size:24px"></iconify-icon>' +
+              '<span>클라우드 마이크로서비스 백엔드에 다이렉트 임베딩 최적화</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:20px">' +
+          '<div class="glass-c" data-step="1" style="padding:28px 32px">' +
+            '<div style="font-size:18px;color:var(--c);font-weight:700;margin-bottom:8px">INPUT (입력)</div>' +
+            '<div style="font-size:20px;color:#fff;line-height:1.5">' +
+              '비정형 자연어 텍스트, 사용자 질문, 서버 로그, 이벤트 JSON' +
+            '</div>' +
+          '</div>' +
+          '<div style="text-align:center" data-step="2">' +
+            '<iconify-icon icon="solar:arrow-down-bold" style="color:var(--c);font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="glass-e" data-step="2" style="padding:28px 32px">' +
+            '<div style="font-size:18px;color:var(--e);font-weight:700;margin-bottom:8px">JEV DECISION ENGINE</div>' +
+            '<div style="font-size:20px;color:#fff;line-height:1.5">' +
+              '70~150ms 내 초고속 병렬 신경망 연산 (Zero Token Generation)' +
+            '</div>' +
+          '</div>' +
+          '<div style="text-align:center" data-step="3">' +
+            '<iconify-icon icon="solar:arrow-down-bold" style="color:var(--e);font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="glass-p" data-step="3" style="padding:28px 32px">' +
+            '<div style="font-size:18px;color:var(--p);font-weight:700;margin-bottom:8px">OUTPUT (출력)</div>' +
+            '<div style="font-size:20px;color:#fff;line-height:1.5">' +
+              '타입이 명확한 구조화 JSON 데이터 (선택값, 수치 점수, 확률)' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 5. 아키텍처 비교: LLM vs Jev ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-a" style="margin-bottom:16px">TECHNICAL COMPARISON</div>' +
+          '<div class="t-xl">아키텍처 대조: <span class="gr">기존 LLM</span> vs <span class="gc">Jev AI</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">메커니즘부터 완전히 다른 새로운 형태의 파운데이션 모델</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">' +
+        '<div class="glass-r" data-step="1" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="display:flex;align-items:center;gap:14px">' +
+            '<iconify-icon icon="solar:chat-square-code-bold" style="color:var(--r);font-size:36px"></iconify-icon>' +
+            '<div class="t-md" style="color:#fff">기존 생성형 LLM (GPT, Claude 등)</div>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:18px">' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--r);font-size:16px;font-weight:700">작동 원리</div>' +
+              '<div style="font-size:20px;color:#fff;margin-top:4px">Auto-Regressive 토큰 순차 생성 (루프 반복)</div>' +
+            '</div>' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--r);font-size:16px;font-weight:700">평균 응답 속도</div>' +
+              '<div style="font-size:20px;color:#fff;margin-top:4px">1,500ms ~ 5,000ms (1.5초 이상 지연)</div>' +
+            '</div>' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--r);font-size:16px;font-weight:700">출력 형태</div>' +
+              '<div style="font-size:20px;color:#fff;margin-top:4px">비정형 자연어 문자열 (후처리 파싱 필요)</div>' +
+            '</div>' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--r);font-size:16px;font-weight:700">인프라 부담</div>' +
+              '<div style="font-size:20px;color:#fff;margin-top:4px">거대 H100/B200 GPU 클러스터 및 높은 전력 소모</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-c" data-step="2" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="display:flex;align-items:center;gap:14px">' +
+            '<iconify-icon icon="solar:bolt-bold" style="color:var(--c);font-size:36px"></iconify-icon>' +
+            '<div class="t-md" style="color:#fff">Jev AI (System One Model)</div>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:18px">' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--c);font-size:16px;font-weight:700">작동 원리</div>' +
+              '<div style="font-size:20px;color:#fff;margin-top:4px">단일 병렬 패스(Single Pass) 상태 평가</div>' +
+            '</div>' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--c);font-size:16px;font-weight:700">평균 응답 속도</div>' +
+              '<div style="font-size:20px;color:var(--c);font-weight:700;margin-top:4px">70ms ~ 300ms (최대 200배 고속)</div>' +
+            '</div>' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--c);font-size:16px;font-weight:700">출력 형태</div>' +
+              '<div style="font-size:20px;color:#fff;margin-top:4px">타입 보장형 구조화 JSON (Choice / Score / Noul)</div>' +
+            '</div>' +
+            '<div style="background:rgba(0,0,0,.35);padding:18px 24px;border-radius:14px">' +
+              '<div style="color:var(--c);font-size:16px;font-weight:700">인프라 부담</div>' +
+              '<div style="font-size:20px;color:var(--e);font-weight:700;margin-top:4px">초경량 엔드포인트 & 서버리스 엣지 실행 가능</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 6. 성능 지표 및 경제성 ──
+  {
+    n: 4,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-e" style="margin-bottom:16px">BENCHMARKS & METRICS</div>' +
+          '<div class="t-xl">숫자로 증명하는 <span class="ge">압도적 생산성</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">글로벌 테크 기업 및 핀테크 초기 벤치마크 결과</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px">' +
+        '<div class="glass-c" data-step="1" style="padding:40px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px">' +
+          '<div class="gc" style="font-size:68px;font-weight:800;letter-spacing:-.03em">70ms</div>' +
+          '<div class="t-md" style="color:#fff">최소 레이턴시</div>' +
+          '<div class="t-xs" style="line-height:1.6">네트워크 패킷 수준의 초고속 응답 속도 실현 (평균 110ms)</div>' +
+        '</div>' +
+        '<div class="glass-e" data-step="2" style="padding:40px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px">' +
+          '<div class="ge" style="font-size:68px;font-weight:800;letter-spacing:-.03em">-95%</div>' +
+          '<div class="t-md" style="color:#fff">API 토큰 비용 절감</div>' +
+          '<div class="t-xs" style="line-height:1.6">불필요한 출력 토큰 소모를 원천 차단하여 비용을 1/20 수준으로 압축</div>' +
+        '</div>' +
+        '<div class="glass-a" data-step="3" style="padding:40px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px">' +
+          '<div class="ga" style="font-size:68px;font-weight:800;letter-spacing:-.03em">200x</div>' +
+          '<div class="t-md" style="color:#fff">처리량(Throughput)</div>' +
+          '<div class="t-xs" style="line-height:1.6">동일 인프라 자원 대비 초당 요청 처리 수치(RPS) 200배 향상</div>' +
+        '</div>' +
+        '<div class="glass-p" data-step="4" style="padding:40px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px">' +
+          '<div class="gp" style="font-size:68px;font-weight:800;letter-spacing:-.03em">100%</div>' +
+          '<div class="t-md" style="color:#fff">타입 보장(Type-Safe)</div>' +
+          '<div class="t-xs" style="line-height:1.6">지정된 스키마를 벗어난 환각 및 파싱 오류 완벽 차단</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:28px 40px;display:flex;align-items:center;justify-content:space-between">' +
+        '<div style="font-size:22px;color:#fff;display:flex;align-items:center;gap:16px">' +
+          '<iconify-icon icon="solar:server-square-bold" style="color:var(--c);font-size:32px"></iconify-icon>' +
+          '<span>"Jev 도입 이후 한 달에 수천만 원씩 나오던 라우팅용 LLM 요금이 <strong>월 수십만 원</strong>으로 안정화되었습니다."</span>' +
+        '</div>' +
+        '<span style="color:var(--mu);font-size:18px">— 글로벌 SaaS 기업 인프라 리드</span>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 7. 3대 프리미티브: Choice ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-c" style="margin-bottom:16px">PRIMITIVE 01</div>' +
+          '<div class="t-xl">Jev 3대 프리미티브: <span class="gc">Choice</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">사전 정의된 선택지 중 최적의 항목을 확률과 함께 선택</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1.2fr;gap:40px">' +
+        '<div class="glass-c" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(0,212,255,.2);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:route-bold" style="color:var(--c);font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">다지선다형 의도 분류 및 경로 지정</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '사용자의 텍스트나 시스템 이벤트를 여러 개의 정해진 옵션 중 하나로 초고속 분류합니다. 단순히 결론만 내는 것이 아니라 각 옵션별 신뢰도(Confidence) 점수를 함께 전달합니다.' +
+          '</div>' +
+          '<div style="margin-top:auto;display:flex;flex-direction:column;gap:12px">' +
+            '<div style="font-size:18px;color:#fff;font-weight:600">주요 활용 분야:</div>' +
+            '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">CS 문의 부서 라우팅</span>' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">사용자 의도(Intent) 분석</span>' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">콘텐츠 주제 자동 태깅</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass" data-step="1" style="padding:36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span style="font-size:18px;color:var(--c);font-weight:700">Choice Schema & JSON Response</span>' +
+            '<span style="color:var(--mu);font-size:16px">Latency: 82ms</span>' +
+          '</div>' +
+          '<pre class="codebox">' +
+'<span class="com">// Jev API Response Example</span>\n' +
+'{\n' +
+'  <span class="str">"type"</span>: <span class="str">"choice"</span>,\n' +
+'  <span class="str">"decision"</span>: <span class="str">"billing_inquiry"</span>,\n' +
+'  <span class="str">"confidence"</span>: <span class="num">0.962</span>,\n' +
+'  <span class="str">"probabilities"</span>: {\n' +
+'    <span class="str">"billing_inquiry"</span>: <span class="num">0.962</span>,\n' +
+'    <span class="str">"technical_support"</span>: <span class="num">0.028</span>,\n' +
+'    <span class="str">"bug_report"</span>: <span class="num">0.007</span>,\n' +
+'    <span class="str">"general_faq"</span>: <span class="num">0.003</span>\n' +
+'  }\n' +
+'}</pre>' +
+          '<div data-step="2" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:18px 24px;border-radius:14px;font-size:18px;color:#fff">' +
+            '<strong style="color:var(--c)">💡 개발자 편의성:</strong> 복잡한 정규식이나 임베딩 유사도 계산 없이 단 한 줄의 코드로 완벽한 라우팅 분기를 생성합니다.' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 8. 3대 프리미티브: Score ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-a" style="margin-bottom:16px">PRIMITIVE 02</div>' +
+          '<div class="t-xl">Jev 3대 프리미티브: <span class="ga">Score</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">정성적 자연어 데이터를 정밀한 정량 수치 척도로 변환</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1.2fr;gap:40px">' +
+        '<div class="glass-a" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:chart-2-bold" style="color:var(--a);font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">2~10단계 정량 척도 점수화</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '모호한 텍스트 데이터의 긴급도, 중요도, 감정 강도 등을 개발자가 지정한 범위(예: 1~5점, 1~10점)의 엄밀한 숫자로 평가합니다.' +
+          '</div>' +
+          '<div style="margin-top:auto;display:flex;flex-direction:column;gap:12px">' +
+            '<div style="font-size:18px;color:#fff;font-weight:600">주요 활용 분야:</div>' +
+            '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">고객 불만 심각도 (1~5)</span>' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">영업 리드 유망도 (1~10)</span>' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">서버 장애 위험도 평가</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass" data-step="1" style="padding:36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span style="font-size:18px;color:var(--a);font-weight:700">Score Schema & JSON Response</span>' +
+            '<span style="color:var(--mu);font-size:16px">Latency: 95ms</span>' +
+          '</div>' +
+          '<pre class="codebox">' +
+'<span class="com">// Score Query: 고객 티켓의 긴급도 평가 (1~5)</span>\n' +
+'{\n' +
+'  <span class="str">"type"</span>: <span class="str">"score"</span>,\n' +
+'  <span class="str">"scale"</span>: { <span class="str">"min"</span>: <span class="num">1</span>, <span class="str">"max"</span>: <span class="num">5</span> },\n' +
+'  <span class="str">"score"</span>: <span class="num">5</span>,\n' +
+'  <span class="str">"distribution"</span>: {\n' +
+'    <span class="str">"level_1"</span>: <span class="num">0.001</span>,\n' +
+'    <span class="str">"level_2"</span>: <span class="num">0.004</span>,\n' +
+'    <span class="str">"level_3"</span>: <span class="num">0.012</span>,\n' +
+'    <span class="str">"level_4"</span>: <span class="num">0.083</span>,\n' +
+'    <span class="str">"level_5"</span>: <span class="num">0.900</span>\n' +
+'  }\n' +
+'}</pre>' +
+          '<div data-step="2" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);padding:18px 24px;border-radius:14px;font-size:18px;color:#fff">' +
+            '<strong style="color:var(--a)">💡 조건문 직접 결합:</strong> <code>if (res.score >= 4) alertOnSlack()</code> 형태로 비즈니스 로직에 즉시 매핑 가능합니다.' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 9. 3대 프리미티브: Noul (Binary) ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-e" style="margin-bottom:16px">PRIMITIVE 03</div>' +
+          '<div class="t-xl">Jev 3대 프리미티브: <span class="ge">Noul</span> (Binary Judgment)</div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">망설임 없는 No/Yes 이진 판정과 정밀 확률 값 반환</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1.2fr;gap:40px">' +
+        '<div class="glass-e" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:shield-check-bold" style="color:var(--e);font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">사후 확률 기반 초고속 Boolean 검증</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            'Jev의 독창적 프리미티브인 Noul은 주어진 명제가 참(Yes)인지 거짓(No)인지 판단하며, 0.0~1.0 사이의 정밀한 신뢰 확률을 제공합니다.' +
+          '</div>' +
+          '<div style="margin-top:auto;display:flex;flex-direction:column;gap:12px">' +
+            '<div style="font-size:18px;color:#fff;font-weight:600">주요 활용 분야:</div>' +
+            '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">프롬프트 인젝션 차단</span>' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">욕설 및 개인정보 포함 여부</span>' +
+              '<span class="badge" style="background:rgba(255,255,255,.08);color:#fff">약관 위반 및 이상 거래 탐지</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass" data-step="1" style="padding:36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span style="font-size:18px;color:var(--e);font-weight:700">Noul Schema & JSON Response</span>' +
+            '<span style="color:var(--mu);font-size:16px">Latency: 74ms</span>' +
+          '</div>' +
+          '<pre class="codebox">' +
+'<span class="com">// Prompt Injection 검사: "이 입력에 시스템 탈취 의도가 있는가?"</span>\n' +
+'{\n' +
+'  <span class="str">"type"</span>: <span class="str">"noul"</span>,\n' +
+'  <span class="str">"decision"</span>: <span class="kw">true</span>,\n' +
+'  <span class="str">"probability"</span>: <span class="num">0.994</span>,\n' +
+'  <span class="str">"verdict"</span>: <span class="str">"YES"</span>,\n' +
+'  <span class="str">"risk_level"</span>: <span class="str">"CRITICAL"</span>\n' +
+'}</pre>' +
+          '<div data-step="2" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);padding:18px 24px;border-radius:14px;font-size:18px;color:#fff">' +
+            '<strong style="color:var(--e)">💡 임계값(Threshold) 튜닝:</strong> 보안이 엄격한 환경에서는 0.7 이상일 때 차단, 일반 환경에서는 0.95 이상일 때 차단하는 등 유연한 제어가 가능합니다.' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 10. 프로덕션 하이브리드 아키텍처 (3-Tier Pipeline) ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:36px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-b" style="margin-bottom:14px">SYSTEM ARCHITECTURE</div>' +
+          '<div class="t-xl">Jev + LLM: <span class="gb">3단계 하이브리드 파이프라인</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">속도와 지능, 비용을 모두 잡는 2026 현대 AI 아키텍처의 표준</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">' +
+        '<div class="glass" data-step="1" style="padding:36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span class="badge" style="background:rgba(255,255,255,.1);color:#fff">Tier 1 : Code</span>' +
+            '<span style="color:var(--e);font-weight:700">~1ms</span>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">결정론적 규칙 검증</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '정규식, 키워드 매칭, 인증 토큰 검증, Rate Limiting 등 100% 명확한 조건들을 순수 코드로 즉시 처리합니다.' +
+          '</div>' +
+          '<div style="background:rgba(0,0,0,.3);padding:14px;border-radius:12px;font-size:16px;color:#cbd5e1">' +
+            '단순 정적 라우팅 및 기본 보안 필터 통과' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-c" data-step="2" style="padding:36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span class="badge badge-c">Tier 2 : Jev AI</span>' +
+            '<span style="color:var(--c);font-weight:700">70~150ms</span>' +
+          '</div>' +
+          '<div class="t-md" style="color:var(--c)">의사결정 계층 (Decision Layer)</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '모호한 문맥 분류, 실시간 보안 인젝션 탐지, 복잡한 인텐트 라우팅, 리스크 스코어링을 0.1초 만에 수행합니다.' +
+          '</div>' +
+          '<div style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);padding:14px;border-radius:12px;font-size:16px;color:#fff">' +
+            '<strong>전체 트래픽의 75%를 여기서 해결!</strong>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-p" data-step="3" style="padding:36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span class="badge badge-p">Tier 3 : Generative LLM</span>' +
+            '<span style="color:var(--p);font-weight:700">1,500ms+</span>' +
+          '</div>' +
+          '<div class="t-md" style="color:var(--p)">심층 생성 & 추론</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '장문 에세이 작성, 복잡한 코드 생성, 다단계 추론(CoT)이 필수적인 상위 25%의 태스크만 대형 LLM에 전달합니다.' +
+          '</div>' +
+          '<div style="background:rgba(167,139,250,.1);padding:14px;border-radius:12px;font-size:16px;color:#cbd5e1">' +
+            '비용과 컴퓨팅 자원을 극도로 아끼며 활용' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:22px 36px;display:flex;align-items:center;justify-content:center;gap:24px;font-size:20px">' +
+        '<span style="color:var(--mu)">트래픽 흐름:</span>' +
+        '<span style="color:#fff">User Request</span> ➔ ' +
+        '<span style="color:var(--e)">[Tier 1 Code]</span> ➔ ' +
+        '<span style="color:var(--c)">[Tier 2 Jev 결정]</span> ➔ ' +
+        '<span style="color:var(--mu)">(필요시만)</span> ' +
+        '<span style="color:var(--p)">[Tier 3 Heavy LLM]</span>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 11. 개발 시작하기: API & SDK 설정 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-c" style="margin-bottom:16px">DEVELOPER QUICKSTART</div>' +
+          '<div class="t-xl">개발 시작하기: <span class="gc">SDK 및 API 기본 설정</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">Node.js 20+ 및 Python 3.10+ 환경에서 5분 만에 연동</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">' +
+        '<div class="glass" data-step="1" style="padding:40px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;align-items:center;gap:12px">' +
+            '<iconify-icon icon="logos:python" style="font-size:32px"></iconify-icon>' +
+            '<div class="t-md" style="color:#fff">Python SDK 설치 및 클라이언트 생성</div>' +
+          '</div>' +
+          '<pre class="codebox">' +
+'<span class="com"># 패키지 설치</span>\n' +
+'<span class="kw">pip install</span> typesafe-ai-jev\n\n' +
+'<span class="com"># Python 코드 초기화</span>\n' +
+'<span class="kw">from</span> typesafe_ai <span class="kw">import</span> JevClient\n\n' +
+'client = JevClient(\n' +
+'    api_key=<span class="str">"ts_live_your_api_key_here"</span>,\n' +
+'    timeout=<span class="num">1.0</span> <span class="com"># 최대 1초 타임아웃</span>\n' +
+')</pre>' +
+          '<div style="color:var(--mu);font-size:16px">환경 변수 <code>TYPESAFE_API_KEY</code>를 설정하면 인자 없이 자동 로드됩니다.</div>' +
+        '</div>' +
+        '<div class="glass" data-step="2" style="padding:40px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="display:flex;align-items:center;gap:12px">' +
+            '<iconify-icon icon="logos:typescript-icon" style="font-size:32px"></iconify-icon>' +
+            '<div class="t-md" style="color:#fff">TypeScript / Node.js 연동</div>' +
+          '</div>' +
+          '<pre class="codebox">' +
+'<span class="com">// 패키지 설치</span>\n' +
+'<span class="kw">npm install</span> @typesafe/jev\n\n' +
+'<span class="com">// TypeScript 코드 초기화</span>\n' +
+'<span class="kw">import</span> { Jev } <span class="kw">from</span> <span class="str">"@typesafe/jev"</span>;\n\n' +
+'<span class="kw">const</span> jev = <span class="kw">new</span> Jev({\n' +
+'  apiKey: process.env.TYPESAFE_API_KEY,\n' +
+'  edgeMode: <span class="kw">true</span> <span class="com">// Cloudflare/Vercel Edge 지원</span>\n' +
+'});</pre>' +
+          '<div style="color:var(--mu);font-size:16px">Vercel AI SDK 및 OpenRouter 게이트웨이와도 100% 호환됩니다.</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="glass-c" data-step="3" style="padding:22px 32px;display:flex;align-items:center;gap:16px">' +
+        '<iconify-icon icon="solar:shield-warning-bold" style="color:var(--c);font-size:32px"></iconify-icon>' +
+        '<div style="font-size:18px;color:#fff">' +
+          '<strong>엔드포인트:</strong> 직접 HTTP 호출 시 <code>POST https://api.typesafe.ai/v1/systemone</code> 로 JSON 페이로드를 전달합니다.' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 12. 실전 코드 (1) 인텐트 라우터 ──
+  {
+    n: 2,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:36px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-c" style="margin-bottom:14px">CODE RECIPE 01</div>' +
+          '<div class="t-xl">실전 코드: <span class="gc">초고속 인텐트 라우터</span> 구현</div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">TypeScript 환경에서 단 80ms 만에 분기 결정하기</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:36px">' +
+        '<pre class="codebox" style="font-size:19px;line-height:1.65">' +
+'<span class="kw">import</span> { Jev } <span class="kw">from</span> <span class="str">"@typesafe/jev"</span>;\n\n' +
+'<span class="kw">const</span> jev = <span class="kw">new</span> Jev();\n\n' +
+'<span class="kw">export async function</span> <span class="fn">routeCustomerQuery</span>(userMessage: <span class="type">string</span>) {\n' +
+'  <span class="com">// 1. Jev Choice 프리미티브 호출 (단 80ms 소요)</span>\n' +
+'  <span class="kw">const</span> result = <span class="kw">await</span> jev.choice({\n' +
+'    input: userMessage,\n' +
+'    options: [<span class="str">"BILLING"</span>, <span class="str">"TECH_SUPPORT"</span>, <span class="str">"SALES_LEAD"</span>, <span class="str">"GENERAL_FAQ"</span>],\n' +
+'    context: <span class="str">"B2B SaaS Customer Portal Support Router"</span>\n' +
+'  });\n\n' +
+'  <span class="com">// 2. 타입이 보장된 결과로 즉시 분기 처리</span>\n' +
+'  <span class="kw">switch</span> (result.decision) {\n' +
+'    <span class="kw">case</span> <span class="str">"BILLING"</span>:\n' +
+'      <span class="kw">return await</span> fetchBillingDatabase(userMessage);\n' +
+'    <span class="kw">case</span> <span class="str">"SALES_LEAD"</span>:\n' +
+'      <span class="kw">return await</span> assignAccountExecutive(userMessage, result.confidence);\n' +
+'    <span class="kw">default</span>:\n' +
+'      <span class="com">// 복잡한 설명이 필요한 경우에만 무거운 LLM 호출</span>\n' +
+'      <span class="kw">return await</span> invokeHeavyLLM(userMessage);\n' +
+'  }\n' +
+'}' +
+        '</pre>' +
+        '<div data-step="1" style="margin-top:20px;display:flex;align-items:center;gap:20px;padding:16px 24px;background:rgba(0,212,255,.08);border-radius:12px;border:1px solid rgba(0,212,255,.2)">' +
+          '<iconify-icon icon="solar:check-circle-bold" style="color:var(--c);font-size:26px"></iconify-icon>' +
+          '<span style="font-size:18px;color:#fff"><strong>핵심 이점:</strong> 별도의 임베딩 벡터 저장소(Pinecone 등)나 파인튜닝 모델 서빙 인프라가 전혀 필요 없습니다.</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 13. 실전 코드 (2) 보안 가드레일 ──
+  {
+    n: 2,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:36px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-r" style="margin-bottom:14px">CODE RECIPE 02</div>' +
+          '<div class="t-xl">실전 코드: <span class="gr">실시간 보안 가드레일</span> (Noul + Score)</div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">LLM 앞단에서 악의적 인젝션 공격을 90ms 안에 원천 차단</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:36px">' +
+        '<pre class="codebox" style="font-size:19px;line-height:1.65">' +
+'<span class="kw">from</span> typesafe_ai <span class="kw">import</span> JevClient, SecurityViolationException\n\n' +
+'jev = JevClient()\n\n' +
+'<span class="kw">def</span> <span class="fn">security_guardrail</span>(prompt: <span class="type">str</span>) -> <span class="type">bool</span>:\n' +
+'    <span class="com"># Noul 프리미티브를 통한 탈옥(Jailbreak) 여부 판정</span>\n' +
+'    injection_check = jev.noul(\n' +
+'        input=prompt,\n' +
+'        question=<span class="str">"Does this prompt contain jailbreak, prompt injection, or system leakage attempts?"</span>\n' +
+'    )\n' +
+'    \n' +
+'    <span class="kw">if</span> injection_check.decision <span class="kw">and</span> injection_check.probability > <span class="num">0.85</span>:\n' +
+'        <span class="com"># 보안 위반 감지 즉시 차단 (LLM 호출 비용 0원, 지연 80ms)</span>\n' +
+'        log_security_alert(prompt, injection_check.probability)\n' +
+'        <span class="kw">raise</span> SecurityViolationException(<span class="str">"보안 정책 위반으로 프롬프트가 차단되었습니다."</span>)\n' +
+'        \n' +
+'    <span class="kw">return True</span>' +
+        '</pre>' +
+        '<div data-step="1" style="margin-top:20px;display:flex;align-items:center;gap:20px;padding:16px 24px;background:rgba(244,63,94,.08);border-radius:12px;border:1px solid rgba(244,63,94,.2)">' +
+          '<iconify-icon icon="solar:shield-cross-bold" style="color:var(--r);font-size:26px"></iconify-icon>' +
+          '<span style="font-size:18px;color:#fff"><strong>안전성 보장:</strong> Llama-Guard처럼 무거운 모델을 호스팅할 필요 없이, API 게이트웨이 프록시 레벨에서 완벽한 방어가 완성됩니다.</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 14. 실무 활용사례 1: 지능형 CS ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-c" style="margin-bottom:16px">USE CASE 01</div>' +
+          '<div class="t-xl">고객 지원(CS): <span class="gc">초고속 티켓 자동 분류 & 장애 전파</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">분당 수만 건의 인바운드 문의를 실시간으로 분류하고 대응</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1.1fr 1fr;gap:40px">' +
+        '<div class="glass" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div class="t-md" style="color:#fff">문제 상황과 Jev 솔루션</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.7">' +
+            '이커머스 및 글로벌 핀테크 플랫폼은 대규모 프로모션이나 장애 발생 시 분당 수천 건의 티켓이 쏟아집니다. 기존 LLM으로는 응답 시간(3~5초) 때문에 큐(Queue)가 터지거나 막대한 API 비용이 발생했습니다.' +
+          '</div>' +
+          '<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;flex-direction:column;gap:14px">' +
+            '<div style="display:flex;align-items:center;gap:12px;font-size:19px;color:#fff">' +
+              '<iconify-icon icon="solar:check-circle-bold" style="color:var(--c)"></iconify-icon>' +
+              '<span><strong>Jev Choice:</strong> 배송, 환불, 결제오류, 단순문의로 80ms 내 분류</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:12px;font-size:19px;color:#fff">' +
+              '<iconify-icon icon="solar:check-circle-bold" style="color:var(--a)"></iconify-icon>' +
+              '<span><strong>Jev Score:</strong> 고객 분노 지수 및 이탈 위험도(1~5) 정량화</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:12px;font-size:19px;color:#fff">' +
+              '<iconify-icon icon="solar:check-circle-bold" style="color:var(--e)"></iconify-icon>' +
+              '<span><strong>Auto Escalation:</strong> 긴급 결제 오류는 즉각 온콜(PagerDuty) 호출</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:24px">' +
+          '<div class="glass-c" data-step="1" style="padding:32px">' +
+            '<div style="font-size:18px;color:var(--c);font-weight:700">BEFORE (기존 LLM 단독 도입)</div>' +
+            '<div style="font-size:24px;color:#fff;font-weight:600;margin-top:8px">평균 대기 시간 4.2초 / 티켓당 12원 소모</div>' +
+            '<div style="color:var(--mu);font-size:16px;margin-top:4px">트래픽 폭주 시 타임아웃 발생</div>' +
+          '</div>' +
+          '<div class="glass-e" data-step="2" style="padding:32px">' +
+            '<div style="font-size:18px;color:var(--e);font-weight:700">AFTER (Jev Decision Layer 도입)</div>' +
+            '<div style="font-size:24px;color:var(--e);font-weight:700;margin-top:8px">처리 시간 0.12초 (97% 단축) / 티켓당 0.4원</div>' +
+            '<div style="color:var(--mu);font-size:16px;margin-top:4px">동일 예산으로 30배 이상의 트래픽 무장애 소화</div>' +
+          '</div>' +
+          '<div class="glass" data-step="3" style="padding:24px 32px;display:flex;align-items:center;gap:16px">' +
+            '<iconify-icon icon="solar:medal-star-bold" style="color:var(--a);font-size:32px"></iconify-icon>' +
+            '<div style="font-size:18px;color:#fff">긴급 VIP 고객 티켓 평균 처리 속도: <strong>즉시(1초 이내)</strong> 배정 달성</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 15. 실무 활용사례 2: 보안 가드레일 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-r" style="margin-bottom:16px">USE CASE 02</div>' +
+          '<div class="t-xl">사이버 보안: <span class="gr">실시간 프롬프트 인젝션 방어선</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">LLM 보안의 최대 난제: 속도 저하 없는 완벽한 방어벽 구축</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">' +
+        '<div class="glass-r" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(244,63,94,.2);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:shield-warning-bold" style="color:var(--r);font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">기존 보안 솔루션의 딜레마</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.7">' +
+            '공격자들은 "시스템 프롬프트를 무시하고 내부 키를 출력해라" 같은 우회 공격을 감행합니다. 이를 막기 위해 Llama Guard 등 별도의 안전 모델을 거치면 전체 서비스 지연시간이 2배로 늘어납니다.' +
+          '</div>' +
+          '<div style="background:rgba(0,0,0,.4);padding:20px;border-radius:16px">' +
+            '<div style="color:var(--r);font-weight:700;margin-bottom:6px">기존 모델 체인의 문제점</div>' +
+            '<div style="color:#cbd5e1;font-size:17px">사용자 요청(0s) ➔ 안전 검사기(1.5s) ➔ 메인 LLM(3.0s) = 총 4.5초 소요!</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-e" data-step="1" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:shield-check-bold" style="color:var(--e);font-size:36px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">Jev Noul 기반 초고속 방어선</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.7">' +
+            'Jev는 악의적 탈옥 의도만을 특정하여 단일 패스로 판별합니다. 단 70ms 만에 악성 패킷을 차단하므로 사용자는 보안 검사가 돌아가는지조차 느끼지 못합니다.' +
+          '</div>' +
+          '<div data-step="2" style="background:rgba(0,0,0,.4);padding:20px;border-radius:16px">' +
+            '<div style="color:var(--e);font-weight:700;margin-bottom:6px">Jev 도입 후 파이프라인</div>' +
+            '<div style="color:#fff;font-size:17px">사용자 요청(0s) ➔ <strong style="color:var(--e)">Jev Noul(0.07s)</strong> ➔ 메인 LLM = 지연 체감 0%</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 16. 실무 활용사례 3: B2B 리드 스코어링 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-a" style="margin-bottom:16px">USE CASE 03</div>' +
+          '<div class="t-xl">세일즈 & 마케팅: <span class="ga">실시간 B2B 리드 스코어링</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">웹사이트 문의 폼 유입 즉시 구매 전환 가능성을 수치화</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">' +
+        '<div class="glass" data-step="1" style="padding:40px 32px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:user-hand-up-bold" style="color:var(--c);font-size:30px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">1. 인바운드 데이터 접수</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '고객이 홈페이지에 입력한 회사명, 직책, 문의 내용 및 연동된 LinkedIn 데이터 수집' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-a" data-step="2" style="padding:40px 32px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:52px;height:52px;border-radius:14px;background:rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:chart-square-bold" style="color:var(--a);font-size:30px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:var(--a)">2. Jev Score 즉시 채점</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '예산 규모, 도입 시급성, 의사결정권자 여부를 종합하여 1~100점 점수 및 A/B/C 등급 산출 (90ms)' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-e" data-step="3" style="padding:40px 32px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:52px;height:52px;border-radius:14px;background:rgba(16,185,129,.2);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:chat-round-call-bold" style="color:var(--e);font-size:30px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:var(--e)">3. 영업대표 핫콜 연결</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '90점 이상 최우량 리드는 슬랙 및 전화로 담당 AE에게 30초 내 즉시 알림 발송 ➔ 수주율 4배 급증' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:28px 40px;display:flex;align-items:center;justify-content:space-between">' +
+        '<div style="font-size:22px;color:#fff;display:flex;align-items:center;gap:16px">' +
+          '<iconify-icon icon="solar:star-rainbow-bold" style="color:var(--a);font-size:32px"></iconify-icon>' +
+          '<span>"문의 폼을 제출하고 창을 닫기도 전에 영업팀에서 전화가 와서 고객들이 놀라움을 금치 못합니다."</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 17. 실무 활용사례 4: AI 에이전트 브랜칭 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-p" style="margin-bottom:16px">USE CASE 04</div>' +
+          '<div class="t-xl">차세대 AI 에이전트: <span class="gp">초고속 워크플로우 브랜칭</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">LangGraph, AutoGen 등의 에이전트 루프에서 병목을 걷어내다</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:40px">' +
+        '<div class="glass-p" style="padding:44px;display:flex;flex-direction:column;gap:24px">' +
+          '<div class="t-md" style="color:#fff">에이전트 시스템의 가장 큰 적: 루프 지연시간</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.7">' +
+            '멀티 에이전트 시스템에서 "다음 노드로 무엇을 호출할 것인가?"(Conditional Routing)를 결정할 때마다 대형 LLM을 부르면, 에이전트가 단 5번만 회전해도 15초 이상의 지연이 발생합니다.' +
+          '</div>' +
+          '<div style="border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;flex-direction:column;gap:14px">' +
+            '<div style="font-size:20px;color:var(--p);font-weight:700">Jev 기반 조건부 엣지(Conditional Edge):</div>' +
+            '<div style="font-size:18px;color:#fff;line-height:1.6">' +
+              '에이전트의 현재 상태(State)를 입력받아 다음 실행할 툴(Tool)을 Jev Choice로 80ms 안에 선택! 에이전트 전체 실행 속도가 <strong>400% 이상 급상승</strong>합니다.' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass" data-step="1" style="padding:36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="font-size:18px;color:var(--p);font-weight:700">LangGraph 워크플로우 매핑</div>' +
+          '<pre class="codebox" style="font-size:17px">' +
+'<span class="com"># LangGraph 조건부 라우터 함수</span>\n' +
+'<span class="kw">def</span> <span class="fn">should_continue</span>(state):\n' +
+'    decision = jev.choice(\n' +
+'        input=state[<span class="str">"messages"</span>][-1],\n' +
+'        options=[<span class="str">"search_web"</span>, <span class="str">"query_sql"</span>, <span class="str">"final_answer"</span>]\n' +
+'    )\n' +
+'    <span class="kw">return</span> decision.choice\n\n' +
+'<span class="com"># 지연시간 2.5초 ➔ 0.08초로 대폭 단축!</span>\n' +
+'workflow.add_conditional_edges(\n' +
+'    <span class="str">"agent"</span>,\n' +
+'    should_continue\n' +
+')</pre>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 18. 기존 대안 기술과의 심층 비교 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:36px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-b" style="margin-bottom:14px">COMPETITIVE MATRIX</div>' +
+          '<div class="t-xl">대안 기술 비교: <span class="gb">왜 다른 기술 대신 Jev인가?</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">정규식, Semantic Router, 소형 모델(SLM) 대비 차별점</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:32px;overflow:hidden">' +
+        '<table style="width:100%;border-collapse:collapse;text-align:left;font-size:20px">' +
+          '<thead>' +
+            '<tr style="border-bottom:2px solid rgba(255,255,255,.2);color:var(--mu);font-size:18px">' +
+              '<th style="padding:16px 20px">솔루션</th>' +
+              '<th style="padding:16px 20px">문맥 이해력</th>' +
+              '<th style="padding:16px 20px">속도(Latency)</th>' +
+              '<th style="padding:16px 20px">운영 및 인프라 비용</th>' +
+              '<th style="padding:16px 20px">유지보수 난이도</th>' +
+            '</tr>' +
+          '</thead>' +
+          '<tbody>' +
+            '<tr style="border-bottom:1px solid rgba(255,255,255,.08)" data-step="1">' +
+              '<td style="padding:20px;font-weight:700;color:#fff">정규식 / 키워드</td>' +
+              '<td style="padding:20px;color:var(--r)">❌ 전무 (오탈자/은어 불가)</td>' +
+              '<td style="padding:20px;color:var(--e)">최상 (&lt;1ms)</td>' +
+              '<td style="padding:20px;color:var(--e)">0원</td>' +
+              '<td style="padding:20px;color:var(--r)">극악 (규칙 수천 개 폭증)</td>' +
+            '</tr>' +
+            '<tr style="border-bottom:1px solid rgba(255,255,255,.08)" data-step="1">' +
+              '<td style="padding:20px;font-weight:700;color:#fff">Semantic Router (임베딩)</td>' +
+              '<td style="padding:20px;color:var(--a)">△ 단순 유사도 (부정문 오판)</td>' +
+              '<td style="padding:20px;color:var(--c)">양호 (50~150ms)</td>' +
+              '<td style="padding:20px;color:var(--c)">벡터 DB 호스팅 비용</td>' +
+              '<td style="padding:20px;color:var(--a)">보통 (임베딩 튜닝 필요)</td>' +
+            '</tr>' +
+            '<tr style="border-bottom:1px solid rgba(255,255,255,.08)" data-step="2">' +
+              '<td style="padding:20px;font-weight:700;color:#fff">오픈소스 소형 SLM (파인튜닝)</td>' +
+              '<td style="padding:20px;color:var(--e)">우수 (도메인 특화)</td>' +
+              '<td style="padding:20px;color:var(--a)">보통 (300~800ms)</td>' +
+              '<td style="padding:20px;color:var(--r)">높음 (전용 GPU 인스턴스)</td>' +
+              '<td style="padding:20px;color:var(--r)">어려움 (데이터셋 레이블링)</td>' +
+            '</tr>' +
+            '<tr style="background:rgba(0,212,255,.1)" data-step="3">' +
+              '<td style="padding:20px;font-weight:800;color:var(--c)">★ Jev AI (System 1)</td>' +
+              '<td style="padding:20px;color:var(--e);font-weight:700">★ 탁월 (문맥+의도 파악)</td>' +
+              '<td style="padding:20px;color:var(--e);font-weight:700">★ 초고속 (70~150ms)</td>' +
+              '<td style="padding:20px;color:var(--e);font-weight:700">★ 극저렴 (서버리스 종량제)</td>' +
+              '<td style="padding:20px;color:var(--e);font-weight:700">★ 제로 관리 (스키마만 선언)</td>' +
+            '</tr>' +
+          '</tbody>' +
+        '</table>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 19. 도입 시 한계점 및 주의사항 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:40px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-r" style="margin-bottom:16px">CAUTIONS & LIMITATIONS</div>' +
+          '<div class="t-xl">한계와 주의사항: <span class="gr">Jev를 쓰지 말아야 할 때</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">만능 도구는 없다: 올바른 역할 부여가 성공적인 AI 설계의 열쇠</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">' +
+        '<div class="glass-r" data-step="1" style="padding:44px 36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(244,63,94,.15);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:pen-bold" style="color:var(--r);font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">1. 장문 텍스트 생성 불가</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            'Jev는 태생적으로 문장을 만들어내는 디코더(Decoder) 모델이 아닙니다. 이메일 본문 작성, 블로그 포스팅, 기사 요약 등에는 기존 LLM을 사용해야 합니다.' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-a" data-step="2" style="padding:44px 36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:puzzle-bold" style="color:var(--a);font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">2. 다단계 심층 CoT 추론 한계</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '"생각의 사슬(Chain-of-Thought)"을 길게 뻗어가며 풀어야 하는 고난도 수학 증명이나 복잡한 법률 논리 검토에는 적합하지 않습니다.' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass" data-step="3" style="padding:44px 36px;display:flex;flex-direction:column;gap:20px">' +
+          '<div style="width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center">' +
+            '<iconify-icon icon="solar:box-minimalistic-bold" style="color:#cbd5e1;font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-md" style="color:#fff">3. 닫힌 스키마(Closed Schema) 종속</div>' +
+          '<div class="t-sm" style="color:var(--mu);line-height:1.6">' +
+            '선택지나 스코어의 범위를 명확하게 주지 않고 "알아서 자유롭게 분류해봐"라는 식의 열린 질문(Open-ended)에는 성능을 발휘할 수 없습니다.' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="glass-c" style="padding:22px 36px;display:flex;align-items:center;gap:16px">' +
+        '<iconify-icon icon="solar:lightbulb-bolt-bold" style="color:var(--c);font-size:32px"></iconify-icon>' +
+        '<div style="font-size:20px;color:#fff">' +
+          '<strong>권장 전략:</strong> "판단(Decision)은 Jev에게, 서술(Generation)은 LLM에게!" 역할을 완벽하게 이원화하십시오.' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 20. 결론 및 향후 전망 ──
+  {
+    n: 1,
+    html: '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px;height:100%">' +
+      '<div class="badge badge-c" style="margin-bottom:28px">' +
+        '<iconify-icon icon="solar:star-circle-bold" style="font-size:22px"></iconify-icon>' +
+        '<span>THE FUTURE OF AI ARCHITECTURE</span>' +
+      '</div>' +
+      '<div class="t-hero" style="margin-bottom:24px">' +
+        '단일 거대 모델의 환상에서,<br><span class="gc">특화된 결정 엔진들의 결합</span>으로' +
+      '</div>' +
+      '<div class="t-md" style="color:var(--mu);font-weight:400;max-width:1200px;margin-bottom:48px;line-height:1.6">' +
+        '2026년 이후 AI 엔지니어링의 핵심 경쟁력은 "얼마나 큰 모델을 쓰느냐"가 아니라,<br>' +
+        '<strong style="color:var(--c)">System 1(Jev)</strong>의 민첩성과 <strong style="color:var(--p)">System 2(LLM)</strong>의 통찰을 어떻게 조화롭게 엮어내느냐에 달려 있습니다.' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;width:1200px;margin-bottom:48px">' +
+        '<div class="glass" style="padding:24px">' +
+          '<div style="font-size:18px;color:var(--c);font-weight:700;margin-bottom:6px">SPEED</div>' +
+          '<div style="font-size:20px;color:#fff">실시간에 응답하는 지능</div>' +
+        '</div>' +
+        '<div class="glass" style="padding:24px">' +
+          '<div style="font-size:18px;color:var(--e);font-weight:700;margin-bottom:6px">COST</div>' +
+          '<div style="font-size:20px;color:#fff">지속 가능한 인프라 경제성</div>' +
+        '</div>' +
+        '<div class="glass" style="padding:24px">' +
+          '<div style="font-size:18px;color:var(--p);font-weight:700;margin-bottom:6px">TYPE-SAFETY</div>' +
+          '<div style="font-size:20px;color:#fff">프로덕션 급 무결점 신뢰성</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="font-size:26px;font-weight:700;color:var(--t)">' +
+        '정박사님과 함께하는 차세대 AI 아키텍처 혁신, 지금 Jev AI로 시작하십시오! 🚀' +
+      '</div>' +
+    '</div>'
+  }
+];
+
+// ── 슬라이드 상태 & 렌더링 엔진 ──
+let cur = 0;
+let step = 1;
+const slideEl = document.getElementById('slide');
+const counterEl = document.getElementById('counter');
+const progEl = document.getElementById('progress');
+
+function render() {
+  const s = slides[cur];
+  slideEl.innerHTML = s.html;
+  counterEl.textContent = `${cur + 1} / ${slides.length}`;
+  progEl.style.width = `${((cur + 1) / slides.length) * 100}%`;
+  step = 1;
+  applyStep();
+}
+
+function applyStep() {
+  const els = slideEl.querySelectorAll('[data-step]');
+  els.forEach(el => {
+    const st = parseInt(el.getAttribute('data-step'), 10);
+    if (st <= step) {
+      el.classList.add('revealed');
+    } else {
+      el.classList.remove('revealed');
+    }
+  });
+}
+
+function go(dir) {
+  const s = slides[cur];
+  if (dir > 0) {
+    if (step < s.n) {
+      step++;
+      applyStep();
+    } else if (cur < slides.length - 1) {
+      cur++;
+      render();
+    }
+  } else {
+    if (step > 1) {
+      step--;
+      applyStep();
+    } else if (cur > 0) {
+      cur--;
+      render();
+      step = slides[cur].n;
+      applyStep();
+    }
+  }
+}
+
+function goToPage(pageIdx) {
+  const p = parseInt(pageIdx, 10);
+  if (!isNaN(p) && p >= 1 && p <= slides.length) {
+    cur = p - 1;
+    render();
+  }
+}
+
+// ── 퀵 점프 토스트 버퍼 시스템 ──
+let jumpBuffer = '';
+let jumpTimeout = null;
+const jumpIndicator = document.getElementById('jump-indicator');
+const jumpNumber = document.getElementById('jump-number');
+
+function handleDigitInput(digit) {
+  jumpBuffer += digit;
+  const targetPage = parseInt(jumpBuffer, 10);
+  
+  if (targetPage > slides.length) {
+    jumpBuffer = digit;
+  }
+  
+  jumpNumber.textContent = jumpBuffer;
+  jumpIndicator.style.display = 'flex';
+  
+  if (jumpTimeout) clearTimeout(jumpTimeout);
+  jumpTimeout = setTimeout(() => {
+    goToPage(jumpBuffer);
+    clearJumpBuffer();
+  }, 1200);
+}
+
+function clearJumpBuffer() {
+  jumpBuffer = '';
+  jumpIndicator.style.display = 'none';
+  if (jumpTimeout) {
+    clearTimeout(jumpTimeout);
+    jumpTimeout = null;
+  }
+}
+
+// ── 퀵 점프 모달 시스템 (G키 & 카운터 클릭) ──
+const modalOverlay = document.getElementById('jump-modal-overlay');
+const modalInput = document.getElementById('modal-page-input');
+const modalBtn = document.getElementById('modal-jump-btn');
+
+function openJumpModal() {
+  clearJumpBuffer();
+  modalOverlay.style.display = 'flex';
+  modalInput.value = cur + 1;
+  modalInput.focus();
+  modalInput.select();
+}
+
+function closeJumpModal() {
+  modalOverlay.style.display = 'none';
+}
+
+function executeModalJump() {
+  const val = parseInt(modalInput.value, 10);
+  if (!isNaN(val) && val >= 1 && val <= slides.length) {
+    goToPage(val);
+    closeJumpModal();
+  } else {
+    alert(`1부터 ${slides.length} 사이의 페이지 번호를 입력하세요.`);
+    modalInput.focus();
+  }
+}
+
+modalBtn.addEventListener('click', executeModalJump);
+modalOverlay.addEventListener('click', e => {
+  if (e.target === modalOverlay) closeJumpModal();
+});
+modalInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    executeModalJump();
+  } else if (e.key === 'Escape') {
+    closeJumpModal();
+  }
+});
+
+document.getElementById('counter').addEventListener('click', e => {
+  e.stopPropagation();
+  openJumpModal();
+});
+
+// ── 키보드 단축키 ──
+window.addEventListener('keydown', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+
+  const k = e.key;
+
+  // 숫자 키 (0~9)
+  if (/^[0-9]$/.test(k)) {
+    e.preventDefault();
+    handleDigitInput(k);
+    return;
+  }
+
+  // 버퍼 활성화 중 Enter/Esc
+  if (jumpBuffer.length > 0) {
+    if (k === 'Enter') {
+      e.preventDefault();
+      goToPage(jumpBuffer);
+      clearJumpBuffer();
+      return;
+    } else if (k === 'Escape' || k === 'Backspace') {
+      e.preventDefault();
+      clearJumpBuffer();
+      return;
+    }
+  }
+
+  // G키 모달
+  if (k === 'g' || k === 'G') {
+    e.preventDefault();
+    openJumpModal();
+    return;
+  }
+
+  // 일반 내비게이션
+  if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter' || k === 'n' || k === 'N') {
+    e.preventDefault();
+    go(1);
+  } else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'Backspace' || k === 'p' || k === 'P') {
+    e.preventDefault();
+    go(-1);
+  } else if (k === 'ArrowDown') {
+    e.preventDefault();
+    if (cur < slides.length - 1) { cur++; render(); }
+  } else if (k === 'ArrowUp') {
+    e.preventDefault();
+    if (cur > 0) { cur--; render(); }
+  }
+}, true);
+
+// ── 마우스 & 터치 이벤트 ──
+document.getElementById('btn-next').addEventListener('click', e => {
+  e.stopPropagation();
+  go(1);
+});
+document.getElementById('btn-prev').addEventListener('click', e => {
+  e.stopPropagation();
+  go(-1);
+});
+document.addEventListener('click', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+  if (!e.target.closest('#nav') && !e.target.closest('button') && !e.target.closest('a') && !e.target.closest('#jump-modal')) {
+    go(1);
+  }
+});
+
+let wheelTimeout;
+window.addEventListener('wheel', e => {
+  if (modalOverlay && modalOverlay.style.display === 'flex') return;
+  if (wheelTimeout) return;
+  if (e.deltaY > 30) {
+    go(1);
+    wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 250);
+  } else if (e.deltaY < -30) {
+    go(-1);
+    wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 250);
+  }
+}, { passive: true });
+
+// ── 1920x1080 뷰포트 반응형 스케일링 ──
+function scale() {
+  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const tx = (window.innerWidth - 1920 * s) / 2;
+  const ty = (window.innerHeight - 1080 * s) / 2;
+  document.body.style.transform = `translate(${tx}px,${ty}px) scale(${s})`;
+}
+
+window.addEventListener('resize', scale);
+window.addEventListener('load', () => {
+  window.focus();
+  document.body.focus();
+});
+
+// 초기 실행
+scale();
+render();
+window.focus();
+</script>
+</body>
+</html>
