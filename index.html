@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signal Presentation Hub</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%230a0a0a%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%23ff3b00%27/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -83,6 +84,8 @@
             top: 0;
             align-self: start;
             height: calc(100vh - var(--tick-h));
+            overflow-y: auto;
+            overscroll-behavior: contain;
             display: flex;
             flex-direction: column;
             padding: 44px 40px 36px 48px;
@@ -149,6 +152,7 @@
 
         .cat:hover { transform: translateY(-2px); }
         .cat.on { background: var(--ink); color: #fff; }
+        .cat.zero { opacity: 0.35; }
         .cat b { font: 500 11px var(--f-mono); opacity: 0.6; }
         .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; display: inline-block; }
 
@@ -241,7 +245,8 @@
         .d p {
             overflow: hidden;
             min-height: 0;
-            color: rgba(255, 255, 255, 0.72);
+            color: inherit;
+            opacity: 0.72;
             font-size: 15px;
             line-height: 1.7;
             font-weight: 300;
@@ -368,7 +373,7 @@
 
         @media (hover: none) {
             .d { grid-template-rows: 1fr; }
-            .d p { padding-top: 8px; color: var(--ink-2); }
+            .d p { padding-top: 8px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -436,7 +441,7 @@
             { id: 'nemotron', src: 'nemotron_personas_korea_presentation.html', cat: 'AI', title: 'Nemotron 가상설문', desc: 'Nemotron Personas Korea 기반 가상설문의 활용법과 한계.' },
             { id: 'rnd', src: 'ax_rnd_presentation_3.html', cat: '기획', title: 'AX R&D 기획 혁신', desc: 'AX 전환 흐름에 맞춰 R&D 기획을 혁신하는 방법.' },
             { id: '5poles', src: 'five_poles_three_specialties_presentation.html', cat: '정책', title: '5극 3특 체제', desc: '대한민국 균형발전 대전환, 5극 3특 체제를 완벽하게 이해하기.' },
-            { id: 'nepsa', src: 'nepsa_presentation.html', cat: '정책', title: 'NEPSA 과제 우선순위', desc: 'NEPSA 과제의 우선순위를 정리한 발표 자료.' },
+            { id: 'nepsa', src: 'nepsa_presentation.html', cat: '정책', title: 'NEPSA 과제 우선순위', desc: '기대성과 6개와 위험 6개, 12개 지표로 국가 R&D 과제의 순서를 매기는 방법론.' },
             { id: 'safety', src: 'life_safety_act_presentation.html', cat: '정책', title: '생명안전기본법', desc: '생명과 존엄을 위한 새로운 사회계약, 생명안전기본법.' },
             { id: 'life', src: 'balanced_life_presentation.html', cat: '라이프', title: '균형 잡힌 삶', desc: '40대 후반, 일과 삶의 균형을 다시 생각해 봅니다.' }
         ];
@@ -458,18 +463,22 @@
         }
 
         // ----- 허브 -----
+        // 검색어에만 걸린 목록 — 카테고리 칩의 개수와 행 목록이 같은 기준을 쓴다
+        function hits() {
+            const q = $('q').value.trim().toLowerCase();
+            return q ? DECKS.filter(d => (d.title + d.desc + d.cat).toLowerCase().includes(q)) : DECKS;
+        }
+
         function renderCats() {
+            const found = hits();
             const btn = (name, n, c) =>
-                `<button class="cat${filterCat === name ? ' on' : ''}" type="button" data-cat="${name}">${c ? `<i class="dot" style="--c:${c}"></i>` : ''}${name}<b>${n}</b></button>`;
-            $('cats').innerHTML = btn('전체', DECKS.length, '') +
-                catNames.map(c => btn(c, DECKS.filter(d => d.cat === c).length, CATS[c])).join('');
+                `<button class="cat${filterCat === name ? ' on' : ''}${n === 0 ? ' zero' : ''}" type="button" data-cat="${name}">${c ? `<i class="dot" style="--c:${c}"></i>` : ''}${name}<b>${n}</b></button>`;
+            $('cats').innerHTML = btn('전체', found.length, '') +
+                catNames.map(c => btn(c, found.filter(d => d.cat === c).length, CATS[c])).join('');
         }
 
         function renderRows() {
-            const q = $('q').value.trim().toLowerCase();
-            const list = DECKS.filter(d =>
-                (filterCat === '전체' || d.cat === filterCat) &&
-                (!q || (d.title + d.desc + d.cat).toLowerCase().includes(q)));
+            const list = hits().filter(d => filterCat === '전체' || d.cat === filterCat);
             $('rows').innerHTML = list.map((d, i) => `
                 <button class="row" type="button" data-id="${d.id}" style="--c:${color(d)};--i:${i}">
                     <span class="n">${pad(DECKS.indexOf(d))}</span>
@@ -522,9 +531,12 @@
         }
 
         function showHub(push = true) {
+            const last = currentId;
             currentId = null;
             document.body.classList.remove('viewing');
             document.title = 'Signal Presentation Hub';
+            // 포커스가 iframe에 남아 있으면 허브에서 키보드가 먹지 않는다
+            if (last) (document.querySelector(`.row[data-id="${last}"]`) || $('q')).focus();
             if (push) history.replaceState(null, '', '#hub');
         }
 
@@ -541,7 +553,7 @@
 
         // ----- 이벤트 -----
         $('cats').addEventListener('click', e => { const b = e.target.closest('.cat'); if (b) setCat(b.dataset.cat); });
-        $('q').addEventListener('input', renderRows);
+        $('q').addEventListener('input', () => { renderCats(); renderRows(); });
         $('rows').addEventListener('click', e => { const r = e.target.closest('.row'); if (r) openDeck(r.dataset.id); });
         $('rail').addEventListener('click', e => { const p = e.target.closest('.pill'); if (p) openDeck(p.dataset.id); });
         $('back').addEventListener('click', () => showHub());
@@ -555,8 +567,9 @@
                 $('q').focus();
                 return;
             }
-            // 부모 창에 포커스가 있을 때 누른 키를 활성 iframe으로 전달
             if (!currentId) return;
+            if (e.key === 'Escape') { e.preventDefault(); showHub(); return; }
+            // 부모 창에 포커스가 있을 때 누른 키를 활성 iframe으로 전달
             try {
                 $(`iframe-${currentId}`).contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
                     key: e.key, code: e.code, keyCode: e.keyCode, which: e.which, bubbles: true
