@@ -304,8 +304,8 @@ pre.codebox{
       <iconify-icon icon="solar:compass-bold" style="font-size:26px"></iconify-icon>
       페이지 바로 이동
     </div>
-    <div style="font-size:14px;color:var(--mu);text-align:center">1부터 15 사이의 슬라이드 번호를 입력하세요</div>
-    <input type="number" id="modal-page-input" min="1" max="15" placeholder="예: 7">
+    <div style="font-size:14px;color:var(--mu);text-align:center">1부터 17 사이의 슬라이드 번호를 입력하세요</div>
+    <input type="number" id="modal-page-input" min="1" max="17" placeholder="예: 7">
     <button id="modal-jump-btn">이동하기</button>
   </div>
 </div>
@@ -313,13 +313,13 @@ pre.codebox{
 <!-- Controls -->
 <div id="nav">
   <button class="nav-btn" id="btn-prev" title="이전 (←, Backspace)">◀</button>
-  <span id="counter" title="클릭하여 페이지 점프">1 / 15</span>
+  <span id="counter" title="클릭하여 페이지 점프">1 / 17</span>
   <button class="nav-btn" id="btn-next" title="다음 (→, Space)">▶</button>
 </div>
 <div id="progress"></div>
 
 <script>
-// 슬라이드 데이터 정의 (총 15장) - [주의: 백틱 내부 백틱 절대 금지!]
+// 슬라이드 데이터 정의 (총 17장) - [주의: 백틱 내부 백틱 절대 금지!]
 const slides = [
   // ── 1. 표지 (Cover) ──
   {
@@ -1041,7 +1041,127 @@ const slides = [
     '</div>'
   },
 
-  // ── 14. 구축 가이드 & 하드웨어/인프라 사이징 ──
+  // ── 14. 핵심 활용 사례 3: 국가 R&D 재난안전 2단계 분류 방법론 비교 ──
+  {
+    n: 4,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:30px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-c" style="margin-bottom:12px">PUBLIC R&D CLASSIFICATION METHODOLOGY</div>' +
+          '<div class="t-xl">[활용 3] 국가 R&D 재난안전 분류: <span class="gc">JEV vs 로컬 모델 vs 딥러닝</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">1단계(재난안전 여부 판별)와 2단계(재난유형 세부 분류)를 위한 최적 접근법 분석</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:22px 30px;overflow:hidden">' +
+        '<table style="width:100%;border-collapse:collapse;font-size:19px;text-align:center">' +
+          '<thead>' +
+            '<tr style="border-bottom:1px solid rgba(255,255,255,.15);color:var(--mu);font-size:17px">' +
+              '<th style="padding:14px;text-align:left;width:230px">평가 축</th>' +
+              '<th style="padding:14px;color:var(--e);width:370px">로컬 판단모델 (JevK5 / LAYA)</th>' +
+              '<th style="padding:14px;color:var(--c);width:350px">클라우드 JEV (API 기반)</th>' +
+              '<th style="padding:14px;color:var(--p);width:370px">전통적 딥러닝 (KoBERT / RoBERTa)</th>' +
+            '</tr>' +
+          '</thead>' +
+          '<tbody>' +
+            '<tr data-step="1" style="border-bottom:1px solid rgba(255,255,255,.07)">' +
+              '<td style="padding:16px;text-align:left;font-weight:600;color:#fff">1단계: 재난안전 판별<br><span style="font-size:14px;color:var(--mu)">(Yes/No 이진 판정)</span></td>' +
+              '<td style="padding:16px;color:var(--e);font-weight:700">최적 (Noul 프리미티브)<br><span style="font-size:15px;color:var(--mu)">20~30ms 초고속 스크리닝 & 연구계획서 문맥 파악</span></td>' +
+              '<td style="padding:16px;color:var(--c);font-weight:600">우수 (JEV Noul)<br><span style="font-size:15px;color:var(--mu)">프롬프트 정의 간편하나 8만 건 처리 시 API 과금 부담</span></td>' +
+              '<td style="padding:16px;color:var(--p);font-weight:600">우수 (Binary Classifier)<br><span style="font-size:15px;color:var(--mu)">5ms로 매우 빠르나 장문 연구내용 추론 한계</span></td>' +
+            '</tr>' +
+            '<tr data-step="2" style="border-bottom:1px solid rgba(255,255,255,.07)">' +
+              '<td style="padding:16px;text-align:left;font-weight:600;color:#fff">2단계: 재난유형 분류<br><span style="font-size:14px;color:var(--mu)">(자연·사회·안전 다중분류)</span></td>' +
+              '<td style="padding:16px;color:var(--e);font-weight:700">압도적 우위 (Choice + Score)<br><span style="font-size:15px;color:var(--mu)">복합재난 멀티라벨 지원 및 신뢰도 점수 동시 산출</span></td>' +
+              '<td style="padding:16px;color:var(--c);font-weight:600">우수 (Choice API)<br><span style="font-size:15px;color:var(--mu)">분류체계 변경 시 프롬프트 수정만으로 즉각 대응</span></td>' +
+              '<td style="padding:16px;color:var(--r);font-weight:600">한계 뚜렷 (고정 Softmax)<br><span style="font-size:15px;color:var(--mu)">체계 개정 시 모델 재학습 필수, 대량 라벨링 비용 발생</span></td>' +
+            '</tr>' +
+            '<tr data-step="3" style="border-bottom:1px solid rgba(255,255,255,.07)">' +
+              '<td style="padding:16px;text-align:left;font-weight:600;color:#fff">국가 R&D 보안 & 처리속도<br><span style="font-size:14px;color:var(--mu)">(연간 8만 건 전수 분석)</span></td>' +
+              '<td style="padding:16px;color:var(--e);font-weight:700">100% 온프렘 폐쇄망 보안<br><span style="font-size:15px;color:var(--mu)">미공개 보안과제 완벽 보호 / API 비용 0원 / 3~4시간 완주</span></td>' +
+              '<td style="padding:16px;color:var(--r);font-weight:600">보안 규제 저촉 소지<br><span style="font-size:15px;color:var(--mu)">공공 R&D 외부 반출 규제 / WAN RTT로 수십 시간 소요</span></td>' +
+              '<td style="padding:16px;color:var(--e);font-weight:700">100% 온프렘 가능<br><span style="font-size:15px;color:var(--mu)">로컬 구동 용이하나 판정 근거 설명력(Explainability) 결여</span></td>' +
+            '</tr>' +
+            '<tr data-step="4">' +
+              '<td style="padding:16px;text-align:left;font-weight:600;color:#fff">분류체계 개정 유연성</td>' +
+              '<td style="padding:16px;color:var(--e);font-weight:700">최상 (LoRA / 가중치 갱신)<br><span style="font-size:15px;color:var(--mu)">신종 복합재난(기후위기, 테러 등) 즉시 편입 가능</span></td>' +
+              '<td style="padding:16px;color:var(--c);font-weight:600">최상 (프롬프트 즉시 반영)<br><span style="font-size:15px;color:var(--mu)">선택지 배열에 새 재난유형 추가 시 즉시 작동</span></td>' +
+              '<td style="padding:16px;color:var(--r);font-weight:600">최하 (데이터셋 재구축)<br><span style="font-size:15px;color:var(--mu)">분류 기준 변경 시 수천 건 어노테이션 재작업 필요</span></td>' +
+            '</tr>' +
+          '</tbody>' +
+        '</table>' +
+      '</div>' +
+      '<div class="glass" style="padding:18px 32px;display:flex;align-items:center;justify-content:space-between">' +
+        '<div style="display:flex;align-items:center;gap:14px">' +
+          '<iconify-icon icon="solar:shield-star-bold" style="color:var(--e);font-size:32px"></iconify-icon>' +
+          '<span class="t-sm" style="color:var(--t)"><strong>정박사님을 위한 총평:</strong> 보안 규제 준수, 비용 절감, 유연성을 모두 만족하는 최선책은 <strong class="ge">로컬 판단모델 (JevK5 / LAYA)</strong> 단독 또는 하이브리드!</span>' +
+        '</div>' +
+        '<span class="badge badge-e">Recommended Champion</span>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 15. 핵심 활용 사례 3 심층: 재난안전 R&D 2단계 분류 최적 파이프라인 ──
+  {
+    n: 3,
+    html: '<div style="width:1600px;display:flex;flex-direction:column;gap:32px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+        '<div>' +
+          '<div class="badge badge-e" style="margin-bottom:12px">OPTIMAL R&D CLASSIFICATION PIPELINE</div>' +
+          '<div class="t-xl">재난안전 R&D 2단계 분류: <span class="ge">초고속·고정밀 하이브리드 파이프라인</span></div>' +
+        '</div>' +
+        '<div style="color:var(--mu);font-size:20px">경량 딥러닝 초고속 필터링과 로컬 JevK5의 심층 판단력을 융합한 실무 최적화 구조</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">' +
+        '<div class="glass-c" data-step="1" style="padding:36px 30px;display:flex;flex-direction:column;gap:16px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span class="badge badge-c">STAGE 01</span>' +
+            '<iconify-icon icon="solar:filter-bold" style="color:var(--c);font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-lg" style="color:#fff">1차 초고속 스크리닝</div>' +
+          '<div style="font-size:20px;color:var(--c);font-weight:600">8만 건 → 8천 건 압축 (전체 대상)</div>' +
+          '<div class="t-xs" style="color:var(--mu);line-height:1.6">' +
+            '- <strong>딥러닝 / 임베딩 필터:</strong> 명확한 비재난 과제(반도체, 우주 등 7만여 건)를 5ms 내 초고속 사전 제거<br>' +
+            '- <strong>로컬 JevK5 Noul 판정:</strong> 모호한 경계선 과제 대상 <code>noul(abstract, "is_disaster_safety")</code> 25ms 정밀 판별<br>' +
+            '- <strong>성과:</strong> 불필요한 연산 90% 차단, 전수 분석 병목 해소' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-e" data-step="2" style="padding:36px 30px;display:flex;flex-direction:column;gap:16px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span class="badge badge-e">STAGE 02</span>' +
+            '<iconify-icon icon="solar:diagram-up-bold" style="color:var(--e);font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-lg" style="color:#fff">2차 재난유형 정밀 분류</div>' +
+          '<div style="font-size:20px;color:var(--e);font-weight:600">자연·사회·안전 세부 매핑 & 점수화</div>' +
+          '<div class="t-xs" style="color:var(--mu);line-height:1.6">' +
+            '- <strong>계층형 Choice 호출:</strong> 1차 대분류(자연/사회/안전) → 2차 중분류(풍수해, 화재 등) 2-Pass 판정<br>' +
+            '- <strong>Score 기반 복합재난 태깅:</strong> 기후변화-산사태 등 융합 과제에 각 유형별 확신도(Score) 부여<br>' +
+            '- <strong>성과:</strong> 단일 라벨 한계를 넘어 복합재난 다중 분류 완결' +
+          '</div>' +
+        '</div>' +
+        '<div class="glass-p" data-step="3" style="padding:36px 30px;display:flex;flex-direction:column;gap:16px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span class="badge badge-p">STAGE 03</span>' +
+            '<iconify-icon icon="solar:user-check-bold" style="color:var(--p);font-size:32px"></iconify-icon>' +
+          '</div>' +
+          '<div class="t-lg" style="color:#fff">신뢰도 검증 & Human-Loop</div>' +
+          '<div style="font-size:20px;color:var(--p);font-weight:600">확신도 0.65 미만 모호 과제 검증</div>' +
+          '<div class="t-xs" style="color:var(--mu);line-height:1.6">' +
+            '- <strong>자동 확정 (Confidence &gt; 0.85):</strong> 전체의 92%는 검증 없이 즉시 과제 관리 DB 적재<br>' +
+            '- <strong>경계선 과제 (3~5%):</strong> 확신도가 낮은 소수 과제만 전문가 평가위원 화면으로 스마트 라우팅<br>' +
+            '- <strong>성과:</strong> 전문가 평가 업무 부담 95% 경감, 판정 일관성 100%' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="glass" style="padding:22px 36px;display:flex;align-items:center;justify-content:space-around">' +
+        '<div style="text-align:center"><div class="ge" style="font-size:34px;font-weight:800">3주 → 4시간</div><div class="t-xs">국가 R&D 8만 건 분석 소요시간</div></div>' +
+        '<div style="text-align:center"><div class="gc" style="font-size:34px;font-weight:800">95.4%</div><div class="t-xs">전문가 판정 대비 일치율(F1)</div></div>' +
+        '<div style="text-align:center"><div class="ga" style="font-size:34px;font-weight:800">100% 온프렘</div><div class="t-xs">국가 미공개 과제 보안 준수율</div></div>' +
+        '<div style="text-align:center"><div class="gp" style="font-size:34px;font-weight:800">0원 (무제한)</div><div class="t-xs">상용 API 추가 토큰 과금</div></div>' +
+      '</div>' +
+    '</div>'
+  },
+
+  // ── 16. 구축 가이드 & 하드웨어/인프라 사이징 ──
   {
     n: 3,
     html: '<div style="width:1600px;display:flex;flex-direction:column;gap:36px">' +
@@ -1102,7 +1222,7 @@ const slides = [
     '</div>'
   },
 
-  // ── 15. 결론 및 미래 로드맵 ──
+  // ── 17. 결론 및 미래 로드맵 ──
   {
     n: 2,
     html: '<div style="width:1600px;display:flex;flex-direction:column;gap:36px;text-align:center;align-items:center">' +
