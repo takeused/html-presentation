@@ -1,0 +1,350 @@
+<!-- 브리핑 강의형 발표자료: AI는 일하는 방식을 어떻게 바꾸고 있나 (2026 AI 브리핑 Part 2) (12장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI는 일하는 방식을 어떻게 바꾸고 있나 (2026 AI 브리핑 Part 2)</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --ac:#2f62f0;            /* 주 강조색 (DECK.accent로 덮어씀) */
+  --ac2:#4cc3f5;           /* 그라디언트 끝색 (DECK.accent2) */
+  --ink:#15171c; --ink2:#2b2f37; --mu:#5d636e; --dim:#8d939d;
+  --card:#f4f6f9; --line:#e3e7ed; --stripe:#f2f6ff; --bar:#3d4048;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#fff;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink);word-break:keep-all}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#fff}
+#slide{position:absolute;inset:0}
+.grad{background:linear-gradient(100deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* 순차 등장 */
+[data-s]{opacity:0;transform:translateY(18px);transition:opacity .55s ease var(--d,0s),transform .55s cubic-bezier(.2,.8,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* --- 본문 공통 (흰 배경) --- */
+.std{position:absolute;inset:0;padding:96px 144px 118px;display:flex;flex-direction:column}
+.eyebrow{font-size:26px;font-weight:700;letter-spacing:.01em}
+.title{margin-top:14px;font-size:54px;font-weight:300;line-height:1.32;color:var(--ink2);letter-spacing:-.01em}
+.title b{font-weight:800;color:var(--ink)}
+.body{flex:1;display:flex;align-items:center;min-height:0}
+.src{margin-top:24px;font-size:19px;line-height:1.55;color:var(--dim);text-align:center}
+.take{margin-top:36px;font-size:38px;font-weight:800;color:var(--ink2);text-align:center;letter-spacing:-.01em}
+
+/* split: 좌측 카드 + 우측 표/선택지 */
+.split{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.card{background:var(--card);border-radius:36px;padding:60px 56px;min-height:470px;display:flex;flex-direction:column;justify-content:center}
+.metric{text-align:center}
+.metric .big{font-size:170px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.metric .big small{font-size:84px;font-weight:600;letter-spacing:0;margin-left:6px}
+.metric .cap{margin-top:40px;font-size:34px;font-weight:700;color:var(--ink)}
+.metric .desc{margin-top:14px;font-size:25px;line-height:1.6;color:var(--mu)}
+.text h3{font-size:40px;font-weight:800;color:var(--ink2)}
+.text p{margin-top:36px;font-size:25px;line-height:1.7;color:var(--mu)}
+.text p+p{margin-top:28px}
+
+.tbl{width:100%}
+.tbl .row{display:grid;align-items:center;padding:0 26px;min-height:80px;font-size:24px;font-weight:600;color:var(--ink2)}
+.tbl .row:nth-child(even){background:var(--stripe)}
+.tbl .hd{min-height:50px;border-radius:12px;background:var(--bar);color:#fff;font-size:18px;font-weight:600;margin-bottom:6px}
+.tbl .row>span{padding-right:16px}
+.tbl .row:not(.hd) .v{color:var(--ac);font-weight:700;font-size:27px;font-variant-numeric:tabular-nums}
+.tbl .row:not(.hd) .v.sep{border-left:1px solid #d6dbe4;padding-left:22px}
+.tbl .hd .v.sep{padding-left:23px}
+
+.opts{display:flex;flex-direction:column;gap:20px}
+.opt{border:1.5px solid var(--line);border-radius:20px;padding:24px 32px;text-align:center;background:#fff}
+.opt .k{font-size:21px;font-weight:700;color:var(--ac)}
+.opt .t{margin-top:6px;font-size:27px;font-weight:700;color:var(--ink)}
+.opt .d{margin-top:6px;font-size:20px;color:var(--mu)}
+.opt.em{background:var(--ac);border-color:var(--ac);box-shadow:0 18px 40px rgba(var(--ac-rgb),.28)}
+.opt.em .k,.opt.em .d{color:rgba(255,255,255,.85)}
+.opt.em .t{color:#fff}
+
+/* bars */
+.bars{width:100%;height:100%;display:flex;justify-content:center;align-items:flex-end;gap:96px;padding-bottom:6px}
+.bcol{display:flex;flex-direction:column;align-items:center;width:150px}
+.bcol .val{font-size:46px;font-weight:800;color:var(--ink2);font-variant-numeric:tabular-nums}
+.bcol .val small{font-size:22px;font-weight:600;margin-left:3px}
+.bcol .b{margin-top:16px;width:150px;border-radius:26px;background:#e3e5e9}
+.bcol.em .val{color:var(--ac)}
+.bcol.em .b{background:linear-gradient(180deg,var(--ac) 0%,rgba(var(--ac-rgb),.55) 55%,rgba(var(--ac-rgb),.04) 100%)}
+.bcol .lb{margin-top:20px;font-size:25px;line-height:1.4;color:var(--mu);text-align:center;white-space:nowrap}
+
+/* quotes */
+.quotes{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.qcard{background:var(--card);border-radius:32px;padding:56px 56px 50px;display:flex;flex-direction:column}
+.qcard .q{font-size:33px;font-weight:700;line-height:1.5;color:var(--ink)}
+.qcard .qd{margin-top:36px;font-size:23px;line-height:1.7;color:var(--mu);flex:1}
+.qcard .by{margin-top:34px;font-size:21px;color:var(--mu)}
+
+/* cards (수치 3개) */
+.cards{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.scard{background:var(--card);border-radius:30px;padding:52px 44px}
+.scard .v{font-size:80px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.scard .v small{font-size:38px;font-weight:600;margin-left:4px}
+.scard .l{margin-top:30px;font-size:31px;font-weight:700;color:var(--ink)}
+.scard .d{margin-top:16px;font-size:22px;line-height:1.65;color:var(--mu)}
+
+/* --- 파트 표지 (네이비 격자) --- */
+.part{position:absolute;inset:0;color:#fff;overflow:hidden;
+  background:radial-gradient(ellipse 34% 46% at 2% 34%,rgba(36,120,235,.85),transparent 72%),
+    radial-gradient(ellipse 42% 48% at 92% 96%,rgba(24,80,225,.9),transparent 72%),
+    radial-gradient(ellipse 50% 60% at 48% 70%,rgba(14,58,170,.75),transparent 75%),
+    linear-gradient(165deg,#1b2a40 0%,#122a63 55%,#0b1f55 100%)}
+.part .grid{position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 330px,rgba(255,255,255,.08) 330px,rgba(255,255,255,.08) 331px,transparent 331px,transparent 486px,rgba(255,255,255,.08) 486px,rgba(255,255,255,.08) 487px,transparent 487px,transparent 1440px,rgba(255,255,255,.08) 1440px,rgba(255,255,255,.08) 1441px,transparent 1441px),
+    linear-gradient(180deg,transparent 394px,rgba(255,255,255,.08) 394px,rgba(255,255,255,.08) 395px,transparent 395px,transparent 688px,rgba(255,255,255,.08) 688px,rgba(255,255,255,.08) 689px,transparent 689px)}
+.part .ring{position:absolute;width:980px;height:980px;border-radius:50%;border:1.5px solid rgba(255,255,255,.09);top:40px}
+.part .r1{left:220px}.part .r2{left:710px}
+.part .in{position:absolute;left:144px;top:196px}
+.part .kick{font-size:29px;font-weight:500;color:rgba(255,255,255,.88)}
+.part .pnum{margin-top:44px;font-size:110px;font-weight:800;line-height:1.05;background:linear-gradient(100deg,#5db6ff,#3b78ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.part .ptitle{font-size:110px;font-weight:800;line-height:1.2;letter-spacing:-.01em}
+.part .psub{margin-top:34px;font-size:32px;color:rgba(255,255,255,.72)}
+.part .brand{position:absolute;left:144px;bottom:108px}
+.part .brand b{display:flex;align-items:center;gap:14px;font-size:31px;font-weight:700}
+.part .brand span{display:block;margin-top:18px;font-size:20px;color:rgba(255,255,255,.6)}
+
+/* --- 목차 --- */
+.contents{position:absolute;inset:0;display:grid;grid-template-columns:580px 1fr;padding:200px 240px 0 240px}
+.contents h2{font-size:56px;font-weight:800}
+.contents ol{list-style:none}
+.contents li{display:grid;grid-template-columns:90px 1fr auto;align-items:center;height:130px;border-bottom:1px solid var(--line)}
+.contents li:first-child{border-top:1px solid var(--line)}
+.contents li .n{font-size:38px;font-weight:800}
+.contents li .t{font-size:34px;font-weight:700;color:var(--ink2)}
+.contents li .tag{font-size:19px;font-weight:600;color:var(--mu);background:var(--card);padding:8px 18px;border-radius:999px}
+
+/* --- 섹션 구분 (검정) --- */
+.section{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 40%,#202227,#141518 75%);color:#fff}
+.section .in{position:absolute;left:144px;top:360px}
+.section .snum{font-size:60px;font-weight:800}
+.section .stitle{margin-top:18px;font-size:92px;font-weight:800;letter-spacing:-.01em}
+.section .smeta{margin-top:30px;font-size:30px;line-height:1.95;color:#9ba1ab}
+
+/* --- 하단 챕터 바 · 카운터 --- */
+#pbar{position:absolute;left:0;right:0;bottom:0;height:46px;display:flex;z-index:5;transition:opacity .3s}
+#pbar.hide{opacity:0;pointer-events:none}
+#pbar div{flex:1;display:grid;place-items:center;font-size:20px;font-weight:600;color:#a3a8b1;background:#f3f4f6;cursor:pointer;transition:background .2s}
+#pbar div:hover{background:#e7e9ed}
+#pbar div.on{background:var(--bar);color:#fff}
+#counter{position:absolute;right:28px;bottom:54px;font-size:17px;font-weight:600;color:var(--dim);cursor:pointer;z-index:6;font-variant-numeric:tabular-nums}
+#counter.dark{color:rgba(255,255,255,.5)}
+
+/* --- 점프 --- */
+#jump-toast{position:absolute;left:50%;top:60px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;background:var(--bar);color:#fff;z-index:9;display:none}
+#jump-modal{position:absolute;inset:0;background:rgba(10,12,16,.45);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:#fff;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1.5px solid var(--line);color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#fff;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){[data-s]{transition:none}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="slide"></div>
+  <div id="pbar"></div>
+  <div id="counter" title="클릭하거나 G 키로 페이지 이동"></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 — 이 부분만 고친다 ===================== */
+const DECK = {
+  brand: { name: '2026 AI 브리핑', contact: 'Part 2 · 2026년 10월까지 공개된 자료 기준' },
+  eyebrow: 'PART 2. 일하는 방식의 변화',
+  accent: '#2f62f0', accent2: '#4cc3f5',
+  reveal: 'auto',
+  chapters: ['AI가 맡는 일의 길이', '일터에서 일어난 변화', '사람에게 남는 일'],
+  slides: [
+    { layout: 'part', kicker: 'AI 브리핑 · Part 2', part: 'Part 2.', title: 'AI는 일하는 방식을<br>어떻게 바꾸고 있나' },
+    { layout: 'contents', tags: ['측정', '현장', '역할'] },
+
+    { layout: 'section', chapter: 0, title: 'AI는 얼마나 긴 일을 맡을까?', meta: ['Part 2. 일하는 방식의 변화', '질문 하나에서 하루치 업무로'] },
+    { layout: 'bars', chapter: 0, h: 330,
+      title: 'AI가 혼자 끝내는 일의 길이가 <b>4분에서 17시간이 됐습니다</b>',
+      items: [
+        { label: 'GPT-4<br>2023.3', value: 4, show: '4', unit: '분' },
+        { label: 'GPT-4o<br>2024.5', value: 7, show: '7', unit: '분' },
+        { label: 'o1<br>2024.12', value: 38.8, show: '39', unit: '분' },
+        { label: 'o3<br>2025.4', value: 119.7, show: '2', unit: '시간' },
+        { label: 'GPT-5<br>2025.8', value: 203, show: '3.4', unit: '시간' },
+        { label: 'Opus 4.6<br>2026.2', value: 718.8, show: '12', unit: '시간', em: true },
+        { label: 'Mythos<br>2026.4', value: 1044.8, show: '17.4', unit: '시간', em: true }],
+      src: 'METR Time Horizon 1.1 · 사람 전문가가 걸리는 시간으로 잰 작업 길이 중 AI 에이전트가 50% 확률로 성공하는 길이<br>2023년 이후 약 129일마다 두 배 · Opus 4.6과 Mythos는 Claude Opus 4.6, Claude Mythos Preview(초기판) · metr.org',
+      take: '3년 사이 맡길 수 있는 일이 짧은 질문에서 하루치 업무로 커졌다.' },
+
+    { layout: 'section', chapter: 1, title: '일터에서는 무엇이 바뀌었나?', meta: ['Part 2. 일하는 방식의 변화', '코드 작성 · 에이전트 · 신입 채용'] },
+    { layout: 'split', chapter: 1,
+      title: '구글의 새 코드는 <b>4분의 3을 AI가 씁니다</b>',
+      left: { type: 'metric', value: '75', unit: '%', label: '구글 신규 코드 중 AI 생성 비중', desc: '엔지니어가 검토·승인한 뒤 반영<br>2026년 4월 · 순다르 피차이' },
+      right: { type: 'table', cols: '1.3fr 1.1fr 1fr', val: 2,
+        head: ['회사', '시점', 'AI 작성 비중'],
+        rows: [['구글', '2024년 10월', '25% 이상'], ['마이크로소프트', '2025년 4월', '20~30%'], ['구글', '2026년 4월', '75%']] },
+      src: '구글 블로그(2026-04-22) · Alphabet 2024년 3분기 실적 발표 · 사티아 나델라, LlamaCon(2025-04-29)<br>회사마다 측정 기준이 달라 직접 비교는 어렵다',
+      take: '1년 반 사이 AI가 쓴 코드가 소수에서 다수가 됐다.' },
+    { layout: 'cards', chapter: 1,
+      title: 'AI를 쓰는 직장인 58%는 <b>1년 전엔 못 하던 일을 합니다</b>',
+      items: [
+        { value: '58', unit: '%', label: '전에 못 하던 결과물', desc: '1년 전엔 만들 수 없던 일을 한다<br>앞선 전문가 집단은 80%' },
+        { value: '66', unit: '%', label: '가치 높은 일에 더 집중', desc: 'AI 덕분에 고부가가치 업무에<br>쓰는 시간이 늘었다' },
+        { value: '15', unit: '배', label: '활성 에이전트 증가', desc: 'Microsoft 365 전년 대비<br>대기업은 18배' }],
+      src: 'Microsoft 2026 Work Trend Index(2026-05-05) · 10개국 AI 사용 지식노동자 2만 명 설문(Edelman DXI, 2026년 2~4월)과 M365 사용 데이터',
+      take: '에이전트는 시범 단계를 지나 일상 업무 도구가 됐다.' },
+    { layout: 'split', chapter: 1,
+      title: '그 사이 <b>신입 채용부터</b> 줄고 있습니다',
+      left: { type: 'metric', value: '19', unit: '%', label: 'AI 노출 직종 22~25세 고용 격차', desc: '덜 노출된 직종의 같은 나이대보다<br>고용이 이만큼 덜 늘었다 · 2026년 6월' },
+      right: { type: 'options', items: [
+        { k: '2025년 7월 자료', t: '격차 15%' },
+        { k: '2026년 6월 자료', t: '격차 19%', d: '경력자에게는 비슷한 격차가 없다', em: true },
+        { k: '나타나는 경로', t: '해고보다 신규 채용 감소로 나타난다' }] },
+      src: 'Brynjolfsson·Chandar·Chen, 「Canaries in the Coal Mine?」 개정판(Stanford Digital Economy Lab, 2026-08-12)<br>ADP 급여 데이터 · 인과 추정이 아닌 기술적 관찰이며, 경제 전반의 일자리 대체 증거는 없다고 밝힘',
+      take: '변화는 해고가 아니라 뽑지 않는 자리에서 먼저 나타난다.' },
+
+    { layout: 'section', chapter: 2, title: '사람에게 남는 일은 무엇일까?', meta: ['Part 2. 일하는 방식의 변화', '검토 · 판단 · 일을 다시 짜는 조직'] },
+    { layout: 'split', chapter: 2,
+      title: '사람의 일은 <b>만들기에서 판단하기로</b> 옮겨 갑니다',
+      left: { type: 'text', head: '에이전트와 일하는 법',
+        paras: ['AI 결과물은 최종본이 아니라 출발점입니다.<br>무엇을 AI에 맡기고 무엇을 직접 할지<br>먼저 정합니다.',
+                '앞서가는 사람일수록 일부러 AI 없이<br>해 보는 일도 남겨 둡니다.'] },
+      right: { type: 'options', items: [
+        { k: '86%', t: 'AI 결과물을 출발점으로 본다' },
+        { k: '50% · 46%', t: '더 중요해진 역량은 검수와 비판적 사고' },
+        { k: '53% 대 33%', t: '앞선 전문가는 AI와 사람의 몫을 먼저 나눈다', d: '일부러 AI 없이 하는 일도 43% 대 30%', em: true }] },
+      src: 'Microsoft 2026 Work Trend Index(2026-05-05) · 앞선 전문가(Frontier Professionals)는 AI 사용자의 16%',
+      take: '좋은 결과는 잘 시키는 것보다 잘 검토하는 데서 나온다.' },
+    { layout: 'cards', chapter: 2,
+      title: '성과를 가르는 것은 <b>개인보다 조직</b>입니다',
+      items: [
+        { value: '67 : 32', unit: '', label: '조직 요인 대 개인 태도', desc: 'AI 성과와의 연관도<br>문화·관리자·인재 제도가 두 배 넘게 크다' },
+        { value: '26', unit: '%', label: '리더십이 AI에 한목소리', desc: 'AI 사용자 4명 중 1명만<br>그렇다고 답했다' },
+        { value: '13', unit: '%', label: '일을 새로 짜면 보상받는다', desc: '결과가 안 나와도 시도 자체를<br>인정받는다는 응답' }],
+      src: 'Microsoft 2026 Work Trend Index(2026-05-05) · 67과 32는 상대 중요도 점수(합이 100이 아님), 인과가 아닌 통계적 연관',
+      take: 'AI 성과는 도구 사용법보다 일을 다시 짜게 해 주는 조직에서 나온다.' },
+    { layout: 'part', kicker: 'AI 브리핑 · Part 2 정리', part: 'Next.', title: '맡길 일과 판단할 일을<br>다시 나눕니다' }
+  ]
+};
+/* ===================== 렌더링 엔진 — 고치지 않는다 ===================== */
+const $ = id => document.getElementById(id);
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0;
+const pad = i => String(i).padStart(2, '0');
+const LOGO = `<svg width="40" height="30" viewBox="0 0 40 30"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#5db6ff"/><stop offset="1" stop-color="#3b78ff"/></linearGradient></defs><path d="M2 28 16 2h9L11 28z" fill="url(#lg)"/><path d="M18 28 25 15l7 13z" fill="#ffd54a"/></svg>`;
+
+const head = (s, n) => `<div class="eyebrow grad" ${n(0)}>${s.eyebrow || DECK.eyebrow || ''}</div><h2 class="title" ${n(0)}>${s.title}</h2>`;
+const foot = (s, n, k) => (s.src ? `<div class="src" ${n(k)}>${s.src}</div>` : '') + (s.take ? `<div class="take" ${n(k + 1)}>${s.take}</div>` : '');
+const std = (s, n, body, k) => `<div class="std">${head(s, n)}<div class="body">${body}</div>${foot(s, n, k)}</div>`;
+const num = (v, u) => `${v}<small>${u || ''}</small>`;
+
+const LEFT = {
+  metric: p => `<div class="card metric"><div class="big grad">${num(p.value, p.unit)}</div><div class="cap">${p.label}</div>${p.desc ? `<div class="desc">${p.desc}</div>` : ''}</div>`,
+  text: p => `<div class="card text"><h3>${p.head}</h3>${p.paras.map(t => `<p>${t}</p>`).join('')}</div>`
+};
+const RIGHT = {
+  table: p => {
+    const row = (r, cls) => `<div class="row ${cls}" style="grid-template-columns:${p.cols}">${r.map((c, i) => `<span class="${i === p.val ? (i ? 'v sep' : 'v') : ''}">${c}</span>`).join('')}</div>`;
+    return `<div class="tbl">${row(p.head, 'hd')}${p.rows.map(r => row(r, '')).join('')}</div>`;
+  },
+  options: p => `<div class="opts">${p.items.map(it =>
+    `<div class="opt${it.em ? ' em' : ''}">${it.k ? `<div class="k">${it.k}</div>` : ''}<div class="t">${it.t}</div>${it.d ? `<div class="d">${it.d}</div>` : ''}</div>`).join('')}</div>`
+};
+
+const LAYOUTS = {
+  part: (s, n) => `<div class="part"><div class="grid"></div><div class="ring r1"></div><div class="ring r2"></div>
+      <div class="in"><div class="kick" ${n(0)}>${s.kicker || ''}</div><div class="pnum" ${n(1)}>${s.part || ''}</div><h1 class="ptitle" ${n(1)}>${s.title}</h1>${s.sub ? `<p class="psub" ${n(2)}>${s.sub}</p>` : ''}</div>
+      <div class="brand" ${n(2)}><b>${LOGO}${DECK.brand.name}</b>${DECK.brand.contact ? `<span>${DECK.brand.contact}</span>` : ''}</div></div>`,
+  contents: (s, n) => `<div class="contents"><h2 class="grad" ${n(0)}>Contents</h2><ol>${(s.items || DECK.chapters).map((t, i) =>
+      `<li ${n(i + 1)}><span class="n grad">${pad(i + 1)}</span><span class="t">${t}</span>${s.tags && s.tags[i] ? `<span class="tag">${s.tags[i]}</span>` : '<span></span>'}</li>`).join('')}</ol></div>`,
+  section: (s, n) => `<div class="section"><div class="in"><div class="snum grad" ${n(0)}>${s.num || pad((s.chapter ?? 0) + 1)}</div>
+      <h1 class="stitle" ${n(1)}>${s.title}</h1>${s.meta ? `<div class="smeta" ${n(2)}>${s.meta.join('<br>')}</div>` : ''}</div></div>`,
+  split: (s, n) => std(s, n, `<div class="split"><div ${n(1)}>${LEFT[s.left.type](s.left)}</div><div ${n(2)}>${RIGHT[s.right.type](s.right)}</div></div>`, 3),
+  bars: (s, n) => {
+    const max = Math.max(...s.items.map(it => it.value));
+    return std(s, n, `<div class="bars">${s.items.map((it, i) =>
+      `<div class="bcol${it.em ? ' em' : ''}" ${n(i + 1)}><div class="val">${num(it.show ?? it.value, it.unit)}</div><div class="b" style="height:${Math.max(24, it.value / max * (s.h || 300))}px"></div><div class="lb">${it.label}</div></div>`).join('')}</div>`, s.items.length + 1);
+  },
+  quotes: (s, n) => std(s, n, `<div class="quotes">${s.items.map((it, i) =>
+      `<div class="qcard" ${n(i + 1)}><div class="q">${it.quote}</div>${it.desc ? `<div class="qd">${it.desc}</div>` : ''}${it.by ? `<div class="by">${it.by}</div>` : ''}</div>`).join('')}</div>`, s.items.length + 1),
+  cards: (s, n) => std(s, n, `<div class="cards">${s.items.map((it, i) =>
+      `<div class="scard" ${n(i + 1)}><div class="v grad">${num(it.value, it.unit)}</div><div class="l">${it.label}</div>${it.desc ? `<div class="d">${it.desc}</div>` : ''}</div>`).join('')}</div>`, s.items.length + 1)
+};
+
+function renderBar() {
+  const s = S[cur], on = s.chapter != null && !['part', 'contents'].includes(s.layout);
+  $('pbar').classList.toggle('hide', !on);
+  $('pbar').innerHTML = DECK.chapters.map((c, i) => `<div class="${i === s.chapter ? 'on' : ''}" data-slide="${Math.max(0, S.findIndex(x => x.chapter === i))}" title="${c}">${pad(i + 1)}</div>`).join('');
+  $('counter').classList.toggle('dark', ['part', 'section'].includes(s.layout));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  renderBar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.08 + e.dataset.s * 0.2) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', e => { e.stopPropagation(); openModal(); });
+$('pbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const t = e.target.closest('[data-slide]');
+  if (t) go(+t.dataset.slide, true);
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#jump-modal')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac2', DECK.accent2 || DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
