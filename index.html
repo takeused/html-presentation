@@ -685,6 +685,10 @@
 
     .viewer-frame.active {
       opacity: 1;
+    }
+
+    /* 허브로 돌아온 뒤에도 마지막 덱이 투명한 채로 클릭을 가로채지 않도록, 뷰어가 열려 있을 때만 클릭을 받는다 */
+    body.viewing .viewer-frame.active {
       pointer-events: auto;
     }
 
@@ -1227,6 +1231,14 @@
       // 지연 로딩
       const frame = $(`iframe-${id}`);
       if (!frame.getAttribute('src')) {
+        // 덱 안에 포커스가 있으면 ESC가 허브 창까지 오지 않으므로, 덱 창에서 직접 받아 허브로 돌아온다
+        frame.addEventListener('load', () => {
+          try {
+            frame.contentWindow.addEventListener('keydown', e => {
+              if (e.key === 'Escape' && currentId) { e.preventDefault(); showHub(); }
+            });
+          } catch (err) { }
+        });
         frame.src = deck.src;
       }
 
@@ -1248,6 +1260,11 @@
       currentId = null;
       document.body.classList.remove('viewing');
       document.title = 'Signal Presentation Hub';
+      // 숨은 덱에 남은 키보드 포커스를 허브로 되돌린다 (/ 검색 등 단축키가 덱으로 가지 않게)
+      if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+        document.activeElement.blur();
+        window.focus();
+      }
 
       if (last) {
         const lastCard = document.querySelector(`.card[data-id="${last}"]`);
