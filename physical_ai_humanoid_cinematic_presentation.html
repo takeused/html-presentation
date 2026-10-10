@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>피지컬 AI와 휴머노이드 로보틱스 혁명 — 시네마틱 인터랙티브 프레젠테이션</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00e5ff;
+  --ac-rgb:0,229,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 50%,rgba(var(--navy),.68) 0%,rgba(var(--navy),.86) 65%,rgba(var(--navy),.96) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.82) 0%,rgba(var(--navy),.48) 30%,rgba(var(--navy),.52) 70%,rgba(var(--navy),.94) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.32;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.07) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(14px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(18px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(10px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 — 피지컬 AI & 휴머노이드 로보틱스 (15장) ===================== */
+const DECK = {
+  brand: { name: 'PHYSICAL AI', icon: 'solar:robot-bold' },
+  accent: '#00e5ff',
+  reveal: 'auto',
+  chapters: ['물리 세계로의 대탈출', '피지컬 AI 아키텍처', '산업 현장과 일상의 격변', '도전 과제와 공존의 미래'],
+  slides: [
+    // 01. cover
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1737644467636-6b0053476bb2', photo: 'Gabriele Malaspina',
+      eyebrow: 'PHYSICAL AI & HUMANOID ROBOTICS · 2026',
+      title: '화면을 뚫고 나온 공간 지능,<br><em>피지컬 AI와 휴머노이드 혁명</em>',
+      sub: '비트(Bit)에서 아톰(Atom)으로: 물리 법칙과 중력을 이해하는 새로운 지능의 탄생',
+      meta: 'SPATIAL INTELLIGENCE & EMBODIED AI · 15 SCENES'
+    },
+    // 02. stats
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1531746790731-6c087fecd65a', photo: 'Franck V.',
+      eyebrow: '폭발하는 시장 지표',
+      title: '글로벌 산업이 주목하는 차세대 성장 엔진',
+      items: [
+        { value: '52.8', unit: '%', label: '글로벌 휴머노이드 로봇 시장 연평균 성장률(CAGR)' },
+        { value: '380', unit: '억$', label: '2035년 글로벌 피지컬 AI 로보틱스 예상 시장 규모' }
+      ],
+      note: '출처 · Goldman Sachs Global Robotics Research 2026'
+    },
+    // 03. compare
+    {
+      layout: 'compare', chapter: 0,
+      bg: 'photo-1667984550708-a6beba23cb4c', photo: 'Growtika',
+      eyebrow: '지능의 대전환',
+      title: '디지털 텍스트 AI vs 현실 세계 피지컬 AI',
+      left: {
+        title: '디지털 화면 속 AI (LLM)',
+        icon: 'solar:monitor-bold',
+        items: [
+          '모니터 안의 텍스트와 이미지 데이터만 학습',
+          '중력·마찰·물체 무게 등 물리 법칙 인지 불가',
+          '화면 밖 현실 세계에 물리적 개입 불가능'
+        ]
+      },
+      right: {
+        title: '신체화된 피지컬 AI (Embodied)',
+        icon: 'solar:robot-bold',
+        items: [
+          '카메라와 촉각으로 3차원 공간을 실시간 인지',
+          '물리 역학을 이해하고 직접 힘을 조절해 행동',
+          '공장·물류·병원 등 현실 환경에서 직접 작업 수행'
+        ]
+      },
+      note: '신체(Embodiment)를 갖춘 지능만이 진짜 세상을 바꿀 수 있습니다'
+    },
+    // 04. quote
+    {
+      layout: 'quote', chapter: 0,
+      bg: 'photo-1601132359864-c974e79890ac', photo: 'Aideal Hwa',
+      eyebrow: '피지컬 AI의 비전',
+      quote: 'AI의 다음 물결은 <em>물리 법칙을 이해하는 지능</em>이다.<br>세계를 이해하고 행동하는 로봇이 모든 산업을 재정의할 것이다',
+      by: 'JENSEN HUANG · GTC KEYNOTE'
+    },
+    // 05. flow
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1784821856280-401b76b03266', photo: 'Brecht Corbeel',
+      eyebrow: '지능형 실행 메커니즘',
+      title: '피지컬 AI의 3단계 인지·행동 사이클',
+      steps: [
+        { label: '공간 센싱', desc: '라이다·비전·촉각 센서로<br>3차원 주변 환경 실시간 인지' },
+        { label: 'VLA 판단', desc: '시각-언어-행동 파운데이션 모델이<br>상황 맥락 해석 및 경로 계획' },
+        { label: '정밀 제어', desc: '초정밀 모터 액추에이터 구동으로<br>밀리미터 단위 작업 수행' }
+      ],
+      note: '센서와 두뇌, 신체가 오차 없이 맞물려 작동하는 유기적 구조'
+    },
+    // 06. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1562408590-e32931084e23', photo: 'Umberto',
+      eyebrow: '핵심 기술 스택',
+      title: '로봇 신체를 완성하는 4대 핵심 축',
+      items: [
+        { icon: 'solar:cpu-bold', text: 'VLA 파운데이션 모델: 언어 명령을 관절 각도와 힘 조절 데이터로 즉시 변환' },
+        { icon: 'solar:bolt-circle-bold', text: '고출력 모터 액추에이터: 인간 근육을 모사하는 고효율·고토크 드라이브' },
+        { icon: 'solar:hand-stars-bold', text: '전자 피부 촉각 센서: 달걀을 깨뜨리지 않고 집어 올리는 섬세한 압력 감지' },
+        { icon: 'solar:cubes-bold', text: '디지털 트윈 시뮬레이션: 가상 공간에서 수십억 시간 선행 학습 후 현실 전이', em: true }
+      ],
+      note: '하드웨어와 AI 모델의 수직적 통합이 기술적 성패를 가릅니다'
+    },
+    // 07. stats
+    {
+      layout: 'stats', chapter: 1,
+      bg: 'photo-1644329770639-1a20809b82a3', photo: 'Conny Schneider',
+      eyebrow: '시뮬레이션 가속 혁신',
+      title: '가상 세계 시뮬레이션이 만든 압도적 속도',
+      items: [
+        { value: '10,000', unit: '배', label: '옴니버스 물리 시뮬레이션 환경 기반 강화학습 가속 속도' },
+        { value: '94', unit: '%', label: '가상 학습 정책(Sim-to-Real)의 실제 로봇 전이 성공률' }
+      ],
+      note: '출처 · NVIDIA Isaac Lab & Embodied AI Technical Whitepaper'
+    },
+    // 08. compare
+    {
+      layout: 'compare', chapter: 1,
+      bg: 'photo-1716191299980-a6e8827ba10b', photo: 'Homa Appliances',
+      eyebrow: '로보틱스 패러다임 시프트',
+      title: '전통 산업용 로봇 vs 피지컬 AI 휴머노이드',
+      left: {
+        title: '전통 고정형 로봇 (규칙 기반)',
+        icon: 'solar:settings-bold',
+        items: [
+          '격리된 안전 펜스 안에서만 고정 설치 운용',
+          '부품 위치가 1cm만 틀어져도 즉시 작업 중단',
+          '새로운 작업 시 수주 간의 복잡한 재티칭 필요'
+        ]
+      },
+      right: {
+        title: '피지컬 AI 휴머노이드 (자율 지능)',
+        icon: 'solar:user-hand-up-bold',
+        items: [
+          '인간 작업자와 나란히 같은 공간에서 유연 협업',
+          '물체 위치가 흔들려도 시각 피드백으로 즉시 보정',
+          '자연어 음성 지시나 시범 관찰만으로 새 동작 습득'
+        ]
+      },
+      note: '규칙에 갇힌 기계에서 유연하게 적응하는 동료로의 진화'
+    },
+    // 09. flow
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1647427060118-4911c9821b82', photo: 'Simon Kadula',
+      eyebrow: '현장 도입 로드맵',
+      title: '산업 현장 침투를 위한 3단계 확산 전략',
+      steps: [
+        { label: '물류·단순 운반', desc: '무거운 화물 분류와 반복 이송 등<br>기본적인 육체 노동 자동화' },
+        { label: '정밀 제조 공정', desc: '자동차·전자 부품 조립 라인 투입과<br>실시간 부품 품질 검사' },
+        { label: '고난도 위험 작업', desc: '원전 점검·재난 구조·화학 공장 등<br>인간 접근 불가능 구역 임무' }
+      ],
+      note: '안전성이 검증된 단순 작업부터 고난도 정밀 공정으로 점진적 확장'
+    },
+    // 10. bullets
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1761195696590-3490ea770aa1', photo: 'Trans Russia',
+      eyebrow: '산업별 파급 효과',
+      title: '피지컬 AI가 재정의하는 4대 미래 현장',
+      items: [
+        { icon: 'solar:buildings-2-bold', text: '첨단 스마트 제조: 생산 라인 변경 없이 제품 종류별 맞춤 공정 자율 수행' },
+        { icon: 'solar:box-minimalistic-bold', text: '지능형 풀필먼트: 비정형 상품 피킹 및 24시간 무중단 스마트 물류 혁신' },
+        { icon: 'solar:hospital-bold', text: '의료 및 돌봄 케어: 환자 거동 보조 및 병원 내 멸균 물품 자동 배송' },
+        { icon: 'solar:rocket-2-bold', text: '우주 및 극한 탐사: 화성 기지 건설 및 극한 환경 자원 탐사 임무 투입', em: true }
+      ],
+      note: '인간의 물리적 한계를 확장하는 범용 도구의 탄생'
+    },
+    // 11. stats
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
+      eyebrow: '생산성 및 안전성 성과',
+      title: '지표로 증명되는 제조 혁신의 파괴력',
+      items: [
+        { value: '82', unit: '%', label: '피지컬 AI 투입 시 복잡 조립 공정 불량률 감소폭' },
+        { value: '3.4', unit: '배', label: '24시간 무인 가동 체계 도입 후 라인당 생산량 증대율' }
+      ],
+      note: '출처 · Global Smart Manufacturing Institute Benchmark 2026'
+    },
+    // 12. quote
+    {
+      layout: 'quote', chapter: 2,
+      bg: 'photo-1682159672286-40790338349b', photo: 'Katja Ano',
+      eyebrow: '노동과 인간성의 회복',
+      quote: '로봇은 인간의 자리를 빼앗는 경쟁자가 아니라,<br><em>가장 위험하고 가혹한 노동으로부터 인간을 해방시키는 동반자</em>다',
+      by: 'ROBOTICS & HUMANITY FORUM · 2026'
+    },
+    // 13. bullets
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1720962158937-7ea890052166', photo: 'Egor Komarov',
+      eyebrow: '상용화 병목 요인',
+      title: '대량 양산으로 가기 위해 넘어야 할 4대 관문',
+      items: [
+        { icon: 'solar:battery-charge-bold', text: '배터리 밀도와 가동 시간: 현재 2~4시간 수준의 연속 가동 한계 극복' },
+        { icon: 'solar:tag-price-bold', text: '부품 제조 단가 절감: 핵심 감속기·액추에이터 단가를 2만 달러 이하로 경감' },
+        { icon: 'solar:shield-warning-bold', text: '물리적 충돌 방지 안전 규격: 인간과의 근접 작업 시 즉각 반응하는 비상 정지' },
+        { icon: 'solar:users-group-two-rounded-bold', text: '사회적 합의와 고용 전환: 생산성 증대와 일자리 재교육 지원의 균형', em: true }
+      ],
+      note: '기술적 완성도와 함께 제도적 인프라가 갖춰져야 폭발적 성장이 가능합니다'
+    },
+    // 14. timeline
+    {
+      layout: 'timeline', chapter: 3,
+      bg: 'photo-1672872476232-da16b45c9001', photo: 'Nat',
+      eyebrow: '신체 지능의 진화사',
+      title: '연구실에서 일상으로 이어지는 3대 도약기',
+      items: [
+        { time: '1세대 (1990s~2010s)', label: '기계적 보행 제어', desc: '정해진 바닥 궤적 계산과<br>하드코딩된 균형 유지 실험' },
+        { time: '2세대 (2020s 현재)', label: '시각-행동 결합 지능', desc: '딥러닝 기반 환경 인지와<br>시뮬레이션 강화학습의 결합' },
+        { time: '3세대 (2030s 미래)', label: '범용 신체 지능 (Embodied AGI)', desc: '인간과 동일한 범용 신체로<br>모든 일상 도구를 자율 조작', em: true }
+      ],
+      note: '인공지능의 진화는 결국 물리 세계를 온전히 이해하는 형태로 완성됩니다'
+    },
+    // 15. closing
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1446776877081-d282a0f896e2', photo: 'NASA',
+      eyebrow: 'THE NEW PHYSICAL ERA',
+      title: '인간과 기계가 함께 세우는<br><em>새로운 물리 세계의 문명</em>',
+      sub: '화면을 넘어 현실로 걸어 나온 지능, 더 안전하고 풍요로운 내일을 만듭니다',
+      chips: ['피지컬 AI', '휴머노이드', '공간 지능', '디지털 트윈', '미래 로보틱스']
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel${i ? ' hi' : ''}" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

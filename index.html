@@ -814,7 +814,7 @@
       <span class="status-dot"></span>
       <a href="index.html" style="color:inherit;text-decoration:none;">Signal Presentation Hub</a>
       <span style="opacity: 0.5;">|</span>
-      <span id="deckCountBadge" style="font-family: var(--f-mono);">16 DECKS</span>
+      <span id="deckCountBadge" style="font-family: var(--f-mono);">17 DECKS</span>
     </div>
     <div class="utility-right">
       <span style="font-size: 11px; color: var(--ink-subtle);">Press <kbd style="font-family: var(--f-mono); background: var(--canvas); border: 1px solid var(--hairline); padding: 1px 4px; border-radius: 3px;">/</kbd> to search</span>
@@ -902,7 +902,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 16</span>
+      <span class="viewer-pos" id="viewerPos">01 / 17</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -926,8 +926,17 @@
       '라이프': 'var(--cat-life)'
     };
 
-    // 발표 목록 데이터 (총 16개)
+    // 발표 목록 데이터 (총 17개)
     const DECKS = [
+      {
+        id: 'physical-ai-humanoid',
+        src: 'physical_ai_humanoid_cinematic_presentation.html',
+        cat: 'AI',
+        title: '피지컬 AI와 휴머노이드 혁명',
+        desc: '화면을 뚫고 현실로 나온 공간 지능. VLA 모델, 모터 액추에이터, 디지털 트윈 가상 학습, 스마트 팩토리와 일상 공존까지 시네마틱 15장.',
+        slides: '15장',
+        isCinematic: true
+      },
       {
         id: 'daily-life-ai',
         src: 'daily_life_ai_cinematic_presentation.html',
