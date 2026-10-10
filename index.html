@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Signal Presentation Hub</title>
+  <title>Presentation Hub</title>
   <meta name="description" content="AI, 국가 정책, 라이프까지 한곳에서 바로 열어보는 고품질 프레젠테이션 아카이브">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f62fe'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ffffff'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -816,7 +816,7 @@
   <div class="utility-strip">
     <div class="utility-left">
       <span class="status-dot"></span>
-      <a href="index.html" style="color:inherit;text-decoration:none;">Signal Presentation Hub</a>
+      <a href="index.html" style="color:inherit;text-decoration:none;">Presentation Hub</a>
       <span style="opacity: 0.5;">|</span>
       <span id="deckCountBadge" style="font-family: var(--f-mono);">17 DECKS</span>
     </div>
@@ -833,8 +833,8 @@
   <section class="hero-section">
     <div class="container">
       <div class="hero-title-row">
-        <h1 class="hero-title"><a href="index.html" title="홈으로 이동">Signal <em>Hub.</em></a></h1>
-        <span class="hero-eyebrow">✦ PRESENTATION ARCHIVE · SIGNAL HUB</span>
+        <h1 class="hero-title"><a href="index.html" title="홈으로 이동">Presentation <em>Hub.</em></a></h1>
+        <span class="hero-eyebrow">✦ PRESENTATION ARCHIVE</span>
       </div>
       <p class="hero-desc">AI 대전환, 국가 미래 정책, 연구 기획부터 균형 잡힌 삶까지.<br>한곳에서 실시간으로 열어보는 시네마틱 & 인터랙티브 프레젠테이션 컬렉션입니다.</p>
     </div>
@@ -890,10 +890,10 @@
   <!-- Footer Slab -->
   <footer class="footer-slab">
     <div class="container footer-inner">
-      <h2 class="footer-title">Signal <em>Presentation Archive</em></h2>
+      <h2 class="footer-title">Presentation <em>Archive</em></h2>
       <p class="footer-sub">고화질 비주얼, 시네마틱 켄번스, 반응형 뷰포트로 제작된 차세대 HTML 발표자료 허브</p>
       <div class="footer-meta">
-        © 2026 SIGNAL HUB · POWERED BY ADVANCED AGENTIC CODING
+        © 2026 PRESENTATION HUB · POWERED BY ADVANCED AGENTIC CODING
       </div>
     </div>
   </footer>
@@ -1226,7 +1226,7 @@
       document.querySelectorAll('.viewer-frame').forEach(f => f.classList.toggle('active', f.id === `frame-${id}`));
 
       $('viewerPos').innerHTML = `<b>${pad(idx)}</b> / ${String(DECKS.length).padStart(2, '0')}`;
-      document.title = `${deck.title} · Signal Hub`;
+      document.title = `${deck.title} · Presentation Hub`;
 
       // 지연 로딩
       const frame = $(`iframe-${id}`);
@@ -1259,7 +1259,7 @@
       const last = currentId;
       currentId = null;
       document.body.classList.remove('viewing');
-      document.title = 'Signal Presentation Hub';
+      document.title = 'Presentation Hub';
       // 숨은 덱에 남은 키보드 포커스를 허브로 되돌린다 (/ 검색 등 단축키가 덱으로 가지 않게)
       if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
         document.activeElement.blur();
