@@ -2,592 +2,1299 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signal Presentation Hub</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%230a0a0a%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%23ff3b00%27/%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --paper: #ffffff;
-            --ink: #0a0a0a;
-            --ink-2: #4a4a4a;
-            --ink-3: #9a9a9a;
-            --line: #e6e6e6;
-            --hot: #ff3b00;
-            --f-body: "IBM Plex Sans", "IBM Plex Sans KR", "Helvetica Neue", Arial, sans-serif;
-            --f-mono: "IBM Plex Mono", ui-monospace, monospace;
-            --tick-h: 36px;
-            --bar-h: 52px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Presentation Hub</title>
+  <meta name="description" content="AI, 국가 정책, 라이프까지 한곳에서 바로 열어보는 고품질 프레젠테이션 아카이브">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f62fe'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ffffff'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Reset & Carbon Design System Tokens ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: 100%; }
+    :root {
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --hairline: #e0e0e0;
+      --inverse-canvas: #161616;
+      --inverse-surface-1: #262626;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8c8c8c;
+      --inverse-ink: #ffffff;
+      --inverse-ink-muted: #c6c6c6;
+      --primary: #0f62fe;
+      --primary-hover: #0043ce;
+      --primary-active: #002d9c;
+      --on-primary: #ffffff;
 
-        body {
-            font-family: var(--f-body);
-            background: var(--paper);
-            color: var(--ink);
-            overflow: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+      --cat-ai: #7c3aed;
+      --cat-plan: #ff8a00;
+      --cat-policy: #0a6cff;
+      --cat-life: #00a88f;
 
-        button { font-family: inherit; color: inherit; }
-        button:focus-visible, input:focus-visible { outline: 2px solid var(--hot); outline-offset: 2px; }
+      --f-body: "IBM Plex Sans", "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+      color-scheme: light;
+    }
 
-        /* ===== 티커 ===== */
-        .ticker {
-            position: relative;
-            z-index: 10;
-            height: var(--tick-h);
-            background: var(--ink);
-            color: #fff;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            font: 500 11px var(--f-mono);
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
+    [data-theme="dark"] {
+      --canvas: #161616;
+      --surface-1: #262626;
+      --surface-2: #393939;
+      --hairline: #393939;
+      --inverse-canvas: #f4f4f4;
+      --inverse-surface-1: #e0e0e0;
+      --ink: #f4f4f4;
+      --ink-muted: #c6c6c6;
+      --ink-subtle: #8d8d8d;
+      --inverse-ink: #161616;
+      --inverse-ink-muted: #525252;
+      --primary: #4589ff;
+      --primary-hover: #0f62fe;
+      --primary-active: #0043ce;
+      --on-primary: #ffffff;
 
-        .track { display: flex; gap: 40px; white-space: nowrap; padding-right: 40px; animation: slide 46s linear infinite; }
-        .ticker:hover .track { animation-play-state: paused; }
-        .track span { display: inline-flex; align-items: center; gap: 40px; }
-        .track span::after { content: "✦"; color: var(--hot); }
-        @keyframes slide { to { transform: translateX(-50%); } }
+      --cat-ai: #a78bfa;
+      --cat-plan: #fbaa36;
+      --cat-policy: #4589ff;
+      --cat-life: #2dd4bf;
 
-        /* ===== 허브 ===== */
-        #hub {
-            position: absolute;
-            inset: var(--tick-h) 0 0 0;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: opacity 0.3s ease;
-        }
+      color-scheme: dark;
+    }
 
-        body.viewing #hub { opacity: 0; pointer-events: none; }
+    body {
+      font-family: var(--f-body);
+      font-size: 15px;
+      line-height: 1.5;
+      background: var(--canvas);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
 
-        .layout {
-            display: grid;
-            grid-template-columns: minmax(340px, 40%) 1fr;
-            min-height: 100%;
-            max-width: 1560px;
-            margin: 0 auto;
-        }
+    body.viewing {
+      overflow: hidden;
+    }
 
-        .side {
-            position: sticky;
-            top: 0;
-            align-self: start;
-            height: calc(100vh - var(--tick-h));
-            overflow-y: auto;
-            overscroll-behavior: contain;
-            display: flex;
-            flex-direction: column;
-            padding: 44px 40px 36px 48px;
-            border-right: 1px solid var(--line);
-        }
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
 
-        .kicker { font: 500 11px var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
-        .kicker i { display: inline-block; width: 8px; height: 8px; margin-right: 10px; border-radius: 50%; background: var(--hot); animation: blink 1.6s ease-in-out infinite; }
-        @keyframes blink { 50% { opacity: 0.25; } }
+    button, input {
+      font-family: inherit;
+      color: inherit;
+    }
 
-        h1 {
-            margin-top: 28px;
-            font-size: clamp(64px, 9vw, 148px);
-            font-weight: 600;
-            line-height: 0.88;
-            letter-spacing: -0.06em;
-        }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+    }
 
-        h1 .out {
-            display: block;
-            color: transparent;
-            -webkit-text-stroke: 2px var(--ink);
-            transition: color 0.4s;
-        }
+    /* ===== Utility Strip ===== */
+    .utility-strip {
+      background: var(--surface-1);
+      color: var(--ink-muted);
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      border-bottom: 1px solid var(--hairline);
+    }
 
-        h1:hover .out { color: var(--ink); }
+    .utility-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        .lede { margin-top: 26px; max-width: 360px; color: var(--ink-2); font-size: 15px; line-height: 1.75; font-weight: 300; word-break: keep-all; }
+    .status-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
 
-        .search { position: relative; margin-top: 34px; }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
 
-        #q {
-            width: 100%;
-            padding: 12px 40px 12px 0;
-            border: none;
-            border-bottom: 2px solid var(--ink);
-            background: transparent;
-            color: var(--ink);
-            font: 400 16px var(--f-body);
-            outline: none;
-            border-radius: 0;
-        }
+    .utility-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-        #q::placeholder { color: var(--ink-3); }
-        #q:focus { border-bottom-color: var(--hot); }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
 
-        .kbd { position: absolute; right: 0; bottom: 12px; font: 500 11px var(--f-mono); color: var(--ink-3); border: 1px solid var(--line); padding: 1px 7px; pointer-events: none; }
+    .theme-toggle:hover {
+      color: var(--ink);
+      background: var(--surface-2);
+    }
 
-        .cats { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
 
-        .cat {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 14px;
-            border: 1.5px solid var(--ink);
-            border-radius: 999px;
-            background: var(--paper);
-            font-size: 13px;
-            font-weight: 400;
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s, transform 0.15s;
-        }
+    .icon-sun { display: none; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
 
-        .cat:hover { transform: translateY(-2px); }
-        .cat.on { background: var(--ink); color: #fff; }
-        .cat.zero { opacity: 0.35; }
-        .cat b { font: 500 11px var(--f-mono); opacity: 0.6; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; display: inline-block; }
+    /* ===== Hero Section ===== */
+    .hero-section {
+      padding: 40px 0 24px;
+      border-bottom: 1px solid var(--hairline);
+      background: var(--canvas);
+    }
 
-        .side-foot { margin-top: auto; padding-top: 24px; display: flex; align-items: baseline; gap: 10px; }
-        .big-n { font-size: 72px; font-weight: 300; line-height: 1; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
-        .side-foot span { font: 500 11px var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+    .hero-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
 
-        /* ===== 목록 ===== */
-        .list { padding: 0 0 80px; }
+    .hero-title {
+      font-size: 46px;
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 0;
+    }
 
-        .list-head {
-            display: flex;
-            justify-content: space-between;
-            padding: 22px 48px;
-            font: 500 11px var(--f-mono);
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--ink-3);
-            border-bottom: 1px solid var(--line);
-        }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--f-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0;
+    }
 
-        .row {
-            --c: var(--ink);
-            position: relative;
-            display: grid;
-            grid-template-columns: 76px 1fr auto 44px;
-            align-items: center;
-            column-gap: 14px;
-            width: 100%;
-            padding: 26px 48px 26px 48px;
-            border: none;
-            border-bottom: 1px solid var(--line);
-            background: var(--paper);
-            text-align: left;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateX(24px);
-            animation: in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            animation-delay: calc(var(--i) * 50ms);
-            transition: background 0.25s, color 0.25s, padding 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            overflow: hidden;
-        }
+    .hero-title a {
+      color: inherit;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.15s;
+    }
 
-        @keyframes in { to { opacity: 1; transform: none; } }
+    .hero-title a:hover {
+      opacity: 0.85;
+    }
 
-        .row::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 6px;
-            background: var(--c);
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 0.3s ease;
-        }
+    .hero-title em {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--primary);
+    }
 
-        .row:hover, .row:focus-visible { background: var(--ink); color: #fff; padding-left: 62px; outline: none; }
-        .row:hover::before, .row:focus-visible::before { transform: scaleY(1); }
+    .hero-desc {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink-muted);
+      max-width: 680px;
+      line-height: 1.6;
+    }
 
-        .n { font: 400 13px var(--f-mono); color: var(--ink-3); font-variant-numeric: tabular-nums; }
-        .row:hover .n { color: var(--c); }
+    /* ===== Filter & Search Bar ===== */
+    .controls-section {
+      padding: 28px 0 28px;
+    }
 
-        .t {
-            font-size: clamp(24px, 3.1vw, 44px);
-            font-weight: 300;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            word-break: keep-all;
-            transition: font-weight 0.2s;
-        }
+    .search-row {
+      margin-bottom: 18px;
+    }
 
-        .row:hover .t { font-weight: 600; }
+    .search-wrap {
+      position: relative;
+    }
 
-        .k { display: inline-flex; align-items: center; gap: 8px; font: 500 11px var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
-        .row:hover .k { color: #fff; }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--ink-subtle);
+      pointer-events: none;
+    }
 
-        .a { width: 44px; height: 44px; display: grid; place-items: center; border: 1.5px solid var(--line); border-radius: 50%; transition: all 0.3s; }
-        .a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
-        .row:hover .a { background: var(--hot); border-color: var(--hot); color: #fff; transform: rotate(-45deg); }
+    #searchInput {
+      width: 100%;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--surface-1);
+      border: none;
+      border-bottom: 1px solid var(--hairline);
+      padding: 12px 44px;
+      outline: none;
+      border-radius: 6px 6px 0 0;
+      transition: border-color 0.2s, background 0.2s;
+    }
 
-        .d {
-            grid-column: 2 / 4;
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.35s ease;
-        }
+    #searchInput:focus {
+      border-bottom: 2px solid var(--primary);
+      background: var(--canvas);
+    }
 
-        .d p {
-            overflow: hidden;
-            min-height: 0;
-            color: inherit;
-            opacity: 0.72;
-            font-size: 15px;
-            line-height: 1.7;
-            font-weight: 300;
-            word-break: keep-all;
-        }
+    .search-hint {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--ink-subtle);
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 2px 7px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
 
-        .row:hover .d, .row:focus-visible .d { grid-template-rows: 1fr; }
-        .row:hover .d p { padding-top: 12px; }
+    .search-clear {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-muted);
+      font-size: 16px;
+      display: none;
+      padding: 4px;
+    }
 
-        .empty { display: none; padding: 80px 48px; color: var(--ink-3); font-size: 18px; font-weight: 300; }
-        .empty.show { display: block; }
+    .search-clear.visible { display: block; }
 
-        /* ===== 뷰어 ===== */
-        #viewer {
-            position: absolute;
-            inset: var(--tick-h) 0 0 0;
-            display: flex;
-            flex-direction: column;
-            background: var(--paper);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
+    /* Filters: Category & Style Switcher */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
 
-        body.viewing #viewer { opacity: 1; pointer-events: auto; }
+    .cat-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
 
-        .bar {
-            flex: none;
-            height: var(--bar-h);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 0 16px;
-            border-bottom: 2px solid var(--ink);
-        }
+    .tab-btn {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
 
-        .back {
-            flex: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            height: 34px;
-            padding: 0 16px 0 10px;
-            border: none;
-            border-radius: 999px;
-            background: var(--ink);
-            color: #fff;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+    .tab-btn:hover {
+      background: var(--surface-1);
+      color: var(--ink);
+    }
 
-        .back:hover { background: var(--hot); }
-        .back svg, .step svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .tab-btn.active {
+      background: var(--ink);
+      color: var(--inverse-ink);
+      border-color: var(--ink);
+    }
 
-        .pos { flex: none; font: 500 12px var(--f-mono); color: var(--ink-3); font-variant-numeric: tabular-nums; }
-        .pos b { color: var(--ink); font-weight: 500; }
+    .tab-btn b {
+      font-size: 11px;
+      font-family: var(--f-mono);
+      opacity: 0.75;
+    }
 
-        .rail { flex: 1; min-width: 0; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
-        .rail::-webkit-scrollbar { display: none; }
+    .cat-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
 
-        .pill {
-            flex: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            height: 32px;
-            padding: 0 14px;
-            border: 1.5px solid transparent;
-            border-radius: 999px;
-            background: none;
-            color: var(--ink-2);
-            font-size: 13px;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+    .type-switcher {
+      display: inline-flex;
+      background: var(--surface-1);
+      border: 1px solid var(--hairline);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+    }
 
-        .pill:hover { border-color: var(--line); color: var(--ink); }
-        .pill.active { border-color: var(--ink); background: var(--ink); color: #fff; }
+    .type-btn {
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
 
-        .step { flex: none; display: flex; gap: 6px; }
+    .type-btn:hover {
+      color: var(--ink);
+    }
 
-        .step button {
-            width: 34px;
-            height: 34px;
-            display: grid;
-            place-items: center;
-            border: 1.5px solid var(--ink);
-            border-radius: 50%;
-            background: var(--paper);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+    .type-btn.active {
+      background: var(--canvas);
+      color: var(--ink);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
 
-        .step button:hover { background: var(--hot); border-color: var(--hot); color: #fff; }
+    /* ===== Decks List (Stacked Cards) ===== */
+    .decks-section {
+      padding: 8px 0 80px;
+    }
 
-        .stage { flex: 1; position: relative; }
-        .frame { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .frame.active { opacity: 1; pointer-events: auto; }
-        iframe { width: 100%; height: 100%; border: none; background: #fff; }
+    .card-list {
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* ===== 반응형 ===== */
-        @media (max-width: 960px) {
-            .layout { grid-template-columns: 1fr; }
-            .side { position: static; height: auto; padding: 32px 20px 28px; border-right: none; border-bottom: 1px solid var(--line); }
-            h1 { font-size: clamp(64px, 20vw, 120px); }
-            .side-foot { display: none; }
-            .list-head { padding: 18px 20px; }
-            .row { grid-template-columns: 40px 1fr 36px; padding: 22px 20px; }
-            .row:hover, .row:focus-visible { padding-left: 28px; }
-            .k { display: none; }
-            .a { width: 36px; height: 36px; }
-            .d { grid-column: 2 / 3; }
-            .empty { padding: 60px 20px; }
-        }
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 20px 24px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
 
-        @media (max-width: 640px) {
-            .pos, .step { display: none; }
-            .back span { display: none; }
-            .back { padding: 0 10px; }
-            .kbd { display: none; }
-        }
+    .card + .card {
+      border-top: none;
+    }
 
-        @media (hover: none) {
-            .d { grid-template-rows: 1fr; }
-            .d p { padding-top: 8px; }
-        }
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--cat-color, var(--hairline));
+      transition: width 0.15s;
+    }
 
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-            .row { opacity: 1; transform: none; }
-        }
-    </style>
+    .card:hover {
+      background: var(--surface-1);
+    }
+
+    .card:hover::before {
+      width: 6px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .card-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex-wrap: wrap;
+    }
+
+    .card-idx {
+      font-family: var(--f-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-subtle);
+      min-width: 22px;
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      transition: color 0.15s;
+    }
+
+    .card:hover .card-title {
+      color: var(--primary);
+    }
+
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--hairline);
+      background: var(--surface-1);
+      color: var(--ink-muted);
+      white-space: nowrap;
+    }
+
+    .badge.cat {
+      color: var(--cat-color);
+      border-color: color-mix(in srgb, var(--cat-color) 40%, var(--hairline));
+      background: color-mix(in srgb, var(--cat-color) 8%, var(--surface-1));
+      font-weight: 600;
+    }
+
+    .badge.cinematic {
+      color: #0284c7;
+      background: #e0f2fe;
+      border-color: #bae6fd;
+      font-weight: 600;
+    }
+
+    [data-theme="dark"] .badge.cinematic {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.14);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .badge.slides-badge {
+      font-family: var(--f-mono);
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.55;
+      padding-left: 32px;
+      max-width: 900px;
+    }
+
+
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--ink-subtle);
+      font-size: 15px;
+      border: 1px dashed var(--hairline);
+      border-radius: 8px;
+      display: none;
+    }
+
+    .empty-state.show { display: block; }
+
+    /* ===== Fullscreen Presentation Viewer ===== */
+    #viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #05070c;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    body.viewing #viewer {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .viewer-bar {
+      height: 48px;
+      background: #11151f;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      gap: 12px;
+      color: #fff;
+      z-index: 10;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 4px;
+      color: #fff;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .back-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .viewer-pos {
+      font-family: var(--f-mono);
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      flex-shrink: 0;
+    }
+
+    .viewer-pos b {
+      color: #fff;
+    }
+
+    .viewer-rail {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      flex: 1;
+      padding: 0 10px;
+      scrollbar-width: none;
+    }
+
+    .viewer-rail::-webkit-scrollbar { display: none; }
+
+    .rail-pill {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+
+    .rail-pill:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .rail-pill.active {
+      color: #fff;
+      background: var(--primary);
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .viewer-step {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .viewer-step button {
+      width: 28px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 4px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .viewer-step button:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .viewer-step button svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .viewer-stage {
+      flex: 1;
+      position: relative;
+      background: #000;
+    }
+
+    .viewer-frame {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .viewer-frame.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .viewer-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #05070c;
+    }
+
+    /* ===== Scroll to Top ===== */
+    .scroll-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s, background 0.15s, color 0.15s;
+      z-index: 50;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .scroll-top:hover {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .scroll-top svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* ===== Footer Slab ===== */
+    .footer-slab {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink);
+      padding: 56px 0 40px;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .footer-title {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-title em {
+      font-style: normal;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .footer-sub {
+      font-size: 13px;
+      color: var(--inverse-ink-muted);
+    }
+
+    .footer-meta {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--ink-subtle);
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--inverse-surface-1);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .container { padding: 0 16px; }
+      .utility-strip { padding: 0 16px; }
+      .hero-title { font-size: 32px; }
+      .card-desc { padding-left: 0; }
+      .card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .open-btn { width: 100%; justify-content: center; margin-top: 8px; }
+      .viewer-rail { display: none; }
+    }
+  </style>
+
+  <script>
+    // FOUC 방지 테마 초기화
+    (function () {
+      try {
+        const saved = localStorage.getItem('theme');
+        const isDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } catch (e) { }
+    })();
+  </script>
 </head>
 
 <body>
-    <div class="ticker" aria-hidden="true"><div class="track" id="track"></div></div>
 
-    <!-- 허브 -->
-    <section id="hub">
-        <div class="layout">
-            <aside class="side">
-                <div class="kicker"><i></i>Presentation Archive</div>
-                <h1>Signal<span class="out">Hub.</span></h1>
-                <p class="lede">AI, 국가 정책, 일과 삶까지. 주제별로 정리한 발표 자료를 한곳에서 바로 열어보세요.</p>
+  <!-- Utility Strip -->
+  <div class="utility-strip">
+    <div class="utility-left">
+      <span class="status-dot"></span>
+      <a href="index.html" style="color:inherit;text-decoration:none;">Signal Presentation Hub</a>
+      <span style="opacity: 0.5;">|</span>
+      <span id="deckCountBadge" style="font-family: var(--f-mono);">14 DECKS</span>
+    </div>
+    <div class="utility-right">
+      <span style="font-size: 11px; color: var(--ink-subtle);">Press <kbd style="font-family: var(--f-mono); background: var(--canvas); border: 1px solid var(--hairline); padding: 1px 4px; border-radius: 3px;">/</kbd> to search</span>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="테마 전환" title="다크/라이트 테마 전환">
+        <svg class="icon-moon" viewBox="0 0 16 16" fill="currentColor"><path d="M6 1a6.5 6.5 0 1 0 8.5 8.5A5.5 5.5 0 0 1 6 1z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3.2"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.2 1.2M11.8 11.8L13 13M3 13l1.2-1.2M11.8 4.2L13 3"/></svg>
+      </button>
+    </div>
+  </div>
 
-                <label class="search">
-                    <input id="q" type="search" placeholder="발표 검색" aria-label="발표 검색" autocomplete="off">
-                    <span class="kbd">/</span>
-                </label>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-title-row">
+        <h1 class="hero-title"><a href="index.html" title="홈으로 이동">Signal <em>Hub.</em></a></h1>
+        <span class="hero-eyebrow">✦ PRESENTATION ARCHIVE · SIGNAL HUB</span>
+      </div>
+      <p class="hero-desc">AI 대전환, 국가 미래 정책, 연구 기획부터 균형 잡힌 삶까지.<br>한곳에서 실시간으로 열어보는 시네마틱 & 인터랙티브 프레젠테이션 컬렉션입니다.</p>
+    </div>
+  </section>
 
-                <div class="cats" id="cats"></div>
+  <!-- Filter & Controls -->
+  <section class="controls-section">
+    <div class="container">
 
-                <div class="side-foot"><span class="big-n" id="big">00</span><span>decks shown</span></div>
-            </aside>
-
-            <main class="list">
-                <div class="list-head"><span>Index</span><span>Title / Category</span></div>
-                <div id="rows"></div>
-                <div class="empty" id="empty">검색 결과가 없습니다.</div>
-            </main>
+      <!-- Search Input -->
+      <div class="search-row">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="searchInput" type="search" placeholder="발표 제목, 카테고리, 설명 검색..." autocomplete="off" aria-label="발표 검색">
+          <button id="searchClear" class="search-clear" aria-label="검색 지우기">✕</button>
+          <span class="search-hint">⌘K or /</span>
         </div>
-    </section>
+      </div>
 
-    <!-- 뷰어 -->
-    <section id="viewer" aria-label="발표 뷰어">
-        <div class="bar">
-            <button class="back" id="back" type="button" aria-label="허브로 돌아가기">
-                <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg><span>Hub</span>
-            </button>
-            <span class="pos" id="pos"></span>
-            <nav class="rail" id="rail"></nav>
-            <div class="step">
-                <button id="prev" type="button" aria-label="이전 발표"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg></button>
-                <button id="next" type="button" aria-label="다음 발표"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg></button>
+      <!-- Filters: Categories & Types -->
+      <div class="filter-bar">
+        <div class="cat-tabs" id="catTabs">
+          <!-- JS 렌더링 -->
+        </div>
+
+        <div class="type-switcher" id="typeSwitcher">
+          <button class="type-btn active" data-type="all">전체</button>
+          <button class="type-btn" data-type="cinematic">시네마틱 덱</button>
+          <button class="type-btn" data-type="interactive">인터랙티브 덱</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Decks List Section -->
+  <main class="decks-section">
+    <div class="container">
+      <div class="card-list" id="cardList">
+        <!-- JS 렌더링 -->
+      </div>
+      <div class="empty-state" id="emptyState">
+        검색 및 필터 조건에 일치하는 발표 자료가 없습니다.
+      </div>
+    </div>
+  </main>
+
+  <!-- Scroll Top Button -->
+  <button id="scrollTop" class="scroll-top" type="button" aria-label="맨 위로" title="맨 위로 이동">
+    <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <!-- Footer Slab -->
+  <footer class="footer-slab">
+    <div class="container footer-inner">
+      <h2 class="footer-title">Signal <em>Presentation Archive</em></h2>
+      <p class="footer-sub">고화질 비주얼, 시네마틱 켄번스, 반응형 뷰포트로 제작된 차세대 HTML 발표자료 허브</p>
+      <div class="footer-meta">
+        © 2026 SIGNAL HUB · POWERED BY ADVANCED AGENTIC CODING
+      </div>
+    </div>
+  </footer>
+
+  <!-- Fullscreen Presentation Viewer -->
+  <section id="viewer" aria-label="발표 전체 화면 뷰어">
+    <div class="viewer-bar">
+      <button class="back-btn" id="viewerBack" type="button">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        <span>Hub 돌아가기 (ESC)</span>
+      </button>
+
+      <span class="viewer-pos" id="viewerPos">01 / 14</span>
+
+      <nav class="viewer-rail" id="viewerRail"></nav>
+
+      <div class="viewer-step">
+        <button id="viewerPrev" type="button" aria-label="이전 발표"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button id="viewerNext" type="button" aria-label="다음 발표"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="viewer-stage" id="viewerStage">
+      <!-- 동적 iframe 컨테이너 -->
+    </div>
+  </section>
+
+  <script>
+    // 카테고리 설정 (Carbon Tokens 매핑)
+    const CAT_COLORS = {
+      'AI': 'var(--cat-ai)',
+      '기획': 'var(--cat-plan)',
+      '정책': 'var(--cat-policy)',
+      '라이프': 'var(--cat-life)'
+    };
+
+    // 발표 목록 데이터 (총 14개)
+    const DECKS = [
+      {
+        id: 'langgraph-cinematic',
+        src: 'langgraph_cinematic_presentation.html',
+        cat: 'AI',
+        title: 'LangGraph (지능형 에이전트 오케스트레이션)',
+        desc: '선형 파이프라인(DAG)을 넘어 순환 상태 머신과 멀티 에이전트로 구현하는 차세대 LLM 시스템. Human-in-the-loop, 영속성 체크포인트 10장.',
+        slides: '10장',
+        isCinematic: true
+      },
+      {
+        id: 'aitalent',
+        src: 'ai_learning_talent_cinematic_presentation.html',
+        cat: 'AI',
+        title: 'AI 시대 학습과 인재상',
+        desc: 'AI 시대의 학습방법, 대체불가 핵심 경쟁력, 새로운 π형 인재상 총정리. 실사 배경·상단 챕터 바 시네마틱 스타일 15장.',
+        slides: '15장',
+        isCinematic: true
+      },
+      {
+        id: 'deepwork',
+        src: 'deep_work_cinematic_presentation.html',
+        cat: '라이프',
+        title: '딥워크 (Deep Work)',
+        desc: '산만한 시대에 집중을 되찾는 법. 알림과 탭 사이에서 잃어버린 몰입을 환경 설계로 되찾는 시네마틱 10장.',
+        slides: '10장',
+        isCinematic: true
+      },
+      {
+        id: 'alwayson',
+        src: 'ai_agent_dots_muse_presentation.html',
+        cat: 'AI',
+        title: 'Always-On AI 에이전트',
+        desc: 'OpenAI Dots, Meta Muse, xAI Grok Bot 심층 해부: 자율 에이전트 개념, 장단점 비교, 실무 활용 15장 가이드.',
+        slides: '15장',
+        isCinematic: false
+      },
+      {
+        id: 'jev',
+        src: 'jev_ai_presentation.html',
+        cat: 'AI',
+        title: 'JEV & 로컬 판정모델',
+        desc: 'JEV, 로컬 판정모델 LAYA, JevK5 개념부터 재난안전R&D 2단계 분류 비교 및 온프렘 구축까지 17장 총정리.',
+        slides: '17장',
+        isCinematic: false
+      },
+      {
+        id: 'investing',
+        src: 'ai_agent_investing_presentation.html',
+        cat: 'AI',
+        title: '주식 투자 AI 에이전트',
+        desc: '투자 의사결정에 AI 에이전트를 어떻게 활용할 수 있는지 워크플로우와 전략을 살펴봅니다.',
+        slides: '14장',
+        isCinematic: false
+      },
+      {
+        id: 'speed',
+        src: 'ai_speed_presentation.html',
+        cat: 'AI',
+        title: 'AI 개발 속도 조절',
+        desc: 'AI로 급격히 빨라진 개발 사이클을 안정적으로 조절하고 품질을 담보하는 관리 전략.',
+        slides: '12장',
+        isCinematic: false
+      },
+      {
+        id: 'langgraph',
+        src: 'langgraph_presentation.html',
+        cat: 'AI',
+        title: 'LangGraph 에이전트 마스터클래스',
+        desc: '기초 상태 그래프부터 엔터프라이즈 다중 에이전트 고도화까지 이어지는 LangGraph 완벽 가이드.',
+        slides: '16장',
+        isCinematic: false
+      },
+      {
+        id: 'nemotron',
+        src: 'nemotron_personas_korea_presentation.html',
+        cat: 'AI',
+        title: 'Nemotron 가상설문',
+        desc: 'Nemotron Personas Korea 기반 합성 페르소나 가상 설문조사의 활용법과 신뢰성 한계.',
+        slides: '13장',
+        isCinematic: false
+      },
+      {
+        id: 'rnd',
+        src: 'ax_rnd_presentation_3.html',
+        cat: '기획',
+        title: 'AX R&D 기획 혁신',
+        desc: '인공지능 대전환(AX) 흐름에 맞춰 국가 연구개발 기획과 프로세스를 혁신하는 방법론.',
+        slides: '15장',
+        isCinematic: false
+      },
+      {
+        id: '5poles',
+        src: 'five_poles_three_specialties_presentation.html',
+        cat: '정책',
+        title: '5극 3특 체제',
+        desc: '대한민국 국토 균형발전의 대전환, 5극 3특 초광역 메가시티 전략을 완벽하게 이해하기.',
+        slides: '14장',
+        isCinematic: false
+      },
+      {
+        id: 'nepsa',
+        src: 'nepsa_presentation.html',
+        cat: '정책',
+        title: 'NEPSA 과제 우선순위 평가',
+        desc: '기대성과 6개와 위험 6개, 12개 복합 지표로 국가 R&D 과제의 우선순위를 매기는 정량 평가 체계.',
+        slides: '15장',
+        isCinematic: false
+      },
+      {
+        id: 'safety',
+        src: 'life_safety_act_presentation.html',
+        cat: '정책',
+        title: '생명안전기본법',
+        desc: '모든 시민의 생명과 존엄을 지키기 위한 새로운 사회계약, 생명안전기본법의 핵심 쟁점과 의의.',
+        slides: '14장',
+        isCinematic: false
+      },
+      {
+        id: 'life',
+        src: 'balanced_life_presentation.html',
+        cat: '라이프',
+        title: '균형 잡힌 삶 (Work & Life)',
+        desc: '40대 후반, 속도보다 방향을 돌아보며 일과 삶의 균형을 새롭게 정립하는 에세이형 발표.',
+        slides: '12장',
+        isCinematic: false
+      }
+    ];
+
+    const $ = id => document.getElementById(id);
+    const pad = n => String(n + 1).padStart(2, '0');
+    const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+    let filterCat = '전체';
+    let filterType = 'all'; // all, cinematic, interactive
+    let currentId = null;
+
+    // 카테고리 탭 렌더링
+    function renderCatTabs() {
+      const cats = ['전체', 'AI', '기획', '정책', '라이프'];
+      $('catTabs').innerHTML = cats.map(cat => {
+        const count = cat === '전체' ? DECKS.length : DECKS.filter(d => d.cat === cat).length;
+        const color = cat === '전체' ? '' : CAT_COLORS[cat];
+        return `
+          <button class="tab-btn ${filterCat === cat ? 'active' : ''}" type="button" data-cat="${cat}">
+            ${color ? `<span class="cat-dot" style="background:${color};"></span>` : ''}
+            <span>${cat}</span>
+            <b>${count}</b>
+          </button>
+        `;
+      }).join('');
+    }
+
+    // 덱 필터링 로직
+    function getFilteredDecks() {
+      const q = $('searchInput').value.trim().toLowerCase();
+      return DECKS.filter(d => {
+        const matchesCat = filterCat === '전체' || d.cat === filterCat;
+        const matchesType = filterType === 'all'
+          ? true
+          : filterType === 'cinematic' ? d.isCinematic : !d.isCinematic;
+        const text = (d.title + ' ' + d.desc + ' ' + d.cat).toLowerCase();
+        const matchesQuery = !q || text.includes(q);
+        return matchesCat && matchesType && matchesQuery;
+      });
+    }
+
+    // 카드 리스트 렌더링
+    function renderCards() {
+      const filtered = getFilteredDecks();
+      $('cardList').innerHTML = filtered.map(d => {
+        const catColor = CAT_COLORS[d.cat] || 'var(--primary)';
+        const idx = pad(DECKS.indexOf(d));
+        return `
+          <article class="card" data-id="${d.id}" style="--cat-color: ${catColor};">
+            <div class="card-header">
+              <div class="card-header-left">
+                <span class="card-idx">${idx}</span>
+                <h3 class="card-title">${esc(d.title)}</h3>
+                <div class="card-badges">
+                  <span class="badge cat">${esc(d.cat)}</span>
+                  ${d.isCinematic ? '<span class="badge cinematic">시네마틱</span>' : ''}
+                  <span class="badge slides-badge">${d.slides}</span>
+                </div>
+              </div>
             </div>
+            <p class="card-desc">${esc(d.desc)}</p>
+          </article>
+        `;
+      }).join('');
+
+      $('emptyState').classList.toggle('show', filtered.length === 0);
+    }
+
+    // 뷰어 빌드 및 열기
+    function buildViewer() {
+      $('viewerRail').innerHTML = DECKS.map(d => `
+        <button class="rail-pill" type="button" data-id="${d.id}">
+          <span class="cat-dot" style="background:${CAT_COLORS[d.cat] || '#fff'};"></span>
+          <span>${esc(d.title)}</span>
+        </button>
+      `).join('');
+
+      $('viewerStage').innerHTML = DECKS.map(d => `
+        <div class="viewer-frame" id="frame-${d.id}">
+          <iframe id="iframe-${d.id}" title="${esc(d.title)}"></iframe>
         </div>
-        <div class="stage" id="stage"></div>
-    </section>
+      `).join('');
+    }
 
-    <script>
-        // 카테고리별 색상
-        const CATS = { 'AI': '#7c3aed', '기획': '#ff8a00', '정책': '#0a6cff', '라이프': '#00a88f' };
+    function openDeck(id, push = true) {
+      const idx = DECKS.findIndex(d => d.id === id);
+      if (idx < 0) return showHub(push);
 
-        // 발표 목록: 새 발표는 여기에 한 줄만 추가하면 목록·탭·뷰어가 자동 생성됨
-        const DECKS = [
-            { id: 'deepwork', src: 'deep_work_cinematic_presentation.html', cat: '라이프', title: '딥워크 (시네마틱)', desc: '산만한 시대에 집중을 되찾는 법. 실사 배경·챕터 바 시네마틱 스타일 10장.' },
-            { id: 'alwayson', src: 'ai_agent_dots_muse_presentation.html', cat: 'AI', title: 'Always-On AI 에이전트', desc: 'OpenAI Dots, Meta Muse, xAI Grok Bot 심층 해부: 자율 에이전트 개념, 장단점 비교, 실무 활용 15장 가이드.' },
-            { id: 'jev', src: 'jev_ai_presentation.html', cat: 'AI', title: 'JEV & 로컬 판정모델', desc: 'JEV, 로컬 판정모델 LAYA, JevK5 개념부터 재난안전R&D 2단계 분류 비교 및 온프렘 구축까지 17장 총정리.' },
-            { id: 'investing', src: 'ai_agent_investing_presentation.html', cat: 'AI', title: '주식 투자 AI 에이전트', desc: '투자 의사결정에 AI 에이전트를 어떻게 활용할 수 있는지 살펴봅니다.' },
-            { id: 'speed', src: 'ai_speed_presentation.html', cat: 'AI', title: 'AI 개발 속도 조절', desc: 'AI로 빨라진 개발 속도를 어떻게 조절하고 관리할지 다룹니다.' },
-            { id: 'langgraph', src: 'langgraph_presentation.html', cat: 'AI', title: 'LangGraph 에이전트', desc: '기초부터 엔터프라이즈 고도화까지 이어지는 LangGraph 마스터클래스.' },
-            { id: 'nemotron', src: 'nemotron_personas_korea_presentation.html', cat: 'AI', title: 'Nemotron 가상설문', desc: 'Nemotron Personas Korea 기반 가상설문의 활용법과 한계.' },
-            { id: 'rnd', src: 'ax_rnd_presentation_3.html', cat: '기획', title: 'AX R&D 기획 혁신', desc: 'AX 전환 흐름에 맞춰 R&D 기획을 혁신하는 방법.' },
-            { id: '5poles', src: 'five_poles_three_specialties_presentation.html', cat: '정책', title: '5극 3특 체제', desc: '대한민국 균형발전 대전환, 5극 3특 체제를 완벽하게 이해하기.' },
-            { id: 'nepsa', src: 'nepsa_presentation.html', cat: '정책', title: 'NEPSA 과제 우선순위', desc: '기대성과 6개와 위험 6개, 12개 지표로 국가 R&D 과제의 순서를 매기는 방법론.' },
-            { id: 'safety', src: 'life_safety_act_presentation.html', cat: '정책', title: '생명안전기본법', desc: '생명과 존엄을 위한 새로운 사회계약, 생명안전기본법.' },
-            { id: 'life', src: 'balanced_life_presentation.html', cat: '라이프', title: '균형 잡힌 삶', desc: '40대 후반, 일과 삶의 균형을 다시 생각해 봅니다.' }
-        ];
+      const deck = DECKS[idx];
+      currentId = id;
+      document.body.classList.add('viewing');
 
-        const $ = id => document.getElementById(id);
-        const ARROW = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>';
-        const pad = n => String(n + 1).padStart(2, '0');
-        const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-        const color = d => CATS[d.cat] || '#0a0a0a';
-        const catNames = Object.keys(CATS);
+      // 탭 & 프레임 활성화
+      document.querySelectorAll('.rail-pill').forEach(p => p.classList.toggle('active', p.dataset.id === id));
+      document.querySelectorAll('.viewer-frame').forEach(f => f.classList.toggle('active', f.id === `frame-${id}`));
 
-        let filterCat = '전체';
-        let currentId = null;
+      $('viewerPos').innerHTML = `<b>${pad(idx)}</b> / ${String(DECKS.length).padStart(2, '0')}`;
+      document.title = `${deck.title} · Signal Hub`;
 
-        // ----- 티커 (내용을 두 번 반복해 끊김 없이 순환) -----
-        function renderTicker() {
-            const once = DECKS.map(d => `<span>${esc(d.title)}</span>`).join('');
-            $('track').innerHTML = once + once;
-        }
+      // 지연 로딩
+      const frame = $(`iframe-${id}`);
+      if (!frame.getAttribute('src')) {
+        frame.src = deck.src;
+      }
 
-        // ----- 허브 -----
-        // 검색어에만 걸린 목록 — 카테고리 칩의 개수와 행 목록이 같은 기준을 쓴다
-        function hits() {
-            const q = $('q').value.trim().toLowerCase();
-            return q ? DECKS.filter(d => (d.title + d.desc + d.cat).toLowerCase().includes(q)) : DECKS;
-        }
+      const activePill = document.querySelector('.rail-pill.active');
+      if (activePill) {
+        activePill.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      }
 
-        function renderCats() {
-            const found = hits();
-            const btn = (name, n, c) =>
-                `<button class="cat${filterCat === name ? ' on' : ''}${n === 0 ? ' zero' : ''}" type="button" data-cat="${name}">${c ? `<i class="dot" style="--c:${c}"></i>` : ''}${name}<b>${n}</b></button>`;
-            $('cats').innerHTML = btn('전체', found.length, '') +
-                catNames.map(c => btn(c, found.filter(d => d.cat === c).length, CATS[c])).join('');
-        }
+      // 키보드 조작을 위해 iframe 포커스
+      setTimeout(() => {
+        try { frame.contentWindow.focus(); } catch (e) { }
+      }, 150);
 
-        function renderRows() {
-            const list = hits().filter(d => filterCat === '전체' || d.cat === filterCat);
-            $('rows').innerHTML = list.map((d, i) => `
-                <button class="row" type="button" data-id="${d.id}" style="--c:${color(d)};--i:${i}">
-                    <span class="n">${pad(DECKS.indexOf(d))}</span>
-                    <span class="t">${esc(d.title)}</span>
-                    <span class="k"><i class="dot" style="--c:${color(d)}"></i>${esc(d.cat)}</span>
-                    <span class="a">${ARROW}</span>
-                    <span class="d"><p>${esc(d.desc)}</p></span>
-                </button>`).join('');
-            $('empty').classList.toggle('show', list.length === 0);
-            $('big').textContent = String(list.length).padStart(2, '0');
-        }
+      if (push) history.replaceState(null, '', `#tab=${id}`);
+    }
 
-        function setCat(c) {
-            filterCat = c;
-            renderCats();
-            renderRows();
-        }
+    function showHub(push = true) {
+      const last = currentId;
+      currentId = null;
+      document.body.classList.remove('viewing');
+      document.title = 'Signal Presentation Hub';
 
-        // ----- 뷰어 -----
-        function buildViewer() {
-            $('rail').innerHTML = DECKS.map(d =>
-                `<button class="pill" type="button" data-id="${d.id}"><i class="dot" style="--c:${color(d)}"></i>${esc(d.title)}</button>`).join('');
-            $('stage').innerHTML = DECKS.map(d =>
-                `<div class="frame" id="frame-${d.id}"><iframe id="iframe-${d.id}" title="${esc(d.title)}"></iframe></div>`).join('');
-        }
+      if (last) {
+        const lastCard = document.querySelector(`.card[data-id="${last}"]`);
+        if (lastCard) lastCard.scrollIntoView({ block: 'nearest' });
+      }
 
-        function openDeck(id, push = true) {
-            const idx = DECKS.findIndex(d => d.id === id);
-            if (idx < 0) return showHub(push);
-            const deck = DECKS[idx];
-            currentId = id;
-            document.body.classList.add('viewing');
+      if (push) history.replaceState(null, '', '#hub');
+    }
 
-            document.querySelectorAll('.rail .pill').forEach(p => p.classList.toggle('active', p.dataset.id === id));
-            document.querySelectorAll('.frame').forEach(f => f.classList.toggle('active', f.id === `frame-${id}`));
-            $('pos').innerHTML = `<b>${pad(idx)}</b> / ${String(DECKS.length).padStart(2, '0')}`;
-            document.title = `${deck.title} · Signal Hub`;
+    function stepDeck(dir) {
+      const idx = DECKS.findIndex(d => d.id === currentId);
+      if (idx < 0) return;
+      const nextIdx = (idx + dir + DECKS.length) % DECKS.length;
+      openDeck(DECKS[nextIdx].id);
+    }
 
-            // 지연 로딩
-            const frame = $(`iframe-${id}`);
-            if (!frame.getAttribute('src')) frame.src = deck.src;
+    function routeFromHash() {
+      const m = location.hash.match(/#tab=([^&]+)/);
+      if (m) {
+        openDeck(decodeURIComponent(m[1]), false);
+      } else {
+        showHub(false);
+      }
+    }
 
-            const active = document.querySelector('.rail .pill.active');
-            if (active) active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    // 테마 전환
+    $('themeToggle').addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
 
-            // 키보드 조작이 바로 되도록 iframe에 포커스
-            setTimeout(() => { try { frame.contentWindow.focus(); } catch (e) { } }, 150);
+    // 이벤트 리스너 등록
+    $('catTabs').addEventListener('click', e => {
+      const btn = e.target.closest('.tab-btn');
+      if (!btn) return;
+      filterCat = btn.dataset.cat;
+      renderCatTabs();
+      renderCards();
+    });
 
-            if (push) history.replaceState(null, '', `#tab=${id}`);
-        }
+    $('typeSwitcher').addEventListener('click', e => {
+      const btn = e.target.closest('.type-btn');
+      if (!btn) return;
+      filterType = btn.dataset.type;
+      $('typeSwitcher').querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderCards();
+    });
 
-        function showHub(push = true) {
-            const last = currentId;
-            currentId = null;
-            document.body.classList.remove('viewing');
-            document.title = 'Signal Presentation Hub';
-            // 포커스가 iframe에 남아 있으면 허브에서 키보드가 먹지 않는다
-            if (last) (document.querySelector(`.row[data-id="${last}"]`) || $('q')).focus();
-            if (push) history.replaceState(null, '', '#hub');
-        }
+    $('searchInput').addEventListener('input', e => {
+      $('searchClear').classList.toggle('visible', !!e.target.value);
+      renderCards();
+    });
 
-        function step(dir) {
-            const i = DECKS.findIndex(d => d.id === currentId);
-            if (i < 0) return;
-            openDeck(DECKS[(i + dir + DECKS.length) % DECKS.length].id);
-        }
+    $('searchClear').addEventListener('click', () => {
+      $('searchInput').value = '';
+      $('searchClear').classList.remove('visible');
+      $('searchInput').focus();
+      renderCards();
+    });
 
-        function routeFromHash() {
-            const m = location.hash.match(/#tab=([^&]+)/);
-            m ? openDeck(decodeURIComponent(m[1]), false) : showHub(false);
-        }
+    $('cardList').addEventListener('click', e => {
+      const card = e.target.closest('.card');
+      if (card) openDeck(card.dataset.id);
+    });
 
-        // ----- 이벤트 -----
-        $('cats').addEventListener('click', e => { const b = e.target.closest('.cat'); if (b) setCat(b.dataset.cat); });
-        $('q').addEventListener('input', () => { renderCats(); renderRows(); });
-        $('rows').addEventListener('click', e => { const r = e.target.closest('.row'); if (r) openDeck(r.dataset.id); });
-        $('rail').addEventListener('click', e => { const p = e.target.closest('.pill'); if (p) openDeck(p.dataset.id); });
-        $('back').addEventListener('click', () => showHub());
-        $('prev').addEventListener('click', () => step(-1));
-        $('next').addEventListener('click', () => step(1));
+    $('viewerRail').addEventListener('click', e => {
+      const pill = e.target.closest('.rail-pill');
+      if (pill) openDeck(pill.dataset.id);
+    });
 
-        window.addEventListener('keydown', e => {
-            // 허브에서 "/" 또는 Ctrl/⌘+K 로 검색창 포커스
-            if (!currentId && e.target !== $('q') && (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
-                e.preventDefault();
-                $('q').focus();
-                return;
-            }
-            if (!currentId) return;
-            if (e.key === 'Escape') { e.preventDefault(); showHub(); return; }
-            // 부모 창에 포커스가 있을 때 누른 키를 활성 iframe으로 전달
-            try {
-                $(`iframe-${currentId}`).contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
-                    key: e.key, code: e.code, keyCode: e.keyCode, which: e.which, bubbles: true
-                }));
-            } catch (err) { }
-        });
+    $('viewerBack').addEventListener('click', () => showHub());
+    $('viewerPrev').addEventListener('click', () => stepDeck(-1));
+    $('viewerNext').addEventListener('click', () => stepDeck(1));
 
-        window.addEventListener('hashchange', routeFromHash);
+    // 스크롤 상단 이동
+    window.addEventListener('scroll', () => {
+      $('scrollTop').classList.toggle('visible', window.scrollY > 300);
+    });
+    $('scrollTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-        // ----- 시작 -----
-        renderTicker();
-        renderCats();
-        renderRows();
-        buildViewer();
-        routeFromHash();
-    </script>
+    // 글로벌 키보드 단축키
+    window.addEventListener('keydown', e => {
+      // 허브 상태에서 검색 포커스
+      if (!currentId && e.target !== $('searchInput') && (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
+        e.preventDefault();
+        $('searchInput').focus();
+        return;
+      }
+
+      if (!currentId) return;
+
+      // 뷰어 상태에서 ESC로 허브 복귀
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        showHub();
+        return;
+      }
+
+      // 부모 창 키보드 입력을 활성 iframe으로 전달
+      try {
+        $(`iframe-${currentId}`).contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
+          key: e.key, code: e.code, keyCode: e.keyCode, which: e.which, bubbles: true
+        }));
+      } catch (err) { }
+    });
+
+    window.addEventListener('hashchange', routeFromHash);
+
+    // 초기화
+    if ($('deckCountBadge')) $('deckCountBadge').textContent = `${DECKS.length} DECKS`;
+    renderCatTabs();
+    renderCards();
+    buildViewer();
+    routeFromHash();
+  </script>
 </body>
 
 </html>

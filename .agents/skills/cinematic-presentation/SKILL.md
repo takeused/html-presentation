@@ -1,6 +1,6 @@
 ---
 name: cinematic-presentation
-description: 실사 사진 배경 + 다크 오버레이 + 상단 챕터 진행 바 + 가운데 정렬 타이포의 "시네마틱 다큐" 스타일 HTML 발표자료를 만든다. template.html의 DECK 객체(레이아웃 8종)만 채우면 1920x1080 단일 HTML 덱이 완성된다. 유튜브 설명 영상 같은 사진 배경 발표, 시네마틱/HUD 스타일 슬라이드 요청 시 사용.
+description: (레거시 구버전) 실사 사진 배경 + 다크 오버레이 + 상단 챕터 진행 바. "시네마틱 발표자료", "시네마틱 프레젠테이션" 등 일반 시네마틱 발표 요청 시에는 상단 챕터 클릭 점프 및 1줄 타이포가 적용된 최신 'cinematic-interactive-presentation' 스킬을 우선 사용하세요.
 ---
 
 # Cinematic Presentation Skill

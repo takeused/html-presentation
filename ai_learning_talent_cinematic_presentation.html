@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<!-- 시네마틱 발표자료: AI 시대의 학습방법과 경쟁력 그리고 인재상 (15장) -->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>AI 시대의 학습방법과 경쟁력 그리고 인재상</title>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+  <style>
+    /* ===== 엔진 스타일 — 덱마다 수정하지 않음. 색은 DECK.accent 하나로 제어 ===== */
+    :root {
+      --ac: #00d2ff;
+      --ac-rgb: 0, 210, 255;
+      --ink: #ffffff;
+      --mu: rgba(235, 240, 250, .72);
+      --dim: rgba(235, 240, 250, .42);
+      --navy: 8, 12, 22;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #05070c
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased
+    }
+
+    #stage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      transform-origin: 0 0;
+      overflow: hidden;
+      background: #05070c
+    }
+
+    /* --- 배경: 사진 2장 크로스페이드 + 켄번스. 본문 가시성을 위해 채도와 밝기를 차분하게 톤다운 --- */
+    .bg {
+      position: absolute;
+      inset: -2%;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(.35) brightness(.42);
+    }
+
+    .bg.show {
+      opacity: 1;
+      animation: kenburns 16s ease-out forwards
+    }
+
+    @keyframes kenburns {
+      from {
+        transform: scale(1.1)
+      }
+
+      to {
+        transform: scale(1)
+      }
+    }
+
+    .shade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 75% 65% at 50% 50%, rgba(var(--navy), .68) 0%, rgba(var(--navy), .86) 65%, rgba(var(--navy), .96) 100%),
+        linear-gradient(180deg, rgba(var(--navy), .82) 0%, rgba(var(--navy), .48) 30%, rgba(var(--navy), .52) 70%, rgba(var(--navy), .94) 100%);
+    }
+
+    .rays {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .32;
+      mix-blend-mode: screen;
+      background: repeating-conic-gradient(from 0deg at 50% 118%, rgba(var(--ac-rgb), .07) 0deg 1.2deg, transparent 1.2deg 9deg);
+      -webkit-mask: radial-gradient(ellipse 60% 70% at 50% 100%, #000 10%, transparent 75%);
+      mask: radial-gradient(ellipse 60% 70% at 50% 100%, #000 10%, transparent 75%)
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .07;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
+    }
+
+    .hud {
+      position: absolute;
+      width: 46px;
+      height: 46px;
+      border: 2px solid rgba(255, 255, 255, .22);
+      pointer-events: none
+    }
+
+    .hud.tl {
+      left: 56px;
+      top: 136px;
+      border-right: 0;
+      border-bottom: 0
+    }
+
+    .hud.tr {
+      right: 56px;
+      top: 136px;
+      border-left: 0;
+      border-bottom: 0
+    }
+
+    .hud.bl {
+      left: 56px;
+      bottom: 56px;
+      border-right: 0;
+      border-top: 0
+    }
+
+    .hud.br {
+      right: 56px;
+      bottom: 56px;
+      border-left: 0;
+      border-top: 0
+    }
+
+    /* --- 상단 챕터 바 --- */
+    #topbar {
+      position: absolute;
+      left: 48px;
+      right: 48px;
+      top: 34px;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(var(--navy), .55);
+      border: 1px solid rgba(255, 255, 255, .09);
+      border-radius: 16px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 5
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 100%;
+      padding: 0 18px 0 12px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(var(--ac-rgb), .22), rgba(var(--ac-rgb), .05));
+      border: 1px solid rgba(var(--ac-rgb), .35);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .15s, box-shadow .15s
+    }
+
+    .brand:hover {
+      box-shadow: 0 0 18px rgba(var(--ac-rgb), .4);
+      transform: translateY(-1px)
+    }
+
+    .tab {
+      flex: 1;
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 18px;
+      border-radius: 10px;
+      color: var(--dim);
+      font-size: 18px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: color .3s, background .3s, border-color .3s;
+      border: 1px solid transparent;
+      cursor: pointer;
+      user-select: none
+    }
+
+    .tab:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, .08);
+      border-color: rgba(255, 255, 255, .16)
+    }
+
+    .tab b {
+      font-size: 14px;
+      font-weight: 700;
+      opacity: .8;
+      font-variant-numeric: tabular-nums
+    }
+
+    .tab.on {
+      color: var(--ink);
+      background: rgba(var(--ac-rgb), .13);
+      border-color: rgba(var(--ac-rgb), .38)
+    }
+
+    .tab.on:hover {
+      background: rgba(var(--ac-rgb), .2);
+      border-color: rgba(var(--ac-rgb), .55)
+    }
+
+    .tab.on b {
+      color: var(--ac);
+      opacity: 1
+    }
+
+    .tab.done {
+      color: rgba(235, 240, 250, .62)
+    }
+
+    .tab .gauge {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 7px;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, .08);
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity .4s
+    }
+
+    .tab.on .gauge {
+      opacity: 1
+    }
+
+    .tab .gauge i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--ac);
+      box-shadow: 0 0 10px var(--ac);
+      transition: width .9s cubic-bezier(.2, .7, .2, 1)
+    }
+
+    /* --- 슬라이드 본문 공통 --- */
+    #slide {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100px;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 160px 110px;
+      text-align: center;
+      z-index: 2
+    }
+
+    .eyebrow {
+      font-size: 23px;
+      font-weight: 600;
+      color: var(--ac);
+      letter-spacing: .04em;
+      margin-bottom: 18px;
+      text-shadow: 0 0 18px rgba(var(--ac-rgb), .6), 0 2px 8px rgba(0, 0, 0, .9)
+    }
+
+    .title {
+      font-size: 76px;
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -.03em;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, .95), 0 2px 10px rgba(0, 0, 0, 1)
+    }
+
+    .title em,
+    .quote em {
+      font-style: normal;
+      color: var(--ac)
+    }
+
+    .sub {
+      font-size: 30px;
+      font-weight: 500;
+      color: var(--mu);
+      margin-top: 26px;
+      line-height: 1.5;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, .85)
+    }
+
+    .note {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 74px;
+      font-size: 21px;
+      color: var(--dim);
+      font-weight: 500;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, .9)
+    }
+
+    .credit {
+      position: absolute;
+      left: 120px;
+      bottom: 22px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, .3);
+      z-index: 3;
+      letter-spacing: .02em
+    }
+
+    /* --- reveal: data-s 순서대로 페이드업 --- */
+    [data-s] {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .75s ease var(--d, 0s), transform .85s cubic-bezier(.2, .7, .2, 1) var(--d, 0s)
+    }
+
+    [data-s].on {
+      opacity: 1;
+      transform: none
+    }
+
+    /* cover */
+    .cover .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      color: var(--ac);
+      background: rgba(var(--ac-rgb), .1);
+      border: 1px solid rgba(var(--ac-rgb), .4);
+      margin-bottom: 34px
+    }
+
+    .cover .title {
+      font-size: 112px;
+      line-height: 1.12
+    }
+
+    .cover .meta {
+      margin-top: 48px;
+      font-size: 19px;
+      letter-spacing: .24em;
+      color: var(--dim);
+      font-weight: 600
+    }
+
+    /* bullets */
+    .bullets {
+      margin-top: 58px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      text-align: left
+    }
+
+    .bullet {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 34px;
+      font-weight: 500;
+      color: var(--mu);
+      text-shadow: 0 2px 14px rgba(0, 0, 0, .95)
+    }
+
+    .ico {
+      flex: none;
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      color: var(--ac);
+      background: rgba(var(--navy), .75);
+      border: 1.5px solid rgba(var(--ac-rgb), .5);
+      box-shadow: 0 0 24px rgba(var(--ac-rgb), .2)
+    }
+
+    .bullet.em {
+      color: var(--ink);
+      font-weight: 800
+    }
+
+    .bullet.em .ico {
+      background: rgba(var(--navy), .85);
+      border-color: var(--ac);
+      box-shadow: 0 0 34px rgba(var(--ac-rgb), .45)
+    }
+
+    /* stats */
+    .stats {
+      margin-top: 64px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center
+    }
+
+    .stat {
+      padding: 0 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .stat+.stat {
+      border-left: 1px solid rgba(255, 255, 255, .14)
+    }
+
+    .stat .v {
+      font-size: 180px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.04em;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, .95), 0 0 50px rgba(var(--ac-rgb), .35)
+    }
+
+    .stat .v small {
+      font-size: 64px;
+      color: var(--ac);
+      margin-left: 6px;
+      letter-spacing: 0
+    }
+
+    .stat .l {
+      margin-top: 22px;
+      font-size: 27px;
+      color: var(--mu);
+      font-weight: 500;
+      max-width: 700px;
+      white-space: nowrap;
+      line-height: 1.45;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, .95)
+    }
+
+    /* flow: 마름모 배지 + 화살표 */
+    .flow {
+      margin-top: 70px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center
+    }
+
+    .step {
+      width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .dia {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      margin: 14px 0 40px
+    }
+
+    .dia::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transform: rotate(45deg) scale(.82);
+      border-radius: 14px;
+      background: rgba(var(--navy), .75);
+      border: 2px solid rgba(var(--ac-rgb), .75);
+      box-shadow: 0 0 30px rgba(var(--ac-rgb), .4), inset 0 0 22px rgba(var(--ac-rgb), .18)
+    }
+
+    .dia span {
+      position: relative;
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--ac);
+      font-variant-numeric: tabular-nums
+    }
+
+    .step .lb {
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.3;
+      white-space: nowrap
+    }
+
+    .step .lb::after {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 3px;
+      margin: 18px auto 0;
+      background: var(--ac);
+      border-radius: 2px;
+      opacity: .8
+    }
+
+    .step .ds {
+      margin-top: 16px;
+      font-size: 23px;
+      color: var(--mu);
+      line-height: 1.45;
+      white-space: nowrap;
+      word-break: keep-all;
+      text-align: center;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, .9)
+    }
+
+    .arrow {
+      width: 100px;
+      height: 2px;
+      margin-top: 68px;
+      position: relative;
+      transform-origin: left center;
+      background: linear-gradient(90deg, rgba(var(--ac-rgb), .1), var(--ac));
+      box-shadow: 0 0 12px rgba(var(--ac-rgb), .6)
+    }
+
+    .arrow::after {
+      content: '';
+      position: absolute;
+      right: -2px;
+      top: -6px;
+      border-left: 12px solid var(--ac);
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent
+    }
+
+    .arrow[data-s] {
+      transform: scaleX(0)
+    }
+
+    .arrow[data-s].on {
+      transform: scaleX(1)
+    }
+
+    /* compare */
+    .compare {
+      margin-top: 60px;
+      display: flex;
+      gap: 40px;
+      text-align: left
+    }
+
+    .panel {
+      width: 640px;
+      padding: 44px 48px;
+      border-radius: 24px;
+      background: rgba(var(--navy), .55);
+      border: 1px solid rgba(255, 255, 255, .12);
+      backdrop-filter: blur(14px)
+    }
+
+    .panel.hi {
+      background: rgba(var(--ac-rgb), .1);
+      border-color: rgba(var(--ac-rgb), .5);
+      box-shadow: 0 0 50px rgba(var(--ac-rgb), .18)
+    }
+
+    .panel h3 {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 38px;
+      font-weight: 800;
+      margin-bottom: 28px
+    }
+
+    .panel h3 iconify-icon {
+      font-size: 40px;
+      color: var(--dim)
+    }
+
+    .panel.hi h3 iconify-icon {
+      color: var(--ac)
+    }
+
+    .panel li {
+      list-style: none;
+      font-size: 27px;
+      color: var(--mu);
+      padding: 14px 0;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      display: flex;
+      gap: 14px;
+      align-items: center
+    }
+
+    .panel li::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--dim);
+      flex: none
+    }
+
+    .panel.hi li {
+      color: var(--ink)
+    }
+
+    .panel.hi li::before {
+      background: var(--ac);
+      box-shadow: 0 0 10px var(--ac)
+    }
+
+    /* quote */
+    .quote {
+      font-size: 74px;
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -.025em;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, .6);
+      position: relative
+    }
+
+    .quote::before,
+    .quote::after {
+      content: none !important;
+      display: none !important
+    }
+
+    .by {
+      margin-top: 44px;
+      font-size: 24px;
+      color: var(--dim);
+      letter-spacing: .08em
+    }
+
+    /* timeline */
+    .timeline {
+      margin-top: 54px;
+      display: flex;
+      position: relative;
+      width: 1520px;
+      padding: 46px 40px 38px;
+      background: rgba(var(--navy), .72);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 24px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, .6)
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 14%;
+      right: 14%;
+      top: 59px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(var(--ac-rgb), .2), var(--ac), rgba(var(--ac-rgb), .2))
+    }
+
+    .tl-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .tl-item .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0a0f1a;
+      border: 3px solid var(--ac);
+      box-shadow: 0 0 20px rgba(var(--ac-rgb), .7);
+      position: relative
+    }
+
+    .tl-item.em .dot {
+      background: var(--ac)
+    }
+
+    .tl-item .t {
+      margin-top: 28px;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ac);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .06em;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, .9)
+    }
+
+    .tl-item .lb {
+      margin-top: 10px;
+      font-size: 36px;
+      font-weight: 800;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, .95)
+    }
+
+    .tl-item .ds {
+      margin-top: 12px;
+      font-size: 23px;
+      color: var(--mu);
+      line-height: 1.45;
+      max-width: 320px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, .9)
+    }
+
+    /* closing */
+    .closing .title {
+      font-size: 104px
+    }
+
+    .chips {
+      margin-top: 56px;
+      display: flex;
+      gap: 18px;
+      justify-content: center
+    }
+
+    .chips span {
+      padding: 16px 30px;
+      border-radius: 999px;
+      font-size: 25px;
+      font-weight: 600;
+      background: rgba(var(--navy), .55);
+      border: 1px solid rgba(var(--ac-rgb), .45);
+      backdrop-filter: blur(10px)
+    }
+
+    /* --- 네비 · 점프 --- */
+    #nav {
+      position: absolute;
+      right: 120px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 6;
+      opacity: .55;
+      transition: opacity .3s
+    }
+
+    #nav:hover {
+      opacity: 1
+    }
+
+    #nav button {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      background: rgba(var(--navy), .6);
+      color: var(--ink);
+      font-size: 16px;
+      cursor: pointer
+    }
+
+    #counter {
+      min-width: 84px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--mu);
+      cursor: pointer;
+      font-variant-numeric: tabular-nums
+    }
+
+    #jump-toast {
+      position: absolute;
+      left: 50%;
+      top: 130px;
+      transform: translateX(-50%);
+      padding: 14px 26px;
+      border-radius: 14px;
+      font-size: 22px;
+      font-weight: 700;
+      background: rgba(var(--navy), .85);
+      border: 1px solid rgba(var(--ac-rgb), .5);
+      z-index: 9;
+      display: none
+    }
+
+    #jump-toast b {
+      color: var(--ac)
+    }
+
+    #jump-modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      display: none;
+      place-items: center;
+      z-index: 10
+    }
+
+    #jump-modal.open {
+      display: grid
+    }
+
+    #jump-modal form {
+      padding: 40px 48px;
+      border-radius: 22px;
+      background: rgba(var(--navy), .92);
+      border: 1px solid rgba(var(--ac-rgb), .45);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center
+    }
+
+    #jump-modal label {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ac)
+    }
+
+    #jump-modal input {
+      width: 220px;
+      padding: 14px;
+      font-size: 30px;
+      text-align: center;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: #0b1020;
+      color: #fff;
+      font-family: inherit
+    }
+
+    #jump-modal button {
+      padding: 12px 40px;
+      font-size: 20px;
+      font-weight: 700;
+      border-radius: 12px;
+      border: 0;
+      background: var(--ac);
+      color: #05070c;
+      cursor: pointer;
+      font-family: inherit
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .bg.show {
+        animation: none
+      }
+
+      [data-s] {
+        transition: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="stage">
+    <div class="bg" id="bgA"></div>
+    <div class="bg" id="bgB"></div>
+    <div class="shade"></div>
+    <div class="rays"></div>
+    <div class="grain"></div>
+    <div class="hud tl"></div>
+    <div class="hud tr"></div>
+    <div class="hud bl"></div>
+    <div class="hud br"></div>
+    <div id="topbar"></div>
+    <div id="slide"></div>
+    <div class="credit" id="credit"></div>
+    <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter"
+        title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+    <div id="jump-toast">Go to <b id="jump-num"></b></div>
+    <div id="jump-modal">
+      <form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* ===================== 덱 데이터 — 15장 시네마틱 프레젠테이션 ===================== */
+    const DECK = {
+      brand: { name: 'AI ERA TALENT', icon: 'solar:magic-stick-3-bold' },
+      accent: '#00d2ff',
+      reveal: 'auto',
+      chapters: ['패러다임 대전환', 'AI 시대의 학습법', '대체불가 핵심역량', '새로운 미래 인재상'],
+      slides: [
+        // 01. cover
+        {
+          layout: 'cover', chapter: 0,
+          bg: 'photo-1694903089438-bf28d4697d9a', photo: 'Igor Omilaev',
+          eyebrow: 'FUTURE PARADIGM · 2026',
+          title: 'AI 시대의 학습,<br>경쟁력 그리고 새로운 인재',
+          sub: '지식을 외우는 시대에서 지능을 지휘하는 시대로의 대전환',
+          meta: '15 SLIDES · CINEMATIC PRESENTATION'
+        },
+        // 02. stats
+        {
+          layout: 'stats', chapter: 0,
+          bg: 'photo-1666875753105-c63a6f3bdc86', photo: 'Deng Xiang',
+          eyebrow: '데이터로 보는 지각변동',
+          title: '지식의 유효수명은 단축되고,<br>AI 도입은 가속화된다',
+          items: [
+            { value: '2.5', unit: '년', label: '기술 전문 지식의 평균 반감기' },
+            { value: '85', unit: '%', label: '2030년 신규 일자리가 요구할 AI 협업 능력' }
+          ],
+          note: '출처 · WEF Future of Jobs Report & Stanford HAI AI Index'
+        },
+        // 03. compare
+        {
+          layout: 'compare', chapter: 0,
+          bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
+          eyebrow: '교육과 일의 대전환',
+          title: '정답 암기에서 문제 정의로',
+          left: {
+            title: '과거의 학습 모델',
+            icon: 'solar:history-bold',
+            items: ['정답과 표준 매뉴얼 암기', '개별 지식의 양적 축적', '정해진 틀 안에서의 반복 숙달']
+          },
+          right: {
+            title: 'AI 시대의 모델',
+            icon: 'solar:bolt-circle-bold',
+            items: ['본질을 꿰뚫는 질문과 맥락 장악', 'AI와의 실시간 페어링 문제 해결', '창의적 재구성 및 오케스트레이션']
+          },
+          note: '지식의 양이 아니라 질문의 깊이가 결과를 결정합니다'
+        },
+        // 04. quote
+        {
+          layout: 'quote', chapter: 0,
+          bg: 'photo-1486707471592-8e7eb7e36f78', photo: 'Inggrid Koe',
+          quote: 'AI가 답을 순식간에 내놓는 세상에서,<br>진짜 경쟁력은 <em>올바른 질문을 던지는 힘</em>이다',
+          by: 'PARADIGM SHIFT · 원칙 01'
+        },
+        // 05. flow
+        {
+          layout: 'flow', chapter: 1,
+          bg: 'photo-1727434032773-af3cd98375ba', photo: 'Luke Jones',
+          eyebrow: '학습 메커니즘',
+          title: 'AI 페어 러닝 3단계 사이클',
+          steps: [
+            { label: '심층 탐색', desc: 'AI와 소크라테스식 문답 토론' },
+            { label: '비판적 검증', desc: '환각 필터링 및 팩트 교차 확인' },
+            { label: '실전 구현', desc: '프로젝트에 즉시 적용하여 체화' }
+          ],
+          note: '수동적 읽기가 아닌 능동적 구축(Active Building)이 핵심입니다'
+        },
+        // 06. bullets
+        {
+          layout: 'bullets', chapter: 1,
+          bg: 'photo-1515879218367-8466d910aaa4', photo: 'Chris Ried',
+          eyebrow: '학습 혁신 가이드',
+          title: '새로운 학습을 위한 4가지 도구',
+          items: [
+            { icon: 'solar:chat-round-dots-bold', text: '소크라테스식 반문: AI에게 나를 가르치고 반론을 펴게 하라' },
+            { icon: 'solar:atom-bold', text: '제1원리 분해: 복잡한 개념을 가장 단순한 기본 원리로 쪼개기' },
+            { icon: 'solar:refresh-circle-bold', text: '마이크로 루프: 10분 학습 후 즉시 20분 프로토타입 제작' },
+            { icon: 'solar:star-bold', text: 'AI를 백과사전이 아닌 지적 스파링 파트너로 삼아야 합니다', em: true }
+          ],
+          note: '원리를 이해하지 못한 지식은 AI의 파도에 쉽게 쓸려나갑니다'
+        },
+        // 07. compare
+        {
+          layout: 'compare', chapter: 1,
+          bg: 'photo-1637166185518-058f5896a2e9', photo: 'MJH SHIKDER',
+          eyebrow: '학습 태도의 차이',
+          title: '수동적 의존 vs 능동적 인지 강화',
+          left: {
+            title: '수동적 AI 의존',
+            icon: 'solar:forbidden-circle-bold',
+            items: ['AI 생성물 무비판적 복사', '생각 과정을 건너뛰는 조급함', '인지적 왜소화와 지식 휘발']
+          },
+          right: {
+            title: '능동적 인지 강화',
+            icon: 'solar:brain-bold',
+            items: ['AI 결과물에 대한 집요한 반증', '원리를 스스로 디버깅하고 검증', '견고한 내적 멘탈 모델 구축']
+          },
+          note: '인지적 노력이 투입된 지식만이 나의 진정한 역량이 됩니다'
+        },
+        // 08. stats
+        {
+          layout: 'stats', chapter: 2,
+          bg: 'photo-1569169507605-f91e088ce91a', photo: 'SiravitPlug',
+          eyebrow: '경쟁력의 재정의',
+          title: '무엇이 인간의 가치를 증명하는가',
+          items: [
+            { value: '4.2', unit: '배', label: 'AI를 능숙하게 오케스트레이션하는 인재의 생산성 격차' },
+            { value: '70', unit: '%', label: '단순 하드 스킬 대비 소프트 스킬 가치 평가 비중' }
+          ],
+          note: '출처 · Harvard Business School & BCG AI Workforce Study'
+        },
+        // 09. bullets
+        {
+          layout: 'bullets', chapter: 2,
+          bg: 'photo-1513530534585-c7b1394c6d51', photo: 'NordWood Themes',
+          eyebrow: '대체불가 핵심 역량',
+          title: 'AI 시대 3대 메타 스킬',
+          items: [
+            { icon: 'solar:magnifer-bold', text: '의도 명확화력: 생각의 목적과 맥락을 정밀하게 언어화하는 능력' },
+            { icon: 'solar:shield-check-bold', text: '비판적 판별력: 진위와 맥락의 적합성을 예리하게 검증하는 안목' },
+            { icon: 'solar:layers-minimalistic-bold', text: '도메인 융합력: 이질적인 두 영역을 연결해 새로운 가치를 만드는 힘' },
+            { icon: 'solar:cup-star-bold', text: '도구를 잘 다루는 자보다 무엇을 만들지 정의하는 자가 승리합니다', em: true }
+          ],
+          note: '테크놀로지와 인간적 통찰의 교차점에서 대체불가한 가치가 탄생합니다'
+        },
+        // 10. timeline
+        {
+          layout: 'timeline', chapter: 2,
+          bg: 'photo-1777816466516-16e1976e43e9', photo: 'Evgenii Dzhivelikian',
+          eyebrow: '역량 진화 경로',
+          title: '실무자에서 오케스트레이터로',
+          items: [
+            { time: 'Lv.1', label: '프롬프트 사용자', desc: '챗봇 질의응답과 단순 요약' },
+            { time: 'Lv.2', label: '워크플로우 자동화', desc: '툴과 API의 파이프라인 연결', em: true },
+            { time: 'Lv.3', label: '멀티에이전트 지휘', desc: '복수 AI 에이전트 분담 및 조율' },
+            { time: 'Lv.4', label: '가치 아키텍트', desc: '본질 규명과 최종 가치 의사결정' }
+          ],
+          note: '단순 작업자에서 1인 총괄 디렉터로 시야를 확장해야 합니다'
+        },
+        // 11. quote
+        {
+          layout: 'quote', chapter: 2,
+          bg: 'photo-1507166763745-bfe008fbb831', photo: 'Conor Sexton',
+          quote: 'AI는 평균적 지식을 무료로 만들었다.<br>이제 가치는 <em>비범한 통찰과 끝단의 디테일</em>에 있다',
+          by: 'NEW VALUE FORMULA'
+        },
+        // 12. flow
+        {
+          layout: 'flow', chapter: 3,
+          bg: 'photo-1542013353840-da51a081405b', photo: 'Maria Teneva',
+          eyebrow: '인재 모델의 진화',
+          title: 'I자형에서 파이(π)형 인재로',
+          steps: [
+            { label: 'I자형 인재', desc: '단일 전문 지식 보유 (AI 대체 위험 高)' },
+            { label: 'T자형 인재', desc: '하나의 전문성 + 인접 분야와의 소통' },
+            { label: 'π자형 인재', desc: '복수 도메인 전문성 + AI 오케스트레이션' }
+          ],
+          note: '전문성과 전문성을 AI라는 레버리지로 묶어내는 인재가 미래를 주도합니다'
+        },
+        // 13. bullets
+        {
+          layout: 'bullets', chapter: 3,
+          bg: 'photo-1597945161640-9366e6d4253b', photo: 'Mick Haupt',
+          eyebrow: '미래 인재의 덕목',
+          title: '새로운 시대가 요구하는 4가지 태도',
+          items: [
+            { icon: 'solar:rocket-bold', text: '지적 기민성: 과거 성공 방식을 기꺼이 버리는 언러닝(Unlearning)' },
+            { icon: 'solar:heart-bold', text: '공감과 연결: 기계가 대신할 수 없는 신뢰와 따뜻한 정서적 유대' },
+            { icon: 'solar:compass-bold', text: '윤리적 책임감: 기술의 사회적 파급효과와 편향에 대한 경각심' },
+            { icon: 'solar:cup-first-bold', text: '기술을 목적이 아닌 인간의 가능성을 확장하는 지렛대로 쓰는 태도', em: true }
+          ],
+          note: '차가운 지능 위에 따뜻한 인간적 가치를 얹어야 합니다'
+        },
+        // 14. compare
+        {
+          layout: 'compare', chapter: 3,
+          bg: 'photo-1639313521811-fdfb1c040ddb', photo: 'Miha Meglic',
+          eyebrow: '행동의 갈림길',
+          title: '소비하는 자 vs 구축하는 자',
+          left: {
+            title: 'AI 소비자',
+            icon: 'solar:cloud-storage-bold',
+            items: ['생성된 결과물을 수동적으로 소비', '기술 발전에 막연한 불안과 소외감', '도구가 규정한 한계 안에 안주']
+          },
+          right: {
+            title: 'AI 빌더(Builder)',
+            icon: 'solar:hammer-bold',
+            items: ['자신만의 고유한 워크플로우 구축', 'AI를 레버리지 삼아 영향력 확장', '새로운 가치와 독창적 영역 개척']
+          },
+          note: '당신은 AI의 소비자가 될 것인가, 새로운 세계의 건축가가 될 것인가'
+        },
+        // 15. closing
+        {
+          layout: 'closing', chapter: 3,
+          bg: 'photo-1734596185896-dc103daddbca', photo: 'Andrew Hua',
+          eyebrow: '결론 및 제언',
+          title: '학습을 멈추지 마라,<br><em>인간 고유의 불꽃</em>을 밝혀라',
+          sub: '가장 강력한 알고리즘은 인간의 꺾이지 않는 호기심과 용기입니다',
+          chips: ['AI 페어러닝', '질문력과 비판적 사고', 'π형 오케스트레이터']
+        }
+      ]
+    };
+
+    /* ===================== 엔진 — 덱마다 수정하지 않음 ===================== */
+    const $ = id => document.getElementById(id);
+    const S = DECK.slides;
+    let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+
+    // 레이아웃별 렌더러. n(k)은 등장 순서 k를 붙이는 헬퍼
+    const head = (s, n) =>
+      (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      (s.title ? `<h1 class="title" ${n(0)}>${s.title}</h1>` : '');
+    const note = (s, n, k) => s.note ? `<div class="note" ${n(k)}>${s.note}</div>` : '';
+    const LAYOUTS = {
+      cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+      bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+        `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+      stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+        `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+      flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+        (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+        `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+      compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+        `<div class="panel${i ? ' hi' : ''}" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+      quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+        `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+      timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+        `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+      closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.sub ? `<p class="sub" ${n(1)}>${s.sub}</p>` : ''}
+      ${s.chips ? `<div class="chips" ${n(2)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+    };
+
+    const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=1920&q=75&auto=format&fit=crop`;
+    // 사진이 실패해도 그라디언트가 남도록 항상 두 겹으로 지정
+    const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+    function setBg(s) {
+      const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+      bgFlip = !bgFlip;
+      show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+      show.style.backgroundPosition = s.focus || 'center';
+      show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+      hide.classList.remove('show');
+      $('credit').textContent = '';
+      if (s.bg && s.photo) {   // 사진이 실제로 뜰 때만 크레딧 표시
+        const img = new Image();
+        img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+        img.src = bgUrl(s.bg);
+      }
+    }
+
+    function renderTopbar() {
+      const s = S[cur], ch = s.chapter ?? 0;
+      const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+      const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+      $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+        DECK.chapters.map((c, i) => {
+          const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+          const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+          return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+        }).join('');
+      const g = $('topbar').querySelector('.tab.on .gauge i');
+      if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+    }
+
+    function go(i, full) {
+      cur = Math.max(0, Math.min(S.length - 1, i));
+      const s = S[cur];
+      $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+      setBg(s); renderTopbar();
+      $('counter').textContent = `${cur + 1} / ${S.length}`;
+      try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+      const els = [...$('slide').querySelectorAll('[data-s]')];
+      maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+      const mode = s.reveal || DECK.reveal;
+      step = (full || mode === 'auto') ? maxStep : 0;
+      els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+      requestAnimationFrame(() => requestAnimationFrame(showSteps));
+      [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+    }
+    function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+    function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+    function prev() { if (cur > 0) go(cur - 1, true); }
+
+    // 1920x1080 고정 비율 스케일
+    function scale() {
+      const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+      $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+    }
+
+    // 퀵 점프: 숫자 연속 입력 + Enter / G 키 모달 / 카운터 클릭
+    let buf = '', bufT;
+    function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+    function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+    function closeModal() { $('jump-modal').classList.remove('open'); }
+    $('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+    $('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+    $('counter').addEventListener('click', openModal);
+    $('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+    $('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+    // 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+    $('topbar').addEventListener('click', e => {
+      e.stopPropagation();
+      const target = e.target.closest('[data-slide]');
+      if (target && target.dataset.slide !== undefined) {
+        const idx = parseInt(target.dataset.slide, 10);
+        if (!isNaN(idx)) go(idx, true);
+      }
+    });
+
+    window.addEventListener('keydown', e => {
+      if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+      if (/^[0-9]$/.test(e.key)) {
+        buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+        clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+        return;
+      }
+      if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+      if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+      else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+      else if (e.key === 'Home') go(0);
+      else if (e.key === 'End') go(S.length - 1, true);
+      else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+      else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+    });
+    $('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+    let tx0 = null;
+    addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+    addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+    const hex = DECK.accent.replace('#', '');
+    document.documentElement.style.setProperty('--ac', DECK.accent);
+    document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+    addEventListener('resize', scale); scale();
+    go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+  </script>
+</body>
+
+</html>
