@@ -814,7 +814,7 @@
       <span class="status-dot"></span>
       <a href="index.html" style="color:inherit;text-decoration:none;">Signal Presentation Hub</a>
       <span style="opacity: 0.5;">|</span>
-      <span id="deckCountBadge" style="font-family: var(--f-mono);">14 DECKS</span>
+      <span id="deckCountBadge" style="font-family: var(--f-mono);">15 DECKS</span>
     </div>
     <div class="utility-right">
       <span style="font-size: 11px; color: var(--ink-subtle);">Press <kbd style="font-family: var(--f-mono); background: var(--canvas); border: 1px solid var(--hairline); padding: 1px 4px; border-radius: 3px;">/</kbd> to search</span>
@@ -902,7 +902,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 14</span>
+      <span class="viewer-pos" id="viewerPos">01 / 15</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -926,8 +926,17 @@
       '라이프': 'var(--cat-life)'
     };
 
-    // 발표 목록 데이터 (총 14개)
+    // 발표 목록 데이터 (총 15개)
     const DECKS = [
+      {
+        id: 'rnd-planning-policy',
+        src: 'rnd_planning_policy_cinematic_presentation.html',
+        cat: '기획',
+        title: 'R&D 기획과 정책 (선도형 혁신)',
+        desc: '글로벌 기술패권 경쟁 속 대한민국 국가 R&D 대전환. 임무지향형 R&D 기획 3단계, 12대 국가전략기술, 예타 개편 및 거버넌스 혁신 15장.',
+        slides: '15장',
+        isCinematic: true
+      },
       {
         id: 'disaster-rnd-ai',
         src: 'disaster_rnd_ai_cinematic_presentation.html',
