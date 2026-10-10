@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cinematic Interactive Presentation</title>
+<title>R&amp;D 기획과 정책 (선도형 혁신 프레임워크)</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
@@ -69,7 +69,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
 /* --- 슬라이드 본문 공통 --- */
 #slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
 .eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
-.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title{font-size:74px;font-weight:800;line-height:1.2;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
 .title em,.quote em{font-style:normal;color:var(--ac)}
 .sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
 .note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
@@ -82,12 +82,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
 /* cover */
 .cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
   background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
-.cover .title{font-size:112px;line-height:1.12}
+.cover .title{font-size:108px;line-height:1.14}
 .cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
 
 /* bullets */
 .bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
-.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.bullet{display:flex;align-items:center;gap:26px;font-size:32px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
 .ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
   background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
 .bullet.em{color:var(--ink);font-weight:800}
@@ -130,7 +130,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
 .panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
 
 /* quote (따옴표 가상요소 제거 & 볼드 타이포) */
-.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote{font-size:72px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
 .quote::before, .quote::after{content:none !important;display:none !important}
 .by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
 
@@ -145,7 +145,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
 .tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
 
 /* closing */
-.closing .title{font-size:104px}
+.closing .title{font-size:100px}
 .chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
 .chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
 
@@ -183,107 +183,200 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
 </div>
 
 <script>
-/* ===================== 덱 데이터 — 템플릿 예시 ===================== */
+/* ===================== 덱 데이터 — R&D 기획과 정책 (15장) ===================== */
 const DECK = {
-  brand: { name: 'CINEMATIC HUB', icon: 'solar:videocamera-record-bold' },
+  brand: { name: 'R&D POLICY', icon: 'solar:atom-bold' },
   accent: '#00d2ff',
   reveal: 'auto',
-  chapters: ['도입 및 배경', '핵심 방법론', '전략 및 성과', '결론 및 비전'],
+  chapters: ['패러다임 대전환', '임무지향 R&D 기획', '전략 투자·제도 혁신', '성과 확산과 비전'],
   slides: [
     // 01. cover
     {
       layout: 'cover', chapter: 0,
-      bg: 'photo-1694903089438-bf28d4697d9a', photo: 'Igor Omilaev',
-      eyebrow: 'PRESENTATION TITLE · 2026',
-      title: '새로운 시대를 여는<br><em>시네마틱 프레젠테이션</em>',
-      sub: '청중을 사로잡는 고화질 비주얼과 인터랙티브 내비게이션',
-      meta: 'INTERACTIVE CINEMATIC DECK'
+      bg: 'photo-1446776811953-b23d57bd21aa', photo: 'NASA',
+      eyebrow: 'NATIONAL R&D PLANNING & POLICY · 2026',
+      title: '대한민국 R&D 대전환,<br><em>추격자에서 선도자로</em>',
+      sub: '글로벌 기술패권 경쟁과 국가 난제 해결을 위한 차세대 R&D 기획·정책 프레임워크',
+      meta: '15 SLIDES · 차세대 국가연구개발 혁신 전략'
     },
     // 02. stats
     {
       layout: 'stats', chapter: 0,
-      bg: 'photo-1666875753105-c63a6f3bdc86', photo: 'Deng Xiang',
-      eyebrow: '데이터 분석 지표',
-      title: '수치로 입증되는 극적인 변화',
+      bg: 'photo-1558494949-ef010cbdcc31', photo: 'Taylor Vick',
+      eyebrow: '수치로 보는 국가 R&D 위상',
+      title: '세계 최고 수준의 투자, 효율성의 대전환',
       items: [
-        { value: '4.2', unit: '배', label: '차세대 워크플로우 도입 후 업무 생산성 격차' },
-        { value: '85', unit: '%', label: '글로벌 선도 기업들의 인터랙티브 도구 도입률' }
+        { value: '31.5', unit: '조원', label: '2026년 정부 R&D 총예산 규모' },
+        { value: '5.2', unit: '%', label: 'GDP 대비 연구개발비 비중 (세계 2위 수준)' }
       ],
-      note: '출처 · Global Technology & Productivity Index 2026'
+      note: '출처 · 2026 과학기술정보통신부 국가연구개발사업 예산안 및 OECD MSTI 지표'
     },
-    // 03. compare
+    // 03. bullets
     {
-      layout: 'compare', chapter: 1,
-      bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
-      eyebrow: '패러다임의 전환',
-      title: '과거의 방식 vs 차세대 혁신',
-      left: {
-        title: '전통적 접근법',
-        icon: 'solar:history-bold',
-        items: ['수동적이고 정적인 문서 전달', '맥락 없는 단순 정보 나열', '일방향성 발표와 낮은 집중도']
-      },
-      right: {
-        title: '시네마틱 인터랙티브',
-        icon: 'solar:bolt-circle-bold',
-        items: ['실사 비주얼 기반의 몰입감 극대화', '챕터별 자유로운 양방향 점프 탐색', '메시지 중심의 정교한 1줄 타이포']
-      },
-      note: '청중의 몰입도가 발표의 성패를 결정합니다'
+      layout: 'bullets', chapter: 0,
+      bg: 'photo-1644088379091-d574269d422f', photo: 'Conny Schneider',
+      eyebrow: '시대적 위기와 한계',
+      title: '기존 R&D 체계가 마주한 4대 구조적 병목',
+      items: [
+        { icon: 'solar:shield-warning-bold', text: '글로벌 기술패권 경쟁: 기술 안보와 전략물자 공급망 블록화 심화' },
+        { icon: 'solar:pie-chart-bold', text: '부처별 파편화된 투자: 유사·중복 기획과 칸막이형 소규모 분절 연구' },
+        { icon: 'solar:danger-triangle-bold', text: '단기 성과주의 매몰: 실패를 두려워하는 안전하고 관행적인 과제 선정' },
+        { icon: 'solar:bolt-circle-bold', text: '파괴적 혁신 역량의 한계: 최초와 최고에 도전하는 선도형 연구 부재', em: true }
+      ],
+      note: '성공률 98%의 역설을 깨고 파괴적 혁신을 촉진해야 할 시점'
     },
     // 04. quote
     {
-      layout: 'quote', chapter: 1,
-      bg: 'photo-1486707471592-8e7eb7e36f78', photo: 'Inggrid Koe',
-      quote: '단순한 정보 전달을 넘어,<br><em>청중의 심장을 뛰게 만드는 경험</em>을 설계하라',
-      by: 'PRESENTATION PHILOSOPHY · 2026'
+      layout: 'quote', chapter: 0,
+      bg: 'photo-1604728890708-631078e3eab7', photo: 'Ken Cheung',
+      eyebrow: '국가 혁신의 나침반',
+      quote: '과학기술 주권 없이는<br><em>국가의 미래와 경제적 생존</em>도 없다',
+      by: 'NATIONAL STRATEGY ON SCIENCE & TECHNOLOGY · 2026'
     },
     // 05. flow
     {
-      layout: 'flow', chapter: 2,
-      bg: 'photo-1542013353840-da51a081405b', photo: 'Maria Teneva',
-      eyebrow: '실행 로드맵',
-      title: '단계별 3단계 실행 사이클',
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1674027444485-cec3da58eef4', photo: 'Growtika',
+      eyebrow: '선도형 기획 프로세스',
+      title: '임무 중심 국가 R&D 기획 3단계',
       steps: [
-        { label: '핵심 기획', desc: '본질을 관통하는 명확한 스토리라인 수립' },
-        { label: '비주얼 구축', desc: '초고화질 배경과 글래스모피즘 카드 설계' },
-        { label: '실전 발표', desc: '인터랙티브 탭 점프로 유연한 질의응답 대응' }
+        { label: '국가 난제 정의', desc: '사회·경제·안보 핵심 난제를<br>명확한 목표로 구체화' },
+        { label: '임무 로드맵 수립', desc: '산·학·연·관 협력으로<br>최적의 기술 경로 설계' },
+        { label: '개방형 검증·착수', desc: '글로벌 피어 리뷰 및<br>신속한 다부처 통합 발주' }
       ],
-      note: '철저한 구조화가 완벽한 전달력을 만듭니다'
+      note: '기획 초기부터 최종 성과물 활용처와 산업 스케일업을 사전 연계'
     },
-    // 06. bullets
+    // 06. compare
+    {
+      layout: 'compare', chapter: 1,
+      bg: 'photo-1531591022136-eb8b0da1e6d0', photo: 'Tobias Keller',
+      eyebrow: '기획 방식의 대전환',
+      title: '관행적 상향식 기획 vs 임무지향형 기획',
+      left: {
+        title: '과거 관행형 기획',
+        icon: 'solar:history-bold',
+        items: ['연구자 관심사 중심의 개별 공급자형 제안', '부처 칸막이에 갇힌 소규모 과제 난립', '논문·특허 건수 위주의 정량적 지표 관리']
+      },
+      right: {
+        title: '차세대 임무지향 기획',
+        icon: 'solar:target-bold',
+        items: ['국가적 난제 해결 중심의 명확한 하향식 아젠다', '범부처 융합 플래그십 대형 프로젝트 추진', '실제 산업 파급력과 기술주권 확보 중심 평가']
+      },
+      note: '단순 투입 관리(Input)에서 실질적 결과(Outcome) 생태계로 진화'
+    },
+    // 07. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1748000970909-845f4aa144d2', photo: 'TECNIC Bioprocess Solutions',
+      eyebrow: '초격차 확보 12대 핵심 축',
+      title: '12대 국가전략기술 중점 육성 체계',
+      items: [
+        { icon: 'solar:cpu-bolt-bold', text: '인공지능·반도체: 온디바이스 AI 및 차세대 AI 반도체 초격차 확보' },
+        { icon: 'solar:atom-bold', text: '양자·첨단바이오: 양자컴퓨팅 플랫폼 구축 및 합성생물학 바이오파운드리' },
+        { icon: 'solar:battery-charge-bold', text: '이차전지·모빌리티: 차세대 전고체 배터리 및 무인 자율주행·UAM 실증' },
+        { icon: 'solar:rocket-bold', text: '우주항공·해양: 재사용 발사체 독자 개발 및 극한 환경 탐사 기술 자립', em: true }
+      ],
+      note: '국가전략기술육성특별법에 기반한 범국가적 기술주권 총력전'
+    },
+    // 08. timeline
+    {
+      layout: 'timeline', chapter: 1,
+      bg: 'photo-1614308460927-5024ba2e1dcb', photo: 'Logan Gutierrez',
+      eyebrow: '기획 패러다임 진화사',
+      title: '시대별 대한민국 R&D 기획의 궤적',
+      items: [
+        { time: '1980~1990s', label: '기술 추격기', desc: '선진국 완제품 역공학 및<br>핵심 부품 국산화 중심' },
+        { time: '2000~2010s', label: '추격·고도화기', desc: 'IT 인프라 구축 및<br>주력 제조업 경쟁력 제고' },
+        { time: '2020s~현재', label: '선도형 혁신', desc: '퍼스트 무버 기술 창출 및<br>글로벌 프론티어 개척', em: true }
+      ],
+      note: '선도형 R&D는 정해진 정답을 찾는 것이 아니라 새로운 경로를 개척하는 여정'
+    },
+    // 09. stats
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Unsplash',
+      eyebrow: '도전형 연구 집중 지원',
+      title: '실패를 품는 파괴적 혁신 투자',
+      items: [
+        { value: '1.2', unit: '조원', label: '2026년 혁신·도전형 R&D 전용 집중 예산' },
+        { value: '100', unit: '%', label: '도전적 연구 과제의 성실실패 책임 면책 적용률' }
+      ],
+      note: '출처 · 한국형 ARPA-H 및 한계도전 R&D 프로젝트 추진 계획'
+    },
+    // 10. flow
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1492538368677-f6e0afe31dcc', photo: 'Mikael Kristenson',
+      eyebrow: '연구제도 3대 혁신 축',
+      title: '신속하고 유연한 R&D 생태계 조성',
+      steps: [
+        { label: '예타 제도 개편', desc: '1,000억 미만 패스트트랙 및<br>시의성 중심 심사 전환' },
+        { label: '연구행정 간소화', desc: '범부처 IRIS AI 자동화로<br>정산 서류 대폭 경감' },
+        { label: '글로벌 규제 완화', desc: '해외 우수기관 직접 참여 및<br>연구비 송금 규제 완화' }
+      ],
+      note: '연구자가 행정 서류 대신 연구 본연에만 몰입할 수 있는 환경 완성'
+    },
+    // 11. bullets
     {
       layout: 'bullets', chapter: 2,
-      bg: 'photo-1515879218367-8466d910aaa4', photo: 'Chris Ried',
-      eyebrow: '성공의 핵심 원칙',
-      title: '최고의 전달력을 위한 4가지 요소',
+      bg: 'photo-1737644467636-6b0053476bb2', photo: 'Gabriele Malaspina',
+      eyebrow: '정책 성공의 핵심 조건',
+      title: '지속가능한 R&D 거버넌스 4대 원칙',
       items: [
-        { icon: 'solar:target-bold', text: '단 하나의 핵심 메시지: 청중이 기억할 단 하나의 결론을 정의' },
-        { icon: 'solar:eye-bold', text: '시각적 일관성: 다크 비네팅과 엄선된 컬러 팔레트 유지' },
-        { icon: 'solar:compass-bold', text: '인터랙티브 조작: 챕터 탭 클릭으로 원하는 슬라이드 즉시 점프' },
-        { icon: 'solar:cup-first-bold', text: '화려함보다 본질: 텍스트의 가독성과 대비가 가장 중요합니다', em: true }
+        { icon: 'solar:refresh-circle-bold', text: '예산의 예측 가능성: 연구 현장의 혼란을 방지하는 다년도 안정적 재정 지원' },
+        { icon: 'solar:user-speak-bold', text: '현장 중심 정책 소통: 연구자·산업계의 목소리를 실시간 반영하는 피드백 루프' },
+        { icon: 'solar:global-bold', text: '오픈 이노베이션: 호라이즌 유럽 등 글로벌 다자간 공동연구 네트워크 참여' },
+        { icon: 'solar:chart-square-bold', text: '데이터 기반 정책 결정: 국가R&D 데이터와 AI를 결합한 객관적 성과 평가', em: true }
       ],
-      note: '가장 강력한 디자인은 읽기 쉬운 디자인입니다'
+      note: '정책의 일관성과 신뢰성이 연구 현장의 최고 동기부여'
     },
-    // 07. timeline
+    // 12. quote
+    {
+      layout: 'quote', chapter: 2,
+      bg: 'photo-1602052577122-f73b9710adba', photo: 'Trnava University',
+      eyebrow: '연구자 중심의 철학',
+      quote: '연구자가 자율과 신뢰 속에서<br><em>오직 연구에만 몰입하는 환경</em>이 최고의 정책이다',
+      by: 'R&D GOVERNANCE PHILOSOPHY · 2026'
+    },
+    // 13. compare
+    {
+      layout: 'compare', chapter: 3,
+      bg: 'photo-1498084393753-b411b2d26b34', photo: 'Marc-Olivier Jodoin',
+      eyebrow: '사업화와 스케일업',
+      title: '실험실 기술(Lab)에서 글로벌 시장(Market)으로',
+      left: {
+        title: '기존 성과 확산 모델',
+        icon: 'solar:document-text-bold',
+        items: ['단순 기술이전(TLO) 및 특허 라이선싱 계약 체결', '죽음의 계곡(Death Valley) 극복 지원 체계 부족', '연구실 서랍에 갇히는 장롱 특허 다수 양산']
+      },
+      right: {
+        title: '차세대 딥테크 스케일업',
+        icon: 'solar:rocket-2-bold',
+        items: ['공공기술 기반 딥테크 유망 스타트업 창업 지원', '대형 스케일업 펀드 및 실증(PoC) 테스트베드 연계', '글로벌 유니콘 도약을 위한 패키지형 후속 투자']
+      },
+      note: '연구 성과가 국가 경제 성장 동력과 미래 신산업으로 직결되는 가치사슬 구축'
+    },
+    // 14. timeline
     {
       layout: 'timeline', chapter: 3,
-      bg: 'photo-1777816466516-16e1976e43e9', photo: 'SiravitPlug',
-      eyebrow: '추진 일정',
-      title: '미래를 향한 마일스톤',
+      bg: 'photo-1517976487492-5750f3195933', photo: 'SpaceX',
+      eyebrow: '미래 10년 마일스톤',
+      title: '대한민국 R&D 3단계 도약 로드맵',
       items: [
-        { time: 'PHASE 01', label: '기반 다지기', desc: '핵심 아젠다 도출 및 스토리 아키텍처 완성' },
-        { time: 'PHASE 02', label: '디자인 고도화', desc: '시네마틱 템플릿 결합 및 텍스트 1줄 튜닝' },
-        { time: 'PHASE 03', label: '완성 및 배포', desc: '통합 허브 연동 및 인터랙티브 프리뷰 배포', em: true }
+        { time: '2026~2027', label: '제도 안착기', desc: '임무지향 기획 체계 확립 및<br>예타·평가 혁신 제도 현장 정착' },
+        { time: '2028~2030', label: '성과 가속기', desc: '12대 전략기술 핵심성과 도출 및<br>글로벌 공동연구 결실 창출' },
+        { time: '2031~이후', label: '글로벌 리딩', desc: '세계 과학기술 5대 강국 도약 및<br>초격차 기술 주권 영구 확보', em: true }
       ],
-      note: '체계적인 단계별 실행으로 완성도를 극대화합니다'
+      note: '단기 성과를 넘어 국가 100년의 미래를 설계하는 체계적 실행'
     },
-    // 08. closing
+    // 15. closing
     {
       layout: 'closing', chapter: 3,
-      bg: 'photo-1518770660439-4636190af475', photo: 'Unsplash',
-      eyebrow: 'THE FUTURE STARTS NOW',
-      title: '미래를 움직이는 프레젠테이션',
-      sub: '기술과 감동이 결합된 시네마틱 경험으로 비전을 현실로 만드십시오',
-      chips: ['시네마틱 비주얼', '인터랙티브 탭 점프', '완벽한 가독성', '미래형 프레젠테이션']
+      bg: 'photo-1566893298691-bfd8e0e62e10', photo: 'Dhanura Munasinghe',
+      eyebrow: 'THE FUTURE OF K-R&D',
+      title: '과학기술 5대 강국을 향한<br><em>대한민국의 담대한 도전</em>',
+      sub: '자율과 신뢰의 연구 생태계에서 탄생하는 초격차 기술이 미래를 주도합니다',
+      chips: ['임무지향 기획', '혁신·도전형 R&D', '연구자 중심 제도', '12대 국가전략기술', '글로벌 기술주권']
     }
   ]
 };
@@ -322,8 +415,8 @@ const LAYOUTS = {
       ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
 };
 
-const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
-const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=1920&q=85&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.3),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.2),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
 
 function setBg(s) {
   const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
