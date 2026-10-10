@@ -1,11 +1,11 @@
+<!-- 시네마틱 발표자료: 위성이 먼저 보는 재난 (8장) -->
 <!DOCTYPE html>
-<!-- 시네마틱 발표자료 스킬 템플릿: DECK 객체만 바꿔 새 덱을 만든다(레이아웃 8종 예시) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="data:,">
-<title>발표 제목</title>
+<title>위성이 먼저 보는 재난</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 <style>
@@ -186,78 +186,79 @@ body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-se
    - chapter: DECK.chapters 인덱스(0부터). 상단 바의 활성 탭과 게이지를 결정한다.
    - reveal: 슬라이드별로 'auto' | 'click' 덮어쓰기 가능. */
 const DECK = {
-  brand: { name: 'BRAND', icon: 'solar:target-bold' },
-  accent: '#4d9fff',
+  brand: { name: 'SAT EYE', icon: 'solar:planet-bold' },
+  accent: '#4dc3ff',
   reveal: 'auto',
-  chapters: ['첫 번째 챕터', '두 번째 챕터', '세 번째 챕터', '네 번째 챕터'],
+  chapters: ['문제 인식', '분석 기술', '적용 방안', '결론'],
   slides: [
     { layout: 'cover', chapter: 0,
-      bg: 'photo-1779444480590-9bf6f021d5d4', photo: 'Avtar Singh',
-      eyebrow: 'EYEBROW · 2026',
-      title: '발표 제목은<br>두 줄 이내로',
-      sub: '한 문장짜리 부제 — 이 발표가 무엇을 해결하는지',
-      meta: '발표자 · 날짜' },
+      bg: 'photo-1446776811953-b23d57bd21aa', photo: 'NASA',
+      eyebrow: '재난안전 · 원격탐사 · 2026',
+      title: '위성이 먼저 보는<br><em>재난</em>',
+      sub: '변화탐지로 피해 범위를 신속하게 판독하는 방법.',
+      meta: '국립재난안전연구원 · 2026. 10.' },
 
     { layout: 'bullets', chapter: 0,
-      bg: 'photo-1483478550801-ceba5fe50e8e', photo: 'Rodion Kutsaiev',
-      eyebrow: '작은 파란 라벨',
-      title: '아이콘 불릿 — 최대 4줄',
+      bg: 'photo-1580106815433-a5b1d1d53d85', photo: 'Paul Hanaoka',
+      eyebrow: '문제 인식',
+      title: '재난 직후,<br>가장 부족한 것은 정보',
       items: [
-        { icon: 'solar:bell-bing-bold', text: '한 줄짜리 문장으로 짧게' },
-        { icon: 'solar:window-frame-bold', text: '아이콘은 Iconify Solar 세트 권장' },
-        { icon: 'solar:star-bold', text: '마지막 줄은 em: true로 결론 강조', em: true }
+        { icon: 'solar:map-point-bold', text: '피해 범위를 한눈에 파악하기 어렵다.' },
+        { icon: 'solar:clock-circle-bold', text: '현장 접근이 막히면 조사가 늦어진다.' },
+        { icon: 'solar:eye-bold', text: '위성은 접근 없이 넓은 지역을 본다.', em: true }
       ] },
 
-    { layout: 'stats', chapter: 1,
-      bg: 'photo-1499184949561-704bad5f6cd6', photo: 'freestocks',
-      eyebrow: '숫자로 보면',
-      title: '큰 숫자 2~3개',
-      items: [
-        { value: '47', unit: '초', label: '숫자가 뜻하는 것' },
-        { value: '3', unit: '배', label: '라벨은 한 줄로' }
-      ],
-      note: '출처 · 통계는 반드시 출처를 note에' },
-
     { layout: 'flow', chapter: 1,
-      bg: 'photo-1565634915346-05e384b0c3ae', photo: 'Kelvin Lutan',
-      eyebrow: '과정',
-      title: '01 → 02 → 03 단계 흐름',
+      bg: 'photo-1451187580459-43490279c0fa', photo: 'NASA',
+      eyebrow: '분석 절차',
+      title: '영상에서 피해 지도까지',
       steps: [
-        { label: '첫 단계', desc: '짧은 설명' },
-        { label: '두 번째', desc: '짧은 설명' },
-        { label: '세 번째', desc: '짧은 설명' }
+        { label: '영상 수집', desc: '재난 전후 위성영상을<br>확보한다.' },
+        { label: '변화탐지', desc: '전후 영상을 비교해<br>달라진 곳을 찾는다.' },
+        { label: '피해 판독', desc: '변화 영역을 분류해<br>피해 지도로 만든다.' }
       ],
-      note: '하단 캡션은 선택 사항' },
+      note: '광학과 SAR 영상을 목적에 맞게 조합한다.' },
 
-    { layout: 'compare', chapter: 2,
-      bg: 'photo-1615914143778-1a1a6e50c5dd', photo: 'Vadim Bozhko',
+    { layout: 'compare', chapter: 1,
+      bg: 'photo-1516382799247-87df95d790b7', photo: 'Agence Olloweb',
       eyebrow: '비교',
-      title: 'A와 B',
-      left:  { title: '기존 방식', icon: 'solar:close-circle-bold', items: ['왼쪽은 흐리게', '항목 3개 이내'] },
-      right: { title: '새 방식', icon: 'solar:check-circle-bold', items: ['오른쪽이 강조(액센트)', '항목 3개 이내'] } },
+      title: '현장조사와 위성 기반 분석',
+      left:  { title: '현장조사', icon: 'solar:close-circle-bold', items: ['인력 투입 후 순차 조사', '접근 불가 지역은 공백', '결과 취합에 시간 소요'] },
+      right: { title: '위성 기반 분석', icon: 'solar:check-circle-bold', items: ['넓은 지역을 동시 관측', '접근 불가 지역도 확인', '반복 관측으로 변화 추적'] },
+      note: '위성 분석은 현장조사를 대체하지 않고 보완한다.' },
 
     { layout: 'quote', chapter: 2,
-      bg: 'photo-1544039161-b0c20826c6f6', photo: 'Marek Szturc',
-      quote: '핵심 메시지 한 문장,<br><em>강조할 단어</em>는 em으로',
-      by: '출처 또는 라벨' },
+      bg: 'photo-1591552265137-99c59d9f4927', photo: 'Vita Leonis',
+      quote: '재난 대응의 속도는<br><em>얼마나 빨리 보느냐</em>에서 갈린다.',
+      by: '핵심 메시지' },
 
-    { layout: 'timeline', chapter: 3,
-      bg: 'photo-1501139083538-0139583c060f', photo: 'Aron Visuals',
-      eyebrow: '일정',
-      title: '타임라인 3~5개',
+    { layout: 'timeline', chapter: 2,
+      bg: 'photo-1583521214690-73421a1829a9', photo: 'Wesley Tingey',
+      eyebrow: '적용 로드맵',
+      title: '단계별 도입 방향',
       items: [
-        { time: 'Q1', label: '착수', desc: '짧은 설명' },
-        { time: 'Q2', label: '개발', desc: '짧은 설명', em: true },
-        { time: 'Q3', label: '검증', desc: '짧은 설명' },
-        { time: 'Q4', label: '확산', desc: '짧은 설명' }
+        { time: '1단계', label: '기반 구축', desc: '영상 수집 체계<br>표준화' },
+        { time: '2단계', label: '자동 탐지', desc: '변화탐지 모델<br>개발과 검증', em: true },
+        { time: '3단계', label: '현장 연계', desc: '지자체 대응<br>업무 연동' },
+        { time: '4단계', label: '고도화', desc: '다중 센서<br>융합 운영' }
+      ] },
+
+    { layout: 'bullets', chapter: 3,
+      bg: 'photo-1655204903983-73007f15cb3e', photo: 'iSawRed',
+      eyebrow: '과제',
+      title: '넘어야 할 세 가지',
+      items: [
+        { icon: 'solar:database-bold', text: '재난 유형별 학습 자료가 부족하다.' },
+        { icon: 'solar:cloud-bold', text: '구름과 기상 조건이 관측을 제한한다.' },
+        { icon: 'solar:users-group-rounded-bold', text: '현장 기관과의 연계 체계가 필요하다.', em: true }
       ] },
 
     { layout: 'closing', chapter: 3,
-      bg: 'photo-1645665804453-07890224d94f', photo: 'Clay LeConey',
+      bg: 'photo-1534298261662-f8fdd25317db', photo: 'Brad Knight',
       eyebrow: '결론',
-      title: '마무리 한 줄,<br><em>행동</em>으로 끝내기',
-      sub: '청중이 내일 할 일 하나',
-      chips: ['요약 1', '요약 2', '요약 3'] }
+      title: '재난 대응의 첫 장면을<br><em>위성</em>이 연다.',
+      sub: '다음 재난에서 가장 먼저 확인할 정보를 지금 준비한다.',
+      chips: ['변화탐지', '신속 판독', '현장 연계'] }
   ]
 };
 

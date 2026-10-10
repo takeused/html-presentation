@@ -24,3 +24,5 @@
 - shoot.py 강화: ① Pretendard FontFace 실제 로드 여부(document.fonts.check는 폰트가 아예 없어도 true라 못 씀) ② Range 기준 글자 영역의 화면 이탈·잘림 ③ nowrap 글자가 자기 카드(.step/.stat/.tl-item/.panel)보다 넓은지. 이동은 go(i)로 해서 click reveal 모드에서도 동작.
 - 폰트가 Pretendard로 돌아오자 LangGraph 7번(flow) 설명 3개가 420px 카드를 넘어 옆 카드와 붙음 → 내용은 그대로 두고 의미 단위 <br>로 2줄 분리. SKILL.md에 "flow desc 18자 초과 시 <br>" 규칙 추가.
 - 검증: langgraph/deep_work/ai_learning_talent 3개 덱과 템플릿 모두 폰트 OK, 넘침 0, 콘솔 오류 0. 챕터 탭 1~4 → 1/4/7/9번, 브랜드 → 1번, hashchange 동작 확인.
+
+- 2026-10-10: 위성 재난 덱(8장) 제작 중 사용자 피드백 반영. ① quote 장식 따옴표 제거(레거시·프로젝트 template.html에 `.quote::before`가 남아 있었음, 인터랙티브 템플릿은 이미 제거) ② 배경이 뭉개져 보인다는 지적 → 이미지 w=1920/q=75를 w=2560/q=88로, brightness .9→.95, saturate .85→.9, 비네팅 .28/.7/.92→.24/.62/.88로 소폭 조정(본문 가시성 유지) ③ Pretendard 로드 실패는 작업 환경이 CDN에 접속하지 못해서였고 링크 자체는 정상. 폐쇄망 발표 시 로컬 폰트로 전환 필요. ④ 첫 줄 `<!-- 시네마틱 발표자료: 주제 (N장) -->` 규칙은 템플릿에 없어서 덱 생성 시 직접 추가.
