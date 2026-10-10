@@ -814,7 +814,7 @@
       <span class="status-dot"></span>
       <a href="index.html" style="color:inherit;text-decoration:none;">Signal Presentation Hub</a>
       <span style="opacity: 0.5;">|</span>
-      <span id="deckCountBadge" style="font-family: var(--f-mono);">14 DECKS</span>
+      <span id="deckCountBadge" style="font-family: var(--f-mono);">16 DECKS</span>
     </div>
     <div class="utility-right">
       <span style="font-size: 11px; color: var(--ink-subtle);">Press <kbd style="font-family: var(--f-mono); background: var(--canvas); border: 1px solid var(--hairline); padding: 1px 4px; border-radius: 3px;">/</kbd> to search</span>
@@ -902,7 +902,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 14</span>
+      <span class="viewer-pos" id="viewerPos">01 / 16</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -926,8 +926,17 @@
       '라이프': 'var(--cat-life)'
     };
 
-    // 발표 목록 데이터 (총 14개)
+    // 발표 목록 데이터 (총 16개)
     const DECKS = [
+      {
+        id: 'daily-life-ai',
+        src: 'daily_life_ai_cinematic_presentation.html',
+        cat: 'AI',
+        title: '일상생활 속 AI 200% 활용법',
+        desc: '모닝 루틴, 스마트홈, 10초 프롬프트 공식부터 안전 수칙까지. 일상의 삶의 질을 10배 높이는 현실적인 AI 비서 활용 가이드 시네마틱 12장.',
+        slides: '12장',
+        isCinematic: true
+      },
       {
         id: 'disaster-rnd-ai',
         src: 'disaster_rnd_ai_cinematic_presentation.html',
