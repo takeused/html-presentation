@@ -17,3 +17,10 @@
 - 구조: 덱은 레포 관례대로 단일 HTML. 슬라이드는 JS DECK 객체(레이아웃 + 문자열)만 편집하면 되게 하고 렌더 함수가 HTML 생성 → 기존 스킬의 "템플릿 리터럴 내 백틱" 사고 원천 차단.
 - reveal: 기본은 영상처럼 자동 순차 등장(auto). 발표자가 클릭으로 하나씩 보이고 싶으면 reveal:'click'.
 - 데모 주제: "딥워크 — 산만한 시대에 집중을 되찾는 법"(사진 연출이 잘 맞고 범용적). 통계는 Gloria Mark 연구(화면 평균 집중 47초, 중단 후 복귀 약 23분)만 사용.
+
+## 2026-10-10 (오후) 외부 작업 반영 — cinematic-interactive-presentation
+- 다른 세션에서 새 스킬 `cinematic-interactive-presentation`(챕터 탭 클릭 점프, 1줄 타이포, 타임라인 글래스 카드)을 만들고 기존 `cinematic-presentation`은 레거시로 표시함. template.html은 langgraph_cinematic_presentation.html과 데이터만 다른 동일 엔진.
+- 발견한 회귀: 폰트를 Google Fonts `family=Pretendard`로 바꿨는데 Google에는 Pretendard가 없음(JetBrains Mono만 응답) → 시스템 폰트로 조용히 대체. jsDelivr Pretendard로 복구, 미사용 JetBrains Mono 제거. favicon 404 스텁과 prefers-reduced-motion 블록도 복구.
+- shoot.py 강화: ① Pretendard FontFace 실제 로드 여부(document.fonts.check는 폰트가 아예 없어도 true라 못 씀) ② Range 기준 글자 영역의 화면 이탈·잘림 ③ nowrap 글자가 자기 카드(.step/.stat/.tl-item/.panel)보다 넓은지. 이동은 go(i)로 해서 click reveal 모드에서도 동작.
+- 폰트가 Pretendard로 돌아오자 LangGraph 7번(flow) 설명 3개가 420px 카드를 넘어 옆 카드와 붙음 → 내용은 그대로 두고 의미 단위 <br>로 2줄 분리. SKILL.md에 "flow desc 18자 초과 시 <br>" 규칙 추가.
+- 검증: langgraph/deep_work/ai_learning_talent 3개 덱과 템플릿 모두 폰트 OK, 넘침 0, 콘솔 오류 0. 챕터 탭 1~4 → 1/4/7/9번, 브랜드 → 1번, hashchange 동작 확인.
