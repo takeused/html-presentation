@@ -1,10 +1,11 @@
-# 체크리스트 — 외부 작업 반영 (2026-10-10 오후)
+# 체크리스트 — 브리핑 강의형 발표 스타일 (2026-10-10 밤)
 
-- [x] 변경 현황 파악 (새 스킬, LangGraph·AI 인재상 덱, index 시네마틱 필터)
-- [x] 새 템플릿 vs 검증된 엔진 비교 → 폰트·favicon·reduced-motion 회귀 발견
-- [x] shoot.py에 폰트·넘침·카드 폭 초과 점검 추가 (+ 오탐 수정, 의도적 넘침으로 검출 확인)
-- [x] 템플릿·LangGraph 덱 폰트 링크 수정
-- [x] LangGraph 7번 카드 폭 초과 수정
-- [x] 챕터 탭 클릭 점프 동작 확인
-- [x] SKILL.md 규칙 반영
+레퍼런스: youtube AHlWV-nI9yo (조코딩 AI 리터러시 특강 1편)
+
+- [x] 영상 프레임 추출·스타일 분석
+- [x] 새 스킬 `.agents/skills/briefing-lecture-presentation/` (template.html, SKILL.md, scripts/shoot.py)
+- [x] 데모 덱 `focus_briefing_presentation.html` 작성
+- [x] shoot.py 검증 (폰트 OK, 넘침 0, errors [])
+- [x] 캡처 눈으로 확인 (레퍼런스와 비교)
+- [x] index.html 허브 등록
 - [x] 커밋
