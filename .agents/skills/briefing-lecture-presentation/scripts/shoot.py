@@ -23,6 +23,23 @@ OVERFLOW = """() => {
   return [...new Set(bad)].slice(0, 5);
 }"""
 
+# 한 줄로 끝나야 하는 카드 제목·선택지 문장·수치 라벨이 저절로 두 줄 이상이 된 것을 찾는다(<br>로 일부러 나눈 것은 제외)
+# 넘침은 아니어서 OVERFLOW로는 안 잡히지만, 마지막 단어 하나만 아랫줄에 남는 어색한 배치가 된다
+WRAP = """() => {
+  const bad = [];
+  document.querySelectorAll('#slide :is(.text h3,.opt .k,.opt .t,.opt .d,.metric .cap,.scard .v,.scard .l,.bcol .val,.contents .t,.section .stitle)').forEach(el => {
+    if (el.querySelector('br') || !el.textContent.trim()) return;
+    const rg = document.createRange(); rg.selectNodeContents(el);
+    // 크기가 다른 글자(<small> 단위)는 top이 달라도 세로로 겹치면 같은 줄로 본다
+    let lines = 0, bottom = -1e9;
+    [...rg.getClientRects()].filter(r => r.width > 1).sort((x, y) => x.top - y.top).forEach(r => {
+      if (r.top >= bottom - 2) { lines++; bottom = r.bottom; } else bottom = Math.max(bottom, r.bottom);
+    });
+    if (lines > 1) bad.push(`${el.className || el.tagName} ${lines}줄: "${el.textContent.trim().slice(0, 30)}"`);
+  });
+  return bad.slice(0, 5);
+}"""
+
 # document.fonts.check는 등록된 폰트가 없어도 true를 돌려주므로, 실제 로드된 FontFace를 확인한다
 FONT = """() => [...document.fonts].some(f => f.family.replace(/["']/g, '') === 'Pretendard' && f.status === 'loaded')"""
 
@@ -37,14 +54,17 @@ async def main():
         await pg.evaluate("document.fonts.ready")
         font = await pg.evaluate(FONT)
         print("Pretendard 웹폰트:", "OK" if font else "로드 안 됨 — 폰트 링크 확인(Google Fonts에는 Pretendard가 없음)")
-        problems = 0
+        problems = wraps = 0
         for i in range(1, n + 1):
             await pg.evaluate(f"go({i - 1})")          # reveal 모드와 무관하게 슬라이드 단위로 이동
             await pg.wait_for_timeout(2600)
             await pg.screenshot(path=f"{out}/s{i:02d}.png")
             for line in await pg.evaluate(OVERFLOW):
                 problems += 1; print(f"  s{i:02d} 넘침: {line}")
+            for line in await pg.evaluate(WRAP):
+                wraps += 1; print(f"  s{i:02d} 줄바꿈: {line}")
         print("넘침:", problems, "건")
+        print("줄바꿈 경고:", wraps, "건" + (" — 한 줄이어야 할 요소가 두 줄이 됨. 문장을 줄이거나 의미 단위로 <br>을 넣는다" if wraps else ""))
         print("errors:", errs)
         await b.close()
 
