@@ -6,7 +6,7 @@ from playwright.async_api import async_playwright
 
 url, n, out = sys.argv[1], int(sys.argv[2]), sys.argv[3]
 
-# #slide 안의 실제 글자 영역(Range 기준)이 무대 안전 영역(40~1880px) 밖으로 나가거나, 잘린 요소를 찾는다
+# #slide 안의 실제 글자 영역(Range 기준)이 무대 안전 영역(40~1880px)이나 자기 카드 폭을 넘거나, 잘린 요소를 찾는다
 OVERFLOW = """() => {
   const bad = [];
   document.querySelectorAll('#slide *').forEach(el => {
@@ -14,8 +14,11 @@ OVERFLOW = """() => {
     const rg = document.createRange(); rg.selectNodeContents(el);
     const r = rg.getBoundingClientRect();
     const clipped = el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflow !== 'visible';
-    if (r.left < 40 || r.right > 1880 || clipped)
-      bad.push(`${el.className || el.tagName}: ${Math.round(r.left)}~${Math.round(r.right)}px "${el.textContent.trim().slice(0, 24)}"`);
+    const card = el.closest('.step,.stat,.tl-item,.panel');   // nowrap 글자가 자기 카드 폭을 넘으면 옆 카드와 겹친다
+    const cr = card && card.getBoundingClientRect();
+    const tag = `${el.className || el.tagName}: ${Math.round(r.left)}~${Math.round(r.right)}px "${el.textContent.trim().slice(0, 24)}"`;
+    if (r.left < 40 || r.right > 1880 || clipped) bad.push(tag);
+    else if (cr && (r.left < cr.left - 2 || r.right > cr.right + 2)) bad.push(`카드 폭 초과 ${Math.round(r.width)}>${Math.round(cr.width)}px · ${tag}`);
   });
   return [...new Set(bad)].slice(0, 5);
 }"""
