@@ -1,12 +1,12 @@
 ---
 name: briefing-lecture-presentation
-description: '"브리핑 발표자료", "강의 슬라이드", "강의형 발표", "흰 배경 발표자료", "데이터 브리핑", "인사이트 강의 덱", "조코딩 스타일", "AI 리터러시 강의 스타일" 등 흰 배경에 큰 수치·표·막대그래프로 근거를 보여 주는 강의형 발표 요청 시 사용하는 스킬. 네이비 격자 파트 표지, 검정 섹션 구분, 흰 본문(가는 제목+굵은 강조, 그라디언트 큰 수치 카드, 표·선택지 카드, 출처 줄, 결론 한 줄), 하단 챕터 바가 들어간 1920x1080 단일 HTML 덱을 만든다. 실사 사진 배경의 영화 같은 덱은 cinematic-interactive-presentation을 쓴다.'
+description: '"브리핑 발표자료" 요청 시 실행하는 스킬. "브리핑 발표자료 만들어줘", "브리핑 덱", "브리핑 스타일로", "브리핑 슬라이드", "데이터 브리핑", "강의 발표자료", "강의형 슬라이드", "흰 배경 발표자료", "조코딩 스타일" 등도 같은 요청으로 본다. 흰 배경에 큰 수치·표·막대그래프로 근거를 보여 주는 강의형 1920x1080 단일 HTML 덱을 만든다(네이비 격자 파트 표지, 검정 섹션 구분, 가는 제목+굵은 강조, 그라디언트 수치 카드, 출처 줄, 결론 한 줄, 하단 챕터 바). 실사 사진 배경의 영화 같은 덱("시네마틱 발표자료")은 cinematic-interactive-presentation을 쓴다.'
 ---
 
 # Briefing Lecture Presentation
 
 흰 배경 강의형 "데이터 브리핑" 덱을 만드는 스킬이다. 레퍼런스는 조코딩 AI 리터러시 특강 1편(youtube AHlWV-nI9yo)의 발표 화면이다.
-`template.html`을 복사해서 맨 아래 `DECK` 객체만 채우면 된다. 사진·아이콘 CDN이 필요 없고, 폰트(Pretendard)만 불러온다.
+이 스킬 폴더의 `template.html`을 복사해서 맨 아래 `DECK` 객체만 채우면 된다. 아래에서 `<스킬 폴더>`는 이 SKILL.md가 있는 폴더다(전역 설치 시 `~/.claude/skills/briefing-lecture-presentation`). 사진·아이콘 CDN이 필요 없고, 폰트(Pretendard)만 불러온다.
 
 ## 1. 스타일
 
@@ -19,10 +19,10 @@ description: '"브리핑 발표자료", "강의 슬라이드", "강의형 발표
 ## 2. 제작 순서
 
 1. 주제와 분량을 확인한다. 기본은 10~15장, 챕터 3~4개, 표지 1장 + 목차 1장 + 챕터마다 섹션 1장 + 마무리 1장이다.
-2. `template.html`을 프로젝트 루트에 `<주제>_briefing_presentation.html`로 복사하고, 첫 줄을 `<!-- 브리핑 강의형 발표자료: <주제> (<N>장) -->`로, `<title>`을 덱 제목으로 바꾼다.
+2. `<스킬 폴더>/template.html`을 작업 폴더에 `<주제>_briefing_presentation.html`로 복사하고, 첫 줄을 `<!-- 브리핑 강의형 발표자료: <주제> (<N>장) -->`로, `<title>`을 덱 제목으로 바꾼다.
 3. `DECK`의 `brand{name, contact}`, `eyebrow`, `accent`, `accent2`, `chapters[]`, `slides[]`를 채운다. 엔진 CSS와 렌더링 엔진 블록은 고치지 않는다.
 4. 검증한다(5장 참고).
-5. `index.html`의 `DECKS` 맨 위에 등록한다. `id`는 기존과 겹치지 않게 짓고 `isCinematic: false`로 둔다.
+5. 작업 폴더에 발표 허브 `index.html`(DECKS 배열)이 있으면 맨 위에 등록한다. `id`는 기존과 겹치지 않게 짓고 `isCinematic: false`로 둔다.
 
 ## 3. 레이아웃 7종 (slides[].layout)
 
@@ -56,9 +56,11 @@ description: '"브리핑 발표자료", "강의 슬라이드", "강의형 발표
 ## 5. 검증
 
 ```bash
-python -I .agents/skills/briefing-lecture-presentation/scripts/shoot.py http://localhost:8765/<파일명>.html <슬라이드수> <출력폴더>
+python -m http.server 8765        # 작업 폴더에서 (이미 떠 있으면 생략)
+python -I <스킬 폴더>/scripts/shoot.py http://localhost:8765/<파일명>.html <슬라이드수> <출력폴더>
 ```
 
+- shoot.py에는 Playwright와 Chrome이 필요하다(`pip install playwright`).
 - `Pretendard 웹폰트: OK`, `넘침: 0 건`, `errors: []`가 나와야 한다. 넘침은 화면 밖(가로 40~1880px, 세로 30~1030px — 하단 챕터 바 위) 이탈, 잘림, 자기 카드 폭 초과를 잡는다.
 - 캡처를 직접 열어 눈으로도 본다. 결론 줄이 출처 줄과 붙거나, 카드 높이가 들쭉날쭉한 것은 자동으로 잡히지 않는다.
 - 외부 접속이 막힌 환경에서는 폰트 점검을 통과할 수 없으니 사용자에게 알린다.
