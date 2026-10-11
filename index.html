@@ -818,7 +818,7 @@
       <span class="status-dot"></span>
       <a href="index.html" style="color:inherit;text-decoration:none;">Presentation Hub</a>
       <span style="opacity: 0.5;">|</span>
-      <span id="deckCountBadge" style="font-family: var(--f-mono);">17 DECKS</span>
+      <span id="deckCountBadge" style="font-family: var(--f-mono);">22 DECKS</span>
     </div>
     <div class="utility-right">
       <span style="font-size: 11px; color: var(--ink-subtle);">Press <kbd style="font-family: var(--f-mono); background: var(--canvas); border: 1px solid var(--hairline); padding: 1px 4px; border-radius: 3px;">/</kbd> to search</span>
@@ -906,7 +906,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 17</span>
+      <span class="viewer-pos" id="viewerPos">01 / 22</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -930,8 +930,17 @@
       '라이프': 'var(--cat-life)'
     };
 
-    // 발표 목록 데이터 (총 21개)
+    // 발표 목록 데이터 (총 22개)
     const DECKS = [
+      {
+        id: 'ai-decision-model',
+        src: 'ai_decision_model_cinematic_presentation.html',
+        cat: 'AI',
+        title: '인공지능 판단모델 (AI Decision)',
+        desc: '생성형 AI의 환각을 넘어 결정적 의사결정을 검증하고 주도하는 차세대 판단모델 아키텍처, 3단계 가드레일, 인간-AI 협업 체계 15장.',
+        slides: '15장',
+        isCinematic: true
+      },
       {
         id: 'ai-intelligence-2026-glass',
         src: 'ai_intelligence_2026_presentation.html',
