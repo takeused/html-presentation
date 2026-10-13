@@ -1,1 +1,8 @@
 .git
+.agents
+.claude
+.wrangler
+checklist.md
+context-notes.md
+project_instructions.md
+install_global_skill.*
