@@ -337,7 +337,33 @@ const DECK = {
       ],
       note: 'Qwen 2.5 또는 EXAONE 등 한국어 사전학습 가중치를 결합한 로컬 엔진 선별 필수'
     },
-    // 11. timeline
+    // 11. compare
+    {
+      layout: 'compare', chapter: 3,
+      bg: 'photo-1516321318423-f06f85e504b3', photo: 'Christina',
+      eyebrow: '한국어 3대 오분류 실전 심층 사례',
+      title: '단어 하나와 뉘앙스로 뒤바뀌는 판정 실패',
+      left: {
+        title: '조사·어미 및 종결형 오분류',
+        icon: 'solar:pen-new-square-bold',
+        items: [
+          '조사 차이: "환불도 되나요(단순문의)" vs "환불만 되나요(불만 클레임)"',
+          '종결어미 비꼼: "이게 되겠냐?"(반어적 거부)를 긍정 승인으로 오판',
+          '서술어 전도: "좋기는 개뿔", "잘도 되겠다"의 명시적 비판 누락'
+        ]
+      },
+      right: {
+        title: '반어법 및 한영 복합어 왜곡',
+        icon: 'solar:masks-bold',
+        items: [
+          '반어 역설: "참 친절도 하셔라(★1점)" 표면 긍정어에 속아 만족 처리',
+          '이중 부정: "배송이 안 온 건 아닌데..." 완곡한 불만의 긍정 오판',
+          '한영 복합어: "개킹받네", "서버 렉 터짐" 토크나이저 분절로 문맥 파괴'
+        ]
+      },
+      note: '글로벌 모델의 표면 토큰 매칭 한계를 극복하기 위해 한국어 문맥 가중치 결합이 필수적입니다'
+    },
+    // 12. timeline
     {
       layout: 'timeline', chapter: 3,
       bg: 'photo-1637166185518-058f5896a2e9', photo: 'MJH SHIKDER',
@@ -350,7 +376,7 @@ const DECK = {
       ],
       note: '체계적인 단계별 검증을 통해 다운타임 없이 안전하게 판정 인프라를 구축합니다'
     },
-    // 12. closing
+    // 13. closing
     {
       layout: 'closing', chapter: 3,
       bg: 'photo-1559090336-72f0d1015545', photo: 'Elmer Cañas',
