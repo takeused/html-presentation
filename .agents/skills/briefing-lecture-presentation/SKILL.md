@@ -30,7 +30,7 @@ description: '"브리핑 발표자료" 요청 시 실행하는 스킬. "브리�
 4. 검증한다(5장 참고).
 5. 작업 폴더에 발표 허브 `index.html`(DECKS 배열)이 있으면 맨 위에 등록한다. `id`는 기존과 겹치지 않게 짓고 `isCinematic: false`로 둔다.
 
-## 3. 레이아웃 7종 (slides[].layout)
+## 3. 레이아웃 13종 (slides[].layout)
 
 | 레이아웃 | 필드 | 메모 |
 |---|---|---|
@@ -39,6 +39,12 @@ description: '"브리핑 발표자료" 요청 시 실행하는 스킬. "브리�
 | section | chapter, title, meta[], num? | num을 비우면 챕터 번호(01…) |
 | split | chapter, title, left, right, src, take | 좌측 카드 + 우측 표/선택지 |
 | bars | chapter, title, items[{label, value, unit, em, show?}], src, take, h? | 막대 높이는 `value`의 최댓값 기준 비례(기본 300px). 강조 막대만 `em`. 화면 숫자는 `show`(없으면 `value`)와 `unit` |
+| deltabars | chapter, title, items[{label, value, unit, em}], delta, src, take | 두 비교 막대 사이에 옐로우 캡슐 차이 배지(예: `11.2%p 차이`)를 띄움 |
+| level4 | chapter, title, items[{lv, main, sub, em?}], src, take | 4분할 가로 레벨 카드(153초 지점: 1~4레벨, 3레벨 강조) |
+| cards3 | chapter, title, items[{h, p}], src, take | 3분할 텍스트 콘셉트 카드(162초: 자신 있게/매끄럽게/출처까지) |
+| flow3 | chapter, title, items[{text, em?}], src, take | 가로 3단계 화살표 플로우(`[카드] ▶ [카드] ▶ [강조 카드]`) |
+| fulltable | chapter, title, cols, head[], rows[][], src, take | 전폭 6행 아젠다 테이블(Part/무엇을/왜 여기인가) |
+| cquote | chapter, title, quote, paras[], src, take | 중앙 대형 인용문과 2단 서술 설명문 |
 | quotes | chapter, title, items[{quote, desc, by}], src, take | 카드 2개. 인용은 「」로 감싼다 |
 | cards | chapter, title, items[{value, unit, label, desc}], src, take | 수치 카드 3개. `value`에 `'10 → 58'`, `'67 : 32'` 같은 비교도 쓸 수 있다(`unit: ''`) |
 

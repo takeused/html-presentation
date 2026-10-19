@@ -88,6 +88,48 @@ html,body{width:100%;height:100%;overflow:hidden;background:#fff;font-family:"Pr
 .scard .l{margin-top:30px;font-size:31px;font-weight:700;color:var(--ink)}
 .scard .d{margin-top:16px;font-size:22px;line-height:1.65;color:var(--mu)}
 
+/* delta-bars: 레퍼런스 (두 막대 사이 옐로우 배지) */
+.delta-bars-wrap{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:80px;height:100%;width:100%;max-width:900px;padding-bottom:10px}
+.delta-bars-wrap .bcol{width:190px}
+.delta-bars-wrap .bcol .b{width:190px;border-radius:24px}
+.delta-badge{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);background:#ffd54a;color:#15171c;font-size:22px;font-weight:800;padding:12px 26px;border-radius:999px;box-shadow:0 12px 28px rgba(0,0,0,.1);z-index:2;white-space:nowrap}
+
+/* level4: 레퍼런스 (가로 4분할 레벨 카드) */
+.level4{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;align-items:stretch}
+.lcard{background:var(--card);border-radius:26px;padding:46px 34px;display:flex;flex-direction:column;border:2px solid transparent;transition:all .3s}
+.lcard .lv{font-size:36px;font-weight:800;color:var(--ink)}
+.lcard .maintxt{margin-top:28px;font-size:25px;font-weight:700;color:var(--ink2);line-height:1.45}
+.lcard .subtxt{margin-top:36px;font-size:20px;line-height:1.65;color:var(--mu);flex:1}
+.lcard.em{background:#fff;border-color:var(--ac);box-shadow:0 18px 45px rgba(var(--ac-rgb),.14)}
+.lcard.em .lv{color:var(--ac)}
+
+/* cards3: 레퍼런스 (3콘셉트 텍스트 카드) */
+.cards3{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;align-items:stretch}
+.c3card{background:var(--card);border-radius:28px;padding:54px 44px;display:flex;flex-direction:column}
+.c3card .h{font-size:38px;font-weight:800;color:var(--ink)}
+.c3card .p{margin-top:28px;font-size:22px;line-height:1.65;color:var(--mu);flex:1}
+
+/* flow3: 레퍼런스 (3단계 화살표 플로우) */
+.flow3{width:100%;display:flex;align-items:center;justify-content:center;gap:20px}
+.flow-box{border:1.5px solid var(--line);border-radius:22px;padding:32px 38px;font-size:25px;font-weight:700;color:var(--ink2);background:#fff;text-align:center;max-width:440px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.03)}
+.flow-arrow{font-size:24px;color:var(--ac);display:flex;align-items:center;justify-content:center;user-select:none}
+.flow-box.em{background:var(--ac);border-color:var(--ac);color:#fff;box-shadow:0 18px 40px rgba(var(--ac-rgb),.28)}
+
+/* fulltable: 레퍼런스 (전폭 6행 아젠다 테이블) */
+.fulltbl{width:100%;max-width:1600px}
+.fulltbl .row{display:grid;align-items:center;padding:0 36px;min-height:70px;font-size:23px;font-weight:600;color:var(--ink2);border-bottom:1px solid #edf0f5}
+.fulltbl .row:nth-child(even){background:var(--stripe)}
+.fulltbl .hd{min-height:54px;border-radius:12px;background:var(--bar);color:#fff;font-size:19px;font-weight:700;margin-bottom:8px;border-bottom:none}
+.fulltbl .c-part{font-weight:700;color:var(--ink)}
+.fulltbl .c-what{color:var(--ac);font-weight:700}
+.fulltbl .c-why{color:var(--mu)}
+
+/* center-quote: 레퍼런스 (중앙 대형 인용 + 2단 설명) */
+.cquote{width:100%;max-width:1480px;text-align:left}
+.cquote .q{font-size:33px;font-weight:800;line-height:1.6;color:var(--ink)}
+.cquote .desc{margin-top:36px;font-size:24px;line-height:1.75;color:var(--mu)}
+.cquote .desc p+p{margin-top:20px}
+
 /* --- 파트 표지 (네이비 격자) --- */
 .part{position:absolute;inset:0;color:#fff;overflow:hidden;
   background:radial-gradient(ellipse 34% 46% at 2% 34%,rgba(36,120,235,.85),transparent 72%),
@@ -257,7 +299,41 @@ const LAYOUTS = {
   quotes: (s, n) => std(s, n, `<div class="quotes">${s.items.map((it, i) =>
       `<div class="qcard" ${n(i + 1)}><div class="q">${it.quote}</div>${it.desc ? `<div class="qd">${it.desc}</div>` : ''}${it.by ? `<div class="by">${it.by}</div>` : ''}</div>`).join('')}</div>`, s.items.length + 1),
   cards: (s, n) => std(s, n, `<div class="cards">${s.items.map((it, i) =>
-      `<div class="scard" ${n(i + 1)}><div class="v grad">${num(it.value, it.unit)}</div><div class="l">${it.label}</div>${it.desc ? `<div class="d">${it.desc}</div>` : ''}</div>`).join('')}</div>`, s.items.length + 1)
+      `<div class="scard" ${n(i + 1)}><div class="v grad">${num(it.value, it.unit)}</div><div class="l">${it.label}</div>${it.desc ? `<div class="d">${it.desc}</div>` : ''}</div>`).join('')}</div>`, s.items.length + 1),
+
+  deltabars: (s, n) => {
+    const max = Math.max(...s.items.map(it => it.value));
+    const barsHtml = s.items.map((it, i) =>
+      `<div class="bcol${it.em ? ' em' : ''}" ${n(i + 1)}><div class="val">${num(it.show ?? it.value, it.unit)}</div><div class="b" style="height:${Math.max(24, it.value / max * 320)}px"></div><div class="lb">${it.label}</div></div>`).join('');
+    return std(s, n, `<div class="delta-bars-wrap">${barsHtml}<div class="delta-badge" ${n(s.items.length + 1)}>${s.delta}</div></div>`, s.items.length + 2);
+  },
+
+  level4: (s, n) => std(s, n, `<div class="level4">${s.items.map((it, i) =>
+    `<div class="lcard${it.em ? ' em' : ''}" ${n(i + 1)}><div class="lv">${it.lv}</div><div class="maintxt">${it.main}</div><div class="subtxt">${it.sub}</div></div>`).join('')}</div>`, s.items.length + 1),
+
+  cards3: (s, n) => std(s, n, `<div class="cards3">${s.items.map((it, i) =>
+    `<div class="c3card" ${n(i + 1)}><div class="h">${it.h}</div><div class="p">${it.p}</div></div>`).join('')}</div>`, s.items.length + 1),
+
+  flow3: (s, n) => {
+    let html = '<div class="flow3">';
+    s.items.forEach((it, i) => {
+      html += `<div class="flow-box${it.em ? ' em' : ''}" ${n(i * 2 + 1)}>${it.text}</div>`;
+      if (i < s.items.length - 1) {
+        html += `<div class="flow-arrow" ${n(i * 2 + 2)}>▶</div>`;
+      }
+    });
+    html += '</div>';
+    return std(s, n, html, s.items.length * 2);
+  },
+
+  fulltable: (s, n) => {
+    const headRow = `<div class="row hd" style="grid-template-columns:${s.cols}">${s.head.map(h => `<span>${h}</span>`).join('')}</div>`;
+    const bodyRows = s.rows.map((r, i) =>
+      `<div class="row" style="grid-template-columns:${s.cols}" ${n(i + 1)}><span class="c-part">${r[0]}</span><span class="c-what">${r[1]}</span><span class="c-why">${r[2]}</span></div>`).join('');
+    return std(s, n, `<div class="fulltbl">${headRow}${bodyRows}</div>`, s.rows.length + 1);
+  },
+
+  cquote: (s, n) => std(s, n, `<div class="cquote"><div class="q" ${n(1)}>${s.quote}</div><div class="desc" ${n(2)}>${s.paras.map(p => `<p>${p}</p>`).join('')}</div></div>`, 3)
 };
 
 function renderBar() {

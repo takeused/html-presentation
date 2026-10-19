@@ -1,0 +1,494 @@
+<!-- 브리핑 강의형 발표자료: AI 시대, 우리는 무엇을 준비해야 할까? (14장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 시대, 우리는 무엇을 준비해야 할까?</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --ac:#2f62f0;            /* 주 강조색 (비비드 일렉트릭 블루) */
+  --ac2:#4cc3f5;           /* 그라디언트 끝색 (스카이 블루) */
+  --ac-rgb:47,98,240;
+  --ink:#15171c; --ink2:#2b2f37; --mu:#5d636e; --dim:#8d939d;
+  --card:#f4f6f9; --line:#e3e7ed; --stripe:#f6f8fb; --bar:#374151;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#fff;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink);word-break:keep-all}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#fff}
+#slide{position:absolute;inset:0}
+.grad{background:linear-gradient(100deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* 순차 등장 */
+[data-s]{opacity:0;transform:translateY(18px);transition:opacity .55s ease var(--d,0s),transform .55s cubic-bezier(.2,.8,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* --- 본문 공통 (흰 배경) --- */
+.std{position:absolute;inset:0;padding:92px 144px 114px;display:flex;flex-direction:column}
+.eyebrow{font-size:26px;font-weight:700;letter-spacing:.01em}
+.title{margin-top:14px;font-size:52px;font-weight:300;line-height:1.32;color:var(--ink2);letter-spacing:-.01em}
+.title b{font-weight:800;color:var(--ink)}
+.body{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;width:100%}
+.src{margin-top:22px;font-size:18px;line-height:1.55;color:var(--dim);text-align:center}
+.take{margin-top:32px;font-size:36px;font-weight:800;color:var(--ink2);text-align:center;letter-spacing:-.01em}
+
+/* split: 좌측 카드 + 우측 표/선택지 */
+.split{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.card{background:var(--card);border-radius:32px;padding:56px 52px;min-height:460px;display:flex;flex-direction:column;justify-content:center}
+.metric{text-align:center}
+.metric .big{font-size:160px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.metric .big small{font-size:76px;font-weight:600;letter-spacing:0;margin-left:6px}
+.metric .cap{margin-top:36px;font-size:32px;font-weight:700;color:var(--ink)}
+.metric .desc{margin-top:14px;font-size:23px;line-height:1.6;color:var(--mu)}
+.text h3{font-size:38px;font-weight:800;color:var(--ink2)}
+.text p{margin-top:32px;font-size:24px;line-height:1.7;color:var(--mu)}
+.text p+p{margin-top:24px}
+
+.tbl{width:100%}
+.tbl .row{display:grid;align-items:center;padding:0 26px;min-height:76px;font-size:23px;font-weight:600;color:var(--ink2)}
+.tbl .row:nth-child(even){background:var(--stripe)}
+.tbl .hd{min-height:50px;border-radius:12px;background:var(--bar);color:#fff;font-size:18px;font-weight:600;margin-bottom:6px}
+.tbl .row>span{padding-right:16px}
+.tbl .row:not(.hd) .v{color:var(--ac);font-weight:700;font-size:26px;font-variant-numeric:tabular-nums}
+.tbl .row:not(.hd) .v.sep{border-left:1px solid #d6dbe4;padding-left:22px}
+.tbl .hd .v.sep{padding-left:23px}
+
+.opts{display:flex;flex-direction:column;gap:18px;width:100%}
+.opt{border:1.5px solid var(--line);border-radius:20px;padding:24px 32px;text-align:left;background:#fff;transition:border-color .2s}
+.opt .k{font-size:20px;font-weight:700;color:var(--ac)}
+.opt .t{margin-top:6px;font-size:26px;font-weight:700;color:var(--ink)}
+.opt .d{margin-top:6px;font-size:19px;color:var(--mu);line-height:1.45}
+.opt.em{background:var(--ac);border-color:var(--ac);box-shadow:0 18px 40px rgba(var(--ac-rgb),.28)}
+.opt.em .k,.opt.em .d{color:rgba(255,255,255,.9)}
+.opt.em .t{color:#fff}
+
+/* bars */
+.bars{width:100%;height:100%;display:flex;justify-content:center;align-items:flex-end;gap:96px;padding-bottom:6px}
+.bcol{display:flex;flex-direction:column;align-items:center;width:160px}
+.bcol .val{font-size:46px;font-weight:800;color:var(--ink2);font-variant-numeric:tabular-nums}
+.bcol .val small{font-size:22px;font-weight:600;margin-left:3px}
+.bcol .b{margin-top:16px;width:160px;border-radius:24px;background:#e3e5e9}
+.bcol.em .val{color:var(--ac)}
+.bcol.em .b{background:linear-gradient(180deg,var(--ac) 0%,rgba(var(--ac-rgb),.6) 60%,rgba(var(--ac-rgb),.05) 100%)}
+.bcol .lb{margin-top:20px;font-size:24px;line-height:1.4;color:var(--mu);text-align:center;white-space:nowrap}
+
+/* delta-bars: 55s 레퍼런스 (두 막대 사이 옐로우 배지) */
+.delta-bars-wrap{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:80px;height:100%;width:100%;max-width:900px;padding-bottom:10px}
+.delta-bars-wrap .bcol{width:190px}
+.delta-bars-wrap .bcol .b{width:190px;border-radius:24px}
+.delta-badge{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);background:#ffd54a;color:#15171c;font-size:22px;font-weight:800;padding:12px 26px;border-radius:999px;box-shadow:0 12px 28px rgba(0,0,0,.1);z-index:2;white-space:nowrap}
+
+/* level4: ⭐ 153s 레퍼런스 (가로 4분할 레벨 카드) */
+.level4{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;align-items:stretch}
+.lcard{background:var(--card);border-radius:26px;padding:46px 34px;display:flex;flex-direction:column;border:2px solid transparent;transition:all .3s}
+.lcard .lv{font-size:36px;font-weight:800;color:var(--ink)}
+.lcard .maintxt{margin-top:28px;font-size:25px;font-weight:700;color:var(--ink2);line-height:1.45}
+.lcard .subtxt{margin-top:36px;font-size:20px;line-height:1.65;color:var(--mu);flex:1}
+.lcard.em{background:#fff;border-color:var(--ac);box-shadow:0 18px 45px rgba(var(--ac-rgb),.14)}
+.lcard.em .lv{color:var(--ac)}
+
+/* cards3: 162s 레퍼런스 (할루시네이션 3콘셉트 카드) */
+.cards3{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;align-items:stretch}
+.c3card{background:var(--card);border-radius:28px;padding:54px 44px;display:flex;flex-direction:column}
+.c3card .h{font-size:38px;font-weight:800;color:var(--ink)}
+.c3card .p{margin-top:28px;font-size:22px;line-height:1.65;color:var(--mu);flex:1}
+
+/* flow3: 237s 레퍼런스 (에어캐나다 3단계 화살표 플로우) */
+.flow3{width:100%;display:flex;align-items:center;justify-content:center;gap:20px}
+.flow-box{border:1.5px solid var(--line);border-radius:22px;padding:32px 38px;font-size:25px;font-weight:700;color:var(--ink2);background:#fff;text-align:center;max-width:440px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.03)}
+.flow-arrow{font-size:24px;color:var(--ac);display:flex;align-items:center;justify-content:center;user-select:none}
+.flow-box.em{background:var(--ac);border-color:var(--ac);color:#fff;box-shadow:0 18px 40px rgba(var(--ac-rgb),.28)}
+
+/* fulltable: 53번 슬라이드 레퍼런스 (전폭 6행 아젠다 테이블) */
+.fulltbl{width:100%;max-width:1600px}
+.fulltbl .row{display:grid;align-items:center;padding:0 36px;min-height:70px;font-size:23px;font-weight:600;color:var(--ink2);border-bottom:1px solid #edf0f5}
+.fulltbl .row:nth-child(even){background:var(--stripe)}
+.fulltbl .hd{min-height:54px;border-radius:12px;background:var(--bar);color:#fff;font-size:19px;font-weight:700;margin-bottom:8px;border-bottom:none}
+.fulltbl .c-part{font-weight:700;color:var(--ink)}
+.fulltbl .c-what{color:var(--ac);font-weight:700}
+.fulltbl .c-why{color:var(--mu)}
+
+/* center-quote: 480s 레퍼런스 (중앙 대형 인용 + 2단 설명) */
+.cquote{width:100%;max-width:1480px;text-align:left}
+.cquote .q{font-size:33px;font-weight:800;line-height:1.6;color:var(--ink)}
+.cquote .desc{margin-top:36px;font-size:24px;line-height:1.75;color:var(--mu)}
+.cquote .desc p+p{margin-top:20px}
+
+/* quotes: 2개 인용 카드 */
+.quotes{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.qcard{background:var(--card);border-radius:32px;padding:56px 56px 50px;display:flex;flex-direction:column}
+.qcard .q{font-size:32px;font-weight:700;line-height:1.55;color:var(--ink)}
+.qcard .qd{margin-top:32px;font-size:23px;line-height:1.7;color:var(--mu);flex:1}
+.qcard .by{margin-top:30px;font-size:20px;color:var(--mu)}
+
+/* --- 파트 표지 (네이비 격자) --- */
+.part{position:absolute;inset:0;color:#fff;overflow:hidden;
+  background:radial-gradient(ellipse 34% 46% at 2% 34%,rgba(36,120,235,.85),transparent 72%),
+    radial-gradient(ellipse 42% 48% at 92% 96%,rgba(24,80,225,.9),transparent 72%),
+    radial-gradient(ellipse 50% 60% at 48% 70%,rgba(14,58,170,.75),transparent 75%),
+    linear-gradient(165deg,#1b2a40 0%,#122a63 55%,#0b1f55 100%)}
+.part .grid{position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 330px,rgba(255,255,255,.08) 330px,rgba(255,255,255,.08) 331px,transparent 331px,transparent 486px,rgba(255,255,255,.08) 486px,rgba(255,255,255,.08) 487px,transparent 487px,transparent 1440px,rgba(255,255,255,.08) 1440px,rgba(255,255,255,.08) 1441px,transparent 1441px),
+    linear-gradient(180deg,transparent 394px,rgba(255,255,255,.08) 394px,rgba(255,255,255,.08) 395px,transparent 395px,transparent 688px,rgba(255,255,255,.08) 688px,rgba(255,255,255,.08) 689px,transparent 689px)}
+.part .ring{position:absolute;width:980px;height:980px;border-radius:50%;border:1.5px solid rgba(255,255,255,.09);top:40px}
+.part .r1{left:220px}.part .r2{left:710px}
+.part .in{position:absolute;left:144px;top:196px}
+.part .kick{font-size:29px;font-weight:500;color:rgba(255,255,255,.88)}
+.part .pnum{margin-top:44px;font-size:110px;font-weight:800;line-height:1.05;background:linear-gradient(100deg,#5db6ff,#3b78ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.part .ptitle{font-size:104px;font-weight:800;line-height:1.2;letter-spacing:-.01em}
+.part .psub{margin-top:34px;font-size:32px;color:rgba(255,255,255,.75)}
+.part .brand{position:absolute;left:144px;bottom:108px}
+.part .brand b{display:flex;align-items:center;gap:14px;font-size:31px;font-weight:700}
+.part .brand span{display:block;margin-top:16px;font-size:20px;color:rgba(255,255,255,.65)}
+
+/* --- 목차 --- */
+.contents{position:absolute;inset:0;display:grid;grid-template-columns:580px 1fr;padding:190px 220px 0 220px}
+.contents h2{font-size:56px;font-weight:800}
+.contents ol{list-style:none}
+.contents li{display:grid;grid-template-columns:90px 1fr auto;align-items:center;height:125px;border-bottom:1px solid var(--line)}
+.contents li:first-child{border-top:1px solid var(--line)}
+.contents li .n{font-size:38px;font-weight:800}
+.contents li .t{font-size:33px;font-weight:700;color:var(--ink2)}
+.contents li .tag{font-size:19px;font-weight:600;color:var(--mu);background:var(--card);padding:8px 18px;border-radius:999px}
+
+/* --- 섹션 구분 (검정) --- */
+.section{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 40%,#202227,#141518 75%);color:#fff}
+.section .in{position:absolute;left:144px;top:350px}
+.section .snum{font-size:60px;font-weight:800}
+.section .stitle{margin-top:18px;font-size:88px;font-weight:800;letter-spacing:-.01em}
+.section .smeta{margin-top:30px;font-size:29px;line-height:1.95;color:#9ba1ab}
+
+/* --- 하단 챕터 바 · 카운터 --- */
+#pbar{position:absolute;left:0;right:0;bottom:0;height:46px;display:flex;z-index:5;transition:opacity .3s}
+#pbar.hide{opacity:0;pointer-events:none}
+#pbar div{flex:1;display:grid;place-items:center;font-size:20px;font-weight:600;color:#a3a8b1;background:#f3f4f6;cursor:pointer;transition:background .2s}
+#pbar div:hover{background:#e7e9ed}
+#pbar div.on{background:var(--bar);color:#fff}
+#counter{position:absolute;right:28px;bottom:54px;font-size:17px;font-weight:600;color:var(--dim);cursor:pointer;z-index:6;font-variant-numeric:tabular-nums}
+#counter.dark{color:rgba(255,255,255,.5)}
+
+/* --- 점프 창 --- */
+#jump-toast{position:absolute;left:50%;top:60px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;background:var(--bar);color:#fff;z-index:9;display:none}
+#jump-modal{position:absolute;inset:0;background:rgba(10,12,16,.45);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:#fff;display:flex;flex-direction:column;gap:20px;align-items:center;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1.5px solid var(--line);color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#fff;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){[data-s]{transition:none}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="slide"></div>
+  <div id="pbar"></div>
+  <div id="counter" title="클릭하거나 G 키로 페이지 이동"></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 ===================== */
+const DECK = {
+  brand: { name: '조코딩AX파트너스', contact: '자료 출처 · 조코딩 AI 리터러시 특강 4강 (2026)' },
+  eyebrow: 'PART 0. 왜 지금 AI인가',
+  accent: '#2f62f0', accent2: '#4cc3f5',
+  reveal: 'auto',
+  chapters: [
+    'AI 도입 현황과 격차',
+    'AI 활용 4단계',
+    '할루시네이션과 리스크',
+    '실무 6단계 프레임워크'
+  ],
+  slides: [
+    /* 1. 표지 */
+    { layout: 'part', kicker: '조코딩의 AI 리터러시 특강 · Part 0 마무리', part: '4강.',
+      title: 'AI 시대,<br>우리는 무엇을 준비해야 할까?',
+      sub: '활용 4단계에서 할루시네이션 리스크, 그리고 실무 6단계 프레임워크까지' },
+
+    /* 2. 목차 */
+    { layout: 'contents', tags: ['현황', '4단계', '리스크', '실천'] },
+
+    /* 3. 섹션 1 */
+    { layout: 'section', chapter: 0,
+      title: 'AI를 써본 것만으로 경쟁력이 될까?',
+      meta: ['Part 0. 왜 지금 AI인가 · 01 도입 현황', '국민 10명 중 4명, 기업 88%가 이미 AI를 도입한 시대의 격차'] },
+
+    /* 4. 55s 레퍼런스: 델타 막대그래프 (33.3% vs 44.5% + 11.2%p 차이) */
+    { layout: 'deltabars', chapter: 0,
+      title: '국내도 국민 열 명 중 넷 이상이 <b>생성형 AI를 써 봤습니다</b>',
+      items: [
+        { label: '2024년', value: 33.3, unit: '%' },
+        { label: '2025년', value: 44.5, unit: '%', em: true }
+      ],
+      delta: '11.2%p 차이',
+      src: '생성형 AI 이용 경험률(%) · 과기정통부 「2025 인터넷이용실태조사」(2026년 3월 발표) · 3세 이상 5만 750명 · 가장 많이 쓴 서비스는 챗GPT 41.8%, 제미나이 9.8%',
+      take: '「써 봤다」가 경쟁력이던 시기는 끝났다. 격차는 「어떻게 쓰는가」에서 벌어진다.' },
+
+    /* 5. 57s 레퍼런스: 88% 기업 도입 + 생산성 효과 */
+    { layout: 'split', chapter: 0,
+      title: '기업 88%가 AI를 도입했고 <b>하위권의 생산성이 가장 크게 뛰었습니다</b>',
+      left: { type: 'metric', value: '88', unit: '%', label: '최소 한 가지 업무에 AI 쓰는 기업', desc: '맥킨지 글로벌 서베이 (2024~2026) · 이제 안 쓰는 쪽이 예외' },
+      right: { type: 'options', items: [
+        { k: '하위권 20%', t: '업무 속도 43% 향상', d: 'AI의 가이드로 기본기 격차가 급격히 축소됨', em: true },
+        { k: '상위권 20%', t: '업무 속도 15% 향상', d: '이미 숙련되어 상대적 상승폭은 완만함' },
+        { k: '시사점', t: '누구나 평균 이상으로 올라서는 시대', d: '결국 차별화는 위임과 시스템화에서 결정됩니다' }
+      ]},
+      src: '맥킨지 「The State of AI」 · MIT-하버드 연구팀 컨설턴트 758명 대상 생산성 실험 연구',
+      take: 'AI는 기본기를 평준화한다. 상위 1%로 도약하려면 업무를 위임할 줄 알아야 한다.' },
+
+    /* 6. 섹션 2 */
+    { layout: 'section', chapter: 1,
+      title: 'AI 활용 4단계, 당신의 업무는 몇 단계인가?',
+      meta: ['Part 0. 왜 지금 AI인가 · 02 활용 단계', '단순 질문(2레벨)을 넘어 에이전트 위임(3레벨)과 시스템 구축(4레벨)으로'] },
+
+    /* 7. ⭐ 153s 핵심 레퍼런스: 가로 4분할 레벨 카드 */
+    { layout: 'level4', chapter: 1,
+      title: 'AI 활용은 네 레벨로 나뉘고 <b>성과는 3레벨부터 나옵니다</b>',
+      items: [
+        { lv: '1레벨', main: 'AI를 안 쓴다', sub: '기존의 검색과 수작업에만 머물러 있는 상태' },
+        { lv: '2레벨', main: '챗봇에 묻고 검색하듯 쓴다', sub: '특강이 데려가는 곳, 대부분의 실무자가 여기에 있습니다' },
+        { lv: '3레벨', main: '에이전트에 업무를 위임한다', sub: '회사 성과가 나오기 시작하는 곳, 이 강의의 목표입니다', em: true },
+        { lv: '4레벨', main: '동료가 쓸 시스템까지 만든다', sub: '만든 것이 팀의 자산으로 남는 자리입니다' }
+      ],
+      src: '조코딩AX파트너스 웨비나 「AI 교육은 이벤트고 AX는 시스템이다」(2026-09-03) · 맥킨지 「State of AI 2026」',
+      take: '2레벨에서 3레벨로 올라가는 것, 그것이 이 강의의 목표다.' },
+
+    /* 8. 섹션 3 */
+    { layout: 'section', chapter: 2,
+      title: '할루시네이션과 리스크, 회사는 왜 책임을 지는가?',
+      meta: ['Part 0. 왜 지금 AI인가 · 03 리스크와 안전', '지어낸 판례, 챗봇 오안내 배상, 클라르나의 사람 재채용 사례'] },
+
+    /* 9. 162s 레퍼런스: 3개 콘셉트 카드 (할루시네이션의 위험) */
+    { layout: 'cards3', chapter: 2,
+      title: '할루시네이션이 위험한 이유는 <b>틀린 답이 가장 그럴듯하기 때문입니다</b>',
+      items: [
+        { h: '자신 있게', p: '모르겠다고 솔직히 말하지 않고 즉각 확신에 찬 어조로 답합니다.' },
+        { h: '매끄럽게', p: '문장 구조와 문법이 너무나 완벽하여 사람이 읽고 의심하기 어렵습니다.' },
+        { h: '출처까지 붙여서', p: '실제로는 존재하지 않는 가짜 논문과 가짜 판례 번호를 그럴듯하게 답니다.' }
+      ],
+      src: '할루시네이션은 AI가 사실이 아닌 것을 그럴듯하게 지어내는 고유의 확률적 언어 생성 원리입니다',
+      take: '그럴듯함은 사실의 증거가 아니다. 오히려 검증을 건너뛰게 만드는 함정이다.' },
+
+    /* 10. 237s 레퍼런스: 에어캐나다 3단계 화살표 플로우 */
+    { layout: 'flow3', chapter: 2,
+      title: '챗봇이 잘못 안내해도 <b>책임은 회사가 집니다</b>',
+      items: [
+        { text: '챗봇이 사별 할인을 사후 소급 신청할 수 있다고 안내' },
+        { text: '실제 항공사 정책 규정은 사후 소급 불가였음' },
+        { text: '캐나다 법원 판결: 에어캐나다 소송 패소 및 배상 명령', em: true }
+      ],
+      src: '회사는 「챗봇은 별개의 법적 주체」라고 주장했으나, 재판부는 판결문에서 이를 「놀라운 주장(remarkable)」이라 일축 · 2024년 2월',
+      take: '정보가 정적 페이지에서 나왔든 챗봇에서 나왔든, 웹사이트의 책임은 회사가 진다.' },
+
+    /* 11. 280s~356s 레퍼런스: 클라르나 사례와 검증 루프 (인용 카드 2개) */
+    { layout: 'quotes', chapter: 2,
+      title: 'AI 상담 230만 건 이후, <b>다시 사람을 채용한 클라르나의 교훈</b>',
+      items: [
+        { quote: '「AI가 상담의 3분의 2를 처리했지만,<br>복잡한 예외 상황에서는 결국 사람이 필요했다」',
+          desc: '스웨덴 핀테크 클라르나는 상담원 감축 후 고객 불만이 폭증하자 2025년 다시 인력 채용을 재개했습니다.',
+          by: '세바스티안 시에미아트코프스키 · Klarna CEO 인터뷰' },
+        { quote: '「좋은 프롬프트를 찾는 것보다<br>검증 가능한 업무 루프를 만드는 것이 핵심이다」',
+          desc: '결과물을 그대로 믿지 않고, 사람이 빠르게 크로스체크할 수 있는 검증 절차가 있어야 안전합니다.',
+          by: '조코딩 AI 리터러시 4강 강의 요지' }
+      ],
+      src: 'Klarna 실적 발표 및 블룸버그 보도 · 조코딩 특강 4강 04:40~06:00',
+      take: '프롬프트 기술보다 중요한 것은 오류를 걸러내는 검증 프로세스다.' },
+
+    /* 12. 480s 레퍼런스: 중앙 대형 인용문 + 2단 설명 (샘 올트먼 G20) */
+    { layout: 'cquote', chapter: 3,
+      title: 'AI는 이제 선택이 아니라 <b>전제입니다</b>',
+      quote: '「한 나라가 AI를 들이지 않겠다고 하는 것은, 100여 년 전에 우리나라에는 전기를 들이지 않겠다고 했던 것만큼 나쁜 생각입니다. 쓰는 것은 협상의 대상이 아닙니다」 · 샘 올트먼, G20 혁신장관회의 · 2026년 9월 2일',
+      paras: [
+        'AI는 직업을 통째로 없애기보다 업무의 일부를 가져갑니다. 격차는 그렇게 비어버린 시간에 무엇을 채우는가에서 벌어집니다.',
+        '반복 업무를 넘기고 판단 · 검증 · 조율이라는 더 높은 가치의 일로 올라가는 사람은 그냥 안전한 것이 아니라 유리해집니다.'
+      ],
+      src: '출처: 미 상무장관 하워드 러트닉과의 대담, 채플힐(노스캐롤라이나) · DRM News 전체 영상 · 원문은 「non-negotiable」',
+      take: '쓸지 말지는 이미 정해진 문제다. 남은 것은 어떻게 잘 쓰느냐.' },
+
+    /* 13. 53번 슬라이드 레퍼런스: 전폭 6행 아젠다 테이블 */
+    { layout: 'fulltable', chapter: 3,
+      title: '여섯 파트는 원리에서 시작해 <b>자산으로 끝나는 한 줄입니다</b>',
+      cols: '1.4fr 1.2fr 1.8fr',
+      head: ['Part', '무엇을', '왜 여기인가'],
+      rows: [
+        ['1 · AI는 어떻게 답을 만드는가', '원리 · 도구 세팅', '뒤의 모든 규칙이 여기서 나옵니다'],
+        ['2 · 무엇을 맡길 것인가', '위임 판정', '맡길 것을 먼저 갈라야 합니다'],
+        ['3 · 안전하게 쓰는 법', '입력 전 판단', '넣기 전에 정해야 늦지 않습니다'],
+        ['4 · AI에게 일 시키기', '지시와 컨텍스트', '맡기기로 한 것을 실제로 시킵니다'],
+        ['5 · 확인하고 완성하기', '검증', '받은 것을 내보낼 수 있게 만듭니다'],
+        ['6 · 반복을 줄이기', '자산화', '한 번 만든 것을 다시 씁니다']
+      ],
+      src: '조코딩 AX 커리큘럼 6단계 프레임워크 (axacademy.ai)',
+      take: '순서가 곧 실무의 순서다. 정하고 · 맡기고 · 시키고 · 확인하고 · 남긴다.' },
+
+    /* 14. 마무리 표지 */
+    { layout: 'part', kicker: '조코딩의 AI 리터러시 특강 · Part 0 완강', part: 'Next.',
+      title: '원리에서 자산화까지,<br>Part 1에서 시작됩니다',
+      sub: 'AI에게 휘둘리지 않고 업무의 주도권을 쥐는 6단계 여정' }
+  ]
+};
+
+/* ===================== 렌더링 엔진 ===================== */
+const $ = id => document.getElementById(id);
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0;
+const pad = i => String(i).padStart(2, '0');
+const LOGO = `<svg width="40" height="30" viewBox="0 0 40 30"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#5db6ff"/><stop offset="1" stop-color="#3b78ff"/></linearGradient></defs><path d="M2 28 16 2h9L11 28z" fill="url(#lg)"/><path d="M18 28 25 15l7 13z" fill="#ffd54a"/></svg>`;
+
+const head = (s, n) => `<div class="eyebrow grad" ${n(0)}>${s.eyebrow || DECK.eyebrow || ''}</div><h2 class="title" ${n(0)}>${s.title}</h2>`;
+const foot = (s, n, k) => (s.src ? `<div class="src" ${n(k)}>${s.src}</div>` : '') + (s.take ? `<div class="take" ${n(k + 1)}>${s.take}</div>` : '');
+const std = (s, n, body, k) => `<div class="std">${head(s, n)}<div class="body">${body}</div>${foot(s, n, k)}</div>`;
+const num = (v, u) => `${v}<small>${u || ''}</small>`;
+
+const LEFT = {
+  metric: p => `<div class="card metric"><div class="big grad">${num(p.value, p.unit)}</div><div class="cap">${p.label}</div>${p.desc ? `<div class="desc">${p.desc}</div>` : ''}</div>`,
+  text: p => `<div class="card text"><h3>${p.head}</h3>${p.paras.map(t => `<p>${t}</p>`).join('')}</div>`
+};
+const RIGHT = {
+  table: p => {
+    const row = (r, cls) => `<div class="row ${cls}" style="grid-template-columns:${p.cols}">${r.map((c, i) => `<span class="${i === p.val ? (i ? 'v sep' : 'v') : ''}">${c}</span>`).join('')}</div>`;
+    return `<div class="tbl">${row(p.head, 'hd')}${p.rows.map(r => row(r, '')).join('')}</div>`;
+  },
+  options: p => `<div class="opts">${p.items.map(it =>
+    `<div class="opt${it.em ? ' em' : ''}">${it.k ? `<div class="k">${it.k}</div>` : ''}<div class="t">${it.t}</div>${it.d ? `<div class="d">${it.d}</div>` : ''}</div>`).join('')}</div>`
+};
+
+const LAYOUTS = {
+  part: (s, n) => `<div class="part"><div class="grid"></div><div class="ring r1"></div><div class="ring r2"></div>
+      <div class="in"><div class="kick" ${n(0)}>${s.kicker || ''}</div><div class="pnum" ${n(1)}>${s.part || ''}</div><h1 class="ptitle" ${n(1)}>${s.title}</h1>${s.sub ? `<p class="psub" ${n(2)}>${s.sub}</p>` : ''}</div>
+      <div class="brand" ${n(2)}><b>${LOGO}${DECK.brand.name}</b>${DECK.brand.contact ? `<span>${DECK.brand.contact}</span>` : ''}</div></div>`,
+
+  contents: (s, n) => `<div class="contents"><h2 class="grad" ${n(0)}>Contents</h2><ol>${(s.items || DECK.chapters).map((t, i) =>
+      `<li ${n(i + 1)}><span class="n grad">${pad(i + 1)}</span><span class="t">${t}</span>${s.tags && s.tags[i] ? `<span class="tag">${s.tags[i]}</span>` : '<span></span>'}</li>`).join('')}</ol></div>`,
+
+  section: (s, n) => `<div class="section"><div class="in"><div class="snum grad" ${n(0)}>${s.num || pad((s.chapter ?? 0) + 1)}</div>
+      <h1 class="stitle" ${n(1)}>${s.title}</h1>${s.meta ? `<div class="smeta" ${n(2)}>${s.meta.join('<br>')}</div>` : ''}</div></div>`,
+
+  split: (s, n) => std(s, n, `<div class="split"><div ${n(1)}>${LEFT[s.left.type](s.left)}</div><div ${n(2)}>${RIGHT[s.right.type](s.right)}</div></div>`, 3),
+
+  bars: (s, n) => {
+    const max = Math.max(...s.items.map(it => it.value));
+    return std(s, n, `<div class="bars">${s.items.map((it, i) =>
+      `<div class="bcol${it.em ? ' em' : ''}" ${n(i + 1)}><div class="val">${num(it.show ?? it.value, it.unit)}</div><div class="b" style="height:${Math.max(24, it.value / max * (s.h || 300))}px"></div><div class="lb">${it.label}</div></div>`).join('')}</div>`, s.items.length + 1);
+  },
+
+  /* 신규: deltabars (55s 레퍼런스) */
+  deltabars: (s, n) => {
+    const max = Math.max(...s.items.map(it => it.value));
+    const barsHtml = s.items.map((it, i) =>
+      `<div class="bcol${it.em ? ' em' : ''}" ${n(i + 1)}><div class="val">${num(it.show ?? it.value, it.unit)}</div><div class="b" style="height:${Math.max(24, it.value / max * 320)}px"></div><div class="lb">${it.label}</div></div>`).join('');
+    return std(s, n, `<div class="delta-bars-wrap">${barsHtml}<div class="delta-badge" ${n(s.items.length + 1)}>${s.delta}</div></div>`, s.items.length + 2);
+  },
+
+  /* 신규: level4 (⭐ 153s 레퍼런스) */
+  level4: (s, n) => std(s, n, `<div class="level4">${s.items.map((it, i) =>
+    `<div class="lcard${it.em ? ' em' : ''}" ${n(i + 1)}><div class="lv">${it.lv}</div><div class="maintxt">${it.main}</div><div class="subtxt">${it.sub}</div></div>`).join('')}</div>`, s.items.length + 1),
+
+  /* 신규: cards3 (162s 레퍼런스) */
+  cards3: (s, n) => std(s, n, `<div class="cards3">${s.items.map((it, i) =>
+    `<div class="c3card" ${n(i + 1)}><div class="h">${it.h}</div><div class="p">${it.p}</div></div>`).join('')}</div>`, s.items.length + 1),
+
+  /* 신규: flow3 (237s 레퍼런스) */
+  flow3: (s, n) => {
+    let html = '<div class="flow3">';
+    s.items.forEach((it, i) => {
+      html += `<div class="flow-box${it.em ? ' em' : ''}" ${n(i * 2 + 1)}>${it.text}</div>`;
+      if (i < s.items.length - 1) {
+        html += `<div class="flow-arrow" ${n(i * 2 + 2)}>▶</div>`;
+      }
+    });
+    html += '</div>';
+    return std(s, n, html, s.items.length * 2);
+  },
+
+  /* 신규: fulltable (53번 레퍼런스) */
+  fulltable: (s, n) => {
+    const headRow = `<div class="row hd" style="grid-template-columns:${s.cols}">${s.head.map(h => `<span>${h}</span>`).join('')}</div>`;
+    const bodyRows = s.rows.map((r, i) =>
+      `<div class="row" style="grid-template-columns:${s.cols}" ${n(i + 1)}><span class="c-part">${r[0]}</span><span class="c-what">${r[1]}</span><span class="c-why">${r[2]}</span></div>`).join('');
+    return std(s, n, `<div class="fulltbl">${headRow}${bodyRows}</div>`, s.rows.length + 1);
+  },
+
+  /* 신규: cquote (480s 레퍼런스) */
+  cquote: (s, n) => std(s, n, `<div class="cquote"><div class="q" ${n(1)}>${s.quote}</div><div class="desc" ${n(2)}>${s.paras.map(p => `<p>${p}</p>`).join('')}</div></div>`, 3),
+
+  quotes: (s, n) => std(s, n, `<div class="quotes">${s.items.map((it, i) =>
+      `<div class="qcard" ${n(i + 1)}><div class="q">${it.quote}</div>${it.desc ? `<div class="qd">${it.desc}</div>` : ''}${it.by ? `<div class="by">${it.by}</div>` : ''}</div>`).join('')}</div>`, s.items.length + 1)
+};
+
+function renderBar() {
+  const s = S[cur], on = s.chapter != null && !['part', 'contents'].includes(s.layout);
+  $('pbar').classList.toggle('hide', !on);
+  $('pbar').innerHTML = DECK.chapters.map((c, i) => `<div class="${i === s.chapter ? 'on' : ''}" data-slide="${Math.max(0, S.findIndex(x => x.chapter === i))}" title="${c}">${pad(i + 1)}</div>`).join('');
+  $('counter').classList.toggle('dark', ['part', 'section'].includes(s.layout));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  renderBar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.08 + e.dataset.s * 0.18) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', e => { e.stopPropagation(); openModal(); });
+$('pbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const t = e.target.closest('[data-slide]');
+  if (t) go(+t.dataset.slide, true);
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#jump-modal')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac2', DECK.accent2 || DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
