@@ -161,13 +161,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:#fff;font-family:"Pr
 .section .smeta{margin-top:30px;font-size:29px;line-height:1.95;color:#9ba1ab}
 
 /* --- 하단 챕터 바 · 카운터 --- */
-#pbar{position:absolute;left:0;right:0;bottom:0;height:46px;display:flex;z-index:5;transition:opacity .3s}
+#pbar,.pbar{position:absolute;left:0;right:0;bottom:0;height:46px;display:flex;z-index:5;transition:opacity .3s}
 #pbar.hide{opacity:0;pointer-events:none}
-#pbar div{flex:1;display:grid;place-items:center;font-size:20px;font-weight:600;color:#a3a8b1;background:#f3f4f6;cursor:pointer;transition:background .2s}
+#pbar div,.pbar div{flex:1;display:grid;place-items:center;font-size:20px;font-weight:600;color:#a3a8b1;background:#f3f4f6;cursor:pointer;transition:background .2s}
 #pbar div:hover{background:#e7e9ed}
-#pbar div.on{background:var(--bar);color:#fff}
-#counter{position:absolute;right:28px;bottom:54px;font-size:17px;font-weight:600;color:var(--dim);cursor:pointer;z-index:6;font-variant-numeric:tabular-nums}
-#counter.dark{color:rgba(255,255,255,.5)}
+#pbar div.on,.pbar div.on{background:var(--bar);color:#fff}
+#counter,.pcounter{position:absolute;right:28px;bottom:54px;font-size:17px;font-weight:600;color:var(--dim);cursor:pointer;z-index:6;font-variant-numeric:tabular-nums}
+#counter.dark,.pcounter.dark{color:rgba(255,255,255,.5)}
 
 /* --- 점프 창 --- */
 #jump-toast{position:absolute;left:50%;top:60px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;background:var(--bar);color:#fff;z-index:9;display:none}
@@ -178,6 +178,24 @@ html,body{width:100%;height:100%;overflow:hidden;background:#fff;font-family:"Pr
 #jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1.5px solid var(--line);color:var(--ink)}
 #jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#fff;border:none;cursor:pointer}
 @media (prefers-reduced-motion:reduce){[data-s]{transition:none}}
+
+/* --- PDF 내보내기 --- */
+#pdf-btn{position:fixed;right:18px;top:18px;z-index:20;padding:10px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--ink2);font:600 14px/1 "Pretendard",system-ui,sans-serif;cursor:pointer;opacity:0;transition:opacity .25s,background .2s;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+body:hover #pdf-btn,#pdf-btn:focus-visible{opacity:1}
+#pdf-btn:hover{background:#fff;color:var(--ac)}
+#print{display:none}
+@page{size:1920px 1080px;margin:0}
+@media print{
+  html,body{width:1920px;height:auto;overflow:visible;background:#fff}
+  #stage,#pdf-btn{display:none!important}
+  #print{display:block}
+  #print .ppage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;break-after:page;page-break-after:always}
+  #print .ppage:last-child{break-after:auto;page-break-after:auto}
+  #print .ppage>div{position:absolute;inset:0}
+  #print [data-s]{opacity:1!important;transform:none!important;transition:none!important}
+  #print .pbar,#print .pcounter{transition:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 </style>
 </head>
 <body>
@@ -188,6 +206,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#fff;font-family:"Pr
   <div id="jump-toast">Go to <b id="jump-num"></b></div>
   <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
 </div>
+<button id="pdf-btn" type="button" title="PDF로 내보내기 (P)">PDF 내보내기</button>
+<div id="print"></div>
 
 <script>
 /* ===================== 덱 데이터 ===================== */
@@ -475,8 +495,28 @@ window.addEventListener('keydown', e => {
   else if (e.key === 'Home') go(0);
   else if (e.key === 'End') go(S.length - 1, true);
   else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'p' || e.key === 'P') { e.preventDefault(); exportPDF(); }
   else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
 });
+/* PDF 내보내기: 모든 슬라이드를 완성 상태로 1920×1080 페이지에 펼친 뒤 인쇄 창(PDF로 저장)을 연다 */
+function buildPrint() {
+  $('print').innerHTML = S.map((s, i) => {
+    const bar = s.chapter != null && !['part', 'contents'].includes(s.layout)
+      ? `<div class="pbar">${DECK.chapters.map((c, j) => `<div class="${j === s.chapter ? 'on' : ''}">${pad(j + 1)}</div>`).join('')}</div>` : '';
+    const dark = ['part', 'section'].includes(s.layout) ? ' dark' : '';
+    return `<section class="ppage"><div>${LAYOUTS[s.layout](s, k => `data-s="${k}"`)}</div>${bar}<span class="pcounter${dark}">${i + 1} / ${S.length}</span></section>`;
+  }).join('');
+}
+function exportPDF() {
+  buildPrint();
+  const t = document.title;
+  document.title = t.replace(/[\\/:*?"<>|]/g, ' ').trim() || 'presentation';
+  setTimeout(() => { window.print(); document.title = t; }, 150);
+}
+addEventListener('beforeprint', () => { if (!$('print').children.length) buildPrint(); });
+addEventListener('afterprint', () => { $('print').innerHTML = ''; });
+$('pdf-btn').addEventListener('click', e => { e.stopPropagation(); exportPDF(); });
+
 $('stage').addEventListener('click', e => { if (!e.target.closest('#jump-modal')) next(); });
 let tx0 = null;
 addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
