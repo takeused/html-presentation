@@ -14,7 +14,7 @@ OVERFLOW = """() => {
     const rg = document.createRange(); rg.selectNodeContents(el);
     const r = rg.getBoundingClientRect();
     const clipped = el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflow !== 'visible';
-    const card = el.closest('.step,.stat,.tl-item,.panel');   // nowrap 글자가 자기 카드 폭을 넘으면 옆 카드와 겹친다
+    const card = el.closest('.step,.stat,.tl-item,.panel,.svg-card');   // nowrap 글자가 자기 카드 폭을 넘으면 옆 카드와 겹친다
     const cr = card && card.getBoundingClientRect();
     const tag = `${el.className || el.tagName}: ${Math.round(r.left)}~${Math.round(r.right)}px "${el.textContent.trim().slice(0, 24)}"`;
     if (r.left < 40 || r.right > 1880 || clipped) bad.push(tag);

@@ -1,12 +1,12 @@
 ---
 name: cinematic-interactive-presentation
-description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "시네마틱 덱", "시네마틱 슬라이드", "시네마틱 웹 발표", "시네마틱 스타일", "영화 같은 발표자료", "인터랙티브 시네마틱" 등 시네마틱 발표 관련 모든 요청 시 최우선으로 사용하는 표준 스킬. 상단 챕터 탭 클릭 점프 내비게이션, 텍스트 가시성 극대화, 단어 분절 없는 1줄 완벽 정렬 레이아웃, 실사 배경 켄번스+다크 비네팅이 결합된 1920x1080 반응형 고품질 HTML 발표자료를 제작합니다.'
+description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "시네마틱 덱", "시네마틱 슬라이드", "시네마틱 웹 발표", "시네마틱 스타일", "영화 같은 발표자료", "인터랙티브 시네마틱" 등 시네마틱 발표 관련 모든 요청 시 최우선으로 사용하는 표준 스킬. 상단 챕터 탭 클릭 점프 내비게이션, 시네마틱 HUD 네온 SVG 데이터 차트(svg_cards), 텍스트 가시성 극대화, 단어 분절 없는 1줄 완벽 정렬 레이아웃, 실사 배경 켄번스+다크 비네팅이 결합된 1920x1080 반응형 고품질 HTML 발표자료를 제작합니다.'
 ---
 
 # Cinematic Interactive Presentation Skill
 
-고화질 실사 사진 배경과 다크 비네팅, 그리고 **상단 챕터 탭 인터랙티브 점프 내비게이션**과 **1줄 완벽 정렬 레이아웃**이 결합된 차세대 웹 기반 발표자료 제작 스킬입니다.
-`template.html`의 `DECK` 객체(레이아웃 8종)만 구성하면 1920x1080 고해상도 반응형 단일 HTML 프레젠테이션 덱이 즉시 완성됩니다.
+고화질 실사 사진 배경과 다크 비네팅, **상단 챕터 탭 인터랙티브 점프 내비게이션**, **시네마틱 HUD 네온 인라인 SVG 차트(`svg_cards`)**, 그리고 **1줄 완벽 정렬 레이아웃**이 결합된 차세대 웹 기반 발표자료 제작 스킬입니다.
+`template.html`의 `DECK` 객체(레이아웃 9종)와 `CHARTS` SVG 맵만 구성하면 1920x1080 고해상도 반응형 단일 HTML 프레젠테이션 덱이 즉시 완성됩니다.
 
 ---
 
@@ -16,15 +16,23 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
    - 발표 중 상단 탑바의 챕터 타이틀(`01 패러다임 대전환`, `02 핵심 방법론` 등)을 클릭하면 **해당 챕터의 첫 슬라이드로 즉시 이동**합니다.
    - 좌측 브랜드 배지 클릭 시 **1번 표지(Cover)**로 즉시 복귀합니다.
    - 마우스 호버 시 부드러운 하이라이트 및 툴팁을 제공합니다.
-2. **1줄 완벽 정렬 & 단어 쪼개짐 방지 (No-Break Typography)**:
+2. **시네마틱 HUD 네온 SVG 데이터 차트 (`svg_cards` & `CHARTS`)**:
+   - 단순 숫자 나열을 넘어, 핵심 통계·벤치마크·역량 스펙트럼·ROI 비교 슬라이드(덱당 2~4장 권장)에 다크 글래스모피즘 카드(`.svg-card`)와 시안 네온 글로우(`#00d2ff`) 인라인 SVG 차트를 탑재합니다.
+   - **지원 차트 유형**:
+     - **지수/선형 영역 곡선 (Area + Glow Line Chart)**: 연도별·단계별 급격한 성장 추세 시각화 (`linearGradient` + `feDropShadow`)
+     - **네온 컬럼/수평 벤치마크 바 (Neon Bar & Benchmark Chart)**: 시장 규모 성장률(CAGR) 및 경쟁 모델 대비 속도·성능 배수 비교
+     - **5각 HUD 레이더 차트 (Pentagon Radar Chart)**: 두 플래그십 모델/솔루션의 5대 핵심 역량 스펙트럼 다각형 중첩 비교 (`#00d2ff` Cyan vs `#c084fc` Violet)
+     - **듀얼 네온 도넛 게이지 & Before/After 절감 바 (Ring Gauge & ROI Bar)**: 도입률·해결률 원형 게이지(`stroke-dasharray`) 및 도입 전후 소요 시간 단축 효과 시각화
+3. **1줄 완벽 정렬 & 단어 쪼개짐 방지 (No-Break Typography)**:
    - `stats` 레이아웃: 라벨 최대 폭을 확장(`max-width: 700px`)하고 `white-space: nowrap`을 적용하여 단어가 아랫줄로 떨어지는 현상을 원천 방지합니다.
+   - `svg_cards` 레이아웃: 카드 폭 `720px` 내에 아이콘+제목(`h3`)과 우측 네온 배지(`.svg-badge`)가 1줄로 배치되며, 하단 요약 줄(`.svg-foot`)도 1줄(`white-space: nowrap`)로 정돈됩니다.
    - `flow` 레이아웃: 스텝 카드를 `width: 420px`로 확장하고 `white-space: nowrap; word-break: keep-all;`을 장착하여 한글 단어가 중간에 잘리지 않고 매끄러운 1줄을 유지합니다.
    - `compare` 레이아웃: 패널 폭을 `700px`로 확장하고 리스트 항목에 `word-break: keep-all; align-items: flex-start;`를 적용하여 긴 문장도 어절 중간 분절 없이 1줄로 안착시킵니다.
    - `timeline` 레이아웃: 브라우저 임의 줄바꿈으로 고아 단어(1단어 잔여)가 생기지 않도록, 의미 단위로 `<br>`을 미리 심어 단정한 2줄 배치를 구현합니다 (`white-space: nowrap; text-align: center; line-height: 1.6;`).
    - `quote` 레이아웃: 불필요한 가상요소 큰따옴표(`"`)를 배제하고 거대하고 굵은 타이포그래피로 메시지를 선명하게 전달합니다.
-3. **타임라인 다크 글래스 카드 (Frosted Glass Panel)**:
-   - `timeline` 레이아웃에 반투명 다크 아크릴 글래스 카드(`backdrop-filter: blur(8px)`)를 장착하여 복잡한 실사 배경에서도 텍스트 가독성을 100% 보장합니다.
-4. **시네마틱 다크 비네팅 & 켄번스 애니메이션**:
+4. **타임라인 & SVG 다크 글래스 카드 (Frosted Glass Panel)**:
+   - `timeline` 및 `svg_cards` 레이아웃에 반투명 다크 아크릴 글래스 카드(`backdrop-filter: blur(8~12px)`)를 장착하여 복잡한 실사 배경에서도 텍스트와 차트 가독성을 100% 보장합니다.
+5. **시네마틱 다크 비네팅 & 켄번스 애니메이션**:
    - 고화질 실사 배경에 자연스러운 네이비 비네팅 오버레이(`rgba(var(--navy), .35~.88)`)와 텍스트 드롭 섀도우를 적용하여 과도한 암막이나 뿌연 안개 없이 실사 사진의 또렷함을 살리면서 본문 집중도를 극대화합니다.
    - 켄번스(천천히 확대/이동) 효과와 슬라이드 전환 크로스페이드로 한 편의 다큐멘터리 같은 영상미를 제공합니다.
 
@@ -35,39 +43,43 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
 1. **템플릿 복사**:
    `.agents/skills/cinematic-interactive-presentation/template.html`을 프로젝트 루트에 `<주제>_cinematic_presentation.html`로 복사합니다.
 2. **슬라이드 기획**:
-   10~15장 내외(Cover 1 + 본문 + Closing 1), 챕터 3~4개로 구성합니다.
+   10~20장 내외(Cover 1 + 본문 + Closing 1), 챕터 3~4개로 구성합니다. 데이터 분석·성능 벤치마크·경쟁 비교·비즈니스 임팩트 슬라이드 중 **2~4장은 `svg_cards` 레이아웃**으로 기획하여 시각적 완성도를 높입니다.
 3. **고화질 사진 선별**:
    슬라이드별 영문 키워드로 Unsplash 무료 사진을 검색합니다.
    ```bash
    python -I .agents/skills/cinematic-interactive-presentation/scripts/find_photos.py "artificial intelligence" "data network" --n 5
    ```
    출력된 `bg`, `photo` 값을 슬라이드 데이터에 매핑합니다.
-4. **DECK 데이터 작성**:
-   `DECK` 객체의 `slides` 배열에 8개 레이아웃을 활용해 콘텐츠를 작성합니다. (엔진 CSS/JS는 수정 불필요)
-   - *주의 1*: `closing` 슬라이드 부제목(`sub`)은 헤더 생성 함수 `head(s, n)`에서 자동 출력되므로 중복 선언되지 않도록 주의합니다.
-   - *주의 2*: 타임라인 설명문은 의미 단위로 `<br>`을 심어 균형 잡힌 2줄로 구성합니다.
-   - *주의 3*: `flow`의 `desc`, `timeline`의 `desc`, `stats`의 `label`은 `nowrap`이라 **자동 줄바꿈이 되지 않습니다**. flow 설명이 한 줄 18자를 넘으면 옆 카드(420px)를 침범하므로 의미 단위로 `<br>`을 넣어 2줄로 나눕니다. (예: `'금융 송금·결제 등 중요 의사결정 전<br>안전 일시정지'`)
+4. **CHARTS(SVG 차트) 및 DECK 데이터 작성**:
+   - `CHARTS` 객체에 슬라이드에서 참조할 인라인 SVG(`viewBox="0 0 640 250"`)를 정의합니다.
+     - SVG 내부 `<text>` 좌표는 좌우 `20~620px`, 상하 `24~240px` 안전 영역 안에 배치하여 카드 밖 넘침을 방지합니다.
+     - `.svg-head h3` 제목(14~18자 이내)과 `.svg-badge`(12~15자 이내)가 `720px` 카드 상단에서 서로 겹치거나 카드 폭을 초과하지 않도록 간결하게 작성합니다.
+   - `DECK` 객체의 `slides` 배열에 9개 레이아웃을 활용해 콘텐츠를 작성합니다.
+     - *주의 1*: `closing` 슬라이드 부제목(`sub`)은 헤더 생성 함수 `head(s, n)`에서 자동 출력되므로 중복 선언되지 않도록 주의합니다.
+     - *주의 2*: 타임라인 설명문은 의미 단위로 `<br>`을 심어 균형 잡힌 2줄로 구성합니다.
+     - *주의 3*: `flow`의 `desc`, `timeline`의 `desc`, `stats`의 `label`, `svg_cards`의 `foot`은 `nowrap`이라 **자동 줄바꿈이 되지 않습니다**. flow 설명이 한 줄 18자를 넘으면 옆 카드(420px)를 침범하므로 의미 단위로 `<br>`을 넣어 2줄로 나눕니다.
 5. **검증 및 스크린샷 촬영**:
    헤드리스 크롬(Playwright)으로 모든 슬라이드를 캡처하고 자동 점검합니다.
    ```bash
    python -I .agents/skills/cinematic-interactive-presentation/scripts/shoot.py http://localhost:8765/<파일명>.html <슬라이드수> <출력폴더>
    ```
    - `Pretendard 웹폰트: OK`가 나와야 합니다. "로드 안 됨"이면 폰트 링크가 바뀐 것이니 템플릿의 jsDelivr 링크로 되돌립니다.
-   - `넘침: 0 건`이 될 때까지 고칩니다. 화면 밖(40~1880px) 이탈, 잘림, **카드 폭 초과**(nowrap 글자가 자기 카드보다 넓어 옆 카드와 겹침)를 잡아 줍니다. 카드 폭 초과는 `<br>`로 나누거나 문장을 줄입니다.
-   - `errors: []`를 확인한 뒤 캡처 이미지를 직접 열어 눈으로도 확인합니다(겹침이 없어도 답답한 배치는 자동으로 잡히지 않습니다).
+   - `넘침: 0 건`이 될 때까지 고칩니다. 화면 밖(40~1880px) 이탈, 잘림, **카드 폭 초과**(`.step,.stat,.tl-item,.panel,.svg-card` 내부 요소나 SVG `<text>`가 자기 카드보다 넓어 겹침)를 잡아 줍니다. 카드 폭 초과는 `<br>`로 나누거나 문장을 줄입니다.
+   - `errors: []`를 확인한 뒤 캡처 이미지를 직접 열어 눈으로도 확인합니다(레이더 차트 라벨과 범례 박스 간격 등도 육안으로 점검).
 6. **통합 허브(index.html) 연동**:
    `index.html`의 `DECKS` 목록 최상단에 신규 프레젠테이션 정보를 등록합니다.
-   - *중요*: `id` 필드는 기존 덱과 겹치지 않는 **고유한 식별자(Unique ID, 예: `langgraph-cinematic`)**를 부여해야 iframe 뷰어 DOM 충돌이 발생하지 않습니다.
+   - *중요*: `id` 필드는 기존 덱과 겹치지 않는 **고유한 식별자(Unique ID, 예: `ai-agent-bot-cinematic`)**를 부여해야 iframe 뷰어 DOM 충돌이 발생하지 않습니다.
 
 ---
 
-## 3. 레이아웃 8종 스펙 (DECK.slides)
+## 3. 레이아웃 9종 스펙 (DECK.slides)
 
 | 레이아웃 | 주요 필드 | 설명 & 권장 가이드 |
 |---|---|---|
 | **cover** | eyebrow, title, sub, meta | 표지 슬라이드. 웅장한 헤드라인과 서브타이틀 |
+| **svg_cards** | eyebrow, title, cards[{icon, title, badge, chart, hi?, foot}], note | **시네마틱 HUD 네온 SVG 차트 2열 카드**. `CHARTS[chart]`의 인라인 SVG 렌더링 (성장 곡선, 막대, 레이더, 도넛 게이지, ROI 비교 등) |
 | **stats** | eyebrow, title, items[{value, unit, label}], note | 대형 수치 지표 (2~3개). 라벨은 1줄로 떨어지도록 간결화 |
-| **flow** | eyebrow, title, steps[{label, desc}], note | 3단계 프로세스. `01 ➔ 02 ➔ 03` 마름모 배지 + 1줄 설명문 |
+| **flow** | eyebrow, title, steps[{label, desc}], note | 3단계 프로세스. `01 ➔ 02 ➔ 03` 마름모 배지 + 1~2줄 설명문 |
 | **compare** | eyebrow, title, left/right{title, icon, items}, note | 비교/대조 2열 패널. 우측 패널에 액센트 하이라이트 |
 | **bullets** | eyebrow, title, items[{icon, text, em}], note | 아이콘 카드 불릿 (3~4개). 마지막 항목에 `em: true` 강조 |
 | **quote** | eyebrow?, quote, by | 결정적 명언/원칙 인용. 가상 따옴표 없이 굵은 텍스트 |
@@ -79,13 +91,13 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
 ## 4. 엔진 규칙 (수정 금지 항목)
 
 - **폰트는 jsDelivr의 Pretendard CSS만 사용합니다.** Google Fonts에는 Pretendard가 없어서 `fonts.googleapis.com`으로 바꾸면 조용히 시스템 폰트(맑은 고딕)로 대체됩니다. 폰트가 넓어지면 nowrap 텍스트의 넘침 여부도 달라지므로 폰트를 바꾼 뒤에는 반드시 다시 검증합니다.
-- 문자열 안에는 `<br>`, `<em>`, `<b>`만 씁니다. **백틱(`)은 금지**입니다.
-- 전체 화면 레이어(`.shade` 등)에 `backdrop-filter`를 추가하지 않습니다. 켄번스 배경 위에서 매 프레임 블러가 계산되어 저사양 노트북에서 끊깁니다. (타임라인 카드처럼 작은 영역은 괜찮습니다)
+- `DECK.slides` 문자열 안에는 `<br>`, `<em>`, `<b>`만 씁니다. **백틱(`)은 금지**입니다. 인라인 SVG 코드는 `DECK.slides` 내부에 직접 넣지 않고 반드시 하단 `CHARTS` 맵에 분리 정의한 뒤 `chart: '키이름'`으로 참조합니다.
+- 전체 화면 레이어(`.shade` 등)에 `backdrop-filter`를 추가하지 않습니다. 켄번스 배경 위에서 매 프레임 블러가 계산되어 저사양 노트북에서 끊깁니다. (타임라인이나 `.svg-card`처럼 작은 카드 영역은 괜찮습니다)
 - `prefers-reduced-motion` 블록과 `<link rel="icon" href="data:,">`(favicon 404 방지)는 지우지 않습니다.
 - 배경 사진은 `w=2560&q=88`로 불러온다(`bgUrl`). 이 템플릿의 `.shade`는 어두운 편이라, 배경을 더 또렷하게 하려면 한 번에 조금씩만 올린다. 너무 올리면 본문 가시성이 떨어진다.
 - quote 레이아웃에는 장식용 큰따옴표(`“`)를 넣지 않는다. 템플릿에서 `.quote::before`를 제거했으니 다시 넣지 않는다.
 - Pretendard는 CDN(jsDelivr)에서 불러온다. 외부 접속이 막힌 환경(폐쇄망, 샌드박스)에서는 시스템 폰트로 바뀌므로, 그런 환경에서 발표하면 Pretendard 파일을 HTML 옆 폴더에 두고 `@font-face`로 불러오는 방식으로 바꾼다. 점검 환경이 외부 접속을 못 하면 `Pretendard 웹폰트: OK`를 확인할 수 없으니 사용자에게 알린다.
-- 통계 수치에는 반드시 출처(`note`)를 답니다. 지어낸 숫자는 쓰지 않습니다.
+- 통계 수치와 SVG 차트 슬라이드에는 반드시 출처(`note`)를 답니다. 지어낸 숫자는 쓰지 않습니다.
 
 ---
 

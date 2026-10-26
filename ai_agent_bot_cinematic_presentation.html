@@ -129,6 +129,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
 .panel.hi li{color:var(--ink)}
 .panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
 
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
 /* quote (따옴표 가상요소 제거 & 볼드 타이포) */
 .quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
 .quote::before, .quote::after{content:none !important;display:none !important}
@@ -199,15 +212,28 @@ const DECK = {
       sub: 'Anthropic Claude Duet · xAI Grok Bot (Groqbot) · OpenAI Dots · Meta Muse 심층 해부',
       meta: 'PROACTIVE CLOUD VM · COMPUTER USE · MULTI-AGENT ORCHESTRATION · 20 SCENES'
     },
-    // 02. stats
+    // 02. svg_cards (에이전트 자율 작업 시간 지수 성장 곡선 & 시장 규모 차트)
     {
-      layout: 'stats', chapter: 0,
+      layout: 'svg_cards', chapter: 0,
       bg: 'photo-1666875753105-c63a6f3bdc86', photo: 'Deng Xiang',
       eyebrow: '데이터로 보는 에이전트 대폭발',
       title: '짧은 질의응답에서 24시간 상시 자율 노동으로',
-      items: [
-        { value: '17.4', unit: '시간', label: '최신 AI 에이전트 자율 완수 작업 길이 (2023년 4분 대비)' },
-        { value: '45.8', unit: '%', label: '글로벌 AI 에이전트 시장 연평균 성장률 (2026년 120억 달러)' }
+      cards: [
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '자율 완수 작업 길이 진화',
+          badge: '17.4시간 · 260배 도약',
+          chart: 's02_horizon',
+          foot: '단순 프롬프트 응답(4분)에서 종일 무인 프로젝트 완수(17.4시간)로 진화'
+        },
+        {
+          icon: 'solar:chart-2-bold',
+          title: '글로벌 AI 에이전트 시장 규모',
+          badge: 'CAGR 45.8% 고성장',
+          chart: 's02_market',
+          hi: true,
+          foot: '엔터프라이즈 SaaS 교체 수요와 상시 클라우드 VM 구독 확산이 시장 견인'
+        }
       ],
       note: '출처 · METR Autonomous Task Horizon (2026) & Gartner Agentic AI Market Forecast'
     },
@@ -299,41 +325,53 @@ const DECK = {
       ],
       note: '데스크톱(Mac·Windows·Linux)과 모바일에서 이름을 가진 다수의 AI 팀원(Roster)을 동시 운용'
     },
-    // 09. compare
+    // 09. svg_cards (Claude Duet vs Grok Bot 5각 레이더 차트 & 핵심 스펙 대조)
     {
-      layout: 'compare', chapter: 1,
+      layout: 'svg_cards', chapter: 1,
       bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
       eyebrow: 'FLAGSHIP HEAD-TO-HEAD',
       title: '양대 에이전트 집중 비교: Claude Duet vs Grok Bot',
-      left: {
-        title: 'Anthropic Claude Duet',
-        icon: 'solar:user-speak-bold',
-        items: [
-          '정체성: 업무 맥락을 파악해 먼저 제안하는 선제적 참모',
-          '강점: 정교한 우선순위 판단(Opus 5.5)과 브리핑 품질',
-          '제어: Human-in-the-Loop 승인 관문과 플러그인 연동'
-        ]
-      },
-      right: {
-        title: 'xAI Grok Bot (Groqbot)',
-        icon: 'solar:users-group-two-rounded-bold',
-        items: [
-          '정체성: 화면 시연으로 배우고 팀으로 일하는 행동대',
-          '강점: 풀액세스 터미널·브라우저 제어 및 코딩 자동화',
-          '제어: 시연 학습(Teach-a-Task)과 다중 봇 스레드 협업'
-        ]
-      },
-      note: '기획·리서치·일정 관리는 Claude Duet, 코딩·레거시 웹 조작·다중 봇 자동화는 Grok Bot이 최적'
+      cards: [
+        {
+          icon: 'solar:radar-2-bold',
+          title: '5대 핵심 역량 스펙트럼 비교',
+          badge: 'Duet(Cyan) vs Grok(Violet)',
+          chart: 's09_radar',
+          foot: '선제 브리핑·거버넌스는 Duet, 컴퓨터 제어·멀티봇은 Grok Bot 우위'
+        },
+        {
+          icon: 'solar:layers-minimalistic-bold',
+          title: '아키텍처 & 타깃 워크플로우 대조',
+          badge: '참모형 vs 행동대형',
+          chart: 's09_matrix',
+          hi: true,
+          foot: '기획·리서치·일정 관리는 Claude Duet, 코딩·레거시 웹 조작은 Grok Bot 최적'
+        }
+      ],
+      note: '출처 · Anthropic Claude Duet & xAI Grok Bot Technical Benchmark Analysis (2026)'
     },
-    // 10. stats
+    // 10. svg_cards (Groq LPU 초당 토큰 처리량 & 20단계 추론 레이턴시 차트)
     {
-      layout: 'stats', chapter: 1,
+      layout: 'svg_cards', chapter: 1,
       bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
       eyebrow: 'ULTRA-FAST INFERENCE ENGINE · GROQ LPU',
       title: '에이전트 다단계 사고 루프를 가속하는 초고속 추론 칩',
-      items: [
-        { value: '500', unit: '+ T/s', label: 'Groq LPU 기반 초당 토큰 생성 속도 (일반 GPU 대비 15배)' },
-        { value: '1.5', unit: '초', label: '20단계 에이전트 추론·도구 호출 루프 완주 소요 시간' }
+      cards: [
+        {
+          icon: 'solar:bolt-circle-bold',
+          title: '초당 토큰 생성 속도 (Tokens/sec)',
+          badge: '500+ T/s · 15배 가속',
+          chart: 's10_tput',
+          foot: '온칩 SRAM 아키텍처로 외부 HBM 메모리 대역폭 병목을 원천 해소'
+        },
+        {
+          icon: 'solar:stopwatch-play-bold',
+          title: '20단계 에이전트 추론 루프 소요 시간',
+          badge: '22.0초 → 1.5초 (-93%)',
+          chart: 's10_lat',
+          hi: true,
+          foot: '수십 번의 계획·도구 호출·검증 루프를 인간이 체감하는 즉시 응답으로 단축'
+        }
       ],
       note: '출처 · Groq LPU Inference Benchmark 2026 — 에이전트의 반복 추론(ReAct)에서 추론 속도가 체감 성능을 결정'
     },
@@ -403,15 +441,28 @@ const DECK = {
       ],
       note: '평균 4시간 걸리던 야간 장애 대응과 반복 백오피스 입력을 12분 내 무인 완결'
     },
-    // 15. stats
+    // 15. svg_cards (현업 도입 무인 해결률 게이지 & 업무 시간 단축 Before/After 차트)
     {
-      layout: 'stats', chapter: 2,
+      layout: 'svg_cards', chapter: 2,
       bg: 'photo-1558494949-ef010cbdcc31', photo: 'Taylor Vick',
       eyebrow: 'REAL-WORLD PRODUCTIVITY IMPACT',
       title: '현업 도입 후 입증된 자율 에이전트 비즈니스 임팩트',
-      items: [
-        { value: '80', unit: '%', label: '자율 에이전트 기반 일상적 고객 문의·티켓 무인 해결률 전망' },
-        { value: '40', unit: '%', label: '2026년 말 기준 태스크 특화 AI 에이전트를 내장한 기업용 앱 비중' }
+      cards: [
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: '무인 해결률 & 엔터프라이즈 도입 비중',
+          badge: 'End-to-End 자동화',
+          chart: 's15_gauge',
+          foot: '단순 챗봇 응답을 넘어 티켓 처리·예약·결제까지 종단간 무인 완결'
+        },
+        {
+          icon: 'solar:clock-circle-bold',
+          title: '실전 업무 시간 단축 (Before → After)',
+          badge: '최대 95% 시간 절감',
+          chart: 's15_roi',
+          hi: true,
+          foot: '인간은 반복 탐색·입력 노동에서 해방되어 최종 승인과 핵심 의사결정에 집중'
+        }
       ],
       note: '출처 · Gartner Agentic AI Enterprise Report & McKinsey State of AI 2026'
     },
@@ -488,6 +539,227 @@ const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</
 
 const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
 
+const CHARTS = {
+  // S02 좌측: 에이전트 자율 작업 시간 지수 성장 곡선 (Area + Glow Line)
+  s02_horizon: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gArea02" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.48"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glow02" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <!-- HUD 배경 그리드 -->
+    <line x1="60" y1="45" x2="590" y2="45" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="100" x2="590" y2="100" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="155" x2="590" y2="155" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="205" x2="590" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <!-- 지수 곡선 영역 및 네온 라인 -->
+    <path d="M 95 201 C 180 200, 220 194, 255 186 C 320 170, 370 150, 415 128 C 475 96, 520 62, 565 38 L 565 205 L 95 205 Z" fill="url(#gArea02)"/>
+    <path d="M 95 201 C 180 200, 220 194, 255 186 C 320 170, 370 150, 415 128 C 475 96, 520 62, 565 38" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glow02)"/>
+    <!-- 데이터 노드 2023 -->
+    <circle cx="95" cy="201" r="6" fill="#0a101c" stroke="#94a3b8" stroke-width="3"/>
+    <text x="95" y="183" fill="#cbd5e1" font-size="16" font-weight="700" text-anchor="middle">4분</text>
+    <text x="95" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">2023</text>
+    <!-- 데이터 노드 2024 -->
+    <circle cx="255" cy="186" r="6.5" fill="#0a101c" stroke="#38bdf8" stroke-width="3"/>
+    <text x="255" y="168" fill="#e2e8f0" font-size="16" font-weight="700" text-anchor="middle">45분</text>
+    <text x="255" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">2024</text>
+    <!-- 데이터 노드 2025 -->
+    <circle cx="415" cy="128" r="7.5" fill="#0a101c" stroke="#00d2ff" stroke-width="3.5"/>
+    <text x="415" y="108" fill="#ffffff" font-size="18" font-weight="800" text-anchor="middle">4.5시간</text>
+    <text x="415" y="232" fill="#cbd5e1" font-size="16" font-weight="700" text-anchor="middle">2025</text>
+    <!-- 데이터 노드 2026 (하이라이트) -->
+    <circle cx="565" cy="38" r="16" fill="rgba(0,210,255,0.22)"/>
+    <circle cx="565" cy="38" r="9" fill="#00d2ff" filter="url(#glow02)"/>
+    <text x="530" y="26" fill="#00d2ff" font-size="24" font-weight="900" text-anchor="end">17.4시간</text>
+    <text x="565" y="232" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">2026</text>
+    <!-- 좌상단 HUD 콜아웃 배지 -->
+    <rect x="70" y="22" width="250" height="36" rx="8" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.45)"/>
+    <text x="195" y="45" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">3년 만에 자율 작업 지속 시간 260배 폭증</text>
+  </svg>`,
+
+  // S02 우측: 글로벌 AI 에이전트 시장 규모 전망 (Neon Bar + CAGR Curve)
+  s02_market: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gBarDim" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#0f172a" stop-opacity="0.35"/>
+      </linearGradient>
+      <linearGradient id="gBarHi" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#0284c7" stop-opacity="0.25"/>
+      </linearGradient>
+    </defs>
+    <line x1="50" y1="50" x2="595" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="50" y1="125" x2="595" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="50" y1="205" x2="595" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <!-- 2024 ($5.1B) -->
+    <rect x="85" y="168" width="76" height="37" rx="6" fill="url(#gBarDim)" stroke="rgba(56,189,248,0.45)"/>
+    <text x="123" y="158" fill="#cbd5e1" font-size="17" font-weight="700" text-anchor="middle">$5.1B</text>
+    <text x="123" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">2024</text>
+    <!-- 2025 ($7.8B) -->
+    <rect x="215" y="146" width="76" height="59" rx="6" fill="url(#gBarDim)" stroke="rgba(56,189,248,0.55)"/>
+    <text x="253" y="135" fill="#e2e8f0" font-size="18" font-weight="700" text-anchor="middle">$7.8B</text>
+    <text x="253" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">2025</text>
+    <!-- 2026 ($12.0B) -->
+    <rect x="345" y="112" width="76" height="93" rx="6" fill="url(#gBarHi)" stroke="#00d2ff" stroke-width="1.8"/>
+    <text x="383" y="99" fill="#ffffff" font-size="20" font-weight="800" text-anchor="middle">$12.0B</text>
+    <text x="383" y="232" fill="#ffffff" font-size="16" font-weight="800" text-anchor="middle">2026</text>
+    <!-- 2028E ($25.5B) -->
+    <rect x="475" y="42" width="82" height="163" rx="7" fill="url(#gBarHi)" stroke="#00d2ff" stroke-width="2.2" filter="url(#glow02)"/>
+    <text x="516" y="28" fill="#00d2ff" font-size="23" font-weight="900" text-anchor="middle">$25.5B</text>
+    <text x="516" y="232" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">2028(E)</text>
+    <!-- CAGR 성장 추세 점선 -->
+    <path d="M 123 145 Q 290 105 495 36" fill="none" stroke="#00d2ff" stroke-width="2.5" stroke-dasharray="6 5"/>
+    <rect x="70" y="22" width="215" height="36" rx="8" fill="rgba(0,210,255,0.14)" stroke="rgba(0,210,255,0.5)"/>
+    <text x="177" y="45" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">연평균 성장률 CAGR +45.8%</text>
+  </svg>`,
+
+  // S09 좌측: Claude Duet vs Grok Bot 5각 레이더 차트
+  s09_radar: `<svg viewBox="0 0 640 255" xmlns="http://www.w3.org/2000/svg">
+    <!-- 레이더 중심 (260, 134), 반경 R=92 -->
+    <!-- 외곽 오각형 그리드 3단계 -->
+    <polygon points="260,42 347,105 314,208 206,208 173,105" fill="rgba(15,23,42,0.5)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
+    <polygon points="260,72 318,115 296,184 224,184 202,115" fill="none" stroke="rgba(255,255,255,0.11)" stroke-dasharray="3 3"/>
+    <polygon points="260,103 289,124 278,159 242,159 231,124" fill="none" stroke="rgba(255,255,255,0.08)"/>
+    <!-- 중심축 5개 -->
+    <line x1="260" y1="134" x2="260" y2="42" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="347" y2="105" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="314" y2="208" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="206" y2="208" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="173" y2="105" stroke="rgba(255,255,255,0.14)"/>
+    <!-- Grok Bot 다각형 (Violet #a855f7): 선제브리핑(72%), 컴퓨터제어(98%), 멀티봇·시연(96%), 거버넌스(78%), 문서추론(82%) -->
+    <polygon points="260,68 345,106 312,205 218,192 188,110" fill="rgba(168,85,247,0.24)" stroke="#c084fc" stroke-width="3"/>
+    <!-- Claude Duet 다각형 (Cyan #00d2ff): 선제브리핑(98%), 컴퓨터제어(78%), 멀티봇·시연(76%), 거버넌스(96%), 문서추론(96%) -->
+    <polygon points="260,44 328,112 301,190 208,205 176,106" fill="rgba(0,210,255,0.26)" stroke="#00d2ff" stroke-width="3.2"/>
+    <!-- 5대 축 라벨 -->
+    <text x="260" y="26" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">선제 브리핑·기획 (98)</text>
+    <text x="356" y="106" fill="#d8b4fe" font-size="15" font-weight="800" text-anchor="start">터미널·코딩 (98)</text>
+    <text x="328" y="232" fill="#d8b4fe" font-size="16" font-weight="800" text-anchor="start">시연 학습·멀티봇 (96)</text>
+    <text x="192" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="end">승인 거버넌스 (96)</text>
+    <text x="160" y="106" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="end">심층 문서 추론 (96)</text>
+    <!-- 우측 HUD 범례 박스 -->
+    <rect x="482" y="42" width="144" height="72" rx="10" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.5)"/>
+    <circle cx="500" cy="66" r="6" fill="#00d2ff"/>
+    <text x="514" y="71" fill="#ffffff" font-size="16" font-weight="800">Claude Duet</text>
+    <text x="496" y="96" fill="#7dd3fc" font-size="14" font-weight="600">Opus 5.5 참모형</text>
+    <rect x="482" y="128" width="144" height="72" rx="10" fill="rgba(168,85,247,0.14)" stroke="rgba(192,132,252,0.5)"/>
+    <circle cx="500" cy="152" r="6" fill="#c084fc"/>
+    <text x="514" y="157" fill="#ffffff" font-size="16" font-weight="800">xAI Grok Bot</text>
+    <text x="496" y="182" fill="#d8b4fe" font-size="14" font-weight="600">Multi-Bot 행동대</text>
+  </svg>`,
+
+  // S09 우측: Claude Duet vs Grok Bot 아키텍처 & 스펙 비교 매트릭스 SVG
+  s09_matrix: `<svg viewBox="0 0 640 255" xmlns="http://www.w3.org/2000/svg">
+    <!-- 상단 카드: Anthropic Claude Duet -->
+    <rect x="14" y="12" width="612" height="108" rx="14" fill="rgba(0,210,255,0.11)" stroke="rgba(0,210,255,0.55)" stroke-width="1.5"/>
+    <rect x="30" y="28" width="176" height="30" rx="6" fill="rgba(0,210,255,0.22)"/>
+    <text x="118" y="49" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">Anthropic Claude Duet</text>
+    <text x="222" y="49" fill="#ffffff" font-size="18" font-weight="800">업무 맥락을 먼저 읽고 제안하는 선제적 참모</text>
+    <text x="32" y="82" fill="#e2e8f0" font-size="16" font-weight="600">• 핵심 엔진: 전용 클라우드 VM + Claude Opus 5.5 + 모닝 브리핑</text>
+    <text x="32" y="106" fill="#7dd3fc" font-size="16" font-weight="700">• 안전 통제: 대외 발송·결제 직전 Human-in-the-Loop 원클릭 승인</text>
+    <!-- 하단 카드: xAI Grok Bot -->
+    <rect x="14" y="134" width="612" height="108" rx="14" fill="rgba(168,85,247,0.12)" stroke="rgba(192,132,252,0.55)" stroke-width="1.5"/>
+    <rect x="30" y="150" width="176" height="30" rx="6" fill="rgba(168,85,247,0.26)"/>
+    <text x="118" y="171" fill="#e9d5ff" font-size="16" font-weight="800" text-anchor="middle">xAI Grok Bot (Groqbot)</text>
+    <text x="222" y="171" fill="#ffffff" font-size="18" font-weight="800">화면 시연으로 배우고 팀으로 일하는 행동대</text>
+    <text x="32" y="204" fill="#e2e8f0" font-size="16" font-weight="600">• 핵심 엔진: Teach-a-Task 시연 학습 + 풀액세스 브라우저·터미널</text>
+    <text x="32" y="228" fill="#d8b4fe" font-size="16" font-weight="700">• 확장 협업: 수석 보좌관 봇 중심 멀티봇 스레드 위임 &amp; Cursor 통합</text>
+  </svg>`,
+
+  // S10 좌측: Groq LPU 초당 토큰 생성 속도 수평 바 차트
+  s10_tput: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gLpuBar" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7"/>
+        <stop offset="100%" stop-color="#00d2ff"/>
+      </linearGradient>
+    </defs>
+    <!-- Row 1: 표준 클라우드 GPU -->
+    <text x="20" y="42" fill="#cbd5e1" font-size="17" font-weight="700">표준 클라우드 GPU 클러스터</text>
+    <text x="615" y="42" fill="#94a3b8" font-size="17" font-weight="700" text-anchor="end">35 T/s (1x)</text>
+    <rect x="20" y="52" width="595" height="24" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="52" width="46" height="24" rx="6" fill="#64748b"/>
+    <!-- Row 2: 차세대 GPU 최적화 -->
+    <text x="20" y="114" fill="#e2e8f0" font-size="17" font-weight="700">차세대 GPU FP8 추론 최적화</text>
+    <text x="615" y="114" fill="#38bdf8" font-size="17" font-weight="700" text-anchor="end">110 T/s (3.1x)</text>
+    <rect x="20" y="124" width="595" height="24" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="124" width="138" height="24" rx="6" fill="#0ea5e9"/>
+    <!-- Row 3: Groq LPU -->
+    <text x="20" y="186" fill="#00d2ff" font-size="19" font-weight="900">Groq LPU 초고속 추론 엔진</text>
+    <text x="615" y="186" fill="#00d2ff" font-size="21" font-weight="900" text-anchor="end">500+ T/s (15x 가속)</text>
+    <rect x="20" y="198" width="595" height="32" rx="8" fill="url(#gLpuBar)" stroke="#7dd3fc" stroke-width="1.5"/>
+    <text x="317" y="220" fill="#05070c" font-size="16" font-weight="900" text-anchor="middle">EXTERNAL HBM BOTTLENECK FREE · ON-CHIP SRAM</text>
+  </svg>`,
+
+  // S10 우측: 20단계 에이전트 추론 루프 소요 시간 비교 워터폴 차트
+  s10_lat: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- 상단 트랙: 기존 GPU (22.0초) -->
+    <text x="20" y="38" fill="#cbd5e1" font-size="17" font-weight="700">기존 GPU 기반 20단계 에이전트 루프 (계획·도구 호출·검증 × 20회)</text>
+    <rect x="20" y="50" width="595" height="44" rx="8" fill="rgba(239,68,68,0.16)" stroke="rgba(248,113,113,0.55)" stroke-width="1.5"/>
+    <!-- 20단계 분할 눈금 표현 -->
+    <line x1="110" y1="50" x2="110" y2="94" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="200" y1="50" x2="200" y2="94" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="290" y1="50" x2="290" y2="94" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="380" y1="50" x2="380" y2="94" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="470" y1="50" x2="470" y2="94" stroke="rgba(255,255,255,0.12)"/>
+    <text x="317" y="78" fill="#fca5a5" font-size="18" font-weight="800" text-anchor="middle">총 22.0초 소요 (사용자 대기 이탈 구간)</text>
+    <!-- 하단 트랙: Groq LPU (1.5초) -->
+    <text x="20" y="142" fill="#00d2ff" font-size="18" font-weight="800">Groq LPU 기반 20단계 에이전트 자율 루프</text>
+    <rect x="20" y="154" width="595" height="50" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(0,210,255,0.3)" stroke-dasharray="5 5"/>
+    <rect x="20" y="154" width="68" height="50" rx="8" fill="#00d2ff"/>
+    <text x="54" y="185" fill="#05070c" font-size="18" font-weight="900" text-anchor="middle">1.5초</text>
+    <!-- 절감 시간 화살표 & 배지 -->
+    <line x1="102" y1="179" x2="598" y2="179" stroke="#00d2ff" stroke-width="2" stroke-dasharray="4 4"/>
+    <rect x="175" y="161" width="355" height="36" rx="18" fill="rgba(5,7,12,0.9)" stroke="#00d2ff" stroke-width="1.5"/>
+    <text x="352" y="185" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">⚡ 20.5초 대기 제거 (-93% 레이턴시 단축)</text>
+    <text x="317" y="234" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">추론 속도가 빨라질수록 에이전트는 같은 시간 내 더 많은 자체 검증(Self-Reflection)을 수행</text>
+  </svg>`,
+
+  // S15 좌측: 듀얼 네온 도넛 게이지 (80% CS 무인 해결 & 40% 기업용 앱 에이전트 내장)
+  s15_gauge: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- 좌측 도넛: 80% (둘레 2*pi*74 ≈ 465, 80% = 372) -->
+    <circle cx="170" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="170" cy="112" r="74" fill="none" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-dasharray="372 465" transform="rotate(-90 170 112)"/>
+    <text x="170" y="120" fill="#ffffff" font-size="40" font-weight="900" text-anchor="middle">80%</text>
+    <text x="170" y="216" fill="#00d2ff" font-size="18" font-weight="800" text-anchor="middle">일상 고객 문의·티켓 무인 해결률</text>
+    <text x="170" y="238" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">Gartner Customer Service Forecast</text>
+    <!-- 중앙 구분선 -->
+    <line x1="320" y1="28" x2="320" y2="235" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+    <!-- 우측 도넛: 40% (둘레 465, 40% = 186) -->
+    <circle cx="470" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="#38bdf8" stroke-width="16" stroke-linecap="round" stroke-dasharray="186 465" transform="rotate(-90 470 112)"/>
+    <text x="470" y="120" fill="#ffffff" font-size="40" font-weight="900" text-anchor="middle">40%</text>
+    <text x="470" y="216" fill="#38bdf8" font-size="18" font-weight="800" text-anchor="middle">태스크 에이전트 내장 기업 앱 비중</text>
+    <text x="470" y="238" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">2025년 5% 미만에서 1년 만에 8배 급증</text>
+  </svg>`,
+
+  // S15 우측: 실전 업무 소요 시간 Before vs After 비교 차트
+  s15_roi: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- Case 1: 모닝 인텔리전스 브리핑 (Claude Duet) -->
+    <text x="20" y="34" fill="#ffffff" font-size="18" font-weight="800">01. 출근 전 메일·일정 정리 및 회신 초안 (Claude Duet)</text>
+    <rect x="20" y="46" width="410" height="24" rx="5" fill="rgba(148,163,184,0.28)"/>
+    <text x="32" y="63" fill="#cbd5e1" font-size="14" font-weight="700">도입 전 (수동 확인·작성): 평균 90분 소요</text>
+    <rect x="20" y="76" width="54" height="28" rx="6" fill="#00d2ff"/>
+    <text x="86" y="96" fill="#00d2ff" font-size="18" font-weight="900">도입 후: 5분 (원클릭 승인)</text>
+    <rect x="465" y="54" width="150" height="44" rx="10" fill="rgba(0,210,255,0.16)" stroke="#00d2ff" stroke-width="1.5"/>
+    <text x="540" y="82" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="middle">-94% 단축</text>
+    <!-- 구분선 -->
+    <line x1="20" y1="124" x2="615" y2="124" stroke="rgba(255,255,255,0.1)"/>
+    <!-- Case 2: 야간 장애 패치 & 벤더 포털 기입 (Grok Bot) -->
+    <text x="20" y="156" fill="#ffffff" font-size="18" font-weight="800">02. 야간 장애 디버깅·PR 생성 및 포털 기입 (Grok Bot)</text>
+    <rect x="20" y="168" width="425" height="24" rx="5" fill="rgba(148,163,184,0.28)"/>
+    <text x="32" y="185" fill="#cbd5e1" font-size="14" font-weight="700">도입 전 (온콜 호출·수동 패치): 평균 240분(4시간) 소요</text>
+    <rect x="20" y="198" width="54" height="28" rx="6" fill="#00d2ff"/>
+    <text x="86" y="218" fill="#00d2ff" font-size="18" font-weight="900">도입 후: 12분 (무인 패치·검증)</text>
+    <rect x="465" y="176" width="150" height="44" rx="10" fill="rgba(0,210,255,0.16)" stroke="#00d2ff" stroke-width="1.5"/>
+    <text x="540" y="204" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="middle">-95% 단축</text>
+  </svg>`
+};
+
 const LAYOUTS = {
   cover: (s, n) => `<div class="cover">
       ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
@@ -498,6 +770,8 @@ const LAYOUTS = {
       `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
   stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
       `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card${c.hi ? ' hi' : ''}" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
   flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
       (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
       `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),

@@ -129,6 +129,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
 .panel.hi li{color:var(--ink)}
 .panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
 
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
 /* quote (따옴표 가상요소 제거 & 볼드 타이포) */
 .quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
 .quote::before, .quote::after{content:none !important;display:none !important}
@@ -211,7 +224,32 @@ const DECK = {
       ],
       note: '출처 · Global Technology & Productivity Index 2026'
     },
-    // 03. compare
+    // 03. svg_cards (시네마틱 HUD 네온 SVG 차트 2열 카드)
+    {
+      layout: 'svg_cards', chapter: 0,
+      bg: 'photo-1558494949-ef010cbdcc31', photo: 'Taylor Vick',
+      eyebrow: 'HUD DATA VISUALIZATION · SVG',
+      title: '시네마틱 네온 SVG 차트로 증명하는 성과',
+      cards: [
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '핵심 생산성 지수 성장 곡선',
+          badge: '4.2배 고속 성장',
+          chart: 'demo_growth',
+          foot: '도입 초기 대비 3년 만에 핵심 퍼포먼스 지표 4.2배 수직 상승'
+        },
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: '선도 기업 도입률 & 시간 절감',
+          badge: 'End-to-End 혁신',
+          chart: 'demo_gauge',
+          hi: true,
+          foot: '글로벌 선도 기업의 85%가 채택하며 반복 업무 시간 94% 단축'
+        }
+      ],
+      note: '출처 · Global Enterprise Benchmark Report 2026'
+    },
+    // 04. compare
     {
       layout: 'compare', chapter: 1,
       bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
@@ -299,6 +337,49 @@ const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</
 
 const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
 
+const CHARTS = {
+  // 예시 1: 네온 영역 성장 곡선 (Area + Glow Line)
+  demo_growth: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.48"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="50" x2="590" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="125" x2="590" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="205" x2="590" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <path d="M 95 198 C 190 194, 240 180, 330 140 C 420 100, 495 62, 565 38 L 565 205 L 95 205 Z" fill="url(#gArea)"/>
+    <path d="M 95 198 C 190 194, 240 180, 330 140 C 420 100, 495 62, 565 38" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+    <circle cx="95" cy="198" r="6" fill="#0a101c" stroke="#94a3b8" stroke-width="3"/>
+    <text x="95" y="180" fill="#cbd5e1" font-size="16" font-weight="700" text-anchor="middle">1.0x</text>
+    <text x="95" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">2023</text>
+    <circle cx="330" cy="140" r="7" fill="#0a101c" stroke="#38bdf8" stroke-width="3.5"/>
+    <text x="330" y="120" fill="#ffffff" font-size="18" font-weight="800" text-anchor="middle">2.4x</text>
+    <text x="330" y="232" fill="#cbd5e1" font-size="16" font-weight="700" text-anchor="middle">2025</text>
+    <circle cx="565" cy="38" r="15" fill="rgba(0,210,255,0.22)"/>
+    <circle cx="565" cy="38" r="8.5" fill="#00d2ff" filter="url(#glow)"/>
+    <text x="530" y="28" fill="#00d2ff" font-size="23" font-weight="900" text-anchor="end">4.2x</text>
+    <text x="565" y="232" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">2026</text>
+  </svg>`,
+
+  // 예시 2: 듀얼 네온 원형 도넛 게이지 (Ring Gauge)
+  demo_gauge: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="170" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="170" cy="112" r="74" fill="none" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-dasharray="395 465" transform="rotate(-90 170 112)"/>
+    <text x="170" y="120" fill="#ffffff" font-size="40" font-weight="900" text-anchor="middle">85%</text>
+    <text x="170" y="216" fill="#00d2ff" font-size="18" font-weight="800" text-anchor="middle">글로벌 선도 기업 도입률</text>
+    <line x1="320" y1="28" x2="320" y2="235" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="#38bdf8" stroke-width="16" stroke-linecap="round" stroke-dasharray="437 465" transform="rotate(-90 470 112)"/>
+    <text x="470" y="120" fill="#ffffff" font-size="40" font-weight="900" text-anchor="middle">94%</text>
+    <text x="470" y="216" fill="#38bdf8" font-size="18" font-weight="800" text-anchor="middle">반복 업무 시간 절감 효과</text>
+  </svg>`
+};
+
 const LAYOUTS = {
   cover: (s, n) => `<div class="cover">
       ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
@@ -307,6 +388,8 @@ const LAYOUTS = {
       ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
   bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
       `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card${c.hi ? ' hi' : ''}" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
   stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
       `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
   flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
