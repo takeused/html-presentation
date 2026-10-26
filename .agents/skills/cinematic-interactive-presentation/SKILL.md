@@ -49,7 +49,7 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
    ```bash
    python -I .agents/skills/cinematic-interactive-presentation/scripts/find_photos.py "artificial intelligence" "data network" --n 5
    ```
-   출력된 `bg`, `photo` 값을 슬라이드 데이터에 매핑합니다.
+   출력된 `bg`, `photo` 값을 슬라이드 데이터에 매핑합니다. **특히 1번 표지(`cover`)의 `bg` 이미지는 프로젝트 내 기존 모든 시네마틱 발표자료(`*_cinematic_presentation.html`)의 표지 이미지와 절대 겹치지 않는 고유한 사진을 지정합니다.**
 4. **CHARTS(SVG 차트) 및 DECK 데이터 작성**:
    - `CHARTS` 객체에 슬라이드에서 참조할 인라인 SVG(`viewBox="0 0 640 250"`)를 정의합니다.
      - SVG 내부 `<text>` 좌표는 좌우 `20~620px`, 상하 `24~240px` 안전 영역 안에 배치하여 카드 밖 넘침을 방지합니다.
@@ -95,6 +95,7 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
 - 전체 화면 레이어(`.shade` 등)에 `backdrop-filter`를 추가하지 않습니다. 켄번스 배경 위에서 매 프레임 블러가 계산되어 저사양 노트북에서 끊깁니다. (타임라인이나 `.svg-card`처럼 작은 카드 영역은 괜찮습니다)
 - `prefers-reduced-motion` 블록과 `<link rel="icon" href="data:,">`(favicon 404 방지)는 지우지 않습니다.
 - 배경 사진은 `w=2560&q=88`로 불러온다(`bgUrl`). 이 템플릿의 `.shade`는 어두운 편이라, 배경을 더 또렷하게 하려면 한 번에 조금씩만 올린다. 너무 올리면 본문 가시성이 떨어진다.
+- **발표자료마다 1번 표지(`cover`) 배경 이미지(`bg`)는 반드시 고유해야 한다.** 다른 본문 슬라이드는 검증된 사진을 재사용할 수 있더라도, 표지 배경 이미지는 기존 어떤 시네마틱 덱의 표지와도 겹치지 않도록 한다 (`shoot.py`에서 자동 검증).
 - quote 레이아웃에는 장식용 큰따옴표(`“`)를 넣지 않는다. 템플릿에서 `.quote::before`를 제거했으니 다시 넣지 않는다.
 - Pretendard는 CDN(jsDelivr)에서 불러온다. 외부 접속이 막힌 환경(폐쇄망, 샌드박스)에서는 시스템 폰트로 바뀌므로, 그런 환경에서 발표하면 Pretendard 파일을 HTML 옆 폴더에 두고 `@font-face`로 불러오는 방식으로 바꾼다. 점검 환경이 외부 접속을 못 하면 `Pretendard 웹폰트: OK`를 확인할 수 없으니 사용자에게 알린다.
 - 통계 수치와 SVG 차트 슬라이드에는 반드시 출처(`note`)를 답니다. 지어낸 숫자는 쓰지 않습니다.

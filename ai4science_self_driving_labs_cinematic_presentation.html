@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Science & 자율형 연구실(Self-Driving Labs) 혁명</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;white-space:nowrap;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 — AI4Science & 자율형 연구실 (15장) ===================== */
+const DECK = {
+  brand: { name: 'AI FOR SCIENCE', icon: 'solar:atom-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: ['과학적 발견의 대전환', '프론티어 과학 파운데이션 모델', '24/7 자율형 연구실 (SDL)', '국가 R&D 전략과 미래'],
+  slides: [
+    // 01. cover
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1531591022136-eb8b0da1e6d0', photo: 'Tobias Keller',
+      eyebrow: 'AI FOR SCIENCE & SELF-DRIVING LABS · 2026',
+      title: '자연의 언어를 해독하는 AI 과학자,<br><em>AI4Science와 자율형 연구실 혁명</em>',
+      sub: 'AlphaFold 3 · AlphaGenome · GNoME 신소재 역설계부터 24시간 무인 실험실(SDL)까지',
+      meta: 'FOUNDATION MODELS · QUANTUM SURROGATES · ROBOTIC WET-LABS · 15 SCENES'
+    },
+    // 02. svg_cards (신소재 안정 구조 발견 도약 & 단백질 3D 구조 해독 규모 비교)
+    {
+      layout: 'svg_cards', chapter: 0,
+      bg: 'photo-1639322537228-f710d846310a', photo: 'Shubham Dhage',
+      eyebrow: 'HUD DATA VISUALIZATION · DISCOVERY LEAP',
+      title: '수백 년의 인류 과학 탐사를 단숨에 압축하는 AI',
+      cards: [
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '안정 결정 구조 발견 규모',
+          badge: '220만 개 · 800년 압축',
+          chart: 's02_gnome',
+          foot: '인류 누적 4.8만 개에서 GNoME AI로 220만 개 신소재 후보 일거 발굴'
+        },
+        {
+          icon: 'solar:dna-bold',
+          title: '단백질 3D 구조 해독 혁신',
+          badge: '2.14억 개 · 1,000배',
+          chart: 's02_protein',
+          hi: true,
+          foot: '수십 년간 축적된 실험 구조(20만 개)를 넘어 지구상 알려진 모든 단백질 해독'
+        }
+      ],
+      note: '출처 · Google DeepMind GNoME (Nature) & AlphaFold Protein Structure Database (EMBL-EBI)'
+    },
+    // 03. compare
+    {
+      layout: 'compare', chapter: 0,
+      bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
+      eyebrow: '연구 패러다임의 근본적 전환',
+      title: '전통적 가설·수작업 실험 vs AI4Science 자율 연구',
+      left: {
+        title: '전통적 수작업 연구 (Artisanal)',
+        icon: 'solar:test-tube-minimalistic-bold',
+        items: [
+          '연구자 개인의 직관과 선행 문헌에 의존한 가설 수립',
+          '수개월이 소요되는 슈퍼컴퓨터 양자 물리 시뮬레이션',
+          '대학원생 수작업 반복 실험과 잦은 재현성 실패'
+        ]
+      },
+      right: {
+        title: 'AI4Science 자율 연구 (SDL)',
+        icon: 'solar:atom-bold',
+        items: [
+          '과학 파운데이션 모델의 수억 개 분자·결정 공간 탐색',
+          '신경망 서로게이트 모델로 물리 연산 10만 배 가속',
+          '로보틱스 자율 실험실(SDL)의 24시간 폐루프 무인 합성'
+        ]
+      },
+      note: '인간의 물리적 실험 속도에 갇혀 있던 과학적 발견이 컴퓨팅 스케일링 법칙을 따르기 시작했습니다'
+    },
+    // 04. quote
+    {
+      layout: 'quote', chapter: 0,
+      bg: 'photo-1451187580459-43490279c0fa', photo: 'NASA',
+      eyebrow: 'THE FIFTH PARADIGM OF SCIENCE',
+      quote: '자연의 언어를 이해하는 AI는 단순한 도구가 아니라,<br><em>인류 과학사상 가장 위대한 발견의 엔진이다</em>',
+      by: 'NOBEL PRIZE IN CHEMISTRY & PHYSICS · AI FOR SCIENCE ERA'
+    },
+    // 05. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1674027444485-cec3da58eef4', photo: 'Growtika',
+      eyebrow: 'FRONTIER SCIENTIFIC FOUNDATION MODELS',
+      title: '물리·화학·생명의 법칙을 학습한 4대 과학 AI 모델',
+      items: [
+        { icon: 'solar:dna-bold', text: 'AlphaFold 3 (생체분자 결합): 단백질·DNA·RNA·리간드의 복합 상호작용을 원자 정밀도로 해독' },
+        { icon: 'solar:pulse-2-bold', text: 'AlphaGenome (유전체 조절 해독): 인간 유전체 98% 비암호화 영역의 유전자 발현·질병 변이 예측' },
+        { icon: 'solar:layers-minimalistic-bold', text: 'GNoME & MatterGen (신소재 생성): 원하는 전자·기계적 물성을 입력하면 3차원 결정 구조 역설계' },
+        { icon: 'solar:planet-3-bold', text: 'GraphCast & 핵융합 플라즈마 AI: 초고해상도 전 지구 기상 예측과 토카막 자기장 실시간 제어', em: true }
+      ],
+      note: '텍스트(LLM)를 넘어 분자 그래프, 3차원 좌표, 편미분방정식(PDE)을 직접 다루는 멀티모달 과학 지능'
+    },
+    // 06. svg_cards (AlphaFold 3 5각 레이더 차트 & AI 신약 개발 기간·비용 차트)
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
+      eyebrow: 'BIOMEDICAL & DRUG DISCOVERY BENCHMARK',
+      title: '생명과학과 신약 개발을 재정의하는 AI 벤치마크',
+      cards: [
+        {
+          icon: 'solar:radar-2-bold',
+          title: '생체분자 결합 예측 정확도',
+          badge: 'AF3(Cyan) vs 기존(Violet)',
+          chart: 's06_radar',
+          foot: '단백질·리간드·RNA·항체 전 영역에서 기존 물리 도킹 대비 압도적 우위'
+        },
+        {
+          icon: 'solar:clock-circle-bold',
+          title: '신약 후보 발굴 기간·비용',
+          badge: '54개월 → 12개월 (-78%)',
+          chart: 's06_drug',
+          hi: true,
+          foot: '초기 탐색 기간을 1/4로 단축하고 전임상 후보 발굴 비용을 70% 절감'
+        }
+      ],
+      note: '출처 · Abramson et al. AlphaFold 3 (Nature, 2024) & Boston Consulting Group AI Biotech Report'
+    },
+    // 07. flow
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1655890006065-edefcd764af6', photo: 'D koi',
+      eyebrow: 'GENERATIVE INVERSE DESIGN',
+      title: '시행착오를 제거하는 3단계 생성형 역설계 파이프라인',
+      steps: [
+        { label: '목표 물성 정의', desc: '이온 전도도·내열성·결합력 등<br>원하는 타깃 스펙을 수식화' },
+        { label: '3D 확산 구조 생성', desc: '생성형 분자·결정 AI 모델이<br>수백만 후보 구조를 동시 합성' },
+        { label: '양자 물리 스크리닝', desc: '신경망 포텐셜(MLIP)을 통해<br>밀리초 단위로 안정성 검증' }
+      ],
+      note: '후보 물질을 하나씩 테스트하던 정방향 탐색에서, 목표 물성으로 구조를 찍어내는 역설계로의 전환'
+    },
+    // 08. stats
+    {
+      layout: 'stats', chapter: 1,
+      bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
+      eyebrow: 'QUANTUM SURROGATE ACCELERATION',
+      title: '슈퍼컴퓨터 물리 연산을 대체하는 AI 서로게이트 속도',
+      items: [
+        { value: '100,000', unit: '배', label: '밀도범함수이론(DFT) 양자화학 계산 대비 신경망 포텐셜 가속 배수' },
+        { value: '800', unit: '년', label: 'DeepMind GNoME이 단 한 번의 탐색으로 단축한 인류 소재 연구 시간' }
+      ],
+      note: '출처 · Merchant et al., Scaling deep learning for materials discovery (Nature)'
+    },
+    // 09. flow
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1748000970909-845f4aa144d2', photo: 'TECNIC Bioprocess Solutions',
+      eyebrow: 'CLOSED-LOOP SELF-DRIVING LABS (SDL)',
+      title: '가상 두뇌와 로봇 신체가 결합된 자율형 연구실 폐루프',
+      steps: [
+        { label: 'AI 가설·조건 설계', desc: '베이지안 최적화 에이전트가<br>다음 최적 실험 레시피 도출' },
+        { label: '로봇 팔 24/7 합성', desc: '분말 계량·혼합·열처리·배양을<br>오차 없이 무인 자동 수행' },
+        { label: '실시간 계측·재학습', desc: 'X선 회절·분광 분석 데이터를<br>즉시 학습해 차기 실험 보정' }
+      ],
+      note: '컴퓨터 속 예측(In-Silico)에 그치지 않고, 물리적 실험(Wet-Lab)까지 AI가 직접 완결하는 폐루프 혁신'
+    },
+    // 10. svg_cards (LBNL A-Lab 무인 합성 게이지 & 실험 처리량 비교 바 차트)
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1558494949-ef010cbdcc31', photo: 'Taylor Vick',
+      eyebrow: 'AUTONOMOUS LAB EMPIRICAL PERFORMANCE',
+      title: '자율형 연구실(A-Lab) 실전 처리량 및 합성 성공률',
+      cards: [
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: 'A-Lab 무인 신소재 합성률',
+          badge: '성공률 71% · 무인 가동',
+          chart: 's10_alab',
+          foot: '17일간 58개 타깃 중 41개 신규 무기소재를 인간 개입 없이 자율 합성'
+        },
+        {
+          icon: 'solar:bolt-circle-bold',
+          title: '연구실 일일 실험 처리량',
+          badge: '수작업 대비 50배 가속',
+          chart: 's10_throughput',
+          hi: true,
+          foot: 'AI 능동 학습과 로봇 자동화 결합으로 탐색 효율을 50배 이상 극대화'
+        }
+      ],
+      note: '출처 · Szymanski et al., An autonomous laboratory for the accelerated synthesis of novel materials (Nature)'
+    },
+    // 11. bullets
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1602052577122-f73b9710adba', photo: 'Trnava University',
+      eyebrow: 'GLOBAL SELF-DRIVING LAB PIONEERS',
+      title: '전 세계를 선도하는 4대 자율형 연구실(SDL) 실증 현장',
+      items: [
+        { icon: 'solar:buildings-3-bold', text: '미 버클리 국립연구소 A-Lab: AI 문헌 학습과 로봇 팔을 결합해 배터리·촉매 신소재 24시간 합성' },
+        { icon: 'solar:cpu-bolt-bold', text: '토론토대 Acceleration Consortium: 유기발광소자·차세대 태양전지 소재를 발굴하는 글로벌 SDL 허브' },
+        { icon: 'solar:cloud-storage-bold', text: '에메랄드 클라우드 랩(ECL): 웹 브라우저에서 파이썬 코드로 200종 이상의 바이오 실험 장비를 원격 구동' },
+        { icon: 'solar:shield-star-bold', text: '차세대 AI 과학 에이전트: 논문 독해·가설 수립·시약 발주·로봇 프로토콜 작성까지 전 주기 자율 수행', em: true }
+      ],
+      note: '실험실 자동화는 이제 단순 반복 작업을 넘어 AI가 스스로 실패 원인을 분석하고 레시피를 수정하는 단계에 진입'
+    },
+    // 12. compare
+    {
+      layout: 'compare', chapter: 2,
+      bg: 'photo-1526374965328-7f61d4dc18c5', photo: 'Markus Spiske',
+      eyebrow: 'SCIENCE-AS-CODE PARADIGM',
+      title: '파편화된 물리 실험실 vs 클라우드 네이티브 자율 연구실',
+      left: {
+        title: '폐쇄형 물리 실험실 (Lab-Bound)',
+        icon: 'solar:lock-keyhole-minimalistic-bold',
+        items: [
+          '수십억 원 장비를 직접 보유한 소수 기관만 연구 가능',
+          '연구자의 손끝 숙련도에 좌우되는 낮은 실험 재현성',
+          '실험 노트에 묻혀 버려지는 80% 이상의 실패 데이터'
+        ]
+      },
+      right: {
+        title: '클라우드 자율 연구실 (Cloud SDL)',
+        icon: 'solar:code-square-bold',
+        items: [
+          '코드 한 줄로 원격 로봇 파운드리를 호출해 즉시 실험',
+          '정밀 로봇 공정으로 전 세계 어디서나 100% 재현 보장',
+          '성공과 실패 데이터를 모두 학습해 집단 지능으로 축적'
+        ]
+      },
+      note: '소프트웨어 개발이 클라우드와 CI/CD로 혁명을 겪었듯, 과학 실험도 코드 기반 클라우드 파운드리로 재편됩니다'
+    },
+    // 13. bullets
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1614064641938-3bbee52942c7', photo: 'FlyD',
+      eyebrow: 'STRATEGIC IMPERATIVES & GOVERNANCE',
+      title: 'AI4Science 기술 패권 확보를 위한 4대 핵심 전략',
+      items: [
+        { icon: 'solar:database-bold', text: 'AI-Ready 연구 데이터 표준화: 성공 결과뿐 아니라 실패한 실험 조건까지 기계 가독형으로 자산화' },
+        { icon: 'solar:crown-star-bold', text: '전략기술 과학 파운데이션 모델 주권: 반도체·이차전지·합성생물학 특화 독자 AI 모델 및 연산망 확보' },
+        { icon: 'solar:settings-minimalistic-bold', text: '권역별 공용 자율 실험 파운드리: 대학·중소 연구소가 원격으로 접속하는 로봇 실험 인프라 구축' },
+        { icon: 'solar:shield-warning-bold', text: '바이오·화학 안전 가드레일: 병원체 합성·유해 화학물질 역설계를 원천 차단하는 레드팀 거버넌스', em: true }
+      ],
+      note: '데이터 표준화와 로봇 실험 인프라를 선점하는 국가가 향후 30년의 원천 특허와 소재 주권을 독점합니다'
+    },
+    // 14. timeline
+    {
+      layout: 'timeline', chapter: 3,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Alexandre Debieve',
+      eyebrow: 'AUTONOMOUS R&D ROADMAP 2026-2030',
+      title: '자율형 과학 연구(SDL) 구축 4단계 마일스톤',
+      items: [
+        { time: 'STAGE 01', label: '데이터 자산화', desc: '실험 노트 디지털 전환 및<br>기계 가독형 표준 DB 구축' },
+        { time: 'STAGE 02', label: '인실리코 가속', desc: '과학 파운데이션 모델 기반<br>가상 후보물질 초고속 탐색' },
+        { time: 'STAGE 03', label: '폐루프 SDL 실증', desc: '로봇 합성·분석 장비 연동 및<br>24시간 무인 실험 루프 가동', em: true },
+        { time: 'STAGE 04', label: '클라우드 파운드리', desc: '다중 연구실 네트워크 연결로<br>국가 전략기술 초격차 달성' }
+      ],
+      note: '디지털 시뮬레이션(In-Silico)과 물리적 로봇 실험(Wet-Lab)의 단계적 결합으로 R&D 투자 수익률 극대화'
+    },
+    // 15. closing
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1446776811953-b23d57bd21aa', photo: 'NASA',
+      eyebrow: 'THE GOLDEN AGE OF AI FOR SCIENCE',
+      title: '잠들지 않는 AI 과학자와 함께<br><em>인류 난제 해결의 시계를 앞당기다</em>',
+      sub: '가설 수립부터 양자 시뮬레이션, 로봇 무인 실험까지 — 과학적 발견의 새로운 문명이 시작되었습니다',
+      chips: ['AlphaFold 3 & AlphaGenome', 'GNoME 신소재 역설계', '24/7 자율형 연구실(SDL)', 'Science-as-Code']
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // S02 좌측: 인류 누적 안정 결정 구조 발견 도약 (4.8만 개 -> 220만 개)
+  s02_gnome: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gArea02" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.48"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glow02" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="45" x2="590" y2="45" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="100" x2="590" y2="100" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="155" x2="590" y2="155" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="205" x2="590" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <path d="M 95 201 C 180 200, 220 198, 255 194 C 320 186, 370 175, 415 162 C 475 130, 520 68, 565 36 L 565 205 L 95 205 Z" fill="url(#gArea02)"/>
+    <path d="M 95 201 C 180 200, 220 198, 255 194 C 320 186, 370 175, 415 162 C 475 130, 520 68, 565 36" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glow02)"/>
+    <circle cx="95" cy="201" r="6" fill="#0a101c" stroke="#94a3b8" stroke-width="3"/>
+    <text x="95" y="183" fill="#cbd5e1" font-size="16" font-weight="700" text-anchor="middle">2.0만</text>
+    <text x="95" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">2010 (수작업)</text>
+    <circle cx="255" cy="194" r="6.5" fill="#0a101c" stroke="#38bdf8" stroke-width="3"/>
+    <text x="255" y="176" fill="#e2e8f0" font-size="16" font-weight="700" text-anchor="middle">2.8만</text>
+    <text x="255" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">2018 (시뮬레이션)</text>
+    <circle cx="415" cy="162" r="7" fill="#0a101c" stroke="#00d2ff" stroke-width="3.5"/>
+    <text x="415" y="142" fill="#ffffff" font-size="17" font-weight="800" text-anchor="middle">4.8만 개</text>
+    <text x="415" y="232" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">2021 (누적)</text>
+    <circle cx="565" cy="36" r="16" fill="rgba(0,210,255,0.22)"/>
+    <circle cx="565" cy="36" r="9" fill="#00d2ff" filter="url(#glow02)"/>
+    <text x="532" y="28" fill="#00d2ff" font-size="23" font-weight="900" text-anchor="end">220만 개</text>
+    <text x="565" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">GNoME AI</text>
+    <rect x="70" y="22" width="264" height="36" rx="8" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.45)"/>
+    <text x="202" y="45" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">인류 800년 치 신소재 탐색을 단번에 돌파</text>
+  </svg>`,
+
+  // S02 우측: 단백질 3D 구조 해독 규모 비교 (실험 PDB vs AlphaFold)
+  s02_protein: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gBarAf" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7"/>
+        <stop offset="100%" stop-color="#00d2ff"/>
+      </linearGradient>
+    </defs>
+    <!-- Row 1: 50년간 실험적 구조 해독 (PDB) -->
+    <text x="20" y="42" fill="#cbd5e1" font-size="17" font-weight="700">전통 X선 결정학·극저온현미경 (50년 누적 PDB)</text>
+    <text x="615" y="42" fill="#94a3b8" font-size="17" font-weight="700" text-anchor="end">20만 개 (1x)</text>
+    <rect x="20" y="52" width="595" height="24" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="52" width="38" height="24" rx="6" fill="#64748b"/>
+    <!-- Row 2: 초기 AlphaFold DB -->
+    <text x="20" y="114" fill="#e2e8f0" font-size="17" font-weight="700">AlphaFold 초기 인간·주요 생물 프로테옴 공개</text>
+    <text x="615" y="114" fill="#38bdf8" font-size="17" font-weight="700" text-anchor="end">100만 개 (5x)</text>
+    <rect x="20" y="124" width="595" height="24" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="124" width="135" height="24" rx="6" fill="#0ea5e9"/>
+    <!-- Row 3: AlphaFold 전체 데이터베이스 + AF3 확장 -->
+    <text x="20" y="186" fill="#00d2ff" font-size="19" font-weight="900">AlphaFold DB 전 지구 생명체 구조 해독</text>
+    <text x="615" y="186" fill="#00d2ff" font-size="21" font-weight="900" text-anchor="end">2.14억 개 (1,000x+)</text>
+    <rect x="20" y="198" width="595" height="32" rx="8" fill="url(#gBarAf)" stroke="#7dd3fc" stroke-width="1.5"/>
+    <text x="317" y="220" fill="#05070c" font-size="16" font-weight="900" text-anchor="middle">전 세계 200만 명 이상의 과학자가 매일 사용하는 인류 공공 인프라</text>
+  </svg>`,
+
+  // S06 좌측: AlphaFold 3 vs 전통 물리 도킹 5각 레이더 차트
+  s06_radar: `<svg viewBox="0 0 640 255" xmlns="http://www.w3.org/2000/svg">
+    <!-- 레이더 중심 (260, 134), 반경 R=92 -->
+    <polygon points="260,42 347,105 314,208 206,208 173,105" fill="rgba(15,23,42,0.5)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
+    <polygon points="260,72 318,115 296,184 224,184 202,115" fill="none" stroke="rgba(255,255,255,0.11)" stroke-dasharray="3 3"/>
+    <polygon points="260,103 289,124 278,159 242,159 231,124" fill="none" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="260" y1="134" x2="260" y2="42" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="347" y2="105" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="314" y2="208" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="206" y2="208" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="173" y2="105" stroke="rgba(255,255,255,0.14)"/>
+    <!-- 기존 물리 도킹 (Violet): 리간드(52%), 단백질-핵산(45%), 항체-항원(38%), 공유결합(48%), 속도(35%) -->
+    <polygon points="260,86 300,120 282,164 233,171 226,122" fill="rgba(168,85,247,0.24)" stroke="#c084fc" stroke-width="3"/>
+    <!-- AlphaFold 3 (Cyan): 리간드(92%), 단백질-핵산(90%), 항체-항원(88%), 공유결합(92%), 속도(96%) -->
+    <polygon points="260,48 340,107 308,200 210,202 178,107" fill="rgba(0,210,255,0.26)" stroke="#00d2ff" stroke-width="3.2"/>
+    <text x="260" y="26" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">단백질-리간드 도킹</text>
+    <text x="356" y="106" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="start">DNA·RNA 결합</text>
+    <text x="328" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="start">항체-항원 복합체</text>
+    <text x="192" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="end">공유결합·변형</text>
+    <text x="160" y="106" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="end">연산 처리 속도</text>
+    <rect x="482" y="42" width="144" height="72" rx="10" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.5)"/>
+    <circle cx="500" cy="66" r="6" fill="#00d2ff"/>
+    <text x="514" y="71" fill="#ffffff" font-size="16" font-weight="800">AlphaFold 3</text>
+    <text x="496" y="96" fill="#7dd3fc" font-size="14" font-weight="600">통합 확산 모델</text>
+    <rect x="482" y="128" width="144" height="72" rx="10" fill="rgba(168,85,247,0.14)" stroke="rgba(192,132,252,0.5)"/>
+    <circle cx="500" cy="152" r="6" fill="#c084fc"/>
+    <text x="514" y="157" fill="#ffffff" font-size="16" font-weight="800">기존 물리 도킹</text>
+    <text x="496" y="182" fill="#d8b4fe" font-size="14" font-weight="600">Vina · Rosetta</text>
+  </svg>`,
+
+  // S06 우측: AI 신약 후보물질 발굴 기간 및 비용 단축 비교
+  s06_drug: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- Case 1: 타깃 발굴 ~ 전임상 후보물질 도출 기간 -->
+    <text x="20" y="34" fill="#ffffff" font-size="18" font-weight="800">01. 타깃 발굴부터 전임상 후보물질 도출 소요 기간</text>
+    <rect x="20" y="46" width="420" height="24" rx="5" fill="rgba(148,163,184,0.28)"/>
+    <text x="32" y="63" fill="#cbd5e1" font-size="14" font-weight="700">전통 제약 R&amp;D: 평균 4.5년 (54개월) 소요</text>
+    <rect x="20" y="76" width="95" height="28" rx="6" fill="#00d2ff"/>
+    <text x="128" y="96" fill="#00d2ff" font-size="18" font-weight="900">AI 네이티브 설계: 평균 12개월</text>
+    <rect x="465" y="54" width="150" height="44" rx="10" fill="rgba(0,210,255,0.16)" stroke="#00d2ff" stroke-width="1.5"/>
+    <text x="540" y="82" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="middle">-78% 단축</text>
+    <line x1="20" y1="124" x2="615" y2="124" stroke="rgba(255,255,255,0.1)"/>
+    <!-- Case 2: 후보물질 발굴 단계 연구개발 비용 -->
+    <text x="20" y="156" fill="#ffffff" font-size="18" font-weight="800">02. 초기 스크리닝 및 선도물질 최적화 비용</text>
+    <rect x="20" y="168" width="420" height="24" rx="5" fill="rgba(148,163,184,0.28)"/>
+    <text x="32" y="185" fill="#cbd5e1" font-size="14" font-weight="700">전통 수천 종 습식 합성 테스트: 100% 기준 비용</text>
+    <rect x="20" y="198" width="126" height="28" rx="6" fill="#00d2ff"/>
+    <text x="158" y="218" fill="#00d2ff" font-size="18" font-weight="900">인실리코 역설계 + SDL: 30% 수준</text>
+    <rect x="465" y="176" width="150" height="44" rx="10" fill="rgba(0,210,255,0.16)" stroke="#00d2ff" stroke-width="1.5"/>
+    <text x="540" y="204" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="middle">-70% 절감</text>
+  </svg>`,
+
+  // S10 좌측: LBNL A-Lab 무인 신소재 합성 성공률 & 무인 가동률 도넛 게이지
+  s10_alab: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- 좌측 도넛: 71% (둘레 465, 71% = 330) -->
+    <circle cx="170" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="170" cy="112" r="74" fill="none" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-dasharray="330 465" transform="rotate(-90 170 112)"/>
+    <text x="170" y="120" fill="#ffffff" font-size="40" font-weight="900" text-anchor="middle">71%</text>
+    <text x="170" y="216" fill="#00d2ff" font-size="18" font-weight="800" text-anchor="middle">신규 무기소재 자율 합성 성공률</text>
+    <text x="170" y="238" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">17일간 58개 타깃 중 41개 합성 성공</text>
+    <line x1="320" y1="28" x2="320" y2="235" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+    <!-- 우측 도넛: 96% (둘레 465, 96% = 446) -->
+    <circle cx="470" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="#38bdf8" stroke-width="16" stroke-linecap="round" stroke-dasharray="446 465" transform="rotate(-90 470 112)"/>
+    <text x="470" y="120" fill="#ffffff" font-size="40" font-weight="900" text-anchor="middle">96%</text>
+    <text x="470" y="216" fill="#38bdf8" font-size="18" font-weight="800" text-anchor="middle">능동 학습 폐루프 실험 정밀도</text>
+    <text x="470" y="238" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">실패 데이터 실시간 피드백 경로 보정</text>
+  </svg>`,
+
+  // S10 우측: 연구실 일일 실험 처리량(Throughput) 수평 바 차트
+  s10_throughput: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gSdlBar" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7"/>
+        <stop offset="100%" stop-color="#00d2ff"/>
+      </linearGradient>
+    </defs>
+    <!-- Row 1: 전통 수작업 실험실 -->
+    <text x="20" y="42" fill="#cbd5e1" font-size="17" font-weight="700">전통 대학원생·연구원 수작업 합성 및 분석</text>
+    <text x="615" y="42" fill="#94a3b8" font-size="17" font-weight="700" text-anchor="end">일 1~2회 (1x)</text>
+    <rect x="20" y="52" width="595" height="24" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="52" width="32" height="24" rx="6" fill="#64748b"/>
+    <!-- Row 2: 단순 자동화 장비 (HTS) -->
+    <text x="20" y="114" fill="#e2e8f0" font-size="17" font-weight="700">기존 고정형 고속대량스크리닝 (단순 반복 HTS)</text>
+    <text x="615" y="114" fill="#38bdf8" font-size="17" font-weight="700" text-anchor="end">8x 처리량</text>
+    <rect x="20" y="124" width="595" height="24" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="124" width="140" height="24" rx="6" fill="#0ea5e9"/>
+    <!-- Row 3: AI 폐루프 자율형 연구실 (SDL) -->
+    <text x="20" y="186" fill="#00d2ff" font-size="19" font-weight="900">AI 능동 학습 + 24/7 자율형 연구실 (SDL)</text>
+    <text x="615" y="186" fill="#00d2ff" font-size="21" font-weight="900" text-anchor="end">50x+ 탐색 가속</text>
+    <rect x="20" y="198" width="595" height="32" rx="8" fill="url(#gSdlBar)" stroke="#7dd3fc" stroke-width="1.5"/>
+    <text x="317" y="220" fill="#05070c" font-size="16" font-weight="900" text-anchor="middle">24시간 무중단 합성 · 실시간 XRD 계측 · 베이지안 차기 실험 자율 결정</text>
+  </svg>`
+};
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card${c.hi ? ' hi' : ''}" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel${i ? ' hi' : ''}" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

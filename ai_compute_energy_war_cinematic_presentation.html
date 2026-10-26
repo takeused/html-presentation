@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기가와트(GW) AI와 에너지 패권 전쟁 — Cinematic Presentation</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;white-space:nowrap;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 — 기가와트(GW) AI와 에너지 패권 전쟁 (12장) ===================== */
+const DECK = {
+  brand: { name: 'GIGAWATT AI', icon: 'solar:bolt-circle-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: ['전기가 곧 지능인 시대', '빅테크 원전·SMR 동맹', '그린 컴퓨팅 & 광반도체', '소버린 AI·전력망 전략'],
+  slides: [
+    // 01. cover (고유 표지 bg: photo-1558494949-ef010cbdcc31)
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1558494949-ef010cbdcc31', photo: 'Taylor Vick',
+      eyebrow: 'GIGAWATT AI INFRASTRUCTURE & ENERGY NEXUS · 2026',
+      title: '전기가 곧 지능인 시대,<br><em>기가와트 AI와 에너지 패권 전쟁</em>',
+      sub: '1,050TWh 전력 쇼크부터 빅테크 SMR 원전 동맹, 액침 냉각·광반도체(CPO) 초격차 전략까지',
+      meta: 'HYPERSCALE CLUSTERS · SMALL MODULAR REACTORS · PHOTONIC INTERCONNECT · 12 SCENES'
+    },
+    // 02. svg_cards (글로벌 데이터센터 전력 소비 곡선 & 단일 클러스터 요구 전력 도약)
+    {
+      layout: 'svg_cards', chapter: 0,
+      bg: 'photo-1666875753105-c63a6f3bdc86', photo: 'Deng Xiang',
+      eyebrow: 'HUD DATA VISUALIZATION · AI POWER SHOCK',
+      title: '국가 전력망을 집어삼키는 AI 데이터센터의 지수적 팽창',
+      cards: [
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '글로벌 데이터센터 전력 소비량',
+          badge: '1,050 TWh · 2.3배 급증',
+          chart: 's02_twh',
+          foot: '데이터센터 전력 소비가 일본 국가 전체 연간 전력 소비량(1,000TWh) 돌파'
+        },
+        {
+          icon: 'solar:bolt-circle-bold',
+          title: '단일 AI 클러스터 요구 전력',
+          badge: '100MW → 5GW (50배)',
+          chart: 's02_cluster',
+          hi: true,
+          foot: '프론티어 AI 캠퍼스 1곳이 대형 원자력 발전소 1~5기(1~5GW) 전력을 독점'
+        }
+      ],
+      note: '출처 · IEA Electricity 2026 Forecast & Goldman Sachs Global AI Power Demand Report'
+    },
+    // 03. compare
+    {
+      layout: 'compare', chapter: 0,
+      bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
+      eyebrow: 'COMPUTE INFRASTRUCTURE SHIFT',
+      title: '전통 클라우드 데이터센터 vs 기가와트(GW) AI 팩토리',
+      left: {
+        title: '전통 클라우드 센터 (Cloud DC)',
+        icon: 'solar:server-minimalistic-bold',
+        items: [
+          '랙당 10~15kW 수준의 저밀도 CPU 서버 및 공랭식 냉각',
+          '지역 변전소 여유 전력에 의존하는 수십 MW급 분산 배치',
+          '웹·모바일 트래픽 주기에 따라 변동하는 간헐적 전력 부하'
+        ]
+      },
+      right: {
+        title: '기가와트 AI 팩토리 (AI Factory)',
+        icon: 'solar:bolt-circle-bold',
+        items: [
+          '랙당 130kW 초고밀도 가속기 및 수랭·액침 냉각',
+          '발전소와 직결되는 1GW~5GW급 초거대 단일 클러스터',
+          '24시간 365일 멈추지 않는 학습·추론 기저부하 가동'
+        ]
+      },
+      note: 'AI 패권 경쟁의 진짜 병목은 이제 GPU 칩 확보를 넘어 기가와트급 무중단 전력망 확보로 이동했습니다'
+    },
+    // 04. quote
+    {
+      layout: 'quote', chapter: 1,
+      bg: 'photo-1498084393753-b411b2d26b34', photo: 'Marc-Olivier Jodoin',
+      eyebrow: 'THE NEW CURRENCY OF INTELLIGENCE',
+      quote: '미래의 국력과 기업 가치는 보유한 토큰이 아니라,<br><em>연결된 기가와트(GW)와 와트당 지능으로 결정된다</em>',
+      by: 'GLOBAL AI INFRASTRUCTURE SUMMIT · COMPUTE & ENERGY DOCTRINE'
+    },
+    // 05. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Alexandre Debieve',
+      eyebrow: 'BIG TECH NUCLEAR & SMR ALLIANCE',
+      title: '원자력 발전소를 통째로 입도선매하는 빅테크 4강',
+      items: [
+        { icon: 'solar:atom-bold', text: 'Microsoft (원전 재가동): 스리마일섬 원전 835MW 20년 독점 계약(PPA) 및 Helion 핵융합 전력 선구매' },
+        { icon: 'solar:flame-bold', text: 'Google (SMR 함대 구축): Kairos Power와 세계 최초 500MW급 용융염 소형모듈원전(SMR) 다수 호기 계약' },
+        { icon: 'solar:buildings-3-bold', text: 'Amazon (원전 직결 캠퍼스): X-energy 5GW SMR 투자 및 서배너강 원전 직결 데이터센터 부지 직접 인수' },
+        { icon: 'solar:cpu-bolt-bold', text: 'Meta & OpenAI (GW 클러스터): 1~4GW 신규 원전 공모 및 5GW급 Stargate 초거대 AI 캠퍼스 구축', em: true }
+      ],
+      note: '재생에너지의 간헐성을 극복하기 위해 24시간 무탄소 기저전원(원전·SMR·지열) 확보 전쟁이 전면화되었습니다'
+    },
+    // 06. svg_cards (24/7 무탄소 전원 5각 레이더 차트 & 빅테크 원전·SMR 확보량 바 차트)
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
+      eyebrow: 'ENERGY SOURCE & HYPERSCALER PPA BENCHMARK',
+      title: '발전원별 AI 적합성 스펙트럼 및 빅테크 원전 계약 규모',
+      cards: [
+        {
+          icon: 'solar:radar-2-bold',
+          title: 'AI 데이터센터 전원 역량 비교',
+          badge: 'SMR·원전(Cyan) vs 재생(Violet)',
+          chart: 's06_radar',
+          foot: '24/7 가동률(95%+)·부지 밀도·무탄소·계통 안정성에서 원전·SMR 압도적 우위'
+        },
+        {
+          icon: 'solar:shield-star-bold',
+          title: '빅테크 원전·SMR 장기 확보량',
+          badge: '누적 10.5 GW+ 돌파',
+          chart: 's06_ppa',
+          hi: true,
+          foot: '단 2년 만에 글로벌 하이퍼스케일러가 선점한 원전·SMR 파이프라인 10GW 상회'
+        }
+      ],
+      note: '출처 · US DOE Pathways to Commercial Liftoff: Advanced Nuclear & BloombergNEF'
+    },
+    // 07. flow
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1655890006065-edefcd764af6', photo: 'D koi',
+      eyebrow: 'NEXT-GEN GREEN AI STACK',
+      title: '와트당 지능(Tokens/Watt) 극대화 3대 돌파구',
+      steps: [
+        { label: '저전력 특화 실리콘', desc: 'FP4 초저정밀도 양자화 연산 및<br>추론 전용 LPU·NPU 아키텍처' },
+        { label: '광인터커넥트(CPO)', desc: '구리 배선의 발열 한계를 깨는<br>실리콘 포토닉스 광통신 패키징' },
+        { label: '직접 수랭·액침 냉각', desc: '칩 직결 냉각판(DLC)과 비전도 액체로<br>데이터센터 냉각 전력 80% 절감' }
+      ],
+      note: '발전소 증설만으로는 부족합니다 — 칩 내부 전자 이동부터 서버랙 열교환까지 물리적 손실을 제거해야 합니다'
+    },
+    // 08. svg_cards (액침 냉각 PUE 비교 & 구리 배선 vs CPO 광반도체 효율 차트)
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
+      eyebrow: 'THERMAL & PHOTONIC EFFICIENCY METRICS',
+      title: '액침 냉각 전력효율(PUE)과 광반도체 혁신 지표',
+      cards: [
+        {
+          icon: 'solar:temperature-bold',
+          title: '냉각 방식별 PUE 및 냉각 전력',
+          badge: 'PUE 1.58 → 1.05 혁신',
+          chart: 's08_pue',
+          foot: '공랭식 대비 액침·직접수랭 도입 시 비IT 냉각 설비 전력 85% 이상 즉시 감축'
+        },
+        {
+          icon: 'solar:transmission-circle-bold',
+          title: '구리 배선 vs 광반도체(CPO)',
+          badge: '전력 -70% · 대역폭 8배',
+          chart: 's08_cpo',
+          hi: true,
+          foot: '칩 간 데이터 이동에 소모되던 막대한 전력을 레이저 광신호로 대체해 병목 해소'
+        }
+      ],
+      note: '출처 · ASHRAE Liquid Cooling Guidelines & TSMC / NVIDIA Silicon Photonics Roadmap'
+    },
+    // 09. stats
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1647427060118-4911c9821b82', photo: 'Simon Kadula',
+      eyebrow: 'GENERATIONAL COMPUTE EFFICIENCY',
+      title: '차세대 AI 아키텍처가 만들어내는 압도적 에너지 밀도',
+      items: [
+        { value: '130', unit: 'kW', label: '차세대 블랙웰·루빈 NVL72 단일 서버랙의 초고밀도 요구 전력' },
+        { value: '30', unit: '배', label: '동일 전력 대비 차세대 추론 클러스터의 와트당 토큰 생성 효율 향상' }
+      ],
+      note: '출처 · NVIDIA Accelerated Computing Technical Brief & MLPerf Power Benchmark 2026'
+    },
+    // 10. bullets
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1614064641938-3bbee52942c7', photo: 'FlyD',
+      eyebrow: 'NATIONAL SOVEREIGN AI & GRID STRATEGY',
+      title: '대한민국 AI·에너지 초격차를 위한 4대 국가 핵심 전략',
+      items: [
+        { icon: 'solar:map-point-wave-bold', text: 'AI 컴퓨팅·전력 특구 지정: 원전·재생에너지 발전지 인근에 GW급 AI 데이터센터 클러스터 직결 배치' },
+        { icon: 'solar:route-bold', text: '초고압 직류송전(HVDC) 고속도로: 수도권 송전 병목을 타파할 서해안·동해안 해저·지중 전력망 조기 완공' },
+        { icon: 'solar:cpu-bold', text: '한국형 i-SMR & 극저전력 AI 반도체: 차세대 소형모듈원전 실증 가속화 및 국산 NPU·PIM·CPO 생태계 육성' },
+        { icon: 'solar:bolt-circle-bold', text: 'AI 자율형 스마트그리드(VPP): AI가 국가 전력 수요를 초 단위로 예측하고 ESS·분산전원을 실시간 최적 제어', em: true }
+      ],
+      note: '반도체 제조 강국과 원전 시공 역량을 동시에 보유한 대한민국에게 AI-에너지 융합은 가장 강력한 전략 무기입니다'
+    },
+    // 11. timeline
+    {
+      layout: 'timeline', chapter: 3,
+      bg: 'photo-1517976487492-5750f3195933', photo: 'SpaceX',
+      eyebrow: 'SOVEREIGN AI & ENERGY ROADMAP 2026-2030',
+      title: '기가와트 소버린 AI 인프라 구축 4단계 마일스톤',
+      items: [
+        { time: 'STAGE 01', label: '전력망·입지 특구', desc: '발전원 직결 AI 특구 지정 및<br>계통영향평가 패스트트랙 가동' },
+        { time: 'STAGE 02', label: '그린 DC 표준화', desc: '수랭·액침 냉각 전면 도입 및<br>국산 저전력 NPU 실증 확산' },
+        { time: 'STAGE 03', label: '광반도체·HVDC', desc: 'CPO 광인터커넥트 상용화 및<br>서해안 에너지 고속도로 개통', em: true },
+        { time: 'STAGE 04', label: 'SMR·GW 파운드리', desc: '차세대 i-SMR 상용 발전 연동<br>기가와트 소버린 AI 완성' }
+      ],
+      note: '컴퓨팅 인프라와 국가 전력망 계획을 하나의 통합 마스터플랜으로 묶어야 AI G3 강국으로 도약할 수 있습니다'
+    },
+    // 12. closing
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1566893298691-bfd8e0e62e10', photo: 'Dhanura Munasinghe',
+      eyebrow: 'POWERING THE FUTURE OF INTELLIGENCE',
+      title: '에너지가 곧 지능이 되는 시대,<br><em>초격차 AI·전력 주권을 설계하라</em>',
+      sub: '기가와트 클러스터부터 SMR·광반도체·자율형 전력망까지 — AI 패권의 승패는 에너지 인프라에서 결정됩니다',
+      chips: ['1,050TWh 전력 쇼크', '기가와트 AI 팩토리', '빅테크 원전·SMR 동맹', '액침 냉각 & 광반도체']
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // S02 좌측: 글로벌 데이터센터 전력 소비 전망 (460 TWh -> 1,050 TWh)
+  s02_twh: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gAreaTwh" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.48"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glowTwh" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="45" x2="590" y2="45" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="100" x2="590" y2="100" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="155" x2="590" y2="155" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="205" x2="590" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <path d="M 95 178 C 175 172, 220 162, 255 150 C 325 128, 370 105, 415 84 C 475 58, 520 44, 565 34 L 565 205 L 95 205 Z" fill="url(#gAreaTwh)"/>
+    <path d="M 95 178 C 175 172, 220 162, 255 150 C 325 128, 370 105, 415 84 C 475 58, 520 44, 565 34" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glowTwh)"/>
+    <circle cx="95" cy="178" r="6" fill="#0a101c" stroke="#94a3b8" stroke-width="3"/>
+    <text x="95" y="160" fill="#cbd5e1" font-size="16" font-weight="700" text-anchor="middle">460 TWh</text>
+    <text x="95" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">2022</text>
+    <circle cx="255" cy="150" r="6.5" fill="#0a101c" stroke="#38bdf8" stroke-width="3"/>
+    <text x="255" y="132" fill="#e2e8f0" font-size="16" font-weight="700" text-anchor="middle">620 TWh</text>
+    <text x="255" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">2024</text>
+    <circle cx="415" cy="84" r="7" fill="#0a101c" stroke="#00d2ff" stroke-width="3.5"/>
+    <text x="415" y="64" fill="#ffffff" font-size="17" font-weight="800" text-anchor="middle">850 TWh</text>
+    <text x="415" y="232" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">2026E</text>
+    <circle cx="565" cy="34" r="16" fill="rgba(0,210,255,0.22)"/>
+    <circle cx="565" cy="34" r="9" fill="#00d2ff" filter="url(#glowTwh)"/>
+    <text x="532" y="28" fill="#00d2ff" font-size="22" font-weight="900" text-anchor="end">1,050 TWh</text>
+    <text x="565" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">2028~30E</text>
+    <rect x="68" y="22" width="256" height="34" rx="8" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.45)"/>
+    <text x="196" y="44" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">일본 국가 전체 전력량(1,000TWh) 추월</text>
+  </svg>`,
+
+  // S02 우측: 단일 프론티어 AI 클러스터 요구 전력 도약 (30MW -> 5,000MW)
+  s02_cluster: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gBarGw" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7"/>
+        <stop offset="100%" stop-color="#00d2ff"/>
+      </linearGradient>
+    </defs>
+    <!-- Row 1 -->
+    <text x="20" y="40" fill="#cbd5e1" font-size="17" font-weight="700">2022 초거대 LLM 초기 클러스터 (1만 GPU급)</text>
+    <text x="615" y="40" fill="#94a3b8" font-size="17" font-weight="700" text-anchor="end">30 MW (변전소 1기)</text>
+    <rect x="20" y="50" width="595" height="22" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="50" width="32" height="22" rx="6" fill="#64748b"/>
+    <!-- Row 2 -->
+    <text x="20" y="108" fill="#e2e8f0" font-size="17" font-weight="700">2024~2025 프론티어 클러스터 (10만 GPU급)</text>
+    <text x="615" y="108" fill="#38bdf8" font-size="17" font-weight="700" text-anchor="end">150~250 MW</text>
+    <rect x="20" y="118" width="595" height="22" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="118" width="140" height="22" rx="6" fill="#0ea5e9"/>
+    <!-- Row 3 -->
+    <text x="20" y="182" fill="#00d2ff" font-size="18" font-weight="900">2026~2028 기가와트 AI 캠퍼스 (100만 칩)</text>
+    <text x="615" y="182" fill="#00d2ff" font-size="19" font-weight="900" text-anchor="end">1~5 GW (원전 1~5기)</text>
+    <rect x="20" y="194" width="595" height="34" rx="8" fill="url(#gBarGw)" stroke="#7dd3fc" stroke-width="1.5"/>
+    <text x="317" y="217" fill="#05070c" font-size="16" font-weight="900" text-anchor="middle">광역시 전체 가구 전력량에 맞먹는 기가와트(GW) 단일 부하 시대 진입</text>
+  </svg>`,
+
+  // S06 좌측: 원전·SMR vs 태양광·풍력 AI 데이터센터 전원 역량 5각 레이더 차트
+  s06_radar: `<svg viewBox="0 0 640 255" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="260,42 347,105 314,208 206,208 173,105" fill="rgba(15,23,42,0.5)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
+    <polygon points="260,72 318,115 296,184 224,184 202,115" fill="none" stroke="rgba(255,255,255,0.11)" stroke-dasharray="3 3"/>
+    <polygon points="260,103 289,124 278,159 242,159 231,124" fill="none" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="260" y1="134" x2="260" y2="42" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="347" y2="105" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="314" y2="208" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="206" y2="208" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="260" y1="134" x2="173" y2="105" stroke="rgba(255,255,255,0.14)"/>
+    <!-- 태양광·풍력 단독 (Violet): 가동률(32%), 부지밀도(28%), 무탄소(95%), 전압안정(40%), 입지유연(65%) -->
+    <polygon points="260,104 285,125 310,204 238,164 203,115" fill="rgba(168,85,247,0.24)" stroke="#c084fc" stroke-width="3"/>
+    <!-- 원전·SMR (Cyan): 가동률(96%), 부지밀도(98%), 무탄소(96%), 전압안정(95%), 입지유연(86%) -->
+    <polygon points="260,46 345,106 311,204 209,204 185,109" fill="rgba(0,210,255,0.26)" stroke="#00d2ff" stroke-width="3.2"/>
+    <text x="260" y="26" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">24/7 설비이용률 (95%+)</text>
+    <text x="356" y="106" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="start">부지 전력밀도</text>
+    <text x="328" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="start">무탄소 배출</text>
+    <text x="192" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="end">계통·주파수 안정</text>
+    <text x="160" y="106" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="end">데이터센터 직결</text>
+    <rect x="482" y="42" width="144" height="72" rx="10" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.5)"/>
+    <circle cx="500" cy="66" r="6" fill="#00d2ff"/>
+    <text x="514" y="71" fill="#ffffff" font-size="16" font-weight="800">원전 · SMR</text>
+    <text x="496" y="96" fill="#7dd3fc" font-size="14" font-weight="600">무탄소 기저부하</text>
+    <rect x="482" y="128" width="144" height="72" rx="10" fill="rgba(168,85,247,0.14)" stroke="rgba(192,132,252,0.5)"/>
+    <circle cx="500" cy="152" r="6" fill="#c084fc"/>
+    <text x="514" y="157" fill="#ffffff" font-size="16" font-weight="800">태양광 · 풍력</text>
+    <text x="496" y="182" fill="#d8b4fe" font-size="14" font-weight="600">간헐성·ESS 필수</text>
+  </svg>`,
+
+  // S06 우측: 빅테크 4강 원전·SMR 확보 계약 및 추진 규모
+  s06_ppa: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- Row 1: Amazon -->
+    <text x="20" y="36" fill="#ffffff" font-size="16" font-weight="800">Amazon (X-energy SMR &amp; Talen 원전 직결)</text>
+    <rect x="20" y="44" width="440" height="22" rx="5" fill="#00d2ff"/>
+    <text x="472" y="61" fill="#00d2ff" font-size="17" font-weight="900">5.0 GW+</text>
+    <!-- Row 2: Meta -->
+    <text x="20" y="94" fill="#ffffff" font-size="16" font-weight="800">Meta (신규 원전·SMR 장기 조달 RFP)</text>
+    <rect x="20" y="102" width="352" height="22" rx="5" fill="#0ea5e9"/>
+    <text x="384" y="119" fill="#38bdf8" font-size="17" font-weight="900">1.0 ~ 4.0 GW</text>
+    <!-- Row 3: Microsoft -->
+    <text x="20" y="152" fill="#ffffff" font-size="16" font-weight="800">Microsoft (Constellation 스리마일 원전 + 핵융합)</text>
+    <rect x="20" y="160" width="160" height="22" rx="5" fill="#38bdf8"/>
+    <text x="192" y="177" fill="#e2e8f0" font-size="17" font-weight="800">885 MW+</text>
+    <!-- Row 4: Google -->
+    <text x="20" y="210" fill="#ffffff" font-size="16" font-weight="800">Google (Kairos Power 용융염 SMR 플릿)</text>
+    <rect x="20" y="218" width="115" height="22" rx="5" fill="#7dd3fc"/>
+    <text x="147" y="235" fill="#e2e8f0" font-size="17" font-weight="800">500 MW+</text>
+  </svg>`,
+
+  // S08 좌측: 데이터센터 냉각 방식별 PUE 및 냉각 전력 비중 비교
+  s08_pue: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- 좌측 도넛: 전통 공랭식 PUE 1.58 -->
+    <circle cx="170" cy="110" r="72" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="170" cy="110" r="72" fill="none" stroke="#c084fc" stroke-width="16" stroke-linecap="round" stroke-dasharray="310 452" transform="rotate(-90 170 110)"/>
+    <text x="170" y="106" fill="#e9d5ff" font-size="15" font-weight="700" text-anchor="middle">전통 공랭식</text>
+    <text x="170" y="134" fill="#ffffff" font-size="32" font-weight="900" text-anchor="middle">PUE 1.58</text>
+    <text x="170" y="214" fill="#d8b4fe" font-size="17" font-weight="800" text-anchor="middle">전체 전력의 37%를 냉각에 낭비</text>
+    <text x="170" y="236" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">40kW 이상 고밀도 랙 냉각 불가</text>
+    <line x1="320" y1="28" x2="320" y2="235" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+    <!-- 우측 도넛: 수랭·액침 냉각 PUE 1.05 -->
+    <circle cx="470" cy="110" r="72" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="470" cy="110" r="72" fill="none" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-dasharray="430 452" transform="rotate(-90 470 110)"/>
+    <text x="470" y="106" fill="#7dd3fc" font-size="15" font-weight="700" text-anchor="middle">직접수랭 · 액침</text>
+    <text x="470" y="134" fill="#00d2ff" font-size="32" font-weight="900" text-anchor="middle">PUE 1.05</text>
+    <text x="470" y="214" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">전력의 95% 이상을 온전히 AI 연산에 투입</text>
+    <text x="470" y="236" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">130kW+ 초고밀도 서버랙 완벽 대응</text>
+  </svg>`,
+
+  // S08 우측: 구리 전기 배선 vs 실리콘 포토닉스(CPO) 광인터커넥트 비교
+  s08_cpo: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- Case 1: 데이터 전송당 소비 전력 (pJ/bit) -->
+    <text x="20" y="34" fill="#ffffff" font-size="18" font-weight="800">01. 스위치·칩 간 데이터 전송 소비 전력 (pJ/bit)</text>
+    <rect x="20" y="46" width="420" height="24" rx="5" fill="rgba(148,163,184,0.28)"/>
+    <text x="32" y="63" fill="#cbd5e1" font-size="14" font-weight="700">기존 플러거블 구리·광 모듈: ~15 pJ/bit (고발열)</text>
+    <rect x="20" y="76" width="126" height="28" rx="6" fill="#00d2ff"/>
+    <text x="158" y="96" fill="#00d2ff" font-size="18" font-weight="900">CPO 광반도체 패키징: ~4.5 pJ/bit</text>
+    <rect x="465" y="54" width="150" height="44" rx="10" fill="rgba(0,210,255,0.16)" stroke="#00d2ff" stroke-width="1.5"/>
+    <text x="540" y="82" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="middle">-70% 절감</text>
+    <line x1="20" y1="124" x2="615" y2="124" stroke="rgba(255,255,255,0.1)"/>
+    <!-- Case 2: 대역폭 밀도 및 무손실 전송 거리 -->
+    <text x="20" y="156" fill="#ffffff" font-size="18" font-weight="800">02. 칩 패키지당 인터커넥트 대역폭 밀도</text>
+    <rect x="20" y="168" width="110" height="24" rx="5" fill="rgba(148,163,184,0.28)"/>
+    <text x="142" y="185" fill="#cbd5e1" font-size="14" font-weight="700">기존 전기 배선 한계 (1x 기준)</text>
+    <rect x="20" y="198" width="420" height="28" rx="6" fill="#00d2ff"/>
+    <text x="34" y="218" fill="#05070c" font-size="16" font-weight="900">실리콘 포토닉스 3D 광패키징: 대역폭 밀도 8배 확장</text>
+    <rect x="465" y="176" width="150" height="44" rx="10" fill="rgba(0,210,255,0.16)" stroke="#00d2ff" stroke-width="1.5"/>
+    <text x="540" y="204" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="middle">8x 대역폭</text>
+  </svg>`
+};
+
+const TPL = {
+  cover: (s, n) => `<div class="cover">
+    <div class="chip" ${n(0)}><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${s.eyebrow}</div>
+    <h1 class="title" ${n(0)}>${s.title}</h1>
+    ${s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : ''}
+    ${s.meta ? `<div class="meta" ${n(0)}>${s.meta}</div>` : ''}
+  </div>`,
+
+  bullets: (s, n) => `${head(s, n)}<div class="bullets">${
+    s.items.map((it, i) => `<div class="bullet ${it.em ? 'em' : ''}" ${n(i + 1)}>
+      <div class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></div>
+      <span>${it.text}</span>
+    </div>`).join('')
+  }</div>${note(s, n, s.items.length)}`,
+
+  stats: (s, n) => `${head(s, n)}<div class="stats">${
+    s.items.map((it, i) => `<div class="stat" ${n(i + 1)}>
+      <div class="v">${it.value}<small>${it.unit || ''}</small></div>
+      <div class="l">${it.label}</div>
+    </div>`).join('')
+  }</div>${note(s, n, s.items.length)}`,
+
+  flow: (s, n) => `${head(s, n)}<div class="flow">${
+    s.steps.map((st, i) => `${i ? `<div class="arrow" ${n(i + 1)}></div>` : ''}
+      <div class="step" ${n(i + 1)}>
+        <div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div>
+        <div class="lb">${st.label}</div>
+        ${st.desc ? `<div class="ds">${st.desc}</div>` : ''}
+      </div>`).join('')
+  }</div>${note(s, n, s.steps.length)}`,
+
+  compare: (s, n) => `${head(s, n)}<div class="compare">${
+    [s.left, { ...s.right, hi: true }].map((p, i) => `<div class="panel ${p.hi ? 'hi' : ''}" ${n(i + 1)}>
+      <h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3>
+      <ul>${p.items.map(x => `<li>${x}</li>`).join('')}</ul>
+    </div>`).join('')
+  }</div>${note(s, n, 2)}`,
+
+  svg_cards: (s, n) => `${head(s, n)}<div class="svg-grid">${
+    s.cards.map((c, i) => `<div class="svg-card ${c.hi ? 'hi' : ''}" ${n(i + 1)}>
+      <div class="svg-head">
+        <h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3>
+        ${c.badge ? `<span class="svg-badge">${c.badge}</span>` : ''}
+      </div>
+      <div class="svg-wrap">${CHARTS[c.chart] || c.svg || ''}</div>
+      ${c.foot ? `<div class="svg-foot">${c.foot}</div>` : ''}
+    </div>`).join('')
+  }</div>${note(s, n, s.cards.length)}`,
+
+  quote: (s, n) => `${s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : ''}
+    <blockquote class="quote" ${n(0)}>${s.quote}</blockquote>
+    ${s.by ? `<div class="by" ${n(1)}>— ${s.by} —</div>` : ''}`,
+
+  timeline: (s, n) => `${head(s, n)}<div class="timeline">${
+    s.items.map((it, i) => `<div class="tl-item ${it.em ? 'em' : ''}" ${n(i + 1)}>
+      <div class="dot"></div>
+      <div class="t">${it.time}</div>
+      <div class="lb">${it.label}</div>
+      ${it.ds || it.desc ? `<div class="ds">${it.ds || it.desc}</div>` : ''}
+    </div>`).join('')
+  }</div>${note(s, n, s.items.length)}`,
+
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+    ${s.chips ? `<div class="chips">${s.chips.map((c, i) => `<span ${n(i + 1)}>${c}</span>`).join('')}</div>` : ''}
+  </div>`
+};
+
+/* --- 상단 바 (챕터별 슬라이드 구간 계산 & 클릭 점프 연동) --- */
+const chRanges = DECK.chapters.map((_, ci) => {
+  const idxs = S.map((s, idx) => s.chapter === ci ? idx : -1).filter(i => i >= 0);
+  return { start: idxs[0] ?? 0, len: idxs.length || 1 };
+});
+$('topbar').innerHTML =
+  `<div class="brand" id="brand-home" title="첫 슬라이드(표지)로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+  DECK.chapters.map((c, i) =>
+    `<div class="tab" data-ch="${i}" title="${i + 1}장 첫 슬라이드로 이동 (${chRanges[i].start + 1}p)"><b>${String(i + 1).padStart(2, '0')}</b><span>${c}</span><div class="gauge"><i></i></div></div>`
+  ).join('');
+
+$('brand-home').onclick = (e) => { e.stopPropagation(); go(0); };
+document.querySelectorAll('#topbar .tab').forEach(tab => {
+  tab.onclick = (e) => {
+    e.stopPropagation();
+    const ci = parseInt(tab.dataset.ch, 10);
+    if (chRanges[ci]) go(chRanges[ci].start);
+  };
+});
+
+function syncTopbar(idx) {
+  const ch = S[idx].chapter ?? 0;
+  document.querySelectorAll('#topbar .tab').forEach((t, i) => {
+    t.classList.toggle('on', i === ch);
+    t.classList.toggle('done', i < ch);
+    const bar = t.querySelector('i');
+    if (i === ch) {
+      const r = chRanges[i];
+      const pct = ((idx - r.start + 1) / r.len) * 100;
+      bar.style.width = pct + '%';
+    } else bar.style.width = '0%';
+  });
+}
+
+/* --- 배경 URL 변환 --- */
+function bgUrl(v) {
+  if (!v) return '';
+  if (/^https?:|\.|^data:|^\//.test(v)) return v;
+  return `https://images.unsplash.com/${v}?auto=format&fit=crop&w=2560&q=88`;
+}
+const GRAD_FALLBACK =
+  'radial-gradient(ellipse 80% 60% at 70% 25%,rgba(var(--ac-rgb),.24),transparent 60%),' +
+  'radial-gradient(ellipse 70% 60% at 20% 80%,rgba(40,90,180,.28),transparent 65%),' +
+  'linear-gradient(135deg,#070c18 0%,#0f1a2e 55%,#060912 100%)';
+
+function setBg(s) {
+  const next = $(bgFlip ? 'bgA' : 'bgB'), prev = $(bgFlip ? 'bgB' : 'bgA');
+  bgFlip = !bgFlip;
+  next.style.backgroundPosition = s.focus || 'center';
+  const apply = img => {
+    next.style.backgroundImage = img;
+    next.classList.add('show');
+    prev.classList.remove('show');
+  };
+  const url = bgUrl(s.bg);
+  if (!url) { apply(GRAD_FALLBACK); $('credit').textContent = ''; return; }
+  const probe = new Image();
+  probe.onload = () => apply(`url("${url}")`);
+  probe.onerror = () => { apply(GRAD_FALLBACK); $('credit').textContent = ''; };
+  probe.src = url;
+  $('credit').textContent = s.photo ? `Photo · ${s.photo} / Unsplash` : '';
+  const nxt = S[cur + 1];
+  if (nxt && nxt.bg) { const p = new Image(); p.src = bgUrl(nxt.bg); }
+}
+
+/* --- 슬라이드 렌더 --- */
+function go(idx, endStep = false) {
+  cur = Math.max(0, Math.min(S.length - 1, idx));
+  const s = S[cur];
+  const mode = s.reveal || DECK.reveal || 'auto';
+  maxStep = 0;
+  const n = k => {
+    maxStep = Math.max(maxStep, k);
+    const delay = mode === 'auto' ? `style="--d:${(k * 0.16).toFixed(2)}s"` : '';
+    return `data-s="${k}" ${delay}`;
+  };
+  $('slide').innerHTML = (TPL[s.layout] || TPL.bullets)(s, n);
+  setBg(s);
+  syncTopbar(cur);
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  history.replaceState(null, '', `#${cur + 1}`);
+
+  if (mode === 'auto' || endStep) {
+    step = maxStep;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.querySelectorAll('#slide [data-s]').forEach(el => el.classList.add('on'));
+    }));
+  } else {
+    step = 0;
+    revealTo(0);
+  }
+}
+
+function revealTo(k) {
+  document.querySelectorAll('#slide [data-s]').forEach(el => {
+    el.classList.toggle('on', Number(el.dataset.s) <= k);
+  });
+}
+
+function next() {
+  if (step < maxStep) { step++; revealTo(step); }
+  else if (cur < S.length - 1) go(cur + 1);
+}
+function prev() {
+  if (step > 0 && (S[cur].reveal || DECK.reveal) === 'click') { step--; revealTo(step); }
+  else if (cur > 0) go(cur - 1, true);
+}
+
+/* --- 뷰포트 스케일 --- */
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  const x = (innerWidth - 1920 * k) / 2, y = (innerHeight - 1080 * k) / 2;
+  $('stage').style.transform = `translate(${x}px,${y}px) scale(${k})`;
+}
+
+/* --- 입력 & 점프 --- */
+let buf = '', bufT = null;
+function jumpTo(n) { const v = parseInt(n, 10); if (v >= 1 && v <= S.length) go(v - 1); }
+function openModal() {
+  $('jump-modal').classList.add('open');
+  const inp = $('jump-input'); inp.max = S.length; inp.value = cur + 1; inp.focus(); inp.select();
+}
+function closeModal() { $('jump-modal').classList.remove('open'); }
+
+$('prev').onclick = prev;
+$('next').onclick = next;
+$('counter').onclick = openModal;
+$('jump-modal').onclick = e => { if (e.target === $('jump-modal')) closeModal(); };
+$('jump-modal').querySelector('form').onsubmit = e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); };
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

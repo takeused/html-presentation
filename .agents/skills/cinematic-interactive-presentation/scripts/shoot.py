@@ -1,6 +1,6 @@
 # 덱의 각 슬라이드를 헤드리스 크롬으로 캡처하고 폰트 로드·텍스트 넘침·콘솔 오류를 점검하는 검증 스크립트
 # 사용: python shoot.py http://localhost:8765/<덱>.html <슬라이드수> <출력폴더>
-import sys, asyncio
+import sys, asyncio, glob, os, re
 sys.stdout.reconfigure(encoding="utf-8")
 from playwright.async_api import async_playwright
 
@@ -37,6 +37,11 @@ async def main():
         await pg.evaluate("document.fonts.ready")
         font = await pg.evaluate(FONT)
         print("Pretendard 웹폰트:", "OK" if font else "로드 안 됨 — 폰트 링크 확인(Google Fonts에는 Pretendard가 없음)")
+        tname = os.path.basename(url.split("#")[0].split("?")[0])
+        covers = {os.path.basename(f): m.group(1) for f in sorted(glob.glob("*cinematic*.html")) if (m := re.search(r"bg:\s*'([^']+)'", open(f, encoding="utf-8").read()))}
+        if tname in covers:
+            dups = [k for k, v in covers.items() if v == covers[tname] and k != tname]
+            print("표지 배경 고유성:", f"중복 경고 ({covers[tname]} -> {', '.join(dups)})" if dups else f"OK ({covers[tname]})")
         problems = 0
         for i in range(1, n + 1):
             await pg.evaluate(f"go({i - 1})")          # reveal 모드와 무관하게 슬라이드 단위로 이동
