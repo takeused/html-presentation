@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>차세대 AI Agent Bot 혁명 — Claude Duet · Grok Bot (Groqbot) · OpenAI Dots · Meta Muse</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 — AI Agent Bot (Claude Duet & Grok Bot 등 20장) ===================== */
+const DECK = {
+  brand: { name: 'AI AGENT BOT', icon: 'solar:bot-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: ['챗봇에서 자율 에이전트로', 'Claude Duet & Grok Bot', '빅테크 4강 생태계와 실전', '리스크 통제와 도입 로드맵'],
+  slides: [
+    // 01. cover
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1674027444485-cec3da58eef4', photo: 'Growtika',
+      eyebrow: 'NEXT-GEN AUTONOMOUS AGENT BOT · 2026',
+      title: '프롬프트를 넘어 자율 실행으로,<br><em>차세대 AI Agent Bot 혁명</em>',
+      sub: 'Anthropic Claude Duet · xAI Grok Bot (Groqbot) · OpenAI Dots · Meta Muse 심층 해부',
+      meta: 'PROACTIVE CLOUD VM · COMPUTER USE · MULTI-AGENT ORCHESTRATION · 20 SCENES'
+    },
+    // 02. stats
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1666875753105-c63a6f3bdc86', photo: 'Deng Xiang',
+      eyebrow: '데이터로 보는 에이전트 대폭발',
+      title: '짧은 질의응답에서 24시간 상시 자율 노동으로',
+      items: [
+        { value: '17.4', unit: '시간', label: '최신 AI 에이전트 자율 완수 작업 길이 (2023년 4분 대비)' },
+        { value: '45.8', unit: '%', label: '글로벌 AI 에이전트 시장 연평균 성장률 (2026년 120억 달러)' }
+      ],
+      note: '출처 · METR Autonomous Task Horizon (2026) & Gartner Agentic AI Market Forecast'
+    },
+    // 03. compare
+    {
+      layout: 'compare', chapter: 0,
+      bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
+      eyebrow: '패러다임의 대전환',
+      title: '수동적 대화형 챗봇 vs 상시 가동 AI Agent Bot',
+      left: {
+        title: '기존 대화형 챗봇 (Reactive)',
+        icon: 'solar:chat-line-bold',
+        items: [
+          '사용자가 프롬프트를 입력할 때만 수동적으로 텍스트 응답',
+          '브라우저 탭을 닫거나 세션이 끝나면 즉시 실행 중단',
+          '단순 초안 작성과 요약에 그치며 외부 도구 직접 제어 불가'
+        ]
+      },
+      right: {
+        title: '차세대 AI Agent Bot',
+        icon: 'solar:bolt-circle-bold',
+        items: [
+          '상황을 상시 감지해 브리핑과 초안을 선제 제안',
+          '노트북을 덮어도 전용 클라우드 VM에서 24시간 가동',
+          '브라우저·터미널·SaaS 앱을 직접 조작해 업무 완결'
+        ]
+      },
+      note: '질문에 답하는 조언자(Advisor)에서 목표를 완수하는 디지털 팀원(Teammate)으로의 진화'
+    },
+    // 04. flow
+    {
+      layout: 'flow', chapter: 0,
+      bg: 'photo-1655890006065-edefcd764af6', photo: 'D koi',
+      eyebrow: 'CORE AGENT ARCHITECTURE',
+      title: 'AI Agent Bot을 구동하는 3대 핵심 엔진',
+      steps: [
+        { label: '전용 클라우드 VM', desc: '독립 브라우저와 터미널 환경으로<br>기기 종료 후에도 24시간 가동' },
+        { label: 'Computer Use & MCP', desc: '화면 픽셀 인지와 표준 프로토콜로<br>레거시 웹·사내 시스템 직접 제어' },
+        { label: '영속 기억과 선제 판단', desc: '사용자 맥락과 히스토리를 축적해<br>긴급도 판별 및 자율 루프 구동' }
+      ],
+      note: '단순 LLM API 호출이 아닌, 에이전트마다 전용 가상 컴퓨터를 부여하는 아키텍처 혁신'
+    },
+    // 05. quote
+    {
+      layout: 'quote', chapter: 0,
+      bg: 'photo-1451187580459-43490279c0fa', photo: 'NASA',
+      eyebrow: 'THE PROACTIVE AGENT MANIFESTO',
+      quote: '이제 인간이 AI에게 말을 걸기를 기다리지 않는다.<br><em>에이전트가 먼저 문제를 발견하고 해결책을 들고 찾아온다</em>',
+      by: '2026 AUTONOMOUS AI AGENT PARADIGM'
+    },
+    // 06. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1639322537228-f710d846310a', photo: 'Shubham Dhage',
+      eyebrow: 'SPOTLIGHT 01 · ANTHROPIC CLAUDE DUET (OCT 2026)',
+      title: '기다리지 않고 먼저 일하는 선제적 비서 Claude Duet',
+      items: [
+        { icon: 'solar:bell-bing-bold', text: 'Proactive 브리핑: 이메일·일정·슬랙을 상시 분석해 모닝 브리핑과 긴급 안건 선제 알림' },
+        { icon: 'solar:cloud-storage-bold', text: '전용 클라우드 컴퓨터: 스마트폰이나 PC를 꺼두어도 클라우드 VM에서 백그라운드 과업 지속' },
+        { icon: 'solar:cpu-bolt-bold', text: 'Claude Opus 5.5 두뇌: 즉시 보고할 사안과 스스로 처리할 루틴을 구분하는 고차원 판단력' },
+        { icon: 'solar:shield-check-bold', text: 'Human-in-the-Loop 안전망: 메일 발송·결제·계약 등 민감 행동 전 반드시 사용자 승인 요청', em: true }
+      ],
+      note: 'Claude Pro($20)·Max($100+) 구독자에 추가 비용 없이 제공되며 기존 메모리·스킬·마켓플레이스 완벽 계승'
+    },
+    // 07. flow
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1542013353840-da51a081405b', photo: 'Maria Teneva',
+      eyebrow: 'CLAUDE DUET EXECUTION LOOP',
+      title: '사용자 개입을 최소화하는 3단계 선제적 워크플로우',
+      steps: [
+        { label: '상시 맥락 감지', desc: '연결된 메일·캘린더·문서 변동을<br>백그라운드에서 실시간 모니터링' },
+        { label: '자율 초안·앱 빌드', desc: '클라우드 VM에서 회신 초안 작성 및<br>데이터 분석·프로토타입 구축' },
+        { label: '원클릭 승인 실행', desc: '모바일 알림으로 핵심 요약 보고 후<br>승인 즉시 대외 발송·실행 완료' }
+      ],
+      note: '인간은 백지에서 시작하는 대신, Duet이 90% 완성해 둔 결과물을 검토하고 승인만 수행'
+    },
+    // 08. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1526374965328-7f61d4dc18c5', photo: 'Markus Spiske',
+      eyebrow: 'SPOTLIGHT 02 · xAI GROK BOT / GROQBOT (AUG 2026)',
+      title: '사람의 업무 화면을 복제하는 영속적 멀티 에이전트 팀',
+      items: [
+        { icon: 'solar:video-frame-bold', text: 'Teach-a-Task 시연 학습: 사람이 한 번 작업 화면을 보여주면 재사용 가능한 스킬로 즉시 자산화' },
+        { icon: 'solar:window-frame-bold', text: '범용 Computer Use: API가 없는 구형 웹·ERP·벤더 포털도 브라우저로 직접 로그인해 업무 완결' },
+        { icon: 'solar:users-group-rounded-bold', text: 'Multi-Bot 협업: 수석 보좌관(Chief of Staff) 봇이 전문 봇들에게 스레드로 업무를 위임·조율' },
+        { icon: 'solar:code-circle-bold', text: 'The X & Cursor 통합: X 생태계 및 Cursor 코딩 환경과 단일 구독($30~)으로 완벽 결합', em: true }
+      ],
+      note: '데스크톱(Mac·Windows·Linux)과 모바일에서 이름을 가진 다수의 AI 팀원(Roster)을 동시 운용'
+    },
+    // 09. compare
+    {
+      layout: 'compare', chapter: 1,
+      bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
+      eyebrow: 'FLAGSHIP HEAD-TO-HEAD',
+      title: '양대 에이전트 집중 비교: Claude Duet vs Grok Bot',
+      left: {
+        title: 'Anthropic Claude Duet',
+        icon: 'solar:user-speak-bold',
+        items: [
+          '정체성: 업무 맥락을 파악해 먼저 제안하는 선제적 참모',
+          '강점: 정교한 우선순위 판단(Opus 5.5)과 브리핑 품질',
+          '제어: Human-in-the-Loop 승인 관문과 플러그인 연동'
+        ]
+      },
+      right: {
+        title: 'xAI Grok Bot (Groqbot)',
+        icon: 'solar:users-group-two-rounded-bold',
+        items: [
+          '정체성: 화면 시연으로 배우고 팀으로 일하는 행동대',
+          '강점: 풀액세스 터미널·브라우저 제어 및 코딩 자동화',
+          '제어: 시연 학습(Teach-a-Task)과 다중 봇 스레드 협업'
+        ]
+      },
+      note: '기획·리서치·일정 관리는 Claude Duet, 코딩·레거시 웹 조작·다중 봇 자동화는 Grok Bot이 최적'
+    },
+    // 10. stats
+    {
+      layout: 'stats', chapter: 1,
+      bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
+      eyebrow: 'ULTRA-FAST INFERENCE ENGINE · GROQ LPU',
+      title: '에이전트 다단계 사고 루프를 가속하는 초고속 추론 칩',
+      items: [
+        { value: '500', unit: '+ T/s', label: 'Groq LPU 기반 초당 토큰 생성 속도 (일반 GPU 대비 15배)' },
+        { value: '1.5', unit: '초', label: '20단계 에이전트 추론·도구 호출 루프 완주 소요 시간' }
+      ],
+      note: '출처 · Groq LPU Inference Benchmark 2026 — 에이전트의 반복 추론(ReAct)에서 추론 속도가 체감 성능을 결정'
+    },
+    // 11. bullets
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1644088379091-d574269d422f', photo: 'Conny Schneider',
+      eyebrow: 'BIG TECH AGENT LANDSCAPE 2026',
+      title: '4대 빅테크가 구축한 상시 자율 에이전트 라인업',
+      items: [
+        { icon: 'solar:bell-bing-bold', text: 'Anthropic Claude Duet: Opus 5.5 기반 선제적 브리핑·백그라운드 클라우드 VM 개인 참모' },
+        { icon: 'solar:code-square-bold', text: 'xAI Grok Bot: 시연 학습(Teach-a-Task)·멀티봇 팀 협업·Cursor 결합 엔지니어링 파워하우스' },
+        { icon: 'solar:global-bold', text: 'OpenAI Dots: GPT-6 Astra 기반 4,000+ 기업용 SaaS 연동 및 엔터프라이즈 지식 노동 지휘자' },
+        { icon: 'solar:chat-round-dots-bold', text: 'Meta Muse: WhatsApp·Instagram·스마트글래스 밀착형 소상공인 24/7 무인 CS 및 라이프 비서', em: true }
+      ],
+      note: '단일 챗봇 경쟁을 넘어, 각 사의 생태계 강점(문서·코딩·엔터프라이즈·메신저)을 살린 전용 에이전트 앱 대전'
+    },
+    // 12. compare
+    {
+      layout: 'compare', chapter: 2,
+      bg: 'photo-1593062037896-764e9f52029e', photo: 'Tim Mossholder',
+      eyebrow: 'ECOSYSTEM COMPARISON · MUSE VS DOTS',
+      title: '생태계 비교: Meta Muse vs OpenAI Dots',
+      left: {
+        title: 'Meta Muse (일상·소상공인)',
+        icon: 'solar:glasses-bold',
+        items: [
+          'Muse Secure VM 기반 개인 데이터 격리·초저지연',
+          'WhatsApp·인스타 DM 24시간 무인 예약·고객 응대',
+          'Ray-Ban 스마트글래스 연동 실시간 시각·공간 비서'
+        ]
+      },
+      right: {
+        title: 'OpenAI Dots (엔터프라이즈)',
+        icon: 'solar:buildings-2-bold',
+        items: [
+          'GPT-6 Astra 기반 다단계 프로젝트 기획 및 심층 리서치',
+          'Slack·Teams·Jira 등 4,000개 이상 업무 앱 동기화',
+          '세밀한 권한 계층 설정으로 부서 단위 자율 업무 위임'
+        ]
+      },
+      note: '대고객 접점과 라이프케어는 Muse, 사내 문서·프로젝트 오케스트레이션은 Dots와 Duet이 주도'
+    },
+    // 13. flow
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1597733336794-12d05021d510', photo: 'JJ Ying',
+      eyebrow: 'USE CASE 01 · EXECUTIVE & KNOWLEDGE WORK',
+      title: '출근 전 끝나는 모닝 인텔리전스 (Claude Duet)',
+      steps: [
+        { label: '심야 인박스 스캔', desc: '밤사이 도착한 메일·슬랙 메시지와<br>캘린더 충돌·마감 청구서 식별' },
+        { label: '브리핑 & 초안 준비', desc: '클라우드 VM에서 핵심 3줄 요약과<br>긴급 답장·발표자료 초안 생성' },
+        { label: '모닝 브리핑 승인', desc: '출근길 모바일로 브리핑을 확인하고<br>터치 한 번으로 회신·조율 완료' }
+      ],
+      note: '매일 아침 90분씩 소모되던 이메일·일정 정리 시간을 5분 이내의 승인 프로세스로 압축'
+    },
+    // 14. flow
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1647427060118-4911c9821b82', photo: 'Simon Kadula',
+      eyebrow: 'USE CASE 02 · DEVOPS & BACK-OFFICE AUTOMATION',
+      title: '야간 무인 버그 픽스 & 레거시 자동화 (Grok Bot)',
+      steps: [
+        { label: '장애 감지 & 배정', desc: '수석 봇이 심야 에러를 포착하여<br>디버깅·QA 봇에 스레드 할당' },
+        { label: 'VM 수정·자동 검증', desc: 'Cursor 연동 터미널서 코드 패치 후<br>전용 브라우저로 테스트 통과' },
+        { label: 'PR 등록 & 포털 기입', desc: 'GitHub PR을 자동 생성하고<br>시연 스킬로 벤더 포털에 기입' }
+      ],
+      note: '평균 4시간 걸리던 야간 장애 대응과 반복 백오피스 입력을 12분 내 무인 완결'
+    },
+    // 15. stats
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1558494949-ef010cbdcc31', photo: 'Taylor Vick',
+      eyebrow: 'REAL-WORLD PRODUCTIVITY IMPACT',
+      title: '현업 도입 후 입증된 자율 에이전트 비즈니스 임팩트',
+      items: [
+        { value: '80', unit: '%', label: '자율 에이전트 기반 일상적 고객 문의·티켓 무인 해결률 전망' },
+        { value: '40', unit: '%', label: '2026년 말 기준 태스크 특화 AI 에이전트를 내장한 기업용 앱 비중' }
+      ],
+      note: '출처 · Gartner Agentic AI Enterprise Report & McKinsey State of AI 2026'
+    },
+    // 16. bullets
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1614064641938-3bbee52942c7', photo: 'FlyD',
+      eyebrow: 'SHADOW OF AUTONOMY · RISKS',
+      title: '권한이 커진 에이전트가 초래하는 4대 치명적 리스크',
+      items: [
+        { icon: 'solar:shield-warning-bold', text: '간접 프롬프트 인젝션: 악성 웹페이지·이메일을 읽은 봇이 자격증명이나 내부 기밀을 외부 유출' },
+        { icon: 'solar:wallet-money-bold', text: '클라우드 VM·토큰 폭주: 무한 루프나 다중 봇 연쇄 호출로 하룻밤 새 수백 달러의 비용 발생' },
+        { icon: 'solar:danger-triangle-bold', text: '환각의 물리적 실행: 텍스트 오류를 넘어 DB 삭제, 오발주, 잘못된 고객 메일 대량 발송 초래' },
+        { icon: 'solar:chart-square-bold', text: '가트너의 경고: 비용 통제와 거버넌스가 없는 에이전트 프로젝트의 40% 이상이 2027년 내 좌초 위험', em: true }
+      ],
+      note: '자율 에이전트 도입의 성패는 모델 지능이 아니라 통제 가능한 가드레일 설계에서 갈립니다'
+    },
+    // 17. bullets
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1676181739859-08330dea8999', photo: 'Wesley Tingey',
+      eyebrow: 'ENTERPRISE SECURITY GUARDRAILS',
+      title: '안전한 상시 에이전트 운용을 위한 4대 거버넌스 원칙',
+      items: [
+        { icon: 'solar:lock-keyhole-bold', text: '최소 권한 샌드박스: 에이전트 VM에 마스터 키 대신 읽기 전용·격리 권한만 부여해 피해 반경 차단' },
+        { icon: 'solar:user-check-bold', text: 'Human-in-the-Loop 관문: 대외 발송·결제·배포 등 비가역적 행위는 반드시 인간 승인 버튼 강제' },
+        { icon: 'solar:eye-scan-bold', text: '불변 감사 로그(Audit Trail): 에이전트의 모든 브라우저 클릭·터미널 명령·API 호출을 녹화 기록' },
+        { icon: 'solar:stopwatch-bold', text: '예산 킬스위치(Budget Kill-Switch): 일일 토큰·VM 한도 초과 시 즉시 컨테이너를 동결하는 안전핀', em: true }
+      ],
+      note: 'Claude Duet의 승인 일시정지와 Grok Bot의 격리 VM처럼 설계 단계부터 통제권을 내재화해야 합니다'
+    },
+    // 18. timeline
+    {
+      layout: 'timeline', chapter: 3,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Alexandre Debieve',
+      eyebrow: 'ADOPTION ROADMAP 2026',
+      title: '조직 내 AI Agent Bot 도입 4단계 마일스톤',
+      items: [
+        { time: 'STAGE 01', label: '선제 브리핑', desc: '읽기 전용 메일·일정 요약과<br>리서치 초안 자동화 (Duet)' },
+        { time: 'STAGE 02', label: '루틴 스킬화', desc: '화면 시연 학습 기능을 통해<br>반복 업무를 재사용 스킬화' },
+        { time: 'STAGE 03', label: '멀티봇 협업', desc: '코딩·QA·리서치 봇을 묶어<br>슬랙 채널 내 팀 협업 가동', em: true },
+        { time: 'STAGE 04', label: '거버넌스 정착', desc: '감사 로그와 예산 킬스위치로<br>전사 24/7 디지털 노동 정착' }
+      ],
+      note: '위험도가 낮은 조회·초안 업무에서 시작해 점진적으로 실행 권한을 위임하는 단계적 전략'
+    },
+    // 19. quote
+    {
+      layout: 'quote', chapter: 3,
+      bg: 'photo-1672872476232-da16b45c9001', photo: 'Nat',
+      eyebrow: 'LEADERSHIP IN THE AGENT ERA',
+      quote: '미래의 경쟁력은 프롬프트를 잘 쓰는 능력이 아니라,<br><em>다양한 에이전트 팀을 지휘하는 오케스트레이션 역량이다</em>',
+      by: 'AI AGENT ORCHESTRATION STRATEGY · 2026'
+    },
+    // 20. closing
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1519501025264-65ba15a82390', photo: 'Aleksandar Pasaric',
+      eyebrow: 'BEYOND CHATBOTS · INTO AUTONOMY',
+      title: '잠들지 않는 AI 에이전트와 함께<br><em>완전히 새로운 생산성의 시대를 열다</em>',
+      sub: 'Claude Duet의 선제적 통찰과 Grok Bot의 강력한 실행력으로 당신의 비전을 24시간 현실로 만드십시오',
+      chips: ['Claude Duet', 'xAI Grok Bot', 'Groq LPU 초고속 추론', 'OpenAI Dots & Meta Muse', 'Human-in-the-Loop 거버넌스']
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel${i ? ' hi' : ''}" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
