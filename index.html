@@ -5,62 +5,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presentation Hub</title>
-  <meta name="description" content="AI, 국가 정책, 라이프까지 한곳에서 바로 열어보는 고품질 프레젠테이션 아카이브">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f62fe'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ffffff'/%3E%3C/svg%3E">
+  <meta name="description" content="AI, 국가 정책, 연구 기획부터 라이프까지 — 유튜브 스타일로 한눈에 탐색하고 즉시 발표하는 프레젠테이션 아카이브">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ff0033'/%3E%3Cpolygon points='12,9 24,16 12,23' fill='%23ffffff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ===== Reset & Carbon Design System Tokens ===== */
+    /* ===== Reset & YouTube-Inspired Design Tokens ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --canvas: #ffffff;
-      --surface-1: #f4f4f4;
-      --surface-2: #e0e0e0;
-      --hairline: #e0e0e0;
-      --inverse-canvas: #161616;
-      --inverse-surface-1: #262626;
-      --ink: #161616;
-      --ink-muted: #525252;
-      --ink-subtle: #8c8c8c;
-      --inverse-ink: #ffffff;
-      --inverse-ink-muted: #c6c6c6;
+      --bg: #ffffff;
+      --bg-elevated: #f8f8f8;
+      --bg-chip: #f2f2f2;
+      --bg-chip-hover: #e5e5e5;
+      --bg-hover: #f2f2f2;
+      --border: #e5e5e5;
+      --ink: #0f0f0f;
+      --ink-muted: #606060;
+      --ink-subtle: #909090;
+      --brand-red: #ff0033;
       --primary: #0f62fe;
-      --primary-hover: #0043ce;
-      --primary-active: #002d9c;
-      --on-primary: #ffffff;
+      --chip-active-bg: #0f0f0f;
+      --chip-active-ink: #ffffff;
 
       --cat-ai: #7c3aed;
-      --cat-plan: #ff8a00;
-      --cat-policy: #0a6cff;
-      --cat-life: #00a88f;
+      --cat-plan: #ea580c;
+      --cat-policy: #0284c7;
+      --cat-life: #0d9488;
 
-      --f-body: "IBM Plex Sans", "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --header-h: 56px;
+      --sidebar-w: 236px;
+      --sidebar-mini-w: 74px;
+
+      --f-body: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
       color-scheme: light;
     }
 
     [data-theme="dark"] {
-      --canvas: #161616;
-      --surface-1: #262626;
-      --surface-2: #393939;
-      --hairline: #393939;
-      --inverse-canvas: #f4f4f4;
-      --inverse-surface-1: #e0e0e0;
-      --ink: #f4f4f4;
-      --ink-muted: #c6c6c6;
-      --ink-subtle: #8d8d8d;
-      --inverse-ink: #161616;
-      --inverse-ink-muted: #525252;
-      --primary: #4589ff;
-      --primary-hover: #0f62fe;
-      --primary-active: #0043ce;
-      --on-primary: #ffffff;
+      --bg: #0f0f0f;
+      --bg-elevated: #181818;
+      --bg-chip: #272727;
+      --bg-chip-hover: #3f3f3f;
+      --bg-hover: #272727;
+      --border: #272727;
+      --ink: #f1f1f1;
+      --ink-muted: #aaaaaa;
+      --ink-subtle: #717171;
+      --brand-red: #ff0033;
+      --primary: #3ea6ff;
+      --chip-active-bg: #f1f1f1;
+      --chip-active-ink: #0f0f0f;
 
       --cat-ai: #a78bfa;
-      --cat-plan: #fbaa36;
-      --cat-policy: #4589ff;
+      --cat-plan: #fb923c;
+      --cat-policy: #38bdf8;
       --cat-life: #2dd4bf;
 
       color-scheme: dark;
@@ -68,468 +69,896 @@
 
     body {
       font-family: var(--f-body);
-      font-size: 15px;
-      line-height: 1.5;
-      background: var(--canvas);
+      font-size: 14px;
+      line-height: 1.45;
+      background: var(--bg);
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      transition: background 0.2s ease, color 0.2s ease;
     }
 
     body.viewing {
       overflow: hidden;
     }
 
-    .container {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    button, input {
+    button, input, select {
       font-family: inherit;
       color: inherit;
     }
 
-    button:focus-visible, a:focus-visible, input:focus-visible {
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
       outline: 2px solid var(--primary);
-      outline-offset: -2px;
+      outline-offset: 2px;
     }
 
-    /* ===== Utility Strip ===== */
-    .utility-strip {
-      background: var(--surface-1);
-      color: var(--ink-muted);
-      height: 34px;
+    mark.hl {
+      background: rgba(255, 214, 10, 0.32);
+      color: inherit;
+      padding: 0 2px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    /* ===== Top Sticky YouTube Header ===== */
+    .yt-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 32px;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      border-bottom: 1px solid var(--hairline);
+      padding: 0 16px;
+      gap: 16px;
+      z-index: 45;
     }
 
-    .utility-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .status-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--primary);
-      animation: pulse-dot 2s infinite ease-in-out;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-
-    .utility-right {
+    .yt-header-left {
       display: flex;
       align-items: center;
       gap: 14px;
+      flex-shrink: 0;
     }
 
-    .theme-toggle {
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--ink);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
-      border: none;
-      background: transparent;
-      color: var(--ink-muted);
       cursor: pointer;
-      border-radius: 4px;
-      transition: color 0.15s, background 0.15s;
+      transition: background 0.15s;
     }
 
-    .theme-toggle:hover {
+    .icon-btn:hover {
+      background: var(--bg-hover);
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .yt-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
       color: var(--ink);
-      background: var(--surface-2);
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+      user-select: none;
     }
 
-    .theme-toggle svg {
+    .yt-logo-badge {
+      width: 30px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--brand-red);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(255, 0, 51, 0.35);
+    }
+
+    .yt-logo-badge svg {
+      width: 12px;
+      height: 12px;
+      fill: #ffffff;
+    }
+
+    .yt-logo sup {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-left: -4px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Center Search Pill */
+    .yt-header-center {
+      flex: 1;
+      max-width: 620px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--primary);
+      background: var(--bg);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .search-lead-icon {
       width: 16px;
       height: 16px;
-      display: block;
+      margin-left: 16px;
+      color: var(--ink-subtle);
+      flex-shrink: 0;
+    }
+
+    #searchInput {
+      flex: 1;
+      height: 100%;
+      border: none;
+      background: transparent;
+      padding: 0 12px;
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+    }
+
+    #searchInput::placeholder {
+      color: var(--ink-subtle);
+    }
+
+    .search-clear {
+      background: none;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 15px;
+      display: none;
+    }
+
+    .search-clear.visible {
+      display: inline-flex;
+    }
+
+    .search-kbd {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--ink-subtle);
+      background: var(--bg-chip);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 999px;
+      margin-right: 12px;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    /* Right Controls */
+    .yt-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .deck-count-pill {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--bg-chip);
+      color: var(--ink-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
     }
 
     .icon-sun { display: none; }
     [data-theme="dark"] .icon-sun { display: block; }
     [data-theme="dark"] .icon-moon { display: none; }
 
-    /* ===== Hero Section ===== */
-    .hero-section {
-      padding: 40px 0 24px;
-      border-bottom: 1px solid var(--hairline);
-      background: var(--canvas);
-    }
-
-    .hero-title-row {
+    /* ===== App Body Layout (Sidebar + Main Feed) ===== */
+    .yt-layout {
       display: flex;
-      align-items: baseline;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
+      padding-top: var(--header-h);
+      min-height: 100vh;
     }
 
-    .hero-title {
-      font-size: 46px;
-      font-weight: 300;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-      margin-bottom: 0;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--f-mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: 0;
-    }
-
-    .hero-title a {
-      color: inherit;
-      text-decoration: none;
-      display: inline-block;
-      transition: opacity 0.15s;
-    }
-
-    .hero-title a:hover {
-      opacity: 0.85;
-    }
-
-    .hero-title em {
-      font-style: normal;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .hero-desc {
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--ink-muted);
-      max-width: 680px;
-      line-height: 1.6;
-    }
-
-    /* ===== Filter & Search Bar ===== */
-    .controls-section {
-      padding: 28px 0 28px;
-    }
-
-    .search-row {
-      margin-bottom: 18px;
-    }
-
-    .search-wrap {
-      position: relative;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      color: var(--ink-subtle);
+    /* Mobile Backdrop for Drawer */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: var(--header-h) 0 0 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 38;
+      opacity: 0;
       pointer-events: none;
+      transition: opacity 0.2s ease;
     }
 
-    #searchInput {
-      width: 100%;
-      font-family: inherit;
-      font-size: 15px;
-      color: var(--ink);
-      background: var(--surface-1);
-      border: none;
-      border-bottom: 1px solid var(--hairline);
-      padding: 12px 44px;
-      outline: none;
-      border-radius: 6px 6px 0 0;
-      transition: border-color 0.2s, background 0.2s;
+    body.sidebar-open .sidebar-backdrop {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    #searchInput:focus {
-      border-bottom: 2px solid var(--primary);
-      background: var(--canvas);
+    /* Left Sidebar */
+    .yt-sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      padding: 12px 12px 24px;
+      overflow-y: auto;
+      z-index: 40;
+      transition: width 0.2s ease, transform 0.22s ease;
+      scrollbar-width: thin;
     }
 
-    .search-hint {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: var(--f-mono);
-      font-size: 11px;
-      color: var(--ink-subtle);
-      background: var(--canvas);
-      border: 1px solid var(--hairline);
-      padding: 2px 7px;
-      border-radius: 4px;
-      pointer-events: none;
+    body.sidebar-mini .yt-sidebar {
+      width: var(--sidebar-mini-w);
+      padding: 12px 6px;
     }
 
-    .search-clear {
-      position: absolute;
-      right: 48px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--ink-muted);
-      font-size: 16px;
-      display: none;
-      padding: 4px;
-    }
-
-    .search-clear.visible { display: block; }
-
-    /* Filters: Category & Style Switcher */
-    .filter-bar {
+    .side-group {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .cat-tabs {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      background: var(--canvas);
-      border: 1px solid var(--hairline);
-      border-radius: 999px;
-      padding: 5px 12px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-muted);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-
-    .tab-btn:hover {
-      background: var(--surface-1);
-      color: var(--ink);
-    }
-
-    .tab-btn.active {
-      background: var(--ink);
-      color: var(--inverse-ink);
-      border-color: var(--ink);
-    }
-
-    .tab-btn b {
-      font-size: 11px;
-      font-family: var(--f-mono);
-      opacity: 0.75;
-    }
-
-    .cat-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .type-switcher {
-      display: inline-flex;
-      background: var(--surface-1);
-      border: 1px solid var(--hairline);
-      border-radius: 6px;
-      padding: 2px;
+      flex-direction: column;
       gap: 2px;
     }
 
-    .type-btn {
-      background: transparent;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--ink-muted);
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
+    .side-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 8px;
     }
 
-    .type-btn:hover {
-      color: var(--ink);
-    }
-
-    .type-btn.active {
-      background: var(--canvas);
-      color: var(--ink);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-
-    /* ===== Decks List (Stacked Cards) ===== */
-    .decks-section {
-      padding: 8px 0 80px;
-    }
-
-    .card-list {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card {
-      background: var(--canvas);
-      border: 1px solid var(--hairline);
-      padding: 20px 24px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, transform 0.15s;
-    }
-
-    .card + .card {
-      border-top: none;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: var(--cat-color, var(--hairline));
-      transition: width 0.15s;
-    }
-
-    .card:hover {
-      background: var(--surface-1);
-    }
-
-    .card:hover::before {
-      width: 6px;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 8px;
-    }
-
-    .card-header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      flex-wrap: wrap;
-    }
-
-    .card-idx {
-      font-family: var(--f-mono);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink-subtle);
-      min-width: 22px;
-    }
-
-    .card-title {
-      font-size: 19px;
-      font-weight: 500;
-      color: var(--ink);
-      line-height: 1.35;
-      letter-spacing: -0.01em;
-      transition: color 0.15s;
-    }
-
-    .card:hover .card-title {
-      color: var(--primary);
-    }
-
-    .card-badges {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .badge {
+    .side-heading {
       font-size: 11px;
-      font-weight: 500;
-      padding: 2px 7px;
-      border-radius: 4px;
-      border: 1px solid var(--hairline);
-      background: var(--surface-1);
-      color: var(--ink-muted);
-      white-space: nowrap;
-    }
-
-    .badge.cat {
-      color: var(--cat-color);
-      border-color: color-mix(in srgb, var(--cat-color) 40%, var(--hairline));
-      background: color-mix(in srgb, var(--cat-color) 8%, var(--surface-1));
-      font-weight: 600;
-    }
-
-    .badge.cinematic {
-      color: #0284c7;
-      background: #e0f2fe;
-      border-color: #bae6fd;
-      font-weight: 600;
-    }
-
-    [data-theme="dark"] .badge.cinematic {
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.14);
-      border-color: rgba(56, 189, 248, 0.3);
-    }
-
-    .badge.slides-badge {
-      font-family: var(--f-mono);
-    }
-
-    .card-desc {
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.55;
-      padding-left: 32px;
-      max-width: 900px;
-    }
-
-
-    .empty-state {
-      padding: 60px 20px;
-      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       color: var(--ink-subtle);
-      font-size: 15px;
-      border: 1px dashed var(--hairline);
-      border-radius: 8px;
+      padding: 6px 12px;
+    }
+
+    body.sidebar-mini .side-heading,
+    body.sidebar-mini .side-footer,
+    body.sidebar-mini .side-count {
       display: none;
     }
 
-    .empty-state.show { display: block; }
+    .side-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: var(--ink);
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s;
+    }
+
+    .side-btn:hover {
+      background: var(--bg-hover);
+    }
+
+    .side-btn.active {
+      background: var(--bg-chip);
+      font-weight: 700;
+    }
+
+    .side-btn-left {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .side-btn svg {
+      width: 19px;
+      height: 19px;
+      flex-shrink: 0;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .side-cat-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin: 0 4px;
+    }
+
+    .side-count {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--ink-subtle);
+    }
+
+    body.sidebar-mini .side-btn {
+      flex-direction: column;
+      justify-content: center;
+      padding: 11px 4px;
+      gap: 5px;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    body.sidebar-mini .side-btn-left {
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .side-footer {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .side-footer b {
+      color: var(--ink);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .side-footer kbd {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    /* ===== Main Content Area ===== */
+    .yt-main {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      min-width: 0;
+      transition: margin-left 0.2s ease;
+    }
+
+    body.sidebar-mini .yt-main {
+      margin-left: var(--sidebar-mini-w);
+    }
+
+    /* Sticky Category & Style Chips Bar */
+    .yt-chips-bar {
+      position: sticky;
+      top: var(--header-h);
+      z-index: 25;
+      background: color-mix(in srgb, var(--bg) 94%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .yt-chips-bar::-webkit-scrollbar { display: none; }
+
+    .chips-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: nowrap;
+    }
+
+    .chip-btn {
+      border: none;
+      background: var(--bg-chip);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .chip-btn:hover {
+      background: var(--bg-chip-hover);
+    }
+
+    .chip-btn.active {
+      background: var(--chip-active-bg);
+      color: var(--chip-active-ink);
+    }
+
+    .chip-btn b {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      opacity: 0.75;
+    }
+
+    .chip-sep {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .chips-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .sort-select {
+      background: var(--bg-chip);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Filter Status Bar (shown when filtered/searched) */
+    .filter-status {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    .filter-status.show {
+      display: flex;
+    }
+
+    .filter-status b {
+      color: var(--ink);
+    }
+
+    .reset-filter-btn {
+      background: var(--bg-chip);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .reset-filter-btn:hover {
+      background: var(--bg-chip-hover);
+    }
+
+    /* ===== YouTube Video Grid (3~4 Columns) ===== */
+    .yt-feed {
+      padding: 22px 24px 72px;
+    }
+
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 28px 18px;
+    }
+
+    /* Optional Compact List Mode */
+    .yt-grid.list-mode {
+      grid-template-columns: 1fr;
+      max-width: 1080px;
+      gap: 14px;
+    }
+
+    .yt-card {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      border-radius: 14px;
+      transition: transform 0.18s ease;
+    }
+
+    .yt-grid.list-mode .yt-card {
+      flex-direction: row;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+    }
+
+    .yt-grid.list-mode .yt-thumb {
+      width: 320px;
+      flex-shrink: 0;
+    }
+
+    /* 16:9 Thumbnail Box */
+    .yt-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #101624;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    .yt-thumb-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .yt-card:hover .yt-thumb-img {
+      transform: scale(1.06);
+    }
+
+    /* Cinematic Gradient Vignette Overlay on Thumbnail */
+    .yt-thumb-shade {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(8, 12, 22, 0.52) 0%, rgba(8, 12, 22, 0.14) 38%, rgba(8, 12, 22, 0.90) 100%);
+    }
+
+    /* Top Badges on Thumbnail */
+    .yt-thumb-top {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .yt-top-left-badges {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .yt-ep-badge {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: rgba(10, 14, 24, 0.78);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(6px);
+    }
+
+    .yt-new-badge {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 3px 7px;
+      border-radius: 5px;
+      background: var(--brand-red);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(255, 0, 51, 0.4);
+    }
+
+    .yt-style-badge {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      backdrop-filter: blur(6px);
+    }
+
+    .yt-style-badge.cinematic {
+      background: rgba(0, 210, 255, 0.88);
+      color: #041019;
+    }
+
+    .yt-style-badge.briefing {
+      background: rgba(255, 255, 255, 0.92);
+      color: #0f172a;
+    }
+
+    .yt-style-badge.mckinsey {
+      background: rgba(0, 112, 173, 0.92);
+      color: #ffffff;
+    }
+
+    .yt-style-badge.interactive {
+      background: rgba(124, 58, 237, 0.88);
+      color: #ffffff;
+    }
+
+    /* Poster Hook Overlay inside Thumbnail (Distinct from Title below) */
+    .yt-thumb-poster {
+      position: absolute;
+      left: 12px;
+      right: 72px;
+      bottom: 12px;
+      z-index: 2;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+    }
+
+    .yt-thumb-cat {
+      display: inline-block;
+      font-family: var(--f-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #38bdf8;
+      margin-bottom: 3px;
+    }
+
+    .yt-thumb-headline {
+      font-size: 14.5px;
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      color: rgba(255, 255, 255, 0.96);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: keep-all;
+    }
+
+    /* Bottom-Right YouTube Duration / Slide Count Pill */
+    .yt-duration {
+      position: absolute;
+      right: 8px;
+      bottom: 10px;
+      z-index: 3;
+      background: rgba(0, 0, 0, 0.86);
+      color: #ffffff;
+      font-family: var(--f-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.02em;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    /* Center Play Button on Hover */
+    .yt-play-hover {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 2;
+    }
+
+    .yt-card:hover .yt-play-hover {
+      opacity: 1;
+    }
+
+    .yt-play-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 0, 51, 0.92);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.2s ease;
+    }
+
+    .yt-card:hover .yt-play-circle {
+      transform: scale(1);
+    }
+
+    .yt-play-circle svg {
+      width: 18px;
+      height: 18px;
+      fill: #ffffff;
+      margin-left: 2px;
+    }
+
+    /* Bottom Progress Bar Accent on Thumbnail */
+    .yt-thumb-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.18);
+      z-index: 3;
+    }
+
+    .yt-thumb-bar i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--brand-red);
+      transition: width 0.35s ease;
+    }
+
+    .yt-card:hover .yt-thumb-bar i {
+      width: 100%;
+    }
+
+    /* Card Details Below Thumbnail */
+    .yt-meta {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding-top: 12px;
+    }
+
+    .yt-grid.list-mode .yt-meta {
+      padding-top: 4px;
+      flex: 1;
+    }
+
+    .yt-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 2px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      letter-spacing: -0.02em;
+    }
+
+    .yt-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .yt-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.38;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: keep-all;
+      transition: color 0.15s;
+    }
+
+    .yt-card:hover .yt-title {
+      color: var(--primary);
+    }
+
+    .yt-subline {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      margin-bottom: 5px;
+      flex-wrap: wrap;
+    }
+
+    .yt-verified {
+      width: 13px;
+      height: 13px;
+      fill: var(--ink-muted);
+      flex-shrink: 0;
+    }
+
+    .yt-desc {
+      font-size: 12.5px;
+      color: var(--ink-subtle);
+      line-height: 1.48;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: keep-all;
+    }
+
+    .empty-state {
+      padding: 72px 20px;
+      text-align: center;
+      color: var(--ink-subtle);
+      font-size: 15px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .empty-state.show {
+      display: flex;
+    }
 
     /* ===== Fullscreen Presentation Viewer ===== */
     #viewer {
@@ -557,31 +986,33 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
-      gap: 12px;
+      gap: 10px;
       color: #fff;
       z-index: 10;
     }
 
-    .back-btn {
+    .back-btn, .viewer-action-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 4px;
+      border-radius: 6px;
       color: #fff;
-      padding: 5px 12px;
+      padding: 5px 11px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
       transition: background 0.15s;
     }
 
-    .back-btn:hover {
+    .back-btn:hover, .viewer-action-btn:hover {
       background: rgba(255, 255, 255, 0.16);
     }
 
-    .back-btn svg {
+    .back-btn svg, .viewer-action-btn svg {
       width: 14px;
       height: 14px;
       stroke: currentColor;
@@ -616,9 +1047,9 @@
       background: transparent;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 999px;
-      padding: 3px 10px;
+      padding: 4px 11px;
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.65);
       cursor: pointer;
       white-space: nowrap;
       display: inline-flex;
@@ -634,9 +1065,23 @@
 
     .rail-pill.active {
       color: #fff;
-      background: var(--primary);
-      border-color: var(--primary);
+      background: var(--brand-red);
+      border-color: var(--brand-red);
       font-weight: 600;
+    }
+
+    .cat-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .viewer-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .viewer-step {
@@ -687,7 +1132,6 @@
       opacity: 1;
     }
 
-    /* 허브로 돌아온 뒤에도 마지막 덱이 투명한 채로 클릭을 가로채지 않도록, 뷰어가 열려 있을 때만 클릭을 받는다 */
     body.viewing .viewer-frame.active {
       pointer-events: auto;
     }
@@ -702,13 +1146,13 @@
     /* ===== Scroll to Top ===== */
     .scroll-top {
       position: fixed;
-      right: 28px;
-      bottom: 28px;
+      right: 24px;
+      bottom: 24px;
       width: 42px;
       height: 42px;
-      border-radius: 6px;
-      border: 1px solid var(--hairline);
-      background: var(--canvas);
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
       color: var(--ink);
       display: flex;
       align-items: center;
@@ -717,9 +1161,9 @@
       opacity: 0;
       transform: translateY(8px);
       pointer-events: none;
-      transition: opacity 0.2s, transform 0.2s, background 0.15s, color 0.15s;
-      z-index: 50;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      transition: opacity 0.2s, transform 0.2s, background 0.15s;
+      z-index: 35;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     }
 
     .scroll-top.visible {
@@ -729,9 +1173,9 @@
     }
 
     .scroll-top:hover {
-      background: var(--primary);
-      color: var(--on-primary);
-      border-color: var(--primary);
+      background: var(--brand-red);
+      color: #fff;
+      border-color: var(--brand-red);
     }
 
     .scroll-top svg {
@@ -742,68 +1186,37 @@
       stroke-width: 2;
     }
 
-    /* ===== Footer Slab ===== */
-    .footer-slab {
-      background: var(--inverse-canvas);
-      color: var(--inverse-ink);
-      padding: 56px 0 40px;
-      border-top: 1px solid var(--hairline);
+    /* ===== Responsive & Drawer Behavior ===== */
+    @media (max-width: 1024px) {
+      .yt-sidebar {
+        transform: translateX(-100%);
+        width: var(--sidebar-w) !important;
+        padding: 12px 12px 24px !important;
+        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.35);
+      }
+      body.sidebar-open .yt-sidebar {
+        transform: translateX(0);
+      }
+      .yt-main, body.sidebar-mini .yt-main {
+        margin-left: 0;
+      }
     }
 
-    .footer-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 12px;
-    }
-
-    .footer-title {
-      font-size: 22px;
-      font-weight: 300;
-      letter-spacing: -0.02em;
-    }
-
-    .footer-title em {
-      font-style: normal;
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    .footer-sub {
-      font-size: 13px;
-      color: var(--inverse-ink-muted);
-    }
-
-    .footer-meta {
-      font-family: var(--f-mono);
-      font-size: 11px;
-      color: var(--ink-subtle);
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--inverse-surface-1);
-      width: 100%;
-      max-width: 480px;
-    }
-
-    /* ===== Responsive ===== */
     @media (max-width: 768px) {
-      .container { padding: 0 16px; }
-      .utility-strip { padding: 0 16px; }
-      .hero-title { font-size: 32px; }
-      .card-desc { padding-left: 0; }
-      .card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-      .open-btn { width: 100%; justify-content: center; margin-top: 8px; }
+      .yt-chips-bar { padding: 10px 14px; }
+      .yt-feed { padding: 16px 14px 60px; }
+      .deck-count-pill, .search-kbd, .viewer-action-btn span { display: none; }
+      .yt-grid.list-mode .yt-card { flex-direction: column; }
+      .yt-grid.list-mode .yt-thumb { width: 100%; }
       .viewer-rail { display: none; }
     }
   </style>
-
   <script>
     // FOUC 방지 테마 초기화
     (function () {
       try {
         const saved = localStorage.getItem('theme');
-        const isDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = saved ? saved === 'dark' : true;
         document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
       } catch (e) { }
     })();
@@ -812,93 +1225,121 @@
 
 <body>
 
-  <!-- Utility Strip -->
-  <div class="utility-strip">
-    <div class="utility-left">
-      <span class="status-dot"></span>
-      <a href="index.html" style="color:inherit;text-decoration:none;">Presentation Hub</a>
-      <span style="opacity: 0.5;">|</span>
-      <span id="deckCountBadge" style="font-family: var(--f-mono);">31 DECKS</span>
+  <!-- ===== Top Sticky YouTube Header ===== -->
+  <header class="yt-header">
+    <div class="yt-header-left">
+      <button id="sidebarToggle" class="icon-btn" type="button" aria-label="사이드바 토글" title="메뉴 접기/펼치기">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+      </button>
+      <a href="#hub" id="logoHome" class="yt-logo" title="Presentation Hub 홈">
+        <span class="yt-logo-badge">
+          <svg viewBox="0 0 16 16"><polygon points="4,2.5 13.5,8 4,13.5"/></svg>
+        </span>
+        <span>Presentation Hub</span>
+        <sup>KR</sup>
+      </a>
     </div>
-    <div class="utility-right">
-      <span style="font-size: 11px; color: var(--ink-subtle);">Press <kbd style="font-family: var(--f-mono); background: var(--canvas); border: 1px solid var(--hairline); padding: 1px 4px; border-radius: 3px;">/</kbd> to search</span>
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="테마 전환" title="다크/라이트 테마 전환">
-        <svg class="icon-moon" viewBox="0 0 16 16" fill="currentColor"><path d="M6 1a6.5 6.5 0 1 0 8.5 8.5A5.5 5.5 0 0 1 6 1z"/></svg>
+
+    <div class="yt-header-center">
+      <div class="search-box">
+        <svg class="search-lead-icon" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input id="searchInput" type="search" placeholder="발표 제목, 키워드, 카테고리 검색..." autocomplete="off" aria-label="발표 검색">
+        <button id="searchClear" class="search-clear" type="button" aria-label="검색 지우기">✕</button>
+        <span class="search-kbd">/</span>
+      </div>
+    </div>
+
+    <div class="yt-header-right">
+      <span class="deck-count-pill">
+        <span class="status-dot"></span>
+        <span id="deckCountBadge">33 DECKS</span>
+      </span>
+
+      <button id="viewModeToggle" class="icon-btn" type="button" aria-label="보기 방식 전환" title="그리드 / 리스트 보기 전환">
+        <svg id="iconGrid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      </button>
+
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="테마 전환" title="다크 / 라이트 테마 전환">
+        <svg class="icon-moon" viewBox="0 0 16 16" fill="currentColor" stroke="none"><path d="M6 1a6.5 6.5 0 1 0 8.5 8.5A5.5 5.5 0 0 1 6 1z"/></svg>
         <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3.2"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.2 1.2M11.8 11.8L13 13M3 13l1.2-1.2M11.8 4.2L13 3"/></svg>
       </button>
     </div>
-  </div>
+  </header>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container">
-      <div class="hero-title-row">
-        <h1 class="hero-title"><a href="index.html" title="홈으로 이동">Presentation <em>Hub.</em></a></h1>
-        <span class="hero-eyebrow">✦ PRESENTATION ARCHIVE</span>
+  <!-- Mobile/Tablet Drawer Backdrop -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ===== Main YouTube Layout (Sidebar + Content) ===== -->
+  <div class="yt-layout">
+
+    <!-- Left Collapsible Sidebar -->
+    <aside class="yt-sidebar" id="sidebar" aria-label="카테고리 및 스타일 내비게이션">
+      <div class="side-group" id="sideMainGroup">
+        <!-- JS 렌더링 -->
       </div>
-      <p class="hero-desc">AI 대전환, 국가 미래 정책, 연구 기획부터 균형 잡힌 삶까지.<br>한곳에서 실시간으로 열어보는 시네마틱 & 인터랙티브 프레젠테이션 컬렉션입니다.</p>
-    </div>
-  </section>
 
-  <!-- Filter & Controls -->
-  <section class="controls-section">
-    <div class="container">
+      <div class="side-divider"></div>
+      <div class="side-heading">주제별 채널</div>
+      <div class="side-group" id="sideCatGroup">
+        <!-- JS 렌더링 -->
+      </div>
 
-      <!-- Search Input -->
-      <div class="search-row">
-        <div class="search-wrap">
-          <svg class="search-icon" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input id="searchInput" type="search" placeholder="발표 제목, 카테고리, 설명 검색..." autocomplete="off" aria-label="발표 검색">
-          <button id="searchClear" class="search-clear" aria-label="검색 지우기">✕</button>
-          <span class="search-hint">⌘K or /</span>
+      <div class="side-divider"></div>
+      <div class="side-footer">
+        <b>단축키 가이드</b>
+        <div><kbd>/</kbd> 또는 <kbd>⌘K</kbd> 즉시 검색</div>
+        <div><kbd>ESC</kbd> 발표 종료 후 허브 복귀</div>
+        <div><kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동</div>
+        <div><kbd>G</kbd> 슬라이드 번호 점프</div>
+      </div>
+    </aside>
+
+    <!-- Main Feed -->
+    <div class="yt-main">
+
+      <!-- Sticky Chips Bar -->
+      <div class="yt-chips-bar">
+        <div class="chips-left" id="chipBar">
+          <!-- JS 렌더링 -->
+        </div>
+        <div class="chips-right">
+          <select id="sortSelect" class="sort-select" aria-label="정렬 기준">
+            <option value="latest">최신 등록순</option>
+            <option value="slides-desc">슬라이드 많은 순</option>
+            <option value="slides-asc">슬라이드 적은 순</option>
+            <option value="title">제목 가나다순</option>
+          </select>
         </div>
       </div>
 
-      <!-- Filters: Categories & Types -->
-      <div class="filter-bar">
-        <div class="cat-tabs" id="catTabs">
+      <!-- 16:9 Thumbnail Grid -->
+      <main class="yt-feed">
+        <div class="filter-status" id="filterStatus">
+          <span id="filterStatusText"></span>
+          <button type="button" class="reset-filter-btn" id="resetFilterBtn">필터 초기화 ↺</button>
+        </div>
+
+        <div class="yt-grid" id="cardGrid">
           <!-- JS 렌더링 -->
         </div>
 
-        <div class="type-switcher" id="typeSwitcher">
-          <button class="type-btn active" data-type="all">전체</button>
-          <button class="type-btn" data-type="cinematic">시네마틱 덱</button>
-          <button class="type-btn" data-type="interactive">인터랙티브 덱</button>
+        <div class="empty-state" id="emptyState">
+          <div>검색어 또는 선택한 필터 조건에 일치하는 발표 자료가 없습니다.</div>
+          <button type="button" class="reset-filter-btn" id="emptyResetBtn">전체 발표 목록 보기 ↺</button>
         </div>
-      </div>
+      </main>
 
     </div>
-  </section>
-
-  <!-- Decks List Section -->
-  <main class="decks-section">
-    <div class="container">
-      <div class="card-list" id="cardList">
-        <!-- JS 렌더링 -->
-      </div>
-      <div class="empty-state" id="emptyState">
-        검색 및 필터 조건에 일치하는 발표 자료가 없습니다.
-      </div>
-    </div>
-  </main>
+  </div>
 
   <!-- Scroll Top Button -->
   <button id="scrollTop" class="scroll-top" type="button" aria-label="맨 위로" title="맨 위로 이동">
     <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
 
-  <!-- Footer Slab -->
-  <footer class="footer-slab">
-    <div class="container footer-inner">
-      <h2 class="footer-title">Presentation <em>Archive</em></h2>
-      <p class="footer-sub">고화질 비주얼, 시네마틱 켄번스, 반응형 뷰포트로 제작된 차세대 HTML 발표자료 허브</p>
-      <div class="footer-meta">
-        © 2026 PRESENTATION HUB · POWERED BY ADVANCED AGENTIC CODING
-      </div>
-    </div>
-  </footer>
-
-  <!-- Fullscreen Presentation Viewer -->
+  <!-- ===== Fullscreen Presentation Viewer ===== -->
   <section id="viewer" aria-label="발표 전체 화면 뷰어">
     <div class="viewer-bar">
       <button class="back-btn" id="viewerBack" type="button">
@@ -906,13 +1347,23 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 31</span>
+      <span class="viewer-pos" id="viewerPos">01 / 33</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
-      <div class="viewer-step">
-        <button id="viewerPrev" type="button" aria-label="이전 발표"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-        <button id="viewerNext" type="button" aria-label="다음 발표"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      <div class="viewer-controls-right">
+        <a id="viewerNewTab" class="viewer-action-btn" href="#" target="_blank" rel="noopener" title="새 탭에서 단독 창으로 열기">
+          <svg viewBox="0 0 24 24"><path d="M14 3h7v7M10 14L21 3M21 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h6"/></svg>
+          <span>새 탭 열기</span>
+        </a>
+        <button id="viewerFullscreen" class="viewer-action-btn" type="button" title="전체화면 토글">
+          <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          <span>전체화면</span>
+        </button>
+        <div class="viewer-step">
+          <button id="viewerPrev" type="button" aria-label="이전 발표" title="이전 발표자료"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button id="viewerNext" type="button" aria-label="다음 발표" title="다음 발표자료"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
       </div>
     </div>
 
@@ -922,7 +1373,6 @@
   </section>
 
   <script>
-    // 카테고리 설정 (Carbon Tokens 매핑)
     const CAT_COLORS = {
       'AI': 'var(--cat-ai)',
       '기획': 'var(--cat-plan)',
@@ -930,295 +1380,411 @@
       '라이프': 'var(--cat-life)'
     };
 
-    // 발표 목록 데이터 (총 29개)
+    const CAT_LABELS = {
+      'AI': 'AI · 인공지능',
+      '기획': '기획 · R&D 전략',
+      '정책': '정책 · 거버넌스',
+      '라이프': '라이프 · 웰니스'
+    };
+
+    // 발표 목록 데이터 (워크스페이스 내 전체 33개 HTML 발표자료 전수 수록)
+    // hook 필드는 16:9 썸네일 내부에 표시될 핵심 포스터 카피(아래 제목과 중복 방지)
     const DECKS = [
       {
         id: 'running-4050-cinematic',
         src: 'running_4050_cinematic_presentation.html',
-        cat: '???',
-        title: '40?50?? ?? ??? ?? ??? (Longevity Running)',
-        desc: '??? ??? 45% ????? ??? 3.5%? ?? ???? 180 ???? ??? ??, ?2(Zone 2) & 80:20 ??? ??, 4? ?? ?? ? 12? 10km ?? ????? ???? 15?.',
-        slides: '15?',
-        isCinematic: true
+        cat: '라이프',
+        title: '40·50대를 위한 스마트 러닝 바이블 (Longevity Running)',
+        hook: '심혈관 사망률 -45% · 무릎 관절염 3.5% · 존2 & 180 케이던스',
+        desc: '심혈관 사망률 45% 감소·무릎 관절염 3.5%의 임상 근거부터 180 케이던스 저충격 주법, 존2(Zone 2) & 80:20 유산소 훈련, 4대 부상 예방 및 12주 10km 완주 로드맵까지 시네마틱 15장.',
+        slides: '15장',
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1476480862126-209bfaa8edc8'
       },
       {
         id: 'ai-compute-energy-war',
         src: 'ai_compute_energy_war_cinematic_presentation.html',
         cat: 'AI',
         title: '기가와트(GW) AI와 에너지 패권 전쟁',
+        hook: '1,050TWh 전력 쇼크 · 빅테크 원전·SMR 10.5GW 동맹 · CPO 광반도체',
         desc: '1,050TWh 데이터센터 전력 쇼크, 빅테크 4강 원전·SMR 동맹(10.5GW+), 액침 냉각(PUE 1.05)·실리콘 포토닉스 광반도체(CPO) 및 소버린 AI·전력망 전략 12장.',
         slides: '12장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1558494949-ef010cbdcc31'
       },
       {
         id: 'ai4science-self-driving-labs',
         src: 'ai4science_self_driving_labs_cinematic_presentation.html',
         cat: 'AI',
         title: 'AI4Science & 자율형 연구실(Self-Driving Labs) 혁명',
+        hook: 'AlphaFold 3 · GNoME 220만 신소재 · 24/7 로봇 무인 합성 실험실',
         desc: 'AlphaFold 3·AlphaGenome·GNoME 신소재 역설계 등 과학 파운데이션 모델과 24/7 로봇 무인 합성 실험실(A-Lab·SDL), Science-as-Code 패러다임 및 국가 R&D 전략 15장.',
         slides: '15장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1531591022136-eb8b0da1e6d0'
       },
       {
         id: 'ai-agent-bot-cinematic',
         src: 'ai_agent_bot_cinematic_presentation.html',
         cat: 'AI',
         title: '차세대 AI Agent Bot 혁명 (Claude Duet & Grok Bot)',
+        hook: 'Anthropic Claude Duet vs xAI Grok Bot · Groq LPU 초고속 추론',
         desc: 'Anthropic Claude Duet(선제적 브리핑·클라우드 VM), xAI Grok Bot(시연 학습·멀티봇 협업·Cursor 통합), Groq LPU 초고속 추론, OpenAI Dots·Meta Muse 비교 및 보안 거버넌스 시네마틱 20장.',
         slides: '20장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1694903110330-cc64b7e1d21d'
       },
       {
         id: 'ai-preparation-2026',
         src: 'ai_preparation_2026_briefing_presentation.html',
         cat: 'AI',
         title: 'AI 시대, 우리는 무엇을 준비해야 할까?',
+        hook: '국민 44% 경험 · 기업 88% 도입 · AI 활용 4단계와 6대 실전 프레임워크',
         desc: '조코딩 AI 특강 4강 레퍼런스 스타일. 국민 44% AI 경험·기업 88% 도입, AI 활용 4단계(153s 4분할 레벨 카드), 할루시네이션 리스크와 에어캐나다 소송, 전폭 6단계 프레임워크 14장.',
         slides: '14장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'photo-1620712943543-bcc4688e7485'
       },
       {
         id: 'ai-rnd-planning-cinematic',
         src: 'ai_rnd_planning_cinematic_presentation.html',
         cat: '기획',
         title: '최신 AI 활용 - R&D 기획을 중심으로 (Cinematic)',
+        hook: 'Reasoning LLM · 딥리서치 에이전트 · 특허·RFP 전 주기 R&D 기획 혁신',
         desc: '추론 모델(Reasoning LLM), 딥리서치 에이전트, 기술 지식그래프를 활용한 차세대 R&D 기획 전 주기(특허·문헌 마이닝, RFP 설계, 중복성 검증, 신뢰 거버넌스) 혁신 전략 15장.',
         slides: '15장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1667984550708-a6beba23cb4c'
       },
       {
         id: 'mckinsey-materials-perspective',
         src: 'mckinsey_materials_perspective_presentation.html',
         cat: '기획',
         title: 'Global Materials Perspective 2026',
+        hook: '$4.2조 CapEx 전환 광물 지각변동 · AI 데이터센터 구리 병목 분석',
         desc: '글로벌 원자재 산업 전략 분석: $4.2조 CapEx 소요, 전통 소재 vs 전환 광물 지각변동, AI 데이터센터 구리 병목 및 경영진 4대 액션 아젠다 (타이틀 헤더 비디오 루프 탑재) 10장.',
         slides: '10장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'MCKINSEY',
+        thumb: 'photo-1504917595217-d4dc5ebe6122'
       },
       {
         id: 'rea-cinematic',
         src: 'rea_cinematic_presentation.html',
         cat: 'AI',
         title: 'Reverse Engineer Anything (REA)',
+        hook: 'AI 코딩 에이전트 × Ghidra 역공학 · 클린룸 아키텍처 재구현',
         desc: 'AI 코딩 에이전트와 전문 역공학 도구(Ghidra·디컴파일러)를 잇는 REA 아키텍처. MCP 연동, 바이너리·일렉트론·모바일 다층 분석 및 저작권 리스크 없는 클린룸 재구현 가이드 18장.',
         slides: '18장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1526374965328-7f61d4dc18c5'
       },
       {
         id: 'jev-cinematic',
         src: 'jev_cinematic_presentation.html',
         cat: 'AI',
         title: '초고속 AI 판정 엔진 JEV (Cinematic)',
+        hook: '70ms 초저지연 판정 · Choice·Score·Noul 3대 프리미티브',
         desc: '생성형 LLM의 비용과 지연 한계를 극복하는 70ms 판정 모델 JEV. 3대 프리미티브(Choice·Score·Noul), TypeSafe 로직, 한국어 3대 오분류 실전 사례 및 로컬 LAYA/JevK5 온프렘 구축 전략 13장.',
         slides: '13장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1639322537228-f710d846310a'
       },
       {
         id: 'ai-decision-model',
         src: 'ai_decision_model_cinematic_presentation.html',
         cat: 'AI',
         title: '인공지능 판단모델 (AI Decision)',
+        hook: '환각 없는 결정적 의사결정 · 3단계 가드레일과 인간-AI 협업',
         desc: '생성형 AI의 환각을 넘어 결정적 의사결정을 검증하고 주도하는 차세대 판단모델 아키텍처, 3단계 가드레일, 인간-AI 협업 체계 15장.',
         slides: '15장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1674027444485-cec3da58eef4'
       },
       {
         id: 'ai-intelligence-2026-glass',
         src: 'ai_intelligence_2026_presentation.html',
         cat: 'AI',
         title: '2026년, AI 지능은 어디까지 발전했나? (다크 글래스)',
+        hook: '코딩 결승 1위 · 인류의 마지막 시험 55% · 추론 비용 97% 폭락',
         desc: '코딩 결승 1위, 인류의 마지막 시험 55%, ARC-AGI-3 반년 만의 돌파, 에르되시 문제, 97% 가격 하락. 다크 글래스모피즘·네온 글로우 스타일 15장.',
         slides: '15장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1635070041078-e363dbe005cb'
       },
       {
         id: 'ai-work-change-2026',
         src: 'ai_work_change_2026_briefing_presentation.html',
         cat: 'AI',
         title: 'AI는 일하는 방식을 어떻게 바꾸고 있나 (Part 2)',
+        hook: '4분에서 17시간으로 늘어난 AI 자율 작업 · 구글 신규 코드 75%',
         desc: '2026 AI 브리핑 후속편. 4분에서 17시간이 된 AI 작업 길이, 구글 신규 코드 75%, 청년 고용 격차 19%, 개인보다 조직이 가르는 AI 성과까지 브리핑 12장.',
         slides: '12장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'photo-1522071820081-009f0129c71c'
       },
       {
         id: 'ai-intelligence-2026',
         src: 'ai_intelligence_2026_briefing_presentation.html',
         cat: 'AI',
         title: '2026년, AI 지능은 어디까지 발전했나?',
+        hook: 'ARC-AGI-3 반년 만의 돌파 · 에르되시 수학 난제 해결 · 데이터 브리핑',
         desc: '코딩 대회 결승 1위, 인류의 마지막 시험 55%, ARC-AGI-3 반년 만의 돌파, 97% 가격 하락까지. 흰 배경 브리핑 강의형 15장.',
         slides: '15장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'photo-1509228468518-180dd4864904'
       },
       {
         id: 'focus-briefing',
         src: 'focus_briefing_presentation.html',
         cat: '라이프',
         title: '산만한 시대, 집중을 다시 설계하다',
+        hook: '화면 집중 47초 · 몰입 복귀 23분 · 하루 딥워크 환경 설계',
         desc: '화면 집중 47초, 복귀 23분의 데이터부터 하루 딥워크 설계까지. 흰 배경 강의형 브리핑 스타일(큰 수치 카드·표·막대그래프·하단 챕터 바) 12장.',
         slides: '12장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'photo-1499750310107-5fef28a66643'
       },
       {
         id: 'physical-ai-humanoid',
         src: 'physical_ai_humanoid_cinematic_presentation.html',
         cat: 'AI',
         title: '피지컬 AI와 휴머노이드 혁명',
+        hook: 'VLA 공간 지능 모델 · 디지털 트윈 가상 학습 · 스마트 팩토리 투입',
         desc: '화면을 뚫고 현실로 나온 공간 지능. VLA 모델, 모터 액추에이터, 디지털 트윈 가상 학습, 스마트 팩토리와 일상 공존까지 시네마틱 15장.',
         slides: '15장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1737644467636-6b0053476bb2'
       },
       {
         id: 'daily-life-ai',
         src: 'daily_life_ai_cinematic_presentation.html',
         cat: 'AI',
         title: '일상생활 속 AI 200% 활용법',
+        hook: '모닝 루틴 · 스마트홈 · 삶의 질을 10배 높이는 10초 프롬프트 공식',
         desc: '모닝 루틴, 스마트홈, 10초 프롬프트 공식부터 안전 수칙까지. 일상의 삶의 질을 10배 높이는 현실적인 AI 비서 활용 가이드 시네마틱 12장.',
         slides: '12장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1677442135703-1787eea5ce01'
       },
       {
         id: 'rnd-planning-policy',
         src: 'rnd_planning_policy_cinematic_presentation.html',
         cat: '기획',
         title: 'R&D 기획과 정책 (선도형 혁신)',
+        hook: '임무지향형 R&D 기획 3단계 · 12대 국가전략기술 · 예타 개편',
         desc: '글로벌 기술패권 경쟁 속 대한민국 국가 R&D 대전환. 임무지향형 R&D 기획 3단계, 12대 국가전략기술, 예타 개편 및 거버넌스 혁신 15장.',
         slides: '15장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1451187580459-43490279c0fa'
       },
       {
         id: 'disaster-rnd-ai',
         src: 'disaster_rnd_ai_cinematic_presentation.html',
         cat: '정책',
         title: '재난안전 R&D와 AI',
+        hook: '국가 R&D 재난안전 과제 2단계 AI 자동 판별·분류 아키텍처',
         desc: '국가 R&D 과제 속 재난안전 과제를 AI로 2단계 판별·분류하는 방법, 재난안전 연구 속 AI 기술, 단계별 도입 로드맵까지 시네마틱 10장.',
         slides: '10장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1591552265137-99c59d9f4927'
+      },
+      {
+        id: 'disaster-satellite-cinematic',
+        src: 'disaster_satellite_cinematic_presentation.html',
+        cat: '정책',
+        title: '위성이 먼저 보는 재난 (원격탐사 변화탐지)',
+        hook: '광학·SAR 위성 전후 영상 변화탐지 · 접근 불능 지역 신속 피해 판독',
+        desc: '재난 직후 현장 접근이 막힌 상황에서 광학·SAR 위성영상 변화탐지(Change Detection)를 통해 피해 범위를 신속하게 판독하고 지자체 대응과 연계하는 전략 8장.',
+        slides: '8장',
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1446776811953-b23d57bd21aa'
       },
       {
         id: 'langgraph-cinematic',
         src: 'langgraph_cinematic_presentation.html',
         cat: 'AI',
         title: 'LangGraph (지능형 에이전트 오케스트레이션)',
+        hook: '순환 상태 머신 · 멀티 에이전트 · Human-in-the-loop 체크포인트',
         desc: '선형 파이프라인(DAG)을 넘어 순환 상태 머신과 멀티 에이전트로 구현하는 차세대 LLM 시스템. Human-in-the-loop, 영속성 체크포인트 10장.',
         slides: '10장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1618005182384-a83a8bd57fbe'
       },
       {
         id: 'aitalent',
         src: 'ai_learning_talent_cinematic_presentation.html',
         cat: 'AI',
         title: 'AI 시대 학습과 인재상',
+        hook: '대체불가 핵심 경쟁력 · 도메인 × AI 오케스트레이션 π형 인재',
         desc: 'AI 시대의 학습방법, 대체불가 핵심 경쟁력, 새로운 π형 인재상 총정리. 실사 배경·상단 챕터 바 시네마틱 스타일 15장.',
         slides: '15장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1694903089438-bf28d4697d9a'
       },
       {
         id: 'deepwork',
         src: 'deep_work_cinematic_presentation.html',
         cat: '라이프',
         title: '딥워크 (Deep Work)',
+        hook: '알림과 멀티태스킹을 차단하고 초집중 몰입 회로를 복원하는 기술',
         desc: '산만한 시대에 집중을 되찾는 법. 알림과 탭 사이에서 잃어버린 몰입을 환경 설계로 되찾는 시네마틱 10장.',
         slides: '10장',
-        isCinematic: true
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1779444480590-9bf6f021d5d4'
       },
       {
         id: 'alwayson',
         src: 'ai_agent_dots_muse_presentation.html',
         cat: 'AI',
         title: 'Always-On AI 에이전트',
+        hook: 'OpenAI Dots · Meta Muse · xAI Grok Bot 24시간 상시 가동 비교',
         desc: 'OpenAI Dots, Meta Muse, xAI Grok Bot 심층 해부: 자율 에이전트 개념, 장단점 비교, 실무 활용 15장 가이드.',
         slides: '15장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1550751827-4bd374c3f58b'
       },
       {
         id: 'jev',
         src: 'jev_ai_presentation.html',
         cat: 'AI',
         title: 'JEV & 로컬 판정모델',
+        hook: 'LAYA · JevK5 온프레미스 로컬 판정모델 구축 & 재난안전 2단계 분류',
         desc: 'JEV, 로컬 판정모델 LAYA, JevK5 개념부터 재난안전R&D 2단계 분류 비교 및 온프렘 구축까지 17장 총정리.',
         slides: '17장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1518770660439-4636190af475'
       },
       {
         id: 'investing',
         src: 'ai_agent_investing_presentation.html',
         cat: 'AI',
         title: '주식 투자 AI 에이전트',
+        hook: '실시간 공시·퀀트·감성 분석 멀티 에이전트 투자 의사결정 파이프라인',
         desc: '투자 의사결정에 AI 에이전트를 어떻게 활용할 수 있는지 워크플로우와 전략을 살펴봅니다.',
         slides: '14장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1611974789855-9c2a0a7236a3'
       },
       {
         id: 'speed',
         src: 'ai_speed_presentation.html',
         cat: 'AI',
         title: 'AI 개발 속도 조절',
+        hook: '초고속 바이브 코딩 시대의 기술 부채 방지와 품질 게이트 거버넌스',
         desc: 'AI로 급격히 빨라진 개발 사이클을 안정적으로 조절하고 품질을 담보하는 관리 전략.',
         slides: '12장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1504384308090-c894fdcc538d'
       },
       {
         id: 'langgraph',
         src: 'langgraph_presentation.html',
         cat: 'AI',
         title: 'LangGraph 에이전트 마스터클래스',
+        hook: 'StateGraph 기초부터 엔터프라이즈 멀티 에이전트 아키텍처까지',
         desc: '기초 상태 그래프부터 엔터프라이즈 다중 에이전트 고도화까지 이어지는 LangGraph 완벽 가이드.',
         slides: '16장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1544197150-b99a580bb7a8'
       },
       {
         id: 'nemotron',
         src: 'nemotron_personas_korea_presentation.html',
         cat: 'AI',
         title: 'Nemotron 가상설문',
+        hook: 'NVIDIA Nemotron 한국형 합성 페르소나 기반 가상 여론·설문 시뮬레이션',
         desc: 'Nemotron Personas Korea 기반 합성 페르소나 가상 설문조사의 활용법과 신뢰성 한계.',
         slides: '13장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1551288049-bebda4e38f71'
       },
       {
         id: 'rnd',
         src: 'ax_rnd_presentation_3.html',
         cat: '기획',
         title: 'AX R&D 기획 혁신',
+        hook: '인공지능 대전환(AX) 기반 국가 연구개발 기획·평가 프로세스 고도화',
         desc: '인공지능 대전환(AX) 흐름에 맞춰 국가 연구개발 기획과 프로세스를 혁신하는 방법론.',
         slides: '15장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1581091226825-a6a2a5aee158'
       },
       {
         id: '5poles',
         src: 'five_poles_three_specialties_presentation.html',
         cat: '정책',
         title: '5극 3특 체제',
+        hook: '대한민국 국토 균형발전의 패러다임 전환 · 5극 3특 초광역 메가시티',
         desc: '대한민국 국토 균형발전의 대전환, 5극 3특 초광역 메가시티 전략을 완벽하게 이해하기.',
         slides: '14장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1477959858617-67f85cf4f1df'
       },
       {
         id: 'nepsa',
         src: 'nepsa_presentation.html',
         cat: '정책',
         title: 'NEPSA 과제 우선순위 평가',
+        hook: '기대성과 6대 지표 × 위험 6대 지표 기반 국가 R&D 정량 우선순위 모델',
         desc: '기대성과 6개와 위험 6개, 12개 복합 지표로 국가 R&D 과제의 우선순위를 매기는 정량 평가 체계.',
         slides: '15장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1454165804606-c3d57bc86b40'
       },
       {
         id: 'safety',
         src: 'life_safety_act_presentation.html',
         cat: '정책',
         title: '생명안전기본법',
+        hook: '시민의 안전권 보장과 국가 책무 명문화 · 새로운 사회계약의 핵심 쟁점',
         desc: '모든 시민의 생명과 존엄을 지키기 위한 새로운 사회계약, 생명안전기본법의 핵심 쟁점과 의의.',
         slides: '14장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1509099836639-18ba1795216d'
       },
       {
         id: 'life',
         src: 'balanced_life_presentation.html',
         cat: '라이프',
         title: '균형 잡힌 삶 (Work & Life)',
+        hook: '40대 후반, 속도보다 방향을 성찰하며 다시 세우는 일과 삶의 균형',
         desc: '40대 후반, 속도보다 방향을 돌아보며 일과 삶의 균형을 새롭게 정립하는 에세이형 발표.',
         slides: '12장',
-        isCinematic: false
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'photo-1506744038136-46273834b3fb'
       }
     ];
 
@@ -1227,64 +1793,228 @@
     const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
     let filterCat = '전체';
-    let filterType = 'all'; // all, cinematic, interactive
+    let filterStyle = 'all'; // all, CINEMATIC, BRIEFING, MCKINSEY, INTERACTIVE
+    let sortBy = 'latest';   // latest, slides-desc, slides-asc, title
     let currentId = null;
+    let isListMode = false;
 
-    // 카테고리 탭 렌더링
-    function renderCatTabs() {
+    function thumbUrl(id) {
+      if (!id) return '';
+      return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=720&q=80`;
+    }
+
+    function parseSlideCount(s) {
+      const m = String(s).match(/\d+/);
+      return m ? parseInt(m[0], 10) : 0;
+    }
+
+    // 검색어 하이라이트 헬퍼
+    function highlightText(text, query) {
+      const safe = esc(text);
+      if (!query) return safe;
+      const escapedQ = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return safe.replace(new RegExp(`(${escapedQ})`, 'gi'), '<mark class="hl">$1</mark>');
+    }
+
+    // 좌측 사이드바 렌더링
+    function renderSidebar() {
+      const total = DECKS.length;
+      const cineCount = DECKS.filter(d => d.style === 'CINEMATIC').length;
+      const briefCount = DECKS.filter(d => d.style === 'BRIEFING' || d.style === 'MCKINSEY').length;
+      const interCount = DECKS.filter(d => d.style === 'INTERACTIVE').length;
+
+      $('sideMainGroup').innerHTML = `
+        <button class="side-btn ${filterCat === '전체' && filterStyle === 'all' ? 'active' : ''}" type="button" data-nav="all">
+          <span class="side-btn-left">
+            <svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1v-9.5z" stroke-linejoin="round"/></svg>
+            <span>홈 (전체)</span>
+          </span>
+          <span class="side-count">${total}</span>
+        </button>
+        <button class="side-btn ${filterStyle === 'CINEMATIC' ? 'active' : ''}" type="button" data-style="CINEMATIC">
+          <span class="side-btn-left">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2.5"/><polygon points="10,8.5 16,12 10,15.5" fill="currentColor" stroke="none"/></svg>
+            <span>시네마틱 덱</span>
+          </span>
+          <span class="side-count">${cineCount}</span>
+        </button>
+        <button class="side-btn ${filterStyle === 'BRIEFING' ? 'active' : ''}" type="button" data-style="BRIEFING">
+          <span class="side-btn-left">
+            <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg>
+            <span>브리핑 · 맥킨지</span>
+          </span>
+          <span class="side-count">${briefCount}</span>
+        </button>
+        <button class="side-btn ${filterStyle === 'INTERACTIVE' ? 'active' : ''}" type="button" data-style="INTERACTIVE">
+          <span class="side-btn-left">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>다크 인터랙티브</span>
+          </span>
+          <span class="side-count">${interCount}</span>
+        </button>
+      `;
+
       const cats = ['전체', 'AI', '기획', '정책', '라이프'];
-      $('catTabs').innerHTML = cats.map(cat => {
-        const count = cat === '전체' ? DECKS.length : DECKS.filter(d => d.cat === cat).length;
-        const color = cat === '전체' ? '' : CAT_COLORS[cat];
+      $('sideCatGroup').innerHTML = cats.map(cat => {
+        const count = cat === '전체' ? total : DECKS.filter(d => d.cat === cat).length;
+        const color = cat === '전체' ? 'var(--ink-subtle)' : CAT_COLORS[cat];
+        const label = cat === '전체' ? '전체 카테고리' : (CAT_LABELS[cat] || cat);
         return `
-          <button class="tab-btn ${filterCat === cat ? 'active' : ''}" type="button" data-cat="${cat}">
-            ${color ? `<span class="cat-dot" style="background:${color};"></span>` : ''}
-            <span>${cat}</span>
-            <b>${count}</b>
+          <button class="side-btn ${filterCat === cat ? 'active' : ''}" type="button" data-cat="${cat}">
+            <span class="side-btn-left">
+              <span class="side-cat-dot" style="background:${color};"></span>
+              <span>${label}</span>
+            </span>
+            <span class="side-count">${count}</span>
           </button>
         `;
       }).join('');
     }
 
-    // 덱 필터링 로직
-    function getFilteredDecks() {
-      const q = $('searchInput').value.trim().toLowerCase();
-      return DECKS.filter(d => {
-        const matchesCat = filterCat === '전체' || d.cat === filterCat;
-        const matchesType = filterType === 'all'
-          ? true
-          : filterType === 'cinematic' ? d.isCinematic : !d.isCinematic;
-        const text = (d.title + ' ' + d.desc + ' ' + d.cat).toLowerCase();
-        const matchesQuery = !q || text.includes(q);
-        return matchesCat && matchesType && matchesQuery;
-      });
+    // 상단 칩 바 렌더링
+    function renderChips() {
+      const cats = ['전체', 'AI', '기획', '정책', '라이프'];
+      const catChips = cats.map(cat => {
+        const count = cat === '전체' ? DECKS.length : DECKS.filter(d => d.cat === cat).length;
+        return `
+          <button class="chip-btn ${filterCat === cat ? 'active' : ''}" type="button" data-cat="${cat}">
+            <span>${cat}</span>
+            <b>${count}</b>
+          </button>
+        `;
+      }).join('');
+
+      const styleChips = `
+        <span class="chip-sep"></span>
+        <button class="chip-btn ${filterStyle === 'all' ? 'active' : ''}" type="button" data-style="all">전체 스타일</button>
+        <button class="chip-btn ${filterStyle === 'CINEMATIC' ? 'active' : ''}" type="button" data-style="CINEMATIC">🎬 시네마틱</button>
+        <button class="chip-btn ${filterStyle === 'BRIEFING' ? 'active' : ''}" type="button" data-style="BRIEFING">📊 브리핑 · 맥킨지</button>
+        <button class="chip-btn ${filterStyle === 'INTERACTIVE' ? 'active' : ''}" type="button" data-style="INTERACTIVE">⚡ 인터랙티브</button>
+      `;
+
+      $('chipBar').innerHTML = catChips + styleChips;
     }
 
-    // 카드 리스트 렌더링
+    // 덱 필터링 및 정렬
+    function getFilteredDecks() {
+      const q = $('searchInput').value.trim().toLowerCase();
+      const filtered = DECKS.filter(d => {
+        const matchesCat = filterCat === '전체' || d.cat === filterCat;
+        const matchesStyle = filterStyle === 'all'
+          ? true
+          : filterStyle === 'BRIEFING'
+            ? (d.style === 'BRIEFING' || d.style === 'MCKINSEY')
+            : d.style === filterStyle;
+        const text = (d.title + ' ' + (d.hook || '') + ' ' + d.desc + ' ' + d.cat + ' ' + (d.style || '')).toLowerCase();
+        const matchesQuery = !q || text.includes(q);
+        return matchesCat && matchesStyle && matchesQuery;
+      });
+
+      if (sortBy === 'slides-desc') {
+        filtered.sort((a, b) => parseSlideCount(b.slides) - parseSlideCount(a.slides));
+      } else if (sortBy === 'slides-asc') {
+        filtered.sort((a, b) => parseSlideCount(a.slides) - parseSlideCount(b.slides));
+      } else if (sortBy === 'title') {
+        filtered.sort((a, b) => a.title.localeCompare(b.title, 'ko'));
+      }
+      return filtered;
+    }
+
+    // 유튜브 16:9 썸네일 그리드 렌더링
     function renderCards() {
+      const q = $('searchInput').value.trim();
       const filtered = getFilteredDecks();
-      $('cardList').innerHTML = filtered.map(d => {
+
+      // 필터 상태 배너 업데이트
+      const isFiltered = filterCat !== '전체' || filterStyle !== 'all' || !!q || sortBy !== 'latest';
+      $('filterStatus').classList.toggle('show', isFiltered);
+      if (isFiltered) {
+        const parts = [];
+        if (filterCat !== '전체') parts.push(`카테고리: <b>${esc(filterCat)}</b>`);
+        if (filterStyle !== 'all') parts.push(`스타일: <b>${esc(filterStyle)}</b>`);
+        if (q) parts.push(`검색어: <b>"${esc(q)}"</b>`);
+        parts.push(`표시 중: <b>${filtered.length}개</b> / 전체 ${DECKS.length}개`);
+        $('filterStatusText').innerHTML = parts.join(' &nbsp;·&nbsp; ');
+      }
+
+      $('cardGrid').innerHTML = filtered.map(d => {
         const catColor = CAT_COLORS[d.cat] || 'var(--primary)';
-        const idx = pad(DECKS.indexOf(d));
+        const origIdx = DECKS.indexOf(d);
+        const idx = pad(origIdx);
+        const isNew = origIdx < 3;
+        const styleKey = (d.style || 'INTERACTIVE').toLowerCase();
+        const styleLabel = d.style || 'INTERACTIVE';
+        const bgImg = d.thumb ? `background-image: url('${thumbUrl(d.thumb)}');` : '';
+        const posterHook = d.hook || d.title;
+
         return `
-          <article class="card" data-id="${d.id}" style="--cat-color: ${catColor};">
-            <div class="card-header">
-              <div class="card-header-left">
-                <span class="card-idx">${idx}</span>
-                <h3 class="card-title">${esc(d.title)}</h3>
-                <div class="card-badges">
-                  <span class="badge cat">${esc(d.cat)}</span>
-                  ${d.isCinematic ? '<span class="badge cinematic">시네마틱</span>' : ''}
-                  <span class="badge slides-badge">${d.slides}</span>
+          <article class="yt-card" data-id="${d.id}">
+            <div class="yt-thumb">
+              <div class="yt-thumb-img" style="${bgImg}"></div>
+              <div class="yt-thumb-shade"></div>
+
+              <div class="yt-thumb-top">
+                <div class="yt-top-left-badges">
+                  <span class="yt-ep-badge">#${idx}</span>
+                  ${isNew ? '<span class="yt-new-badge">NEW</span>' : ''}
+                </div>
+                <span class="yt-style-badge ${styleKey}">${esc(styleLabel)}</span>
+              </div>
+
+              <div class="yt-thumb-poster">
+                <span class="yt-thumb-cat">${esc(d.cat)} · ${esc(styleLabel)}</span>
+                <div class="yt-thumb-headline">${highlightText(posterHook, q)}</div>
+              </div>
+
+              <span class="yt-duration">${esc(d.slides)}</span>
+
+              <div class="yt-play-hover">
+                <div class="yt-play-circle">
+                  <svg viewBox="0 0 16 16"><polygon points="4,2.5 13.5,8 4,13.5"/></svg>
                 </div>
               </div>
+
+              <div class="yt-thumb-bar"><i></i></div>
             </div>
-            <p class="card-desc">${esc(d.desc)}</p>
+
+            <div class="yt-meta">
+              <div class="yt-avatar" style="background:${catColor};" title="${esc(d.cat)} 채널">
+                ${esc(d.cat === '라이프' ? 'LIFE' : d.cat)}
+              </div>
+              <div class="yt-info">
+                <h3 class="yt-title">${highlightText(d.title, q)}</h3>
+                <div class="yt-subline">
+                  <span>${esc(CAT_LABELS[d.cat] || d.cat)}</span>
+                  <svg class="yt-verified" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
+                  <span>•</span>
+                  <span>${d.isCinematic ? '시네마틱 16:9' : styleLabel + ' 덱'}</span>
+                  <span>•</span>
+                  <span>슬라이드 ${esc(d.slides)}</span>
+                </div>
+                <p class="yt-desc">${highlightText(d.desc, q)}</p>
+              </div>
+            </div>
           </article>
         `;
       }).join('');
 
       $('emptyState').classList.toggle('show', filtered.length === 0);
+    }
+
+    function resetAllFilters() {
+      filterCat = '전체';
+      filterStyle = 'all';
+      sortBy = 'latest';
+      $('sortSelect').value = 'latest';
+      $('searchInput').value = '';
+      $('searchClear').classList.remove('visible');
+      refreshUI();
+    }
+
+    function refreshUI() {
+      renderSidebar();
+      renderChips();
+      renderCards();
     }
 
     // 뷰어 빌드 및 열기
@@ -1310,18 +2040,17 @@
       const deck = DECKS[idx];
       currentId = id;
       document.body.classList.add('viewing');
+      document.body.classList.remove('sidebar-open');
 
-      // 탭 & 프레임 활성화
       document.querySelectorAll('.rail-pill').forEach(p => p.classList.toggle('active', p.dataset.id === id));
       document.querySelectorAll('.viewer-frame').forEach(f => f.classList.toggle('active', f.id === `frame-${id}`));
 
       $('viewerPos').innerHTML = `<b>${pad(idx)}</b> / ${String(DECKS.length).padStart(2, '0')}`;
+      $('viewerNewTab').href = deck.src;
       document.title = `${deck.title} · Presentation Hub`;
 
-      // 지연 로딩
       const frame = $(`iframe-${id}`);
       if (!frame.getAttribute('src')) {
-        // 덱 안에 포커스가 있으면 ESC가 허브 창까지 오지 않으므로, 덱 창에서 직접 받아 허브로 돌아온다
         frame.addEventListener('load', () => {
           try {
             frame.contentWindow.addEventListener('keydown', e => {
@@ -1337,7 +2066,6 @@
         activePill.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
       }
 
-      // 키보드 조작을 위해 iframe 포커스
       setTimeout(() => {
         try { frame.contentWindow.focus(); } catch (e) { }
       }, 150);
@@ -1350,14 +2078,13 @@
       currentId = null;
       document.body.classList.remove('viewing');
       document.title = 'Presentation Hub';
-      // 숨은 덱에 남은 키보드 포커스를 허브로 되돌린다 (/ 검색 등 단축키가 덱으로 가지 않게)
       if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
         document.activeElement.blur();
         window.focus();
       }
 
       if (last) {
-        const lastCard = document.querySelector(`.card[data-id="${last}"]`);
+        const lastCard = document.querySelector(`.yt-card[data-id="${last}"]`);
         if (lastCard) lastCard.scrollIntoView({ block: 'nearest' });
       }
 
@@ -1380,31 +2107,81 @@
       }
     }
 
+    // 사이드바 접기/펼치기 (데스크탑은 미니 모드 토글, 태블릿/모바일은 드로어 토글)
+    $('sidebarToggle').addEventListener('click', () => {
+      if (window.innerWidth <= 1024) {
+        document.body.classList.toggle('sidebar-open');
+      } else {
+        document.body.classList.toggle('sidebar-mini');
+      }
+    });
+
+    $('sidebarBackdrop').addEventListener('click', () => {
+      document.body.classList.remove('sidebar-open');
+    });
+
+    // 로고 클릭 시 전체 보기 초기화
+    $('logoHome').addEventListener('click', e => {
+      e.preventDefault();
+      resetAllFilters();
+      showHub();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 그리드 / 리스트 보기 토글
+    $('viewModeToggle').addEventListener('click', () => {
+      isListMode = !isListMode;
+      $('cardGrid').classList.toggle('list-mode', isListMode);
+    });
+
     // 테마 전환
     $('themeToggle').addEventListener('click', () => {
-      const cur = document.documentElement.getAttribute('data-theme') || 'light';
+      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
       const next = cur === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
     });
 
-    // 이벤트 리스너 등록
-    $('catTabs').addEventListener('click', e => {
-      const btn = e.target.closest('.tab-btn');
+    // 좌측 사이드바 클릭 이벤트
+    $('sidebar').addEventListener('click', e => {
+      const btn = e.target.closest('.side-btn');
       if (!btn) return;
-      filterCat = btn.dataset.cat;
-      renderCatTabs();
+      if (btn.dataset.nav === 'all') {
+        filterCat = '전체';
+        filterStyle = 'all';
+      } else if (btn.dataset.style) {
+        filterStyle = btn.dataset.style;
+      } else if (btn.dataset.cat) {
+        filterCat = btn.dataset.cat;
+      }
+      document.body.classList.remove('sidebar-open');
+      refreshUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 상단 칩 바 클릭 이벤트
+    $('chipBar').addEventListener('click', e => {
+      const btn = e.target.closest('.chip-btn');
+      if (!btn) return;
+      if (btn.dataset.cat) {
+        filterCat = btn.dataset.cat;
+      } else if (btn.dataset.style) {
+        filterStyle = btn.dataset.style;
+      }
+      refreshUI();
+    });
+
+    // 정렬 변경
+    $('sortSelect').addEventListener('change', e => {
+      sortBy = e.target.value;
       renderCards();
     });
 
-    $('typeSwitcher').addEventListener('click', e => {
-      const btn = e.target.closest('.type-btn');
-      if (!btn) return;
-      filterType = btn.dataset.type;
-      $('typeSwitcher').querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b === btn));
-      renderCards();
-    });
+    // 필터 초기화 버튼
+    $('resetFilterBtn').addEventListener('click', resetAllFilters);
+    $('emptyResetBtn').addEventListener('click', resetAllFilters);
 
+    // 검색 입력 이벤트
     $('searchInput').addEventListener('input', e => {
       $('searchClear').classList.toggle('visible', !!e.target.value);
       renderCards();
@@ -1417,8 +2194,9 @@
       renderCards();
     });
 
-    $('cardList').addEventListener('click', e => {
-      const card = e.target.closest('.card');
+    // 카드 클릭 시 뷰어 열기
+    $('cardGrid').addEventListener('click', e => {
+      const card = e.target.closest('.yt-card');
       if (card) openDeck(card.dataset.id);
     });
 
@@ -1430,8 +2208,10 @@
     $('viewerBack').addEventListener('click', () => showHub());
     $('viewerPrev').addEventListener('click', () => stepDeck(-1));
     $('viewerNext').addEventListener('click', () => stepDeck(1));
+    $('viewerFullscreen').addEventListener('click', () => {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+    });
 
-    // 스크롤 상단 이동
     window.addEventListener('scroll', () => {
       $('scrollTop').classList.toggle('visible', window.scrollY > 300);
     });
@@ -1439,25 +2219,26 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // 글로벌 키보드 단축키
     window.addEventListener('keydown', e => {
-      // 허브 상태에서 검색 포커스
       if (!currentId && e.target !== $('searchInput') && (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
         e.preventDefault();
         $('searchInput').focus();
         return;
       }
 
-      if (!currentId) return;
+      if (!currentId) {
+        if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+          document.body.classList.remove('sidebar-open');
+        }
+        return;
+      }
 
-      // 뷰어 상태에서 ESC로 허브 복귀
       if (e.key === 'Escape') {
         e.preventDefault();
         showHub();
         return;
       }
 
-      // 부모 창 키보드 입력을 활성 iframe으로 전달
       try {
         $(`iframe-${currentId}`).contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
           key: e.key, code: e.code, keyCode: e.keyCode, which: e.which, bubbles: true
@@ -1469,8 +2250,7 @@
 
     // 초기화
     if ($('deckCountBadge')) $('deckCountBadge').textContent = `${DECKS.length} DECKS`;
-    renderCatTabs();
-    renderCards();
+    refreshUI();
     buildViewer();
     routeFromHash();
   </script>
