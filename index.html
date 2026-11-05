@@ -1254,7 +1254,7 @@
     <div class="yt-header-right">
       <span class="deck-count-pill">
         <span class="status-dot"></span>
-        <span id="deckCountBadge">33 DECKS</span>
+        <span id="deckCountBadge">34 DECKS</span>
       </span>
 
       <button id="viewModeToggle" class="icon-btn" type="button" aria-label="보기 방식 전환" title="그리드 / 리스트 보기 전환">
@@ -1347,7 +1347,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 33</span>
+      <span class="viewer-pos" id="viewerPos">01 / 34</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -1387,9 +1387,21 @@
       '라이프': '라이프 · 웰니스'
     };
 
-    // 발표 목록 데이터 (워크스페이스 내 전체 33개 HTML 발표자료 전수 수록)
+    // 발표 목록 데이터 (워크스페이스 내 전체 34개 HTML 발표자료 전수 수록)
     // hook 필드는 16:9 썸네일 내부에 표시될 핵심 포스터 카피(아래 제목과 중복 방지)
     const DECKS = [
+      {
+        id: 'random-forest-cinematic',
+        src: 'random_forest_cinematic_presentation.html',
+        cat: 'AI',
+        title: '나무가 모여 지혜의 숲이 되다 — 랜덤 포레스트 완벽 입문',
+        hook: '스무고개 결정 트리 · 배깅(63% 복원추출) · 변수 무작위 & OOB 검증',
+        desc: '머신러닝 입문자를 위한 랜덤 포레스트 바이블. 스무고개 결정 트리와 과적합 문제, 배깅(Bagging)과 특성 무작위 선택의 2중 시너지, OOB 자동 채점과 변수 중요도, 부스팅(XGBoost) 비교 및 실습 로드맵 시네마틱 20장.',
+        slides: '20장',
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1448375240586-882707db888b'
+      },
       {
         id: 'ai-trends-2026-cinematic',
         src: 'ai_trends_2026_cinematic_presentation.html',
