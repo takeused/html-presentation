@@ -49,6 +49,8 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
    ```bash
    python -I .agents/skills/cinematic-interactive-presentation/scripts/find_photos.py "artificial intelligence" "data network" --n 5
    ```
+   - Unsplash 공식 API를 쓰므로 환경변수 `UNSPLASH_ACCESS_KEY`(unsplash.com/developers 앱의 Access Key)가 필요합니다. 웹사이트 내부 경로(`/napi`)는 봇 확인(Anubis)에 막혀 쓰지 않습니다. 데모 한도는 시간당 50회입니다.
+   - 덱에 실제로 쓴 사진은 출력 주석의 `id`로 다운로드 이벤트를 보냅니다(API 가이드라인 필수): `python -I .agents/skills/cinematic-interactive-presentation/scripts/find_photos.py --track <id> ...`
    출력된 `bg`, `photo` 값을 슬라이드 데이터에 매핑합니다. **특히 1번 표지(`cover`)의 `bg` 이미지는 프로젝트 내 기존 모든 시네마틱 발표자료(`*_cinematic_presentation.html`)의 표지 이미지와 절대 겹치지 않는 고유한 사진을 지정합니다.**
 4. **CHARTS(SVG 차트) 및 DECK 데이터 작성**:
    - `CHARTS` 객체에 슬라이드에서 참조할 인라인 SVG(`viewBox="0 0 640 250"`)를 정의합니다.
