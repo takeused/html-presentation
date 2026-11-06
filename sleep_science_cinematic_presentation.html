@@ -1,0 +1,643 @@
+<!-- 시네마틱 발표자료: 잠의 과학 — 당신이 잠든 사이 뇌는 야근 중 (15장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>잠의 과학 — 당신이 잠든 사이 뇌는 야근 중 · 시네마틱 발표자료</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 ===================== */
+const DECK = {
+  brand: { name: 'SLEEP LAB', icon: 'solar:moon-sleep-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: ['밤의 구조', '잠이 하는 일', '잠을 빼앗는 것들', '잘 자는 기술'],
+  slides: [
+    // 01. cover
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1488866022504-f2584929ca5f', photo: 'Nathan Anderson',
+      eyebrow: 'SLEEP SCIENCE · 2026',
+      title: '당신이 잠든 사이,<br><em>뇌는 야근 중이다</em>',
+      sub: '인생의 3분의 1을 차지하는 잠, 그 시간에 뇌에서 벌어지는 일',
+      meta: 'THE SCIENCE OF SLEEP'
+    },
+    // 02. stats
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1531353826977-0941b4779a1c', photo: 'Greg Pappas',
+      eyebrow: '먼저 숫자 두 개',
+      title: '잠에도 <em>정량</em>과 <em>리듬</em>이 있다',
+      items: [
+        { value: '7', unit: '시간+', label: '성인 권장 수면 시간<br>(미국수면의학회·수면연구학회 합의)' },
+        { value: '90', unit: '분', label: '얕은 잠에서 렘 수면까지<br>수면 주기 한 바퀴의 평균 길이' }
+      ],
+      note: '출처 · Watson 외, Sleep 2015 (AASM·SRS 합의문) / 수면 의학 교과서 기준 평균값'
+    },
+    // 03. timeline
+    {
+      layout: 'timeline', chapter: 0,
+      bg: 'photo-1773814776134-78acc1b8168f', photo: 'You Le',
+      eyebrow: '하룻밤의 지도',
+      title: '잠은 한 덩어리가 아니라 <em>여러 번의 파도</em>다',
+      items: [
+        { time: '잠든 직후', label: '얕은 잠 N1·N2', desc: '몸이 이완되고<br>바깥 소리에 둔해짐' },
+        { time: '밤 전반', label: '깊은 잠 N3', desc: '뇌파가 느려지고<br>몸과 기억을 정비' },
+        { time: '밤 후반', label: '렘 수면', desc: '꿈을 꾸는 단계,<br>새벽으로 갈수록 길어짐' },
+        { time: '하룻밤', label: '4~6번 반복', desc: '약 90분 주기의 파도가<br>밤새 이어짐', em: true }
+      ],
+      note: '깊은 잠은 밤 앞쪽에, 렘 수면은 새벽 쪽에 몰려 있다'
+    },
+    // 04. flow
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1719650592946-55163c4994cb', photo: 'Bhautik Patel',
+      eyebrow: '잠이 하는 일 ① 기억',
+      title: '공부는 낮에 하고, <em>저장은 밤에</em> 한다',
+      steps: [
+        { label: '낮의 학습', desc: '새로 배운 내용을<br>해마에 임시 저장' },
+        { label: '깊은 잠', desc: '해마가 낮의 기억을<br>반복해서 재생' },
+        { label: '장기 기억', desc: '대뇌피질로 옮겨<br>오래 남는 기억으로' }
+      ],
+      note: '출처 · Diekelmann & Born, Nature Reviews Neuroscience 2010'
+    },
+    // 05. svg_cards
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1761637755331-562c6529ace6', photo: 'Markus Kammermann',
+      eyebrow: '잠이 하는 일 ② 청소와 방어',
+      title: '자는 동안 뇌는 <em>청소</em>하고, 몸은 <em>방어</em>한다',
+      cards: [
+        {
+          icon: 'solar:refresh-circle-bold',
+          title: '뇌 노폐물이 빠지는 통로',
+          badge: '+60% · 생쥐',
+          chart: 'sleep_clean',
+          foot: '잠들면 세포 사이 틈이 넓어져 노폐물이 더 빨리 씻겨 나감'
+        },
+        {
+          icon: 'solar:shield-warning-bold',
+          title: '감기 바이러스 노출 후 발병',
+          badge: '최대 4.5배',
+          chart: 'sleep_cold',
+          foot: '평소 7시간 넘게 자는 사람 대비 감기에 걸릴 오즈비'
+        }
+      ],
+      note: '출처 · Xie 외, Science 2013 (생쥐) / Prather 외, Sleep 2015 (성인 164명)'
+    },
+    // 06. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1565180141371-e81865da8cd0', photo: 'Anantha Krishna A',
+      eyebrow: '잠이 하는 일 ③ 감정',
+      title: '못 자면 <em>감정의 브레이크</em>가 풀린다',
+      items: [
+        { icon: 'solar:danger-triangle-bold', text: '하룻밤을 새우면 불쾌한 사진에 대한 편도체 반응이 약 60% 커진다' },
+        { icon: 'solar:link-circle-bold', text: '감정을 누르는 전전두엽과 편도체 사이의 연결이 약해진다' },
+        { icon: 'solar:chat-round-dots-bold', text: '그래서 수면 부족인 날엔 사소한 말에도 쉽게 욱한다' },
+        { icon: 'solar:moon-sleep-bold', text: '렘 수면은 낮의 감정 기억에서 날카로운 부분을 덜어 낸다' }
+      ],
+      note: '출처 · Yoo 외, Current Biology 2007 / Walker & van der Helm, Psychological Bulletin 2009'
+    },
+    // 07. quote
+    {
+      layout: 'quote', chapter: 1,
+      bg: 'photo-1519681393784-d120267933ba', photo: 'Benjamin Voros',
+      quote: '잠은 하루를 끝내는 시간이 아니라,<br><em>내일의 뇌를 만드는 시간</em>이다',
+      by: 'SLEEP SCIENCE · 이 덱의 한 줄 요약'
+    },
+    // 08. stats
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1758551139137-5cad5a98e99f', photo: 'Nhi Ly',
+      eyebrow: '잠을 빼앗으면 생기는 일',
+      title: '피곤한 뇌는 <em>취한 뇌</em>와 비슷하다',
+      items: [
+        { value: '0.05', unit: '%', label: '17~19시간 깨어 있을 때의 수행 능력,<br>혈중알코올농도 0.05%와 비슷' },
+        { value: '14', unit: '일', label: '하루 6시간씩 14일 자면<br>이틀 밤샌 것과 비슷한 인지 저하' }
+      ],
+      note: '출처 · Williamson & Feyer, Occup Environ Med 2000 / Van Dongen 외, Sleep 2003'
+    },
+    // 09. svg_cards
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1613158556069-e7d8eae76214', photo: 'Ceyda Çiftci',
+      eyebrow: '작아 보이지만 큰 도둑들',
+      title: '커피 한 잔, <em>한 시간의 무게</em>',
+      cards: [
+        {
+          icon: 'solar:graph-up-bold',
+          title: '카페인이 몸에 남는 양',
+          badge: '반감기 약 5시간',
+          chart: 'caffeine_curve',
+          foot: '오후 3시 커피의 약 30%가 자정에도 남아 있다'
+        },
+        {
+          icon: 'solar:danger-triangle-bold',
+          title: '서머타임 직후 심근경색',
+          badge: '1시간의 차이',
+          chart: 'dst_heart',
+          foot: '1시간 잃은 봄 월요일 +24%, 되찾은 가을 화요일 −21%'
+        }
+      ],
+      note: '출처 · 카페인 반감기는 개인차 큼(약 2~10시간) / Sandhu 외, Open Heart 2014 (미국 미시간)'
+    },
+    // 10. bullets
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1502666689584-945597854f01', photo: 'Adi Goldstein',
+      eyebrow: '흔한 오해 4가지',
+      title: '잠에 관해 <em>우리가 잘못 아는 것</em>',
+      items: [
+        { icon: 'solar:close-circle-bold', text: '술 한잔이 잠을 돕는다 · 빨리 잠들어도 밤 후반의 잠이 깨지고 얕아진다' },
+        { icon: 'solar:close-circle-bold', text: '주말에 몰아 자면 된다 · 평일 수면 부족의 대사 문제는 회복되지 않았다' },
+        { icon: 'solar:close-circle-bold', text: '나이 들면 잠이 덜 필요하다 · 65세 이상도 7~8시간이 권장된다' },
+        { icon: 'solar:close-circle-bold', text: '짧은 잠에도 적응된다 · 졸림은 익숙해져도 수행 능력은 계속 떨어진다' }
+      ],
+      note: '출처 · Ebrahim 외 2013 / Depner 외, Current Biology 2019 / Hirshkowitz 외 2015 / Van Dongen 외 2003'
+    },
+    // 11. compare
+    {
+      layout: 'compare', chapter: 3,
+      bg: 'photo-1423784346385-c1d4dac9893a', photo: 'Gilles Lambert',
+      eyebrow: '잘 자는 기술 ① 빛',
+      title: '몸시계를 맞추는 건 <em>빛</em>이다',
+      left: {
+        title: '잠을 앞당기는 빛',
+        icon: 'solar:sun-bold',
+        items: ['아침에 일어나자마자 햇빛 쬐기', '낮에는 밝은 곳에서 활동하기', '같은 시각에 일어나 리듬 고정하기']
+      },
+      right: {
+        title: '잠을 미루는 빛',
+        icon: 'solar:moon-sleep-bold',
+        items: ['잠들기 직전의 밝은 화면', '밤늦게까지 환한 실내 조명', '침대에서 보는 스마트폰']
+      },
+      note: '출처 · Chang 외, PNAS 2015 · 잠자기 전 전자책은 멜라토닌을 줄이고 잠드는 시간을 늦췄다'
+    },
+    // 12. flow
+    {
+      layout: 'flow', chapter: 3,
+      bg: 'photo-1552858725-2758b5fb1286', photo: 'Jp Valery',
+      eyebrow: '잘 자는 기술 ② 잠들기 전',
+      title: '잠들기 전 <em>90분 루틴</em>',
+      steps: [
+        { label: '화면 끄기', desc: '잠들기 1시간 전부터<br>밝은 화면 멀리하기' },
+        { label: '따뜻한 샤워', desc: '취침 1~2시간 전<br>40~42.5℃ 샤워·목욕' },
+        { label: '서늘한 침실', desc: '어둡고 조용하게,<br>약간 서늘하게' }
+      ],
+      note: '출처 · Haghayegh 외, Sleep Medicine Reviews 2019 · 따뜻한 목욕 후 평균 약 10분 빨리 잠듦'
+    },
+    // 13. bullets
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1774185644574-f58862023fca', photo: 'Suhas Hanjar',
+      eyebrow: '잘 자는 기술 ③ 잠이 안 올 때',
+      title: '억지로 자려 하지 <em>않는 것</em>이 기술이다',
+      items: [
+        { icon: 'solar:refresh-circle-bold', text: '20분쯤 지나도 잠이 안 오면 일어나 어두운 곳에서 지루한 일을 한다' },
+        { icon: 'solar:eye-scan-bold', text: '시계를 자꾸 보지 않는다 · 남은 시간 계산이 각성을 부른다' },
+        { icon: 'solar:moon-sleep-bold', text: '낮잠은 20~30분, 늦은 오후는 피한다' },
+        { icon: 'solar:user-check-bold', text: '불면이 몇 달 이어지면 불면증 인지행동치료(CBT-I)가 1차 치료다' }
+      ],
+      note: '출처 · 미국내과학회(ACP) 가이드라인, Annals of Internal Medicine 2016 / 자극 조절법'
+    },
+    // 14. timeline
+    {
+      layout: 'timeline', chapter: 3,
+      bg: 'photo-1643865420909-2462d84339af', photo: 'Jay Lo',
+      eyebrow: '하루를 잠에 맞춰 설계하기',
+      title: '좋은 잠은 <em>아침부터</em> 시작된다',
+      items: [
+        { time: '기상 직후', label: '햇빛 쬐기', desc: '몸시계를 아침으로<br>다시 맞추는 신호' },
+        { time: '오후 2~3시', label: '카페인 끊기', desc: '취침 6시간 전 카페인도<br>수면을 1시간 넘게 줄임' },
+        { time: '저녁', label: '조명 낮추기', desc: '어두워져야<br>멜라토닌이 나온다' },
+        { time: '매일', label: '같은 시각 기상', desc: '주말에도 기상 시각을<br>크게 바꾸지 않기', em: true }
+      ],
+      note: '출처 · Drake 외, Journal of Clinical Sleep Medicine 2013 (취침 6시간 전 카페인 400mg)'
+    },
+    // 15. closing
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1470252649378-9c29740c9fa8', photo: 'Dawid Zawiła',
+      eyebrow: 'GOOD NIGHT',
+      title: '오늘 밤 일찍 자는 것이 <em>내일 가장 남는 투자</em>다',
+      sub: '7시간 이상, 같은 시각 기상, 아침 햇빛, 저녁엔 어둡게',
+      chips: ['기억 저장', '뇌 청소', '면역 방어', '감정 정비']
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // Xie 2013: 잠잘 때 세포 사이 공간 +60% (깨어 있을 때 = 100)
+  sleep_clean: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowClean" x="-20%" y="-50%" width="140%" height="200%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <text x="20" y="82" fill="#cbd5e1" font-size="18" font-weight="700">깨어 있을 때</text>
+    <rect x="170" y="56" width="250" height="40" rx="6" fill="rgba(148,163,184,0.42)"/>
+    <text x="436" y="83" fill="#cbd5e1" font-size="20" font-weight="800">100</text>
+    <text x="20" y="162" fill="#00d2ff" font-size="18" font-weight="800">잠잘 때</text>
+    <rect x="170" y="136" width="400" height="40" rx="6" fill="#00d2ff" filter="url(#glowClean)"/>
+    <text x="556" y="164" fill="#0a101c" font-size="22" font-weight="900" text-anchor="end">160</text>
+    <text x="320" y="228" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">뇌세포 사이 공간의 부피 (깨어 있을 때 = 100)</text>
+  </svg>`,
+
+  // Prather 2015: 7시간 초과 대비 감기 발병 오즈비
+  sleep_cold: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowCold" x="-20%" y="-50%" width="140%" height="200%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <text x="20" y="66" fill="#cbd5e1" font-size="17" font-weight="700">7시간 초과</text>
+    <rect x="160" y="44" width="89" height="32" rx="6" fill="rgba(148,163,184,0.42)"/>
+    <text x="263" y="67" fill="#cbd5e1" font-size="19" font-weight="800">1.0</text>
+    <text x="20" y="131" fill="#38bdf8" font-size="17" font-weight="800">5~6시간</text>
+    <rect x="160" y="109" width="377" height="32" rx="6" fill="#38bdf8"/>
+    <text x="551" y="133" fill="#38bdf8" font-size="20" font-weight="900">4.2</text>
+    <text x="20" y="196" fill="#00d2ff" font-size="17" font-weight="800">5시간 미만</text>
+    <rect x="160" y="174" width="400" height="32" rx="6" fill="#00d2ff" filter="url(#glowCold)"/>
+    <text x="574" y="198" fill="#00d2ff" font-size="20" font-weight="900">4.5</text>
+  </svg>`,
+
+  // 카페인 반감기 5시간 가정: 오후 3시 섭취 후 잔존량
+  caffeine_curve: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gCaf" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="glowCaf" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="205" x2="600" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <line x1="60" y1="122" x2="600" y2="122" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <path d="M 80 40 L 163 88 L 247 122 L 330 147 L 413 164 L 497 176 L 580 184 L 580 205 L 80 205 Z" fill="url(#gCaf)"/>
+    <path d="M 80 40 C 120 64, 140 76, 163 88 C 200 106, 222 114, 247 122 C 280 133, 305 141, 330 147 C 360 154, 390 160, 413 164 C 445 169, 470 173, 497 176 C 525 179, 555 182, 580 184" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glowCaf)"/>
+    <circle cx="80" cy="40" r="6" fill="#0a101c" stroke="#cbd5e1" stroke-width="3"/>
+    <text x="100" y="36" fill="#ffffff" font-size="18" font-weight="800">100%</text>
+    <circle cx="247" cy="122" r="6" fill="#0a101c" stroke="#38bdf8" stroke-width="3"/>
+    <text x="247" y="104" fill="#cbd5e1" font-size="17" font-weight="800" text-anchor="middle">50%</text>
+    <circle cx="380" cy="158" r="13" fill="rgba(0,210,255,0.22)"/>
+    <circle cx="380" cy="158" r="7" fill="#00d2ff" filter="url(#glowCaf)"/>
+    <text x="380" y="134" fill="#00d2ff" font-size="21" font-weight="900" text-anchor="middle">≈ 30%</text>
+    <text x="80" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">15시</text>
+    <text x="247" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">20시</text>
+    <text x="380" y="232" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">자정</text>
+    <text x="580" y="232" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">06시</text>
+  </svg>`,
+
+  // Sandhu 2014: 서머타임 전환 직후 심근경색 입원 (평소 = 100)
+  dst_heart: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowDst" x="-20%" y="-50%" width="140%" height="200%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <text x="20" y="66" fill="#cbd5e1" font-size="17" font-weight="700">평소</text>
+    <rect x="170" y="44" width="300" height="32" rx="6" fill="rgba(148,163,184,0.42)"/>
+    <text x="484" y="67" fill="#cbd5e1" font-size="19" font-weight="800">100</text>
+    <text x="20" y="131" fill="#00d2ff" font-size="17" font-weight="800">봄 · 1시간 잃음</text>
+    <rect x="170" y="109" width="372" height="32" rx="6" fill="#00d2ff" filter="url(#glowDst)"/>
+    <text x="556" y="133" fill="#00d2ff" font-size="20" font-weight="900">+24%</text>
+    <text x="20" y="196" fill="#c084fc" font-size="17" font-weight="800">가을 · 1시간 얻음</text>
+    <rect x="170" y="174" width="237" height="32" rx="6" fill="#c084fc"/>
+    <text x="421" y="198" fill="#c084fc" font-size="20" font-weight="900">−21%</text>
+  </svg>`
+};
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
