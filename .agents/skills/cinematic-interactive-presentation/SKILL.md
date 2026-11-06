@@ -42,6 +42,11 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
 
 1. **템플릿 복사**:
    `.agents/skills/cinematic-interactive-presentation/template.html`을 프로젝트 루트에 `<주제>_cinematic_presentation.html`로 복사합니다.
+   - 템플릿의 `<title>`(Cinematic Interactive Presentation)을 덱 주제로 바꾸고, 파일 첫 줄에 `<!-- 시네마틱 발표자료: <주제> (<N>장) -->` 주석을 넣습니다.
+   - 권장: 복사 대신 scratch 폴더에 `deck.js`(`const DECK = {...};`)와 `charts.js`(`const CHARTS = {...};`)를 쓰고 조립 스크립트로 만듭니다. 제목과 첫 줄 주석도 함께 채우고 장 수를 대조해 줍니다.
+     ```bash
+     python -I .agents/skills/cinematic-interactive-presentation/scripts/build_deck.py deck.js charts.js <주제>_cinematic_presentation.html --title "<주제>" --slides <N>
+     ```
 2. **슬라이드 기획**:
    10~20장 내외(Cover 1 + 본문 + Closing 1), 챕터 3~4개로 구성합니다. 데이터 분석·성능 벤치마크·경쟁 비교·비즈니스 임팩트 슬라이드 중 **2~4장은 `svg_cards` 레이아웃**으로 기획하여 시각적 완성도를 높입니다.
 3. **고화질 사진 선별**:
@@ -52,14 +57,16 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
    - Unsplash 공식 API를 쓰므로 환경변수 `UNSPLASH_ACCESS_KEY`(unsplash.com/developers 앱의 Access Key)가 필요합니다. 웹사이트 내부 경로(`/napi`)는 봇 확인(Anubis)에 막혀 쓰지 않습니다. 데모 한도는 시간당 50회입니다.
    - 덱에 실제로 쓴 사진은 출력 주석의 `id`로 다운로드 이벤트를 보냅니다(API 가이드라인 필수): `python -I .agents/skills/cinematic-interactive-presentation/scripts/find_photos.py --track <id> ...`
    출력된 `bg`, `photo` 값을 슬라이드 데이터에 매핑합니다. **특히 1번 표지(`cover`)의 `bg` 이미지는 프로젝트 내 기존 모든 시네마틱 발표자료(`*_cinematic_presentation.html`)의 표지 이미지와 절대 겹치지 않는 고유한 사진을 지정합니다.**
+   - 검색이 실패하면(키 없음, 한도 초과, API 장애) 기존 덱 본문에 쓰인 검증된 사진을 재사용해도 됩니다. 표지에는 다른 덱의 표지로 쓰인 적 없는 사진을 고르고, `shoot.py`의 `표지 배경 고유성: OK`로 확인합니다.
 4. **CHARTS(SVG 차트) 및 DECK 데이터 작성**:
    - `CHARTS` 객체에 슬라이드에서 참조할 인라인 SVG(`viewBox="0 0 640 250"`)를 정의합니다.
      - SVG 내부 `<text>` 좌표는 좌우 `20~620px`, 상하 `24~240px` 안전 영역 안에 배치하여 카드 밖 넘침을 방지합니다.
      - `.svg-head h3` 제목(14~18자 이내)과 `.svg-badge`(12~15자 이내)가 `720px` 카드 상단에서 서로 겹치거나 카드 폭을 초과하지 않도록 간결하게 작성합니다.
+     - 한 슬라이드에 차트 2개가 함께 렌더링되므로 `<filter>`, `<linearGradient>`의 `id`는 차트마다 고유하게 짓습니다(예: `glowF`, `glowL`). 템플릿 예시의 `glow`, `gArea`를 그대로 복사해 두 차트에 쓰면 id가 겹쳐 한쪽이 다른 차트의 정의를 참조합니다.
    - `DECK` 객체의 `slides` 배열에 9개 레이아웃을 활용해 콘텐츠를 작성합니다.
      - *주의 1*: `closing` 슬라이드 부제목(`sub`)은 헤더 생성 함수 `head(s, n)`에서 자동 출력되므로 중복 선언되지 않도록 주의합니다.
      - *주의 2*: 타임라인 설명문은 의미 단위로 `<br>`을 심어 균형 잡힌 2줄로 구성합니다.
-     - *주의 3*: `flow`의 `desc`, `timeline`의 `desc`, `stats`의 `label`, `svg_cards`의 `foot`은 `nowrap`이라 **자동 줄바꿈이 되지 않습니다**. flow 설명이 한 줄 18자를 넘으면 옆 카드(420px)를 침범하므로 의미 단위로 `<br>`을 넣어 2줄로 나눕니다.
+     - *주의 3*: `flow`의 `desc`, `timeline`의 `desc`, `stats`의 `label`, `svg_cards`의 `foot`은 `nowrap`이라 **자동 줄바꿈이 되지 않습니다**. flow 설명이 한 줄 18자를 넘으면 옆 카드(420px)를 침범하므로 의미 단위로 `<br>`을 넣어 2줄로 나눕니다. `stats` 라벨은 27px 글자에 최대 700px이라 한 줄 24자 안팎이 한계이니 그보다 길면 `<br>`로 2줄로 나눕니다. 라벨에는 큰 수치가 **무엇을 잰 값인지** 적습니다(예: '100배'만 두지 말고 '파라미터 수가 100배 적은 …').
 5. **검증 및 스크린샷 촬영**:
    헤드리스 크롬(Playwright)으로 모든 슬라이드를 캡처하고 자동 점검합니다.
    ```bash
@@ -70,6 +77,7 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
    - `errors: []`를 확인한 뒤 캡처 이미지를 직접 열어 눈으로도 확인합니다(레이더 차트 라벨과 범례 박스 간격 등도 육안으로 점검).
 6. **통합 허브(index.html) 연동**:
    `index.html`의 `DECKS` 목록 최상단에 신규 프레젠테이션 정보를 등록합니다.
+   - `index.html`은 CRLF 파일입니다. Git Bash의 `sed`, `od`, `cat -A`는 CR을 숨겨 LF처럼 보이게 할 수 있으니, 줄바꿈은 Python에서 바이트로 읽어(`open(p, 'rb')`) 확인하고 새 항목도 `\r\n`으로 넣습니다.
    - *중요*: `id` 필드는 기존 덱과 겹치지 않는 **고유한 식별자(Unique ID, 예: `ai-agent-bot-cinematic`)**를 부여해야 iframe 뷰어 DOM 충돌이 발생하지 않습니다.
 
 ---
