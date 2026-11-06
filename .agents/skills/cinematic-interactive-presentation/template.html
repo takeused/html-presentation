@@ -297,7 +297,7 @@ const DECK = {
         { icon: 'solar:target-bold', text: '단 하나의 핵심 메시지: 청중이 기억할 단 하나의 결론을 정의' },
         { icon: 'solar:eye-bold', text: '시각적 일관성: 다크 비네팅과 엄선된 컬러 팔레트 유지' },
         { icon: 'solar:compass-bold', text: '인터랙티브 조작: 챕터 탭 클릭으로 원하는 슬라이드 즉시 점프' },
-        { icon: 'solar:cup-first-bold', text: '화려함보다 본질: 텍스트의 가독성과 대비가 가장 중요합니다', em: true }
+        { icon: 'solar:cup-first-bold', text: '화려함보다 본질: 텍스트의 가독성과 대비가 가장 중요합니다' }
       ],
       note: '가장 강력한 디자인은 읽기 쉬운 디자인입니다'
     },
@@ -389,14 +389,14 @@ const LAYOUTS = {
   bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
       `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
   svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
-      `<div class="svg-card${c.hi ? ' hi' : ''}" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
   stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
       `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
   flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
       (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
       `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
   compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
-      `<div class="panel${i ? ' hi' : ''}" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
   quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
       `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
   timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>

@@ -1254,7 +1254,7 @@
     <div class="yt-header-right">
       <span class="deck-count-pill">
         <span class="status-dot"></span>
-        <span id="deckCountBadge">34 DECKS</span>
+        <span id="deckCountBadge">36 DECKS</span>
       </span>
 
       <button id="viewModeToggle" class="icon-btn" type="button" aria-label="보기 방식 전환" title="그리드 / 리스트 보기 전환">
@@ -1347,7 +1347,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 34</span>
+      <span class="viewer-pos" id="viewerPos">01 / 36</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -1387,9 +1387,21 @@
       '라이프': '라이프 · 웰니스'
     };
 
-    // 발표 목록 데이터 (워크스페이스 내 전체 34개 HTML 발표자료 전수 수록)
+    // 발표 목록 데이터 (워크스페이스 내 전체 36개 HTML 발표자료 전수 수록)
     // hook 필드는 16:9 썸네일 내부에 표시될 핵심 포스터 카피(아래 제목과 중복 방지)
     const DECKS = [
+      {
+        id: 'global-consulting-firms-cinematic',
+        src: 'global_consulting_firms_cinematic_presentation.html',
+        cat: '기획',
+        title: '세계를 움직이는 두뇌 집단 — 맥킨지 · BCG · 가트너 완벽 해부',
+        hook: 'MBB 전략 3강(맥킨지·BCG·베인) · 가트너 하이프·매직쿼드런트 · Big 4',
+        desc: '전략 컨설팅 3강 MBB(맥킨지·BCG·베인)와 IT 리서치 절대 강자 가트너(Gartner·IDC·포레스터), 종합 회계·구축 거인 Big 4(딜로이트·PwC·EY·KPMG) 및 액센츄어의 차이와 대표 프레임워크, 실무 인용·활용법 시네마틱 20장.',
+        slides: '20장',
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1488972685288-c3fd157d7c7a'
+      },
       {
         id: 'rnd-disaster-classification-cinematic',
         src: 'rnd_disaster_classification_cinematic_presentation.html',

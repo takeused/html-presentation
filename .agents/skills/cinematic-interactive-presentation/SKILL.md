@@ -77,11 +77,11 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
 | 레이아웃 | 주요 필드 | 설명 & 권장 가이드 |
 |---|---|---|
 | **cover** | eyebrow, title, sub, meta | 표지 슬라이드. 웅장한 헤드라인과 서브타이틀 |
-| **svg_cards** | eyebrow, title, cards[{icon, title, badge, chart, hi?, foot}], note | **시네마틱 HUD 네온 SVG 차트 2열 카드**. `CHARTS[chart]`의 인라인 SVG 렌더링 (성장 곡선, 막대, 레이더, 도넛 게이지, ROI 비교 등) |
+| **svg_cards** | eyebrow, title, cards[{icon, title, badge, chart, foot}], note | **시네마틱 HUD 네온 SVG 차트 2열 카드**. 좌우 2개 카드 모두 동일한 시안 하이라이트 스타일(`.svg-card.hi`)로 통일하여 렌더링 |
 | **stats** | eyebrow, title, items[{value, unit, label}], note | 대형 수치 지표 (2~3개). 라벨은 1줄로 떨어지도록 간결화 |
 | **flow** | eyebrow, title, steps[{label, desc}], note | 3단계 프로세스. `01 ➔ 02 ➔ 03` 마름모 배지 + 1~2줄 설명문 |
-| **compare** | eyebrow, title, left/right{title, icon, items}, note | 비교/대조 2열 패널. 우측 패널에 액센트 하이라이트 |
-| **bullets** | eyebrow, title, items[{icon, text, em}], note | 아이콘 카드 불릿 (3~4개). 마지막 항목에 `em: true` 강조 |
+| **compare** | eyebrow, title, left/right{title, icon, items}, note | 비교/대조 2열 패널. 좌우 박스 모두 동일한 시안 하이라이트 스타일(`.panel.hi`)을 기본으로 적용하여 대등한 비교 가시성 확보 |
+| **bullets** | eyebrow, title, items[{icon, text, em?}], note | 아이콘 카드 불릿 (3~4개). 병렬 나열 항목에서는 마지막 문장에 기계적으로 `em: true`(볼드)를 넣지 않고 동일 비중으로 유지 |
 | **quote** | eyebrow?, quote, by | 결정적 명언/원칙 인용. 가상 따옴표 없이 굵은 텍스트 |
 | **timeline** | eyebrow, title, items[{time, label, desc, em}], note | 다크 글래스 카드 위의 3~4단계 일정/마일스톤 |
 | **closing** | eyebrow, title, sub, chips[] | 결론 및 요약. 캡슐 칩(chips) 나열 |
@@ -99,6 +99,10 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
 - quote 레이아웃에는 장식용 큰따옴표(`“`)를 넣지 않는다. 템플릿에서 `.quote::before`를 제거했으니 다시 넣지 않는다.
 - Pretendard는 CDN(jsDelivr)에서 불러온다. 외부 접속이 막힌 환경(폐쇄망, 샌드박스)에서는 시스템 폰트로 바뀌므로, 그런 환경에서 발표하면 Pretendard 파일을 HTML 옆 폴더에 두고 `@font-face`로 불러오는 방식으로 바꾼다. 점검 환경이 외부 접속을 못 하면 `Pretendard 웹폰트: OK`를 확인할 수 없으니 사용자에게 알린다.
 - 통계 수치와 SVG 차트 슬라이드에는 반드시 출처(`note`)를 답니다. 지어낸 숫자는 쓰지 않습니다.
+- **시각적 균형 규칙 (`bullets`, `compare`, `svg_cards`)**:
+  - `bullets`: 3~4개 항목이 대등한 나열일 때는 마지막 항목에 습관적으로 `em: true`(볼드 강조)를 부여하지 않습니다.
+  - `compare`: 좌우 패널 비교 시 한쪽만 어둡게 죽이지 않고, 좌우 두 패널 모두 시안 하이라이트 스타일(`.panel.hi`)로 통일합니다.
+  - `svg_cards`: 좌우 두 개의 SVG 차트 카드 역시 좌우 스타일이 달라 보이지 않도록 모두 하이라이트 카드 스타일(`.svg-card.hi`)로 통일합니다.
 
 ---
 
