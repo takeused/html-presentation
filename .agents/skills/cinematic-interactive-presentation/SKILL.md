@@ -67,18 +67,26 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
      - *주의 1*: `closing` 슬라이드 부제목(`sub`)은 헤더 생성 함수 `head(s, n)`에서 자동 출력되므로 중복 선언되지 않도록 주의합니다.
      - *주의 2*: 타임라인 설명문은 의미 단위로 `<br>`을 심어 균형 잡힌 2줄로 구성합니다.
      - *주의 3*: `flow`의 `desc`, `timeline`의 `desc`, `stats`의 `label`, `svg_cards`의 `foot`은 `nowrap`이라 **자동 줄바꿈이 되지 않습니다**. flow 설명이 한 줄 18자를 넘으면 옆 카드(420px)를 침범하므로 의미 단위로 `<br>`을 넣어 2줄로 나눕니다. `stats` 라벨은 27px 글자에 최대 700px이라 한 줄 24자 안팎이 한계이니 그보다 길면 `<br>`로 2줄로 나눕니다. 라벨에는 큰 수치가 **무엇을 잰 값인지** 적습니다(예: '100배'만 두지 말고 '파라미터 수가 100배 적은 …').
+     - *주의 4 (아이콘 빈 박스 방지)*: `icon` 필드(`bullets`, `compare`, `svg_cards`, `brand.icon`)에는 반드시 **100% 소문자 케밥케이스(`solar:*-bold`)** 형태의 검증된 Solar 아이콘만 사용합니다. 대문자가 섞이거나(`solar:check-Read-bold`, `solar:Translation-bold` 등) 존재하지 않는 아이콘명을 쓰면 화면에 빈 네온 박스로 노출됩니다. 아래 **검증된 Solar 아이콘 치트시트**에서 우선 선택하세요:
+       - **AI·데이터·기술**: `solar:cpu-bolt-bold`, `solar:cpu-bold`, `solar:atom-bold`, `solar:bot-bold`, `solar:brain-bold`, `solar:code-square-bold`, `solar:code-circle-bold`, `solar:database-bold`, `solar:server-minimalistic-bold`, `solar:network-bold`, `solar:routing-2-bold`, `solar:widget-5-bold`, `solar:layers-minimalistic-bold`, `solar:devices-bold`, `solar:link-circle-bold`
+       - **차트·분석·성과**: `solar:graph-new-up-bold`, `solar:graph-up-bold`, `solar:chart-2-bold`, `solar:chart-square-bold`, `solar:pie-chart-2-bold`, `solar:radar-2-bold`, `solar:ranking-bold`, `solar:scale-bold`, `solar:target-bold`, `solar:cup-star-bold`, `solar:cup-first-bold`, `solar:medal-ribbons-star-bold`, `solar:crown-star-bold`, `solar:diploma-verified-bold`
+       - **검증·보안·상태**: `solar:shield-check-bold`, `solar:shield-warning-bold`, `solar:shield-star-bold`, `solar:shield-up-bold`, `solar:verified-check-bold`, `solar:check-circle-bold`, `solar:check-read-bold`, `solar:close-circle-bold`, `solar:forbidden-circle-bold`, `solar:danger-triangle-bold`, `solar:lock-keyhole-bold`, `solar:bug-bold`
+       - **비즈니스·문서·기타**: `solar:document-text-bold`, `solar:file-text-bold`, `solar:file-check-bold`, `solar:folder-with-files-bold`, `solar:chat-round-dots-bold`, `solar:chat-round-line-bold`, `solar:chat-square-code-bold`, `solar:users-group-two-rounded-bold`, `solar:user-check-bold`, `solar:user-hand-up-bold`, `solar:rocket-2-bold`, `solar:rocket-bold`, `solar:bolt-circle-bold`, `solar:bolt-bold`, `solar:lightbulb-bolt-bold`, `solar:magic-stick-3-bold`, `solar:sparkles-bold`, `solar:compass-bold`, `solar:eye-scan-bold`, `solar:magnifer-bold`, `solar:filter-bold`, `solar:refresh-circle-bold`, `solar:shuffle-bold`, `solar:scissors-bold`, `solar:global-bold`, `solar:planet-3-bold`, `solar:planet-bold`, `solar:cloud-rain-bold`, `solar:buildings-2-bold`, `solar:test-tube-minimalistic-bold`, `solar:fire-bold`
+     - *주의 5 (대용량 덱 스트림 끊김 방지)*: **18장 이상(예: 20~30장)의 대형 발표자료**를 제작할 때는 1,000줄이 넘는 전체 HTML을 단일 `write_file` 호출로 한 번에 출력하지 마세요(출력 스트림 타임아웃 위험). 대신 scratch 폴더에 `slides_p1.js`(전반부), `slides_p2.js`(후반부), `charts.js`(SVG 차트)로 쪼개서 작성한 뒤 Python 스크립트로 `template.html`의 `DECK`과 `CHARTS`에 주입해 조립하면 스트림 끊김 없이 수 초 내에 완성됩니다.
 5. **검증 및 스크린샷 촬영**:
    헤드리스 크롬(Playwright)으로 모든 슬라이드를 캡처하고 자동 점검합니다.
    ```bash
    python -I .agents/skills/cinematic-interactive-presentation/scripts/shoot.py http://localhost:8765/<파일명>.html <슬라이드수> <출력폴더>
    ```
    - `Pretendard 웹폰트: OK`가 나와야 합니다. "로드 안 됨"이면 폰트 링크가 바뀐 것이니 템플릿의 jsDelivr 링크로 되돌립니다.
-   - `넘침: 0 건`이 될 때까지 고칩니다. 화면 밖(40~1880px) 이탈, 잘림, **카드 폭 초과**(`.step,.stat,.tl-item,.panel,.svg-card` 내부 요소나 SVG `<text>`가 자기 카드보다 넓어 겹침)를 잡아 줍니다. 카드 폭 초과는 `<br>`로 나누거나 문장을 줄입니다.
+   - `넘침: 0 건` 및 `아이콘 누락: 0 건`이 될 때까지 고칩니다. 화면 밖(40~1880px) 이탈, 잘림, **카드 폭 초과**(`.step,.stat,.tl-item,.panel,.svg-card` 내부 요소나 SVG `<text>`가 자기 카드보다 넓어 겹침), 그리고 **빈 아이콘 박스**(`iconify-icon` 내부 SVG 미렌더링 또는 대문자 아이콘명)를 자동으로 잡아 줍니다. 카드 폭 초과는 `<br>`로 나누거나 문장을 줄입니다.
    - `errors: []`를 확인한 뒤 캡처 이미지를 직접 열어 눈으로도 확인합니다(레이더 차트 라벨과 범례 박스 간격 등도 육안으로 점검).
 6. **통합 허브(index.html) 연동**:
    `index.html`의 `DECKS` 목록 최상단에 신규 프레젠테이션 정보를 등록합니다.
    - `index.html`은 CRLF 파일입니다. Git Bash의 `sed`, `od`, `cat -A`는 CR을 숨겨 LF처럼 보이게 할 수 있으니, 줄바꿈은 Python에서 바이트로 읽어(`open(p, 'rb')`) 확인하고 새 항목도 `\r\n`으로 넣습니다.
-   - *중요*: `id` 필드는 기존 덱과 겹치지 않는 **고유한 식별자(Unique ID, 예: `ai-agent-bot-cinematic`)**를 부여해야 iframe 뷰어 DOM 충돌이 발생하지 않습니다.
+   - *중요 1*: `id` 필드는 기존 덱과 겹치지 않는 **고유한 식별자(Unique ID, 예: `ai-agent-bot-cinematic`)**를 부여해야 iframe 뷰어 DOM 충돌이 발생하지 않습니다.
+   - *중요 2*: 유튜브 스타일 16:9 썸네일 그리드 허브 스펙에 맞춰 `hook`(썸네일 내부 포스터 한 줄 카피), `isCinematic: true`, `style: 'CINEMATIC'`, `thumb`(1번 표지 슬라이드의 `bg`와 동일한 Unsplash photo ID) 필드를 반드시 함께 기재합니다.
+   - *중요 3*: `index.html` 수정 시 기존 파일의 줄바꿈(CRLF)이 변경되어 불필요한 Git diff가 발생하지 않도록 필요한 블록만 최소한으로 수정합니다.
 
 ---
 

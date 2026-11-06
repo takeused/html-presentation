@@ -26,6 +26,19 @@ OVERFLOW = """() => {
 # document.fonts.check는 등록된 폰트가 없어도 true를 돌려주므로, 실제 로드된 FontFace를 확인한다
 FONT = """() => [...document.fonts].some(f => f.family.replace(/["']/g, '') === 'Pretendard' && f.status === 'loaded')"""
 
+# iconify-icon 요소에 대문자(오타)가 있거나 shadowRoot 내부에 svg가 렌더링되지 않은 빈 아이콘 박스를 찾는다
+ICON_CHECK = """() => {
+  const bad = [];
+  document.querySelectorAll('#stage iconify-icon').forEach(el => {
+    const ic = el.getAttribute('icon') || '';
+    const svg = el.shadowRoot && el.shadowRoot.querySelector('svg');
+    if (!ic || /[A-Z]/.test(ic) || !svg) {
+      bad.push(`아이콘 미렌더링("${ic}")`);
+    }
+  });
+  return [...new Set(bad)];
+}"""
+
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(channel="chrome")
@@ -43,13 +56,17 @@ async def main():
             dups = [k for k, v in covers.items() if v == covers[tname] and k != tname]
             print("표지 배경 고유성:", f"중복 경고 ({covers[tname]} -> {', '.join(dups)})" if dups else f"OK ({covers[tname]})")
         problems = 0
+        bad_icons = 0
         for i in range(1, n + 1):
             await pg.evaluate(f"go({i - 1})")          # reveal 모드와 무관하게 슬라이드 단위로 이동
             await pg.wait_for_timeout(3200)
             await pg.screenshot(path=f"{out}/s{i:02d}.png")
             for line in await pg.evaluate(OVERFLOW):
                 problems += 1; print(f"  s{i:02d} 넘침: {line}")
+            for ic_err in await pg.evaluate(ICON_CHECK):
+                bad_icons += 1; print(f"  s{i:02d} 아이콘 오류: {ic_err}")
         print("넘침:", problems, "건")
+        print("아이콘 누락:", bad_icons, "건")
         print("errors:", errs)
         await b.close()
 
