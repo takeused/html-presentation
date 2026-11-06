@@ -1,0 +1,633 @@
+<!-- 시네마틱 발표자료: Random Forest와 Fine-tuning (15장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Forest × Fine-tuning · 시네마틱 발표자료</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 ===================== */
+const DECK = {
+  brand: { name: 'FOREST × TUNING', icon: 'solar:layers-minimalistic-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: ['두 갈래의 학습', 'Random Forest', 'Fine-tuning', '선택과 결합'],
+  slides: [
+    // 01. cover
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1511884642898-4c92249e20b6', photo: 'Pine Watt',
+      eyebrow: 'MACHINE LEARNING · 2026',
+      title: '숲으로 판단하고,<br><em>미세조정으로 다듬는다</em>',
+      sub: 'Random Forest와 Fine-tuning, 데이터에 맞는 두 가지 학습 전략',
+      meta: 'RANDOM FOREST × FINE-TUNING'
+    },
+    // 02. compare
+    {
+      layout: 'compare', chapter: 0,
+      bg: 'photo-1469474968028-56623f02e42e', photo: 'David Marcu',
+      eyebrow: '두 갈래의 학습',
+      title: '처음부터 배우는 숲, <em>이미 배운 모델을 다듬는 튜닝</em>',
+      left: {
+        title: 'Random Forest',
+        icon: 'solar:widget-5-bold',
+        items: ['표(행·열) 데이터를 처음부터 학습', '수백 그루 결정 트리의 투표와 평균', '일반 CPU로도 빠르게 학습']
+      },
+      right: {
+        title: 'Fine-tuning',
+        icon: 'solar:magic-stick-3-bold',
+        items: ['대규모 사전학습 모델에서 출발', '내 데이터로 가중치를 추가 조정', '텍스트·이미지 같은 비정형 데이터에 강함']
+      },
+      note: '출발점이 다르다 · 빈 상태에서 배우느냐, 이미 배운 지식을 옮겨 오느냐'
+    },
+    // 03. stats
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1551288049-bebda4e38f71', photo: 'Luke Chesser',
+      eyebrow: '왜 둘 다 알아야 하나',
+      title: '표 데이터에서는 <em>여전히 트리가 강하다</em>',
+      items: [
+        { value: '121', unit: '개', label: '데이터셋에서 179개 분류기 비교,<br>랜덤 포레스트 계열 1위' },
+        { value: '45', unit: '개', label: '표 데이터 벤치마크에서<br>트리 기반 모델이 딥러닝보다 우세' }
+      ],
+      note: '출처 · Fernández-Delgado 외, JMLR 2014 / Grinsztajn 외, NeurIPS 2022'
+    },
+    // 04. flow
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1513530534585-c7b1394c6d51', photo: 'NordWood Themes',
+      eyebrow: 'RANDOM FOREST · 원리',
+      title: '나무를 <em>다르게</em> 키우고, <em>함께</em> 결정한다',
+      steps: [
+        { label: '부트스트랩', desc: '데이터를 복원추출해<br>나무마다 다른 표본' },
+        { label: '특성 무작위 선택', desc: '분할마다 일부 특성만<br>후보로 검토' },
+        { label: '투표 · 평균', desc: '분류는 다수결,<br>회귀는 평균으로 결합' }
+      ],
+      note: '출처 · Breiman, Random Forests, Machine Learning 45, 2001'
+    },
+    // 05. svg_cards
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1647427060118-4911c9821b82', photo: 'Simon Kadula',
+      eyebrow: 'RANDOM FOREST · 숫자로 보기',
+      title: '다양성을 만드는 <em>두 개의 무작위</em>',
+      cards: [
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: '부트스트랩 표본 구성',
+          badge: '1 − 1/e',
+          chart: 'rf_bootstrap',
+          foot: '나무마다 원본의 63.2%로 학습, 남은 36.8%로 OOB 채점'
+        },
+        {
+          icon: 'solar:filter-bold',
+          title: '분할마다 보는 특성 수',
+          badge: '특성 100개 예시',
+          chart: 'rf_features',
+          foot: '분류 기본값 √p · 나무끼리 덜 닮게 만드는 장치'
+        }
+      ],
+      note: '63.2%는 1 − 1/e 극한값 · √p는 Breiman 권장값이자 scikit-learn 분류 기본값'
+    },
+    // 06. bullets
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1516321318423-f06f85e504b3', photo: 'Christina',
+      eyebrow: 'RANDOM FOREST · 실전 포인트',
+      title: '강점과 <em>주의할 점</em>',
+      items: [
+        { icon: 'solar:shield-check-bold', text: '과적합에 강하다 · 나무를 늘려도 일반화 오차가 한곳으로 수렴한다' },
+        { icon: 'solar:filter-bold', text: '전처리 부담이 적다 · 특성 스케일링이 필요 없다' },
+        { icon: 'solar:ranking-bold', text: '특성 중요도 제공 · 불순도 기준은 편향이 있어 순열 중요도로 교차 확인' },
+        { icon: 'solar:danger-triangle-bold', text: '외삽에 약하다 · 학습 범위 밖의 값은 예측하지 못한다' }
+      ],
+      note: '출처 · Breiman 2001 / Strobl 외, BMC Bioinformatics 2007'
+    },
+    // 07. quote
+    {
+      layout: 'quote', chapter: 1,
+      bg: 'photo-1486707471592-8e7eb7e36f78', photo: 'Inggrid Koe',
+      quote: '나무 한 그루는 틀려도,<br><em>서로 다른 나무의 숲</em>은 덜 틀린다',
+      by: 'ENSEMBLE PRINCIPLE · 앙상블의 핵심 원리'
+    },
+    // 08. timeline
+    {
+      layout: 'timeline', chapter: 2,
+      bg: 'photo-1519501025264-65ba15a82390', photo: 'Aleksandar Pasaric',
+      eyebrow: 'FINE-TUNING · 흐름',
+      title: '미세조정은 <em>어떻게 가벼워졌나</em>',
+      items: [
+        { time: '2018', label: 'ULMFiT · BERT', desc: '사전학습 후 미세조정이<br>NLP 표준 방식으로' },
+        { time: '2021', label: 'LoRA', desc: '가중치는 고정하고<br>저랭크 행렬만 학습' },
+        { time: '2022', label: 'InstructGPT', desc: '지시 데이터와 사람 피드백으로<br>대화형 모델 정렬' },
+        { time: '2023', label: 'QLoRA', desc: '4비트 양자화로<br>GPU 한 장에서 65B 튜닝', em: true }
+      ],
+      note: '출처 · Howard & Ruder 2018 · Devlin 외 2018 · Hu 외 2021 · Ouyang 외 2022 · Dettmers 외 2023'
+    },
+    // 09. flow
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1515879218367-8466d910aaa4', photo: 'Chris Ried',
+      eyebrow: 'FINE-TUNING · 절차',
+      title: '좋은 미세조정의 <em>3단계</em>',
+      steps: [
+        { label: '베이스 모델 선택', desc: '과제·크기·라이선스가<br>맞는 사전학습 모델' },
+        { label: '데이터 정제', desc: '입력·정답 쌍을 만들고<br>평가 세트를 분리' },
+        { label: '학습 · 평가', desc: '작은 학습률로 조정,<br>원래 능력 유지 확인' }
+      ],
+      note: '데이터는 양보다 질 · 정답이 깨끗한 예제가 성능을 좌우한다'
+    },
+    // 10. compare
+    {
+      layout: 'compare', chapter: 2,
+      bg: 'photo-1542013353840-da51a081405b', photo: 'Maria Teneva',
+      eyebrow: 'FINE-TUNING · 방식',
+      title: '전체 미세조정 vs <em>파라미터 효율 미세조정</em>',
+      left: {
+        title: 'Full Fine-tuning',
+        icon: 'solar:server-minimalistic-bold',
+        items: ['모든 가중치를 업데이트', '모델 크기만큼 큰 GPU 메모리 필요', '과제마다 전체 모델 사본 저장']
+      },
+      right: {
+        title: 'PEFT · LoRA',
+        icon: 'solar:bolt-circle-bold',
+        items: ['원래 가중치는 고정, 작은 어댑터만 학습', '학습 메모리와 저장 공간 대폭 절감', '어댑터만 갈아 끼워 여러 과제 대응']
+      },
+      note: '출처 · Hu 외, LoRA: Low-Rank Adaptation of Large Language Models, 2021'
+    },
+    // 11. svg_cards
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1558494949-ef010cbdcc31', photo: 'Taylor Vick',
+      eyebrow: 'FINE-TUNING · 비용',
+      title: '메모리 벽을 낮춘 <em>LoRA와 QLoRA</em>',
+      cards: [
+        {
+          icon: 'solar:cpu-bolt-bold',
+          title: 'GPT-3 175B 학습 VRAM',
+          badge: 'LoRA · 약 1/3',
+          chart: 'ft_lora',
+          foot: '체크포인트도 350GB에서 35MB로 줄어듦'
+        },
+        {
+          icon: 'solar:chart-2-bold',
+          title: '65B 모델 미세조정 메모리',
+          badge: 'QLoRA · GPU 1장',
+          chart: 'ft_qlora',
+          foot: '48GB GPU 한 장, 24시간 학습으로 Guanaco 완성'
+        }
+      ],
+      note: '출처 · Hu 외, LoRA (2021) §4.2 / Dettmers 외, QLoRA (2023)'
+    },
+    // 12. stats
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1666875753105-c63a6f3bdc86', photo: 'Deng Xiang',
+      eyebrow: 'FINE-TUNING · 효과',
+      title: '크기보다 <em>맞춤 학습</em>이 이긴다',
+      items: [
+        { value: '100', unit: '배', label: '파라미터 수가 100배 적은 1.3B InstructGPT가<br>175B GPT-3보다 사람 평가에서 선호됨' },
+        { value: '99.3', unit: '%', label: 'QLoRA Guanaco의 ChatGPT 대비<br>성능 수준(Vicuna 벤치마크)' }
+      ],
+      note: '출처 · Ouyang 외, InstructGPT (2022) / Dettmers 외, QLoRA (2023)'
+    },
+    // 13. compare
+    {
+      layout: 'compare', chapter: 3,
+      bg: 'photo-1531482615713-2afd69097998', photo: 'Jason Goodman',
+      eyebrow: '선택 가이드',
+      title: '언제 <em>무엇을</em> 쓸까',
+      left: {
+        title: 'Random Forest를 고를 때',
+        icon: 'solar:widget-5-bold',
+        items: ['데이터가 표(행·열) 형태일 때', '빠른 베이스라인과 설명이 필요할 때', 'GPU 없이 운영해야 할 때']
+      },
+      right: {
+        title: 'Fine-tuning을 고를 때',
+        icon: 'solar:magic-stick-3-bold',
+        items: ['텍스트·이미지·음성 같은 비정형 데이터', '쓸 만한 사전학습 모델이 이미 있을 때', '프롬프트만으로 품질·형식이 안 맞을 때']
+      },
+      note: '데이터의 모양이 먼저, 모델은 그다음이다'
+    },
+    // 14. flow
+    {
+      layout: 'flow', chapter: 3,
+      bg: 'photo-1517976487492-5750f3195933', photo: 'SpaceX',
+      eyebrow: '실전 결합',
+      title: '함께 쓰는 <em>하이브리드 파이프라인</em>',
+      steps: [
+        { label: '임베딩 추출', desc: '미세조정한 모델로<br>문장을 벡터로 변환' },
+        { label: '특성 결합', desc: '임베딩과 표 데이터를<br>한 행으로 합침' },
+        { label: '숲으로 판단', desc: '랜덤 포레스트가<br>최종 분류·예측' }
+      ],
+      note: '예 · 상담 기록(텍스트) + 고객 정보(표) → 이탈 예측'
+    },
+    // 15. closing
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
+      eyebrow: 'TAKEAWAY',
+      title: '데이터에 맞는 도구가 <em>가장 좋은 모델</em>이다',
+      sub: '표에는 숲을, 비정형 데이터에는 미세조정을, 둘이 섞이면 함께',
+      chips: ['부트스트랩 · √p', 'OOB 검증', 'LoRA · QLoRA', '하이브리드 파이프라인']
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // 부트스트랩: 학습 표본 63.2% vs OOB 36.8% (r=74, 둘레 ≈ 465)
+  rf_bootstrap: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="170" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="170" cy="112" r="74" fill="none" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-dasharray="294 465" transform="rotate(-90 170 112)"/>
+    <text x="170" y="124" fill="#ffffff" font-size="38" font-weight="900" text-anchor="middle">63.2%</text>
+    <text x="170" y="222" fill="#00d2ff" font-size="18" font-weight="800" text-anchor="middle">학습에 쓰이는 고유 표본</text>
+    <line x1="320" y1="28" x2="320" y2="235" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="#c084fc" stroke-width="16" stroke-linecap="round" stroke-dasharray="171 465" transform="rotate(-90 470 112)"/>
+    <text x="470" y="124" fill="#ffffff" font-size="38" font-weight="900" text-anchor="middle">36.8%</text>
+    <text x="470" y="222" fill="#c084fc" font-size="18" font-weight="800" text-anchor="middle">OOB 검증용 표본</text>
+  </svg>`,
+
+  // 분할마다 후보로 보는 특성 수 (p = 100)
+  rf_features: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowF" x="-20%" y="-50%" width="140%" height="200%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <text x="20" y="62" fill="#cbd5e1" font-size="17" font-weight="700">전체 특성 p</text>
+    <rect x="180" y="40" width="380" height="34" rx="6" fill="rgba(148,163,184,0.42)"/>
+    <text x="548" y="63" fill="#ffffff" font-size="18" font-weight="800" text-anchor="end">100</text>
+    <text x="20" y="132" fill="#00d2ff" font-size="17" font-weight="800">√p · 분류 기본</text>
+    <rect x="180" y="110" width="38" height="34" rx="6" fill="#00d2ff" filter="url(#glowF)"/>
+    <text x="232" y="134" fill="#00d2ff" font-size="22" font-weight="900">10</text>
+    <text x="20" y="202" fill="#cbd5e1" font-size="17" font-weight="700">log₂p</text>
+    <rect x="180" y="180" width="27" height="34" rx="6" fill="#38bdf8"/>
+    <text x="221" y="204" fill="#cbd5e1" font-size="18" font-weight="800">≈ 7</text>
+  </svg>`,
+
+  // LoRA: GPT-3 175B 학습 VRAM 1.2TB → 350GB
+  ft_lora: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowL" x="-20%" y="-50%" width="140%" height="200%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <text x="20" y="82" fill="#cbd5e1" font-size="18" font-weight="700">전체 미세조정</text>
+    <rect x="170" y="56" width="400" height="40" rx="6" fill="rgba(148,163,184,0.42)"/>
+    <text x="556" y="83" fill="#ffffff" font-size="20" font-weight="800" text-anchor="end">1.2 TB</text>
+    <text x="20" y="162" fill="#00d2ff" font-size="18" font-weight="800">LoRA</text>
+    <rect x="170" y="136" width="117" height="40" rx="6" fill="#00d2ff" filter="url(#glowL)"/>
+    <text x="303" y="164" fill="#00d2ff" font-size="24" font-weight="900">350 GB</text>
+    <text x="320" y="228" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">학습 파라미터는 1/10,000 수준</text>
+  </svg>`,
+
+  // QLoRA: 65B 미세조정 메모리 >780GB → <48GB
+  ft_qlora: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowQ" x="-50%" y="-50%" width="200%" height="200%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <text x="20" y="82" fill="#cbd5e1" font-size="18" font-weight="700">16비트 미세조정</text>
+    <rect x="170" y="56" width="400" height="40" rx="6" fill="rgba(148,163,184,0.42)"/>
+    <text x="556" y="83" fill="#ffffff" font-size="20" font-weight="800" text-anchor="end">780 GB 초과</text>
+    <text x="20" y="162" fill="#00d2ff" font-size="18" font-weight="800">QLoRA</text>
+    <rect x="170" y="136" width="25" height="40" rx="6" fill="#00d2ff" filter="url(#glowQ)"/>
+    <text x="211" y="164" fill="#00d2ff" font-size="24" font-weight="900">48 GB 미만</text>
+    <text x="320" y="228" fill="#94a3b8" font-size="16" font-weight="600" text-anchor="middle">4비트 NF4 양자화 + LoRA 어댑터</text>
+  </svg>`
+};
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

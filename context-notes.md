@@ -48,3 +48,5 @@
   - 153s 핵심 화면인 4분할 레벨 카드(`level4`: 1~4레벨, 3레벨 강조), 162s 할루시네이션 3콘셉트 카드(`cards3`), 237s 에어캐나다 3단계 화살표 플로우(`flow3`: [카드] ▶ [카드] ▶ [강조 카드]), 55s 델타 배지 비교 막대(`deltabars`: 33.3% vs 44.5% + 11.2%p 옐로우 캡슐 배지), 480s 중앙 대형 인용문(`cquote`), 53번 슬라이드 전폭 6행 아젠다 테이블(`fulltable`) 신규 레이아웃 6종 구현 및 검증 완료.
   - 통합 발표 허브 `index.html` 최상단에 27번째 덱으로 등록 완료.
 
+
+- 2026-11-06: 'Random Forest와 Fine-tuning' 시네마틱 덱(15장) 제작. 두 주제를 한 덱에서 비교하는 구성(두 갈래 → RF → FT → 선택·결합)으로 해석함. Unsplash 검색 API(napi)가 JSON 대신 HTML을 돌려줘 find_photos.py가 실패 → 기존 덱에서 검증된 사진을 재사용하고, 표지는 다른 덱 표지에 쓰이지 않은 Pine Watt 숲 사진으로 지정. 수치는 1차 논문 기준(Fernández-Delgado 2014, Grinsztajn 2022, LoRA §4.2, QLoRA, InstructGPT)이며 학습 지식에 기반하므로 발표 전 원문 확인 권장. index.html은 CRLF라 CRLF로 삽입.
