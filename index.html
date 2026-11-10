@@ -1254,7 +1254,7 @@
     <div class="yt-header-right">
       <span class="deck-count-pill">
         <span class="status-dot"></span>
-        <span id="deckCountBadge">36 DECKS</span>
+        <span id="deckCountBadge">39 DECKS</span>
       </span>
 
       <button id="viewModeToggle" class="icon-btn" type="button" aria-label="보기 방식 전환" title="그리드 / 리스트 보기 전환">
@@ -1347,7 +1347,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 36</span>
+      <span class="viewer-pos" id="viewerPos">01 / 39</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -1390,6 +1390,18 @@
     // 발표 목록 데이터 (워크스페이스 내 전체 36개 HTML 발표자료 전수 수록)
     // hook 필드는 16:9 썸네일 내부에 표시될 핵심 포스터 카피(아래 제목과 중복 방지)
     const DECKS = [
+      {
+        id: 'modern-health-triad-cinematic',
+        src: 'modern_health_triad_cinematic_presentation.html',
+        cat: '라이프',
+        title: '무너진 일상을 깨우는 생명력 리부트 — 운동 · 수면 · 스트레스 과학',
+        hook: 'VO2 Max & 존2 유산소 · 뇌 세척 글림프 숙면 · 생리적 한숨과 24시 루틴',
+        desc: '현대인의 만성 피로와 번아웃을 해결하는 건강 3대 기둥(운동·수면·스트레스 회복) 완벽 가이드. 존2 유산소와 마이오카인 근력 운동, 90분 수면 주기와 3-2-1 딥슬립 법칙, 자율신경계 리셋 및 24시간 루틴 시네마틱 20장.',
+        slides: '20장',
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1544367567-0f2fcb009e0b'
+      },
       {
         id: 'sleep-science-cinematic',
         src: 'sleep_science_cinematic_presentation.html',

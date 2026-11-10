@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>현대인의 생명력 리부트: 운동 · 수면 · 스트레스 과학 — Cinematic Interactive Presentation</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:70px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:94px;line-height:1.15}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.22em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:52px;display:flex;flex-direction:column;gap:24px;text-align:left}
+.bullet{display:flex;align-items:center;gap:24px;font-size:30px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:64px;height:64px;border-radius:16px;display:grid;place-items:center;font-size:30px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:170px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:60px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:26px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:64px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 36px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:35px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:22px;color:var(--mu);line-height:1.48;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:50px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:42px 46px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:34px;font-weight:800;margin-bottom:26px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:38px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:24px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:11px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:42px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:30px 36px 26px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:26px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:30px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 14px;border-radius:999px;font-size:16px;font-weight:800;letter-spacing:.02em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:19px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:66px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 36px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:12%;right:12%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:22px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:33px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95);white-space:nowrap}
+.tl-item .ds{margin-top:14px;font-size:20px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:84px;line-height:1.2}
+.chips{margin-top:52px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:24px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 — 현대인의 건강 3대 기둥: 운동 · 수면 · 스트레스 과학 (20장) ===================== */
+const DECK = {
+  brand: { name: 'VITALITY REBOOT', icon: 'solar:heart-pulse-2-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: ['현대인의 생체 위기', '운동: 대사와 뇌의 엔진', '수면: 밤의 뇌 과학', '스트레스 해소와 24시 루틴'],
+  slides: [
+    // 01. cover (ch 0) — 고유 표지 bg: photo-1544367567-0f2fcb009e0b
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1544367567-0f2fcb009e0b', photo: 'Jared Rice',
+      eyebrow: 'BIO-OPTIMIZATION & LONGEVITY SCIENCE · 2026',
+      title: '무너진 일상을 깨우는 생명력 리부트,<br><em>운동 · 수면 · 스트레스 회복의 과학</em>',
+      sub: '만성 피로와 번아웃을 넘어 — 의학과 뇌과학이 증명한 현대인 건강 3대 기둥(Triad) 마스터플랜',
+      meta: 'EXERCISE · DEEP SLEEP · STRESS RESILIENCE · 20 SCENES'
+    },
+    // 02. stats (ch 0)
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1499750310107-5fef28a66643', photo: 'Andrew Neel',
+      eyebrow: 'THE SILENT CRISIS OF MODERN HUMANS',
+      title: '열심히 살수록 에너지는 고갈되는 <em>현대인의 생체 성적표</em>',
+      items: [
+        { value: '6.3', unit: '시간', label: 'OECD 최하위권에 머무는 한국 성인의 하루 평균 수면 시간' },
+        { value: '73', unit: '%', label: '상시적 피로감과 만성 스트레스·번아웃을 호소하는 직장인 비율' }
+      ],
+      note: '출처 · 대한수면학회 국민 수면 실태조사 & WHO 글로벌 번아웃·신체활동 보고서'
+    },
+    // 03. bullets (ch 0)
+    {
+      layout: 'bullets', chapter: 0,
+      bg: 'photo-1519501025264-65ba15a82390', photo: 'Aleksandar Pasaric',
+      eyebrow: 'WHY OUR BODY BREAKS DOWN · 무엇이 우리를 지치게 하는가?',
+      title: '수렵채집인의 유전자와 <em>초연결 디지털 도시</em>의 충돌',
+      items: [
+        { icon: 'solar:chair-2-bold', text: '하루 9시간 이상의 좌식 감옥: 근육 수축이 멈추면서 혈류와 미토콘드리아 대사 스위치가 꺼짐' },
+        { icon: 'solar:smartphone-bold', text: '꺼지지 않는 밤의 인공조명: 자정까지 이어지는 스마트폰 블루라이트가 수면 호르몬(멜라토닌)을 파괴' },
+        { icon: 'solar:bell-bing-bold', text: '24시간 교감신경의 폭주: 끊이지 않는 업무 알림과 경쟁 압박이 뇌를 상시 전투 모드에 가둠' },
+        { icon: 'solar:cup-hot-bold', text: '카페인과 당분의 가짜 에너지: 피로를 각성제로 덮고 밤에는 야식·알코올로 보상받는 대사 악순환' }
+      ],
+      note: '현대인의 피로는 나태함 때문이 아니라, 진화적 설계와 정반대로 돌아가는 생활 환경 때문입니다'
+    },
+    // 04. flow (ch 0)
+    {
+      layout: 'flow', chapter: 0,
+      bg: 'photo-1507166763745-bfe008fbb831', photo: 'Conor Sexton',
+      eyebrow: 'THE VICIOUS CYCLE · 도미노처럼 무너지는 건강 3대 축',
+      title: '운동 · 잠 · 스트레스는 <em>하나의 톱니바퀴</em>로 맞물려 돈다',
+      steps: [
+        { label: '만성 스트레스 누적', desc: '코르티솔 호르몬 야간 고착화로<br>심박수 상승 및 뇌 과각성 유발' },
+        { label: '수면 분절 & 깊은 잠 상실', desc: '뇌 노폐물 세척 실패 및 다음 날<br>식욕 호르몬(그렐린) 폭발적 증가' },
+        { label: '무기력증 & 신체활동 포기', desc: '근육 감소와 인슐린 저항성 악화로<br>스트레스 방어력 재차 추락' }
+      ],
+      note: '세 가지 중 단 하나의 고리만 정방향으로 돌려놓아도 나머지 두 축이 함께 회복되기 시작합니다'
+    },
+    // 05. svg_cards (ch 0)
+    {
+      layout: 'svg_cards', chapter: 0,
+      bg: 'photo-1551288049-bebda4e38f71', photo: 'Luke Chesser',
+      eyebrow: 'SYNERGY OF THE HEALTH TRIAD · 3대 기둥 통합의 위력',
+      title: '운동 · 수면 · 마음챙김이 결합될 때 <em>생체 나이가 역전된다</em>',
+      cards: [
+        {
+          icon: 'solar:radar-2-bold',
+          title: '현대인 5대 생체 활력 스펙트럼',
+          badge: '3대 루틴 실천 vs 만성피로',
+          chart: 'chart_triad_radar',
+          hi: true,
+          foot: '운동·수면·스트레스 관리를 병행할 때 5대 생체 지표가 동반 상승'
+        },
+        {
+          icon: 'solar:chart-2-bold',
+          title: '건강 습관 실천 개수별 사망 위험 감소',
+          badge: '복합 실천 시 -62% 감소',
+          chart: 'chart_mortality_bar',
+          hi: true,
+          foot: '한 가지만 할 때보다 3대 기둥을 함께 챙길 때 질병 예방 효과가 배가됨'
+        }
+      ],
+      note: '출처 · UK Biobank 38만 명 복합 생활습관 코호트 연구 & Harvard T.H. Chan School of Public Health'
+    },
+
+    // 06. quote (ch 1)
+    {
+      layout: 'quote', chapter: 1,
+      bg: 'photo-1552674605-db6ffd4facb5', photo: 'Chander R',
+      eyebrow: 'PILLAR 01 · EXERCISE AS MEDICINE',
+      quote: '운동이 주는 효과를 단 하나의 알약에 담을 수 있다면,<br><em>그것은 인류 역사상 가장 많이 처방되는 기적의 신약이 될 것이다</em>',
+      by: 'DR. ROBERT BUTLER · FOUNDING DIRECTOR OF NATIONAL INSTITUTE ON AGING'
+    },
+    // 07. stats (ch 1)
+    {
+      layout: 'stats', chapter: 1,
+      bg: 'photo-1486218119243-13883505764c', photo: 'Jenny Hill',
+      eyebrow: 'EXERCISE & BRAIN-HEART LONGEVITY',
+      title: '몸을 움직이는 순간 <em>심장과 뇌세포가 동시에 젊어진다</em>',
+      items: [
+        { value: '-50', unit: '%', label: '심폐체력(VO2 Max) 상위 25% 유지 시 모든 원인 조기 사망률 감소폭' },
+        { value: '300', unit: '%↑', label: '유산소 운동 직후 뇌신경유래영양인자(BDNF · 뇌의 비료) 분비 증가율' }
+      ],
+      note: '출처 · JAMA Network Open (12만 명 심폐체력 코호트) & Harvard Medical School (Dr. John Ratey 『Spark』)'
+    },
+    // 08. compare (ch 1)
+    {
+      layout: 'compare', chapter: 1,
+      bg: 'photo-1517838277536-f5f99be501cd', photo: 'Victor Freitas',
+      eyebrow: 'DUAL ENGINE OF FITNESS · 왜 유산소와 근력을 함께 해야 할까?',
+      title: '에너지를 만드는 <em>유산소(존2)</em>와 대사를 지키는 <em>근력 운동</em>',
+      left: {
+        title: '존2(Zone 2) 유산소 운동 (심폐·세포 엔진)',
+        icon: 'solar:heart-pulse-bold',
+        items: [
+          '핵심 강도: 옆 사람과 편안히 문장으로 대화할 수 있는 중저강도 (최대심박수의 60~70%)',
+          '세포 변화: 세포 내 발전소인 미토콘드리아의 개수와 지방 연소 효율을 극대화',
+          '정신적 효과: 스트레스 호르몬(코르티솔)을 씻어내고 뇌 해마의 신경세포 생성을 촉진'
+        ]
+      },
+      right: {
+        title: '저항성 근력 운동 (근육·대사 방패)',
+        icon: 'solar:dumbbell-large-bold',
+        items: [
+          '핵심 강도: 스쿼트·런지·푸시업 등 대근육을 자극하는 주 2~3회 저항성 트레이닝',
+          '대사 변화: 우리 몸 최대의 포도당 저장고인 근육을 키워 식후 혈당 스파이크와 당뇨 예방',
+          '호르몬 효과: 근육에서 분비되는 항염증 호르몬 ‘마이오카인(Myokine)’이 전신 노화를 억제'
+        ]
+      },
+      note: '유산소 운동이 자동차의 엔진 배기량을 키우는 것이라면, 근력 운동은 튼튼한 차체와 브레이크를 만드는 것입니다'
+    },
+    // 09. bullets (ch 1)
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1594882645126-14020914d58d', photo: 'Sporlab',
+      eyebrow: 'EXERCISE SNACKS FOR BUSY PEOPLE · 시간 없다는 핑계를 깨는 법',
+      title: '헬스장에 갈 시간이 없다면 <em>일상 속 틈새 운동</em>을 심어라',
+      items: [
+        { icon: 'solar:stopwatch-bold', text: '운동 간식(Exercise Snacks): 하루 3번, 1~2분간 계단 빠르게 오르기만 해도 심혈관 사망 위험 30% 감소' },
+        { icon: 'solar:walking-round-bold', text: '식후 10분 산책의 기적: 식사 직후 가볍게 걸으면 근육이 혈중 포도당을 흡수해 식곤증과 혈당 피크를 30% 완화' },
+        { icon: 'solar:alarm-bold', text: '50분 좌식 + 3분 스쿼트: 1시간마다 자리에서 일어나 스쿼트 15회를 하면 하체 혈류 정체와 뇌 피로가 즉시 리셋' },
+        { icon: 'solar:calendar-mark-bold', text: '주 150분 황금 법칙: 평일 출퇴근길 빠른 걸음 20분 + 주말 자연 속 조깅 50분이면 WHO 권장량을 거뜬히 달성' }
+      ],
+      note: '완벽한 1시간을 기다리다 아무것도 안 하는 것보다, 지금 당장 5분 몸을 움직이는 것이 백배 강력합니다'
+    },
+    // 10. svg_cards (ch 1)
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1530143311094-34d807799e8f', photo: 'Fitsum Admasu',
+      eyebrow: 'DOSE-RESPONSE OF PHYSICAL ACTIVITY · 운동량과 건강의 관계',
+      title: '가장 큰 건강 수익률은 <em>운동을 처음 시작하는 구간</em>에서 터진다',
+      cards: [
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '주간 운동 시간별 질병 위험 감소 곡선',
+          badge: '주 150분 스윗스팟',
+          chart: 'chart_exercise_curve',
+          hi: true,
+          foot: '0분에서 주 150분으로 늘릴 때 사망 위험이 가장 가파르게 하락'
+        },
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: '식후 10분 걷기의 혈당 피크 억제율',
+          badge: '인슐린 감수성 향상',
+          chart: 'chart_glucose_gauge',
+          hi: true,
+          foot: '식사 직후 가벼운 보행만으로도 혈당 스파이크와 오후 식곤증 대폭 차단'
+        }
+      ],
+      note: '출처 · British Journal of Sports Medicine (BJSM) & Sports Medicine 식후 보행 메타분석'
+    },
+
+    // 11. stats (ch 2)
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1501139083538-0139583c060f', photo: 'Aron Visuals',
+      eyebrow: 'PILLAR 02 · SLEEP: THE NIGHTLY BRAIN WASH',
+      title: '잠은 멈춤이 아니라 <em>뇌와 면역계를 수리하는 가장 역동적인 시간</em>',
+      items: [
+        { value: '60', unit: '%↑', label: '깊은 잠을 잘 때 뇌세포가 베타아밀로이드 독소를 씻어내는 속도' },
+        { value: '-70', unit: '%', label: '하루 4시간 수면 시 암·바이러스를 잡는 NK 면역세포 활성 추락폭' }
+      ],
+      note: '출처 · Science (Nedergaard 글림프 시스템 연구) & UC Berkeley Matthew Walker 『Why We Sleep』'
+    },
+    // 12. flow (ch 2)
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1511884642898-4c92249e20b6', photo: 'Pine Watt',
+      eyebrow: 'SLEEP ARCHITECTURE · 90분 주기로 반복되는 밤의 교향곡',
+      title: '하룻밤 5번의 파도, <em>비렘수면(NREM)과 렘수면(REM)</em>의 역할',
+      steps: [
+        { label: '깊은 비렘수면 (초반 3시간)', desc: '성장호르몬 분비로 손상된 근육 복구 및<br>뇌척수액(글림프계) 노폐물 대청소' },
+        { label: '얕은 비렘수면 (과도기)', desc: '심박수와 체온을 안정화하고 낮 동안 배운<br>단기 기억을 장기 저장소로 이동' },
+        { label: '렘(REM) 수면 (새벽 집중)', desc: '기억들을 융합해 창의적 통찰을 만들고<br>낮에 겪은 부정적 감정 상처를 치유' }
+      ],
+      note: '늦게 자면 깊은 잠(초반)을 잃고, 너무 일찍 깨면 정서 치유와 창의력을 담당하는 렘수면(새벽)을 잃게 됩니다'
+    },
+    // 13. compare (ch 2)
+    {
+      layout: 'compare', chapter: 2,
+      bg: 'photo-1483478550801-ceba5fe50e8e', photo: 'Rodion Kutsaiev',
+      eyebrow: 'SLEEP SABOTEURS VS SLEEP ARCHITECTS',
+      title: '숙면을 망치는 <em>가짜 휴식</em> vs 깊은 잠을 부르는 <em>과학적 설계</em>',
+      left: {
+        title: '깊은 잠을 파괴하는 나쁜 습관',
+        icon: 'solar:close-circle-bold',
+        items: [
+          '잠들기 전 음주(Nightcap): 잠은 빨리 들게 하지만 수면을 잘게 쪼개고 렘수면을 철저히 차단',
+          '오후 늦은 커피 & 야간 스마트폰: 아데노신(수면 압력)을 가리고 멜라토닌 분비를 3시간 지연',
+          '주말 몰아자기(사회적 시차): 주말에 평일보다 2시간 이상 늦게 일어나 생체시계를 붕괴시킴'
+        ]
+      },
+      right: {
+        title: '꿀잠을 예약하는 수면 위생 프로토콜',
+        icon: 'solar:moon-stars-bold',
+        items: [
+          '아침 햇빛 10분 샤워: 기상 직후 자연광을 쬐어 코르티솔 스위치를 켜고 15시간 뒤 멜라토닌 예약',
+          '카페인 오후 2시 컷오프: 반감기(6시간)를 고려해 오후에는 디카페인이나 허브티로 전환',
+          '침실 온도 18~20℃ & 온수 샤워: 샤워 후 심부 체온이 1℃ 떨어지는 낙차를 이용해 빠른 입면 유도'
+        ]
+      },
+      note: '최고의 수면제는 밤에 먹는 약이 아니라, 오늘 아침 눈을 뜨자마자 마주하는 10분의 밝은 햇빛입니다'
+    },
+    // 14. bullets (ch 2)
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1507525428034-b723cf961d3e', photo: 'Sean Oulashin',
+      eyebrow: 'THE 3-2-1 WIND-DOWN RULE · 잠들기 전 3시간의 마법',
+      title: '뇌에게 “이제 쉴 시간”이라고 알려주는 <em>3-2-1 카운트다운</em>',
+      items: [
+        { icon: 'solar:plate-bold', text: '취침 3시간 전 금식(No Food): 소화기관이 쉬어야 수면 중 혈류가 위장이 아닌 뇌와 세포 복구에 집중됨' },
+        { icon: 'solar:laptop-minimalistic-bold', text: '취침 2시간 전 업무 종료(No Work): 메일 확인과 내일 걱정을 노트에 적어 덮어두고 교감신경을 오프(Off)' },
+        { icon: 'solar:eye-closed-bold', text: '취침 1시간 전 스크린 오프(No Screen): 방 조명을 어두운 전구색 간접등으로 바꾸고 가벼운 독서·스트레칭' },
+        { icon: 'solar:clock-circle-bold', text: '기상 시간 고정(Anchor Time): 어제 조금 늦게 잤더라도 아침 기상 시간은 ±30분 이내로 일정하게 유지' }
+      ],
+      note: '잠들기 힘든 밤에는 침대에서 20분 이상 뒤척이지 말고, 어두운 거실에서 책을 읽다 졸릴 때 다시 누우십시오'
+    },
+    // 15. svg_cards (ch 2)
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1519558260268-cde7e03a0152', photo: 'BENCE BOROS',
+      eyebrow: 'CIRCADIAN RHYTHM & SLEEP DEBT · 생체시계와 수면 부채',
+      title: '호르몬의 24시간 교차 리듬과 <em>수면 부족이 부르는 인지 쇼크</em>',
+      cards: [
+        {
+          icon: 'solar:sun-fog-bold',
+          title: '24시간 코르티솔 · 멜라토닌 교차 곡선',
+          badge: '생체시계(Circadian) 동조',
+          chart: 'chart_circadian_wave',
+          hi: true,
+          foot: '아침엔 코르티솔이 깨우고, 밤 9시 이후 멜라토닌이 솟구쳐야 숙면 완성'
+        },
+        {
+          icon: 'solar:danger-triangle-bold',
+          title: '수면 시간별 인지 능력 및 대사 리스크',
+          badge: '6시간 수면의 함정',
+          chart: 'chart_sleep_debt',
+          hi: true,
+          foot: '2주간 매일 6시간만 자면 뇌 인지 기능은 24시간 밤을 새운 상태와 동일'
+        }
+      ],
+      note: '출처 · Sleep (Van Dongen et al. 수면 부채 실험) & Nobel Prize in Physiology or Medicine (일주기 생체시계)'
+    },
+
+    // 16. quote (ch 3)
+    {
+      layout: 'quote', chapter: 3,
+      bg: 'photo-1506744038136-46273834b3fb', photo: 'Bailey Zindel',
+      eyebrow: 'PILLAR 03 · STRESS & NERVOUS SYSTEM RESET',
+      quote: '인간을 무너뜨리는 것은 스트레스 그 자체가 아니라,<br><em>스트레스 상황에서도 브레이크를 밟지 못하는 고장 난 회복 회로다</em>',
+      by: 'STANFORD NEUROBIOLOGY & AUTONOMIC NERVOUS SYSTEM PRINCIPLE'
+    },
+    // 17. compare (ch 3)
+    {
+      layout: 'compare', chapter: 3,
+      bg: 'photo-1469474968028-56623f02e42e', photo: 'David Marcu',
+      eyebrow: 'AUTONOMIC NERVOUS SYSTEM · 내 몸의 가속페달과 브레이크',
+      title: '몸을 망치는 <em>만성 스트레스</em> vs 나를 성장시키는 <em>회복 탄력성</em>',
+      left: {
+        title: '만성 디스트레스 (교감신경 고착 · 번아웃)',
+        icon: 'solar:fire-square-bold',
+        items: [
+          '신경계 상태: 가속페달(교감신경)만 끝까지 밟힌 채 브레이크(부교감신경)가 고장 난 상태',
+          '뇌 구조 변화: 공포·불안 중추인 편도체는 비대해지고, 이성적 판단을 하는 전두엽은 위축됨',
+          '신체적 결과: 만성 염증 수치 상승, 복부 내장지방 축적, 소화불량 및 심박변이도(HRV) 급락'
+        ]
+      },
+      right: {
+        title: '회복 탄력성 & 유스트레스 (자율신경 균형)',
+        icon: 'solar:leaf-bold',
+        items: [
+          '신경계 상태: 집중할 땐 날카롭게 각성하고, 일이 끝나면 즉시 이완 모드로 전환되는 유연성',
+          '뇌 구조 변화: 미주신경(Vagus Nerve) 활성화로 전두엽이 편도체의 흥분을 부드럽게 진정시킴',
+          '신체적 결과: 높은 심박변이도(HRV) 유지, 정서적 평온함, 위기 속에서도 흔들리지 않는 멘탈'
+        ]
+      },
+      note: '스트레스 관리의 핵심은 스트레스를 없애는 것이 아니라, 하루 중간중간 의도적인 ‘신경계 브레이크’를 밟아주는 것입니다'
+    },
+    // 18. flow (ch 3)
+    {
+      layout: 'flow', chapter: 3,
+      bg: 'photo-1448375240586-882707db888b', photo: 'Sebastian Unrau',
+      eyebrow: 'INSTANT STRESS RESET · 뇌과학이 검증한 3단계 진정 스위치',
+      title: '불안과 긴장이 치솟을 때 <em>60초 만에 신경계를 리셋하는 기술</em>',
+      steps: [
+        { label: '생리적 한숨 (호흡 스위치)', desc: '코로 두 번 연속 들이마시고(흡-흡)<br>입으로 길게 내쉬어 심박수 즉시 하강' },
+        { label: '파노라마 시선 확장', desc: '모니터 한 점에 꽂힌 좁은 시선을 풀고<br>창밖 먼 풍경을 넓게 바라보며 긴장 해제' },
+        { label: '자연 산책 & 감정 라벨링', desc: '녹지 공간을 15분 걷거나 현재 감정을<br>한 줄로 적어 편도체 흥분을 50% 진정' }
+      ],
+      note: '스탠퍼드대 앤드류 휴버만 연구팀 임상 결과, 하루 5분의 ‘생리적 한숨(길게 내쉬는 호흡)’이 명상보다 빠른 스트레스 감소 효과를 보였습니다'
+    },
+    // 19. timeline (ch 3)
+    {
+      layout: 'timeline', chapter: 3,
+      bg: 'photo-1476480862126-209bfaa8edc8', photo: 'Bruno Nascimento',
+      eyebrow: 'THE 24-HOUR VITALITY PROTOCOL · 하루에 녹여내는 실전 설계도',
+      title: '운동 · 잠 · 스트레스 해소가 하나로 흐르는 <em>현대인 황금 루틴</em>',
+      items: [
+        { time: '07:00 AM', label: '모닝 햇빛 & 수분', desc: '기상 직후 물 1잔과 10분 산책으로<br>생체시계 점화 및 밤의 숙면 예약' },
+        { time: '12:30 PM', label: '식후 보행 & 한숨', desc: '점심 직후 10분 야외 산책으로<br>혈당 피크 억제 및 오후 스트레스 리셋' },
+        { time: '06:30 PM', label: '존2 & 근력 운동', desc: '퇴근 후 40분 유산소·근력 운동으로<br>코르티솔 연소 및 뇌 BDNF 충전', em: true },
+        { time: '10:30 PM', label: '3-2-1 딥슬립 진입', desc: '조명 조도 낮추기 및 스마트폰 차단으로<br>7.5시간 뇌 노폐물 세척 수면 돌입' }
+      ],
+      note: '거창한 결심 대신 이 4가지 시간대의 작은 앵커(Anchor) 습관만 고정하면 몸과 마음은 저절로 회복됩니다'
+    },
+    // 20. closing (ch 3)
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1502904550040-7534597429ae', photo: 'Martins Zemlickis',
+      eyebrow: 'RECLAIM YOUR VITALITY · HEALTH IS YOUR ULTIMATE CAPITAL',
+      title: '가장 위대한 성취는 건강한 몸과 고요한 마음 위에서 피어난다,<br><em>오늘 당신의 생명력을 다시 깨우십시오</em>',
+      sub: '기분 좋은 땀방울, 깊고 고요한 밤의 잠, 그리고 긴장을 내려놓는 한 번의 깊은 호흡이 당신의 내일을 바꿉니다',
+      chips: ['존2 유산소 & 근력', '7.5시간 뇌 세척 숙면', '생리적 한숨과 이완', '지속 가능한 활력']
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // S05 좌측: 현대인 5대 생체 활력 스펙트럼 (5각 레이더 차트)
+  chart_triad_radar: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="235,38 322,101 289,204 181,204 148,101" fill="rgba(15,23,42,0.5)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
+    <polygon points="235,68 293,111 271,180 199,180 177,111" fill="none" stroke="rgba(255,255,255,0.11)" stroke-dasharray="3 3"/>
+    <polygon points="235,99 264,120 253,155 217,155 206,120" fill="none" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="235" y1="130" x2="235" y2="38" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="235" y1="130" x2="322" y2="101" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="235" y1="130" x2="289" y2="204" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="235" y1="130" x2="181" y2="204" stroke="rgba(255,255,255,0.14)"/>
+    <line x1="235" y1="130" x2="148" y2="101" stroke="rgba(255,255,255,0.14)"/>
+    <!-- 만성 피로 현대인 (Violet) -->
+    <polygon points="235,94 268,118 258,162 214,158 196,116" fill="rgba(168,85,247,0.24)" stroke="#c084fc" stroke-width="3"/>
+    <!-- 3대 기둥 실천자 (Cyan) -->
+    <polygon points="235,44 316,103 285,198 185,198 154,103" fill="rgba(0,210,255,0.26)" stroke="#00d2ff" stroke-width="3.2"/>
+    <text x="235" y="24" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">심폐·대사 에너지</text>
+    <text x="332" y="104" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="start">깊은 수면 복구력</text>
+    <text x="298" y="228" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="start">스트레스 회복탄력성</text>
+    <text x="172" y="228" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="end">뇌 집중력·기억력</text>
+    <text x="138" y="104" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="end">면역·항노화</text>
+    <rect x="456" y="42" width="164" height="72" rx="10" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.5)"/>
+    <circle cx="474" cy="66" r="6" fill="#00d2ff"/>
+    <text x="488" y="71" fill="#ffffff" font-size="15" font-weight="800">3대 루틴 실천자</text>
+    <text x="470" y="96" fill="#7dd3fc" font-size="13" font-weight="600">운동+숙면+이완 시너지</text>
+    <rect x="456" y="128" width="164" height="72" rx="10" fill="rgba(168,85,247,0.14)" stroke="rgba(192,132,252,0.5)"/>
+    <circle cx="474" cy="152" r="6" fill="#c084fc"/>
+    <text x="488" y="157" fill="#ffffff" font-size="15" font-weight="800">만성 피로 현대인</text>
+    <text x="470" y="182" fill="#d8b4fe" font-size="13" font-weight="600">좌식·수면부족·과각성</text>
+  </svg>`,
+
+  // S05 우측: 건강 습관 실천 개수별 조기 사망 및 만성질환 위험 감소율
+  chart_mortality_bar: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gBarTriad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7"/>
+        <stop offset="100%" stop-color="#00d2ff"/>
+      </linearGradient>
+    </defs>
+    <!-- Row 1 -->
+    <text x="20" y="38" fill="#cbd5e1" font-size="16" font-weight="700">01. 단일 습관만 관리 (운동만 하거나 잠만 잘 때)</text>
+    <text x="615" y="38" fill="#94a3b8" font-size="17" font-weight="800" text-anchor="end">-23% 위험 감소</text>
+    <rect x="20" y="48" width="595" height="22" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="48" width="220" height="22" rx="6" fill="#64748b"/>
+    <!-- Row 2 -->
+    <text x="20" y="106" fill="#e2e8f0" font-size="16" font-weight="700">02. 2가지 기둥 병행 (규칙적 운동 + 7시간 이상 숙면)</text>
+    <text x="615" y="106" fill="#38bdf8" font-size="17" font-weight="800" text-anchor="end">-44% 위험 감소</text>
+    <rect x="20" y="116" width="595" height="22" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="116" width="410" height="22" rx="6" fill="#0284c7"/>
+    <!-- Row 3 -->
+    <text x="20" y="176" fill="#00d2ff" font-size="18" font-weight="900">03. 3대 기둥 통합 완성 (운동 + 숙면 + 스트레스 관리)</text>
+    <text x="615" y="176" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="end">-62% 극적 감소</text>
+    <rect x="20" y="186" width="595" height="28" rx="7" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.4)"/>
+    <rect x="20" y="186" width="565" height="28" rx="7" fill="url(#gBarTriad)"/>
+    <text x="30" y="236" fill="#7dd3fc" font-size="14" font-weight="700">기대 건강수명(Healthspan) 평균 +9.4년 연장 효과 (UK Biobank 코호트)</text>
+  </svg>`,
+
+  // S10 좌측: 주간 운동 시간별 모든 원인 사망 위험 감소 곡선 (Dose-Response)
+  chart_exercise_curve: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gAreaEx" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.42"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glowEx" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="50" x2="590" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="125" x2="590" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="205" x2="590" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <path d="M 85 52 C 165 135, 250 165, 340 176 C 430 184, 505 188, 565 190 L 565 205 L 85 205 Z" fill="url(#gAreaEx)"/>
+    <path d="M 85 52 C 165 135, 250 165, 340 176 C 430 184, 505 188, 565 190" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glowEx)"/>
+    <circle cx="85" cy="52" r="6.5" fill="#0a101c" stroke="#f87171" stroke-width="3"/>
+    <text x="95" y="40" fill="#f87171" font-size="15" font-weight="800" text-anchor="start">기준 위험 1.00 (비운동)</text>
+    <text x="85" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">주 0분</text>
+    <circle cx="210" cy="142" r="6.5" fill="#0a101c" stroke="#38bdf8" stroke-width="3"/>
+    <text x="210" y="124" fill="#ffffff" font-size="16" font-weight="800" text-anchor="middle">-20% 감소</text>
+    <text x="210" y="232" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">주 75분</text>
+    <circle cx="340" cy="176" r="13" fill="rgba(0,210,255,0.22)"/>
+    <circle cx="340" cy="176" r="7.5" fill="#00d2ff" filter="url(#glowEx)"/>
+    <text x="340" y="154" fill="#00d2ff" font-size="18" font-weight="900" text-anchor="middle">-31% (최적 효율 구간)</text>
+    <text x="340" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">주 150분 (권장)</text>
+    <circle cx="565" cy="190" r="6.5" fill="#0a101c" stroke="#00d2ff" stroke-width="3"/>
+    <text x="565" y="172" fill="#7dd3fc" font-size="16" font-weight="800" text-anchor="end">-39% (수익 체감)</text>
+    <text x="565" y="232" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">주 300분+</text>
+  </svg>`,
+
+  // S10 우측: 식후 10분 보행의 혈당 피크 억제율 & 주 2회 근력 운동 시너지 (도넛 게이지)
+  chart_glucose_gauge: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="170" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="170" cy="112" r="74" fill="none" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-dasharray="325 465" transform="rotate(-90 170 112)"/>
+    <text x="170" y="116" fill="#ffffff" font-size="36" font-weight="900" text-anchor="middle">-30%</text>
+    <text x="170" y="140" fill="#7dd3fc" font-size="13" font-weight="700" text-anchor="middle">식후 혈당 피크</text>
+    <text x="170" y="218" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">식후 10분 걷기 효과</text>
+    <line x1="320" y1="28" x2="320" y2="235" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="470" cy="112" r="74" fill="none" stroke="#38bdf8" stroke-width="16" stroke-linecap="round" stroke-dasharray="395 465" transform="rotate(-90 470 112)"/>
+    <text x="470" y="116" fill="#ffffff" font-size="36" font-weight="900" text-anchor="middle">-46%</text>
+    <text x="470" y="140" fill="#7dd3fc" font-size="13" font-weight="700" text-anchor="middle">모든 원인 사망률</text>
+    <text x="470" y="218" fill="#38bdf8" font-size="17" font-weight="800" text-anchor="middle">유산소 + 주 2회 근력 병행</text>
+  </svg>`,
+
+  // S15 좌측: 24시간 코르티솔(각성) · 멜라토닌(수면) 일주기 교차 곡선
+  chart_circadian_wave: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <line x1="55" y1="50" x2="590" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="125" x2="590" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="205" x2="590" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <!-- 코르티솔 곡선 (아침 8시 피크, 밤 최저) -->
+    <path d="M 75 140 C 115 48, 155 45, 210 95 C 280 150, 380 185, 480 192 C 525 194, 555 175, 580 150" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="140" cy="54" r="6" fill="#38bdf8"/>
+    <text x="145" y="38" fill="#38bdf8" font-size="15" font-weight="800" text-anchor="middle">아침 코르티솔 피크 (기상·활력)</text>
+    <!-- 멜라토닌 곡선 (낮 최저, 밤 10시~새벽 3시 피크) -->
+    <path d="M 75 180 C 140 195, 280 198, 360 188 C 415 170, 455 58, 515 54 C 550 54, 568 110, 580 140" fill="none" stroke="#c084fc" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="505" cy="54" r="6.5" fill="#c084fc"/>
+    <text x="485" y="38" fill="#d8b4fe" font-size="15" font-weight="800" text-anchor="middle">밤 멜라토닌 분비 (깊은 수면)</text>
+    <!-- X축 시간 라벨 -->
+    <text x="80" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">06:00</text>
+    <text x="205" y="232" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">12:00 (정오)</text>
+    <text x="345" y="232" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">18:00 (저녁)</text>
+    <text x="475" y="232" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">23:00 (취침)</text>
+    <text x="575" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">04:00</text>
+  </svg>`,
+
+  // S15 우측: 수면 시간별 뇌 인지 수행력 유지율 비교
+  chart_sleep_debt: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <!-- Case 1: 8시간 숙면군 -->
+    <text x="20" y="36" fill="#00d2ff" font-size="17" font-weight="800">01. 하루 7.5~8시간 충분한 수면군 (2주 후 인지 수행력)</text>
+    <rect x="20" y="48" width="595" height="28" rx="6" fill="rgba(0,210,255,0.12)" stroke="rgba(0,210,255,0.4)"/>
+    <rect x="20" y="48" width="575" height="28" rx="6" fill="#00d2ff"/>
+    <text x="34" y="68" fill="#05070c" font-size="15" font-weight="900">뇌 집중력 · 반응속도 · 감정조절 98% 최상 유지</text>
+    <!-- Case 2: 6시간 만성 수면부족군 -->
+    <text x="20" y="114" fill="#e2e8f0" font-size="17" font-weight="800">02. 하루 6시간 수면 지속군 (본인은 피로를 못 느끼는 함정)</text>
+    <rect x="20" y="126" width="595" height="26" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="126" width="330" height="26" rx="6" fill="#c084fc"/>
+    <text x="364" y="145" fill="#d8b4fe" font-size="15" font-weight="800">인지 능력 55% (24시간 철야와 동일)</text>
+    <!-- Case 3: 4시간 극단적 수면박탈군 -->
+    <text x="20" y="190" fill="#cbd5e1" font-size="17" font-weight="800">03. 하루 4~5시간 수면 박탈군 (미세수면 · 대사증후군 위험)</text>
+    <rect x="20" y="202" width="595" height="26" rx="6" fill="rgba(255,255,255,0.06)"/>
+    <rect x="20" y="202" width="195" height="26" rx="6" fill="#f87171"/>
+    <text x="230" y="221" fill="#f87171" font-size="15" font-weight="800">인지 능력 32% 추락 · 비만 위험 +55%</text>
+  </svg>`
+};
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
