@@ -1,0 +1,1908 @@
+<!-- 시네마틱 발표자료: 리플렉트 오비탈과 우주 거울 혁신 (20장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리플렉트 오비탈과 우주 거울 혁신 · 시네마틱 발표자료</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+
+/* === MOTION GRAPHICS PRESENTATION UPGRADE CSS v4 (ZERO WORD-BREAK & WIPE REVEAL) === */
+#motion-canvas {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 배경 실사는 은은한 텍스처로 낮추고 모션 캔버스와 텍스트 가독성 극대화 */
+.bg.show {
+  opacity: 0.22 !important;
+  filter: saturate(1.15) contrast(1.1);
+}
+
+/* 텔레메트리 HUD 코너 장식 업그레이드 */
+.hud {
+  border-color: rgba(0, 210, 255, 0.48) !important;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.22);
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+.hud-telemetry {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #38bdf8;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  z-index: 3;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 210, 255, 0.55);
+}
+.hud-telemetry.tl { left: 74px; top: 142px; }
+.hud-telemetry.tr { right: 74px; top: 142px; text-align: right; }
+.hud-telemetry.bl { left: 74px; bottom: 64px; }
+
+/* =========================================================================
+   1. 블록 전체 키네틱 스프링 + 블러 디졸브 등장 ([data-s])
+   - DOM 텍스트를 쪼개지 않고(Flexbox 붕괴 0%) 블록 단위로 탄성 있게 등장!
+   ========================================================================= */
+[data-s] {
+  opacity: 0;
+  transform: translateY(32px) scale(0.97);
+  filter: blur(10px);
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s),
+    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s);
+}
+[data-s].on {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* 불릿, 비교 리스트 항목, 스텝 설명이 순차적으로 좌→우 홀로그램 와이프로 나타나는 애니메이션 */
+.panel.hi.on ul li {
+  animation: hologramRowReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.panel.hi.on ul li:nth-child(1) { animation-delay: calc(var(--d, 0s) + 0.12s); }
+.panel.hi.on ul li:nth-child(2) { animation-delay: calc(var(--d, 0s) + 0.28s); }
+.panel.hi.on ul li:nth-child(3) { animation-delay: calc(var(--d, 0s) + 0.44s); }
+
+@keyframes hologramRowReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-22px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+/* 불릿 항목 등장 시 좌에서 우로 광자 스캔라인이 텍스트를 깨우며 지나가는 모션 */
+.bullet.on {
+  position: relative;
+  animation: bulletSlideGlow 0.78s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@keyframes bulletSlideGlow {
+  0% {
+    opacity: 0;
+    transform: translateX(-34px) scale(0.98);
+    filter: blur(8px) brightness(1.8);
+  }
+  60% {
+    filter: blur(0px) brightness(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* =========================================================================
+   2. 전 슬라이드 1줄(Single-Line) 및 박스 무결성 레이아웃 최적화
+   ========================================================================= */
+#slide {
+  padding: 36px 96px 104px !important;
+}
+.title {
+  font-size: 68px !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.03em !important;
+  word-break: keep-all !important;
+}
+.cover .title {
+  font-size: 104px !important;
+  line-height: 1.14 !important;
+}
+
+/* Bullets: 74자 장문도 1920px 안에서 아이콘 잘림이나 2줄 꺾임 없이 1줄에 완벽히 들어오도록 최적화 */
+.bullets {
+  width: 100%;
+  max-width: 1720px;
+  margin-top: 52px !important;
+  gap: 24px !important;
+}
+.bullet {
+  font-size: 27px !important;
+  gap: 22px !important;
+  white-space: nowrap !important;
+  color: #f8fafc !important;
+}
+.bullet .ico {
+  width: 62px !important;
+  height: 62px !important;
+  font-size: 30px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Compare: 박스 너비를 820px로 넓히고 헤더/항목이 절대 어색하게 끊기지 않도록 최적화 */
+.compare {
+  margin-top: 48px !important;
+  gap: 36px !important;
+  width: 100%;
+  max-width: 1680px;
+  justify-content: center;
+}
+.panel {
+  width: 820px !important;
+  padding: 38px 42px !important;
+}
+.panel h3 {
+  font-size: 32px !important;
+  white-space: nowrap !important;
+  margin-bottom: 24px !important;
+}
+.panel li {
+  font-size: 23px !important;
+  line-height: 1.5 !important;
+  color: #f1f5f9 !important;
+  word-break: keep-all !important;
+}
+
+/* =========================================================================
+   3. 초고대비(Ultra High-Visibility) 네온 강조 타이틀 (.title em, .quote em)
+   ========================================================================= */
+.title em, .quote em {
+  position: relative;
+  display: inline-block;
+  font-style: normal;
+  color: #67e8f9 !important;
+  background: none !important;
+  -webkit-text-fill-color: #67e8f9 !important;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.95),
+    0 6px 22px rgba(0, 0, 0, 0.95),
+    0 0 24px rgba(0, 210, 255, 0.85),
+    0 0 48px rgba(56, 189, 248, 0.45) !important;
+  padding-bottom: 4px;
+  animation: emBreathe 3.6s ease-in-out infinite;
+}
+.title em::after, .quote em::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(0,210,255,0.15), #00d2ff 25%, #fde047 50%, #00d2ff 75%, rgba(0,210,255,0.15));
+  background-size: 200% 100%;
+  box-shadow: 0 0 16px #00d2ff, 0 0 28px rgba(253, 224, 71, 0.55);
+  animation: laserLineScan 3.2s linear infinite;
+}
+@keyframes emBreathe {
+  0%, 100% {
+    color: #67e8f9 !important;
+    -webkit-text-fill-color: #67e8f9 !important;
+  }
+  50% {
+    color: #fef08a !important;
+    -webkit-text-fill-color: #fef08a !important;
+    text-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.95),
+      0 6px 22px rgba(0, 0, 0, 0.95),
+      0 0 28px rgba(250, 204, 21, 0.9),
+      0 0 54px rgba(0, 210, 255, 0.6) !important;
+  }
+}
+@keyframes laserLineScan {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 일반 텍스트 가시성 보강 */
+.eyebrow {
+  color: #38bdf8 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 18px rgba(0, 210, 255, 0.55) !important;
+}
+.sub {
+  color: #f1f5f9 !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95) !important;
+}
+
+/* 아이브로우 칩 레이저 펄스 */
+.cover .chip, .svg-badge {
+  position: relative;
+  overflow: hidden;
+  color: #7dd3fc !important;
+  background: rgba(8, 22, 44, 0.82) !important;
+  border-color: rgba(56, 189, 248, 0.65) !important;
+  animation: badgePulse 3.2s ease-in-out infinite;
+}
+.cover .chip::after, .svg-badge::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%; width: 70%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
+  transform: skewX(-25deg);
+  animation: lightSweep 4.2s ease-in-out infinite;
+}
+@keyframes lightSweep {
+  0%, 35% { left: -120%; }
+  75%, 100% { left: 160%; }
+}
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(0, 210, 255, 0.28); }
+  50% { box-shadow: 0 0 28px rgba(0, 210, 255, 0.62); }
+}
+
+/* 불릿 아이콘 궤도 회전 글로우 */
+.bullet .ico {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.bullet.em .ico {
+  animation: icoFloat 3s ease-in-out infinite;
+}
+@keyframes icoFloat {
+  0%, 100% { transform: translateY(0); box-shadow: 0 0 28px rgba(0, 210, 255, 0.45); }
+  50% { transform: translateY(-4px); box-shadow: 0 0 42px rgba(253, 224, 71, 0.55); }
+}
+
+/* Stats 빅 넘버 네온 홀로그램 광원 */
+.stat .v {
+  position: relative;
+  color: #ffffff !important;
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.95),
+    0 0 42px rgba(0, 210, 255, 0.6) !important;
+}
+.stat .v small {
+  color: #67e8f9 !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 22px rgba(0, 210, 255, 0.75) !important;
+}
+.stat .l {
+  color: #f1f5f9 !important;
+}
+
+/* Flow 마름모 회전 궤도 링 + 화살표 광자 패킷 이동 */
+.dia::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(0, 210, 255, 0.55);
+  animation: orbitSpin 14s linear infinite;
+}
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
+}
+.arrow {
+  overflow: visible !important;
+}
+.arrow::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 18px;
+  height: 8px;
+  border-radius: 99px;
+  background: #fde047;
+  box-shadow: 0 0 16px #fde047, 0 0 28px #00d2ff;
+  animation: photonFlow 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes photonFlow {
+  0% { left: 0%; opacity: 0; transform: scaleX(0.5); }
+  20% { opacity: 1; transform: scaleX(1.2); }
+  85% { opacity: 1; }
+  100% { left: 92%; opacity: 0; transform: scaleX(0.6); }
+}
+
+/* Timeline 소나 파동(Sonar Ripple) & 에너지 스트림 */
+.timeline::after {
+  content: '';
+  position: absolute;
+  top: 53px;
+  left: 8%;
+  width: 140px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, transparent, #00d2ff, #fde047, transparent);
+  box-shadow: 0 0 18px #00d2ff;
+  animation: timelineStream 3.6s ease-in-out infinite;
+}
+@keyframes timelineStream {
+  0% { left: 8%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 78%; opacity: 0; }
+}
+.tl-item .dot {
+  position: relative;
+}
+.tl-item .dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 210, 255, 0.65);
+  animation: sonarRipple 2.4s ease-out infinite;
+}
+.tl-item.em .dot::after {
+  border-color: #fde047;
+  animation-duration: 1.8s;
+}
+@keyframes sonarRipple {
+  0% { transform: scale(0.6); opacity: 0.95; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+
+/* Compare & SVG 카드 홀로그램 보더 스캔 */
+.panel.hi, .svg-card.hi {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(10, 18, 34, 0.88), rgba(6, 11, 22, 0.84)) !important;
+}
+.panel.hi::after, .svg-card.hi::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d2ff, #fde047, transparent);
+  box-shadow: 0 0 16px #00d2ff;
+  animation: cardBorderScan 5s ease-in-out infinite;
+}
+@keyframes cardBorderScan {
+  0% { left: -60%; }
+  50% { left: 110%; }
+  100% { left: 110%; }
+}
+
+/* === SVG 내부 셀프 드로잉 & 모션그래픽 키프레임 === */
+.mg-draw {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: svgLineDraw 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+.mg-draw-delay {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: svgLineDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards;
+}
+@keyframes svgLineDraw {
+  to { stroke-dashoffset: 0; }
+}
+.mg-area {
+  opacity: 0;
+  animation: svgAreaFade 1.4s ease 0.9s forwards;
+}
+@keyframes svgAreaFade {
+  to { opacity: 1; }
+}
+.mg-bar-h {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: svgBarH 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+.mg-bar-v {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transform: scaleY(0);
+  animation: svgBarV 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+@keyframes svgBarH {
+  to { transform: scaleX(1); }
+}
+@keyframes svgBarV {
+  to { transform: scaleY(1); }
+}
+.mg-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: svgNodePulse 2.2s ease-in-out infinite;
+}
+@keyframes svgNodePulse {
+  0%, 100% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.28); opacity: 0.55; }
+}
+.mg-ring-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbitSpin 18s linear infinite;
+}
+
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 ===================== */
+const DECK = {
+  brand: { name: 'REFLECT ORBITAL · MOTION', icon: 'solar:planet-3-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: [
+    '밤에 햇빛을 파는 스타트업',
+    '에아렌딜-1과 기술 아키텍처',
+    '글로벌 우주 거울 경쟁사',
+    '빛 공해 논쟁과 미래 전망'
+  ],
+  slides: [
+    // 01. Cover (ch 0)
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1446776877081-d282a0f896e2', photo: 'NASA',
+      eyebrow: '60FPS 8-SCENE MOTION ENGINE · SPACE MIRROR REVOLUTION',
+      title: '밤하늘에 거울을 띄워 햇빛을 판다<br><em>리플렉트 오비탈과 우주 거울의 진실</em>',
+      sub: '미국 스타트업 Reflect Orbital의 야간 태양광·재난 조명 혁신부터 러시아 즈나먀·중국 인공 달, 천문학계 빛 공해 논쟁까지',
+      meta: '8종 슬라이드별 맞춤 모션 캔버스 · 어절 단위 키네틱 텍스트 등장 · 실시간 오도미터 탑재'
+    },
+    // 02. Stats (ch 0)
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1451187580459-43490279c0fa', photo: 'NASA',
+      eyebrow: 'CHAPTER 01 · 태양광의 역설과 우주 거울의 등장',
+      title: '해가 지면 멈추는 태양광 발전, <em>우주에서 답을 찾다</em>',
+      items: [
+        { value: '25', unit: '%', label: '일몰과 기상 한계로 묶여 있는<br>지상 태양광 발전소의 평균 이용률' },
+        { value: '24', unit: '시간', label: '지구 그림자 밖 저궤도 상공에서<br>끊이지 않고 쏟아지는 태양 에너지' },
+        { value: '30,000', unit: '건+', label: '리플렉트 오비탈 플랫폼에 접수된<br>글로벌 야간 햇빛 배송 사전 신청' }
+      ],
+      note: '출처 · Reflect Orbital Corporate Briefing & IEA Global Solar PV Capacity Factor Data (2025~2026)'
+    },
+    // 03. Bullets (ch 0)
+    {
+      layout: 'bullets', chapter: 0,
+      bg: 'photo-1517976487492-5750f3195933', photo: 'SpaceX',
+      eyebrow: 'WHO IS REFLECT ORBITAL',
+      title: '캘리포니아 스타트업 리플렉트 오비탈이<br><em>전 세계의 이목을 집중시킨 이유</em>',
+      items: [
+        { icon: 'solar:rocket-2-bold', text: '벤 노왁(Ben Nowack)과 트리스탄 세멜핵이 공동 창업한 미국 우주 스타트업으로 세쿼이아 등 벤처 투자 유치' },
+        { icon: 'solar:bolt-circle-bold', text: '일몰 직후와 일출 직전 전력 도매가격이 가장 비싼 피크 시간대에 지상 태양광 발전소로 햇빛을 반사해 발전 연장' },
+        { icon: 'solar:shield-check-bold', text: '대규모 정전·지진·산불 등 야간 재난 현장에 위성 거울로 즉시 조명을 비춰 골든타임 내 수색·구조 작업 지원' },
+        { icon: 'solar:devices-bold', text: '웹·앱에서 원하는 지상 좌표를 지정하면 저궤도 거울 위성이 밤하늘에서 햇빛을 비춰주는 온디맨드 모델 제시' }
+      ],
+      note: '출처 · Reflect Orbital Official Presentation & International Conference on Energy from Space (2024~2026)'
+    },
+    // 04. Flow (ch 0)
+    {
+      layout: 'flow', chapter: 0,
+      bg: 'photo-1614064641938-3bbee52942c7', photo: 'FlyD',
+      eyebrow: 'GROUND PROOF TO ORBITAL CONCEPT',
+      title: '열기구 지상 실증에서 저궤도 위성까지 3단계 작동 원리',
+      steps: [
+        { label: '열기구 거울 지상 실증', desc: '고도 3km 열기구에 2.5m 거울을 달아<br>지상 태양광 패널에 햇빛 반사 성공' },
+        { label: '태양동기궤도 위성 배치', desc: '고도 625km 상공에서 태양 빛을 받아<br>어두워진 지표면 타깃으로 정밀 조향' },
+        { label: '릴레이 군집 야간 조명', desc: '다수의 거울 위성이 바통을 이어받으며<br>발전소와 재난 현장에 연속 채광 제공' }
+      ],
+      note: '2024년 열기구 실증 당시 지상 태양광 패널에 제곱미터당 약 500W 수준의 의미 있는 일사량 전달을 입증했습니다'
+    },
+    // 05. Quote (ch 0)
+    {
+      layout: 'quote', chapter: 0,
+      bg: 'photo-1519681393784-d120267933ba', photo: 'Benjamin Voros',
+      eyebrow: 'VISION OF SUNLIGHT AS A SERVICE',
+      quote: '태양광은 인류 최고의 에너지원이지만 밤에는 사라진다.<br><em>우리는 우주 거울로 해가 진 뒤에도 태양을 배달한다</em>',
+      by: 'BEN NOWACK · CEO & CO-FOUNDER OF REFLECT ORBITAL'
+    },
+    // 06. Stats (ch 1)
+    {
+      layout: 'stats', chapter: 1,
+      bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
+      eyebrow: 'CHAPTER 02 · 첫 실증 위성 에아렌딜-1 (Eärendil-1) 스펙',
+      title: '테니스 코트 크기의 초경량 거울을 품은 <em>에아렌딜-1</em>',
+      items: [
+        { value: '18×18', unit: 'm', label: '우주 궤도에서 종이접기처럼 펼쳐지는<br>초박막 마일라(Mylar) 반사 거울 크기' },
+        { value: '625', unit: 'km', label: '황혼·새벽 시간대 지상을 비추는<br>태양동기궤도(SSO) 목표 운용 고도' },
+        { value: '5', unit: 'km', label: '단일 위성이 지상에 형성하는<br>보름달 밝기 수준의 조명 스팟 직경' }
+      ],
+      note: '출처 · Reflect Orbital FCC Satellite License Application (Eärendil-1 Technical Specs, 2025~2026)'
+    },
+    // 07. SVG Cards (ch 1)
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Alexandre Debieve',
+      eyebrow: 'HUD DATA VISUALIZATION · SOLAR DUCK CURVE & CONSTELLATION',
+      title: '일몰 후 전력 피크 극복 효과와 위성 군집 확장 로드맵',
+      cards: [
+        {
+          icon: 'solar:bolt-circle-bold',
+          title: '일몰 후 태양광 발전 연장 효과',
+          badge: '피크 시간대 공백 해소',
+          chart: 'c_duck_curve',
+          foot: '전력 수요가 급증하는 18~21시 일몰 구간에 우주 반사광으로 발전 시간 연장'
+        },
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '리플렉트 오비탈 위성 군집 계획',
+          badge: '1기 → 50,000기 비전',
+          chart: 'c_constellation',
+          foot: '2026년 1호기 실증을 시작으로 1단계 57기, 장기 5만 기 군집 구축 목표'
+        }
+      ],
+      note: '출처 · Reflect Orbital Constellation Roadmap & California ISO Duck Curve Analysis'
+    },
+    // 08. Flow (ch 1)
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1469474968028-56623f02e42e', photo: 'David Marcu',
+      eyebrow: 'PRECISION ATTITUDE & BEAM CONTROL',
+      title: '시속 27,000km로 날아가며 한 지점을 비추는 정밀 제어 기술',
+      steps: [
+        { label: '종이접기 박막 전개', desc: '머리카락 두께보다 얇은 알루미늄 코팅<br>마일라 막을 탄성 붐으로 팽팽히 전개' },
+        { label: '실시간 자세 제어(ADCS)', desc: '고속 반작용 휠과 자기 토커를 구동해<br>이동 중에도 거울 각도를 초정밀 회전' },
+        { label: '타깃 스팟 고정 트래킹', desc: '위성이 상공을 통과하는 약 4~5분 동안<br>지상 5km 구역에 반사광을 지속 고정' }
+      ],
+      note: '위성이 지나간 뒤에는 바로 뒤따라오는 후속 위성이 거울 각도를 맞춰 빛을 이어받는 릴레이 방식으로 작동합니다'
+    },
+    // 09. Compare (ch 1)
+    {
+      layout: 'compare', chapter: 1,
+      bg: 'photo-1585079374502-415f8516dcc3', photo: 'George Prentzas',
+      eyebrow: 'TERRESTRIAL STORAGE VS ORBITAL REFLECTION',
+      title: '지상 배터리 저장(ESS) 방식 vs 우주 거울 반사 방식 비교',
+      left: {
+        title: '지상 리튬이온 배터리 저장 (ESS)',
+        icon: 'solar:database-bold',
+        items: [
+          '낮에 생산한 전기를 대규모 배터리에 저장했다가 야간에 방전',
+          '발전소마다 수천억 원대 ESS 증설 비용과 화재·수명 교체 부담 발생',
+          '설치된 특정 발전소에만 귀속되어 타 지역으로 에너지를 옮길 수 없음'
+        ]
+      },
+      right: {
+        title: '궤도 반사 거울 위성 (Reflect Orbital)',
+        icon: 'solar:planet-3-bold',
+        items: [
+          '우주에서 햇빛 자체를 반사해 기존 태양광 패널이 밤에도 직접 발전',
+          '지상 발전소는 추가 설비 없이 위성 반사광을 받아 야간 전력 생산',
+          '하나의 위성 군집이 시간대별로 전 세계 여러 발전소와 재난 현장을 순회'
+        ]
+      },
+      note: '우주 거울은 배터리를 완전히 대체하기보다 일몰 직후·일출 직전 고단가 전력 피크를 보완하는 틈새시장을 겨냥합니다'
+    },
+    // 10. Bullets (ch 1)
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1470252649378-9c29740c9fa8', photo: 'Dawid Zawiła',
+      eyebrow: 'TARGET APPLICATIONS & BUSINESS MODEL',
+      title: '리플렉트 오비탈이 겨냥하는 <em>4대 핵심 상용화 시장</em>',
+      items: [
+        { icon: 'solar:bolt-bold', text: '유틸리티급 태양광 발전소: 저녁 피크 시간대 전력 판매 단가(PPA)가 급등하는 발전 사업자에게 추가 일조량 판매' },
+        { icon: 'solar:shield-up-bold', text: '야간 재난 구호 및 수색 구조: 지진·홍수·산불로 전력망이 파괴된 암흑 지대에 위성 조명을 즉시 투사해 구조대 지원' },
+        { icon: 'solar:buildings-2-bold', text: '야간 대형 인프라·광산 작업장: 전력 인입이 어려운 오지 건설 현장이나 노천광산에 야간 작업용 광역 조명 공급' },
+        { icon: 'solar:global-bold', text: '고위도 극야 도시 및 스마트 농업: 겨울철 해가 뜨지 않는 북유럽·알래스카 도시 조명과 고부가가치 온실 생육 촉진' }
+      ],
+      note: '출처 · Reflect Orbital Commercial Use Cases & Skyroot Aerospace Launch Partnership Brief'
+    },
+    // 11. Timeline (ch 2)
+    {
+      layout: 'timeline', chapter: 2,
+      bg: 'photo-1506744038136-46273834b3fb', photo: 'Bailey Zindel',
+      eyebrow: 'CHAPTER 03 · 인류의 우주 거울 도전사 (1929~2026)',
+      title: '100년의 상상에서 실제 궤도 실증까지, <em>우주 거울의 역사</em>',
+      items: [
+        { time: '1929 · 독일', label: '오베르트의 우주 거울 구상', desc: '로켓 공학 선구자 헤르만 오베르트가<br>극지방 조명용 궤도 거울 최초 제안' },
+        { time: '1993 · 러시아', label: '즈나먀 2호 세계 최초 성공', desc: '미르 정거장에서 20m 거울을 펼쳐<br>유럽 야간 지상에 5km 빛 투사 성공' },
+        { time: '2018 · 중국', label: '청두 인공 달 프로젝트 발표', desc: '가로등 전력 절감을 목표로 보름달<br>8배 밝기의 반사 위성 3기 구상 공개' },
+        { time: '2026 · 미국·유럽', label: '리플렉트 오비탈 & Solspace', desc: '미국 FCC 에아렌딜-1 발사 승인 및<br>영국 글래스고대 Solspace 연구 가속', em: true }
+      ],
+      note: '출처 · Russian Space Agency Znamya Archive, China Aerospace Science & Technology Corp, ERC Solspace'
+    },
+    // 12. Bullets (ch 2)
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1551288049-bebda4e38f71', photo: 'Luke Chesser',
+      eyebrow: 'HISTORICAL PROOF · RUSSIA ZNAMYA PROJECT',
+      title: '인류 최초로 밤하늘에서 빛을 쏜 <em>러시아 즈나먀(Znamya) 프로젝트</em>',
+      items: [
+        { icon: 'solar:crown-star-bold', text: '1993년 2월 즈나먀 2호 성공: 프로그레스 무인 화물선에 장착된 지름 20m 원형 박막 거울을 원심력으로 궤도 전개' },
+        { icon: 'solar:eye-scan-bold', text: '유럽 대륙을 가로지른 5km 빛줄기: 프랑스 남부에서 러시아 서부까지 보름달 1~2개 밝기의 빛 스팟이 시속 8km/s로 이동' },
+        { icon: 'solar:danger-triangle-bold', text: '1999년 즈나먀 2.5호의 비극: 보름달 5~10배 밝기를 목표로 지름 25m 거울을 펼치다 화물선 안테나에 걸려 찢어지며 실패' },
+        { icon: 'solar:document-text-bold', text: '러시아의 유산과 한계: 지름 70m급 즈나먀 3호까지 기획했으나 소련 붕괴 후 심각한 재정난과 천문학계 반발로 최종 중단' }
+      ],
+      note: '즈나먀 2호는 우주에서 반사된 태양빛이 대기권을 뚫고 지상에서 뚜렷하게 관측될 수 있음을 증명한 유일한 실증 사례입니다'
+    },
+    // 13. Compare (ch 2)
+    {
+      layout: 'compare', chapter: 2,
+      bg: 'photo-1502904550040-7534597429ae', photo: 'Martins Zemlickis',
+      eyebrow: 'CHINA ARTIFICIAL MOON VS UK SOLSPACE',
+      title: '중국 청두의 ‘인공 달’ 구상 vs 영국 글래스고대 ‘Solspace’ 프로젝트',
+      left: {
+        title: '중국 청두 ‘인공 달’ 구상 (도시 조명형)',
+        icon: 'solar:buildings-2-bold',
+        items: [
+          '2018년 청두 텐푸신구 시스템과학연구소가 발표한 대형 반사 위성 계획',
+          '500km 고도에서 직경 10~80km 도심에 보름달 8배 밝기 야간 조명 투사',
+          '연간 12억 위안(약 2,300억 원) 가로등 전기료 절감 주장했으나 후속 발사 지연'
+        ]
+      },
+      right: {
+        title: '영국 글래스고대 ‘Solspace’ (태양광 발전형)',
+        icon: 'solar:lightbulb-bolt-bold',
+        items: [
+          '콜린 맥인스 교수팀이 유럽연구위원회(ERC) 지원으로 수행 중인 학술 프로젝트',
+          '거대 육각형 솔라 세일 반사경 군집으로 새벽·저녁 대형 태양광 발전소 집중 조명',
+          '도시 전체를 비추지 않고 사막·외곽 발전소만 타깃팅해 빛 공해 최소화 설계'
+        ]
+      },
+      note: '출처 · Chengdu Aerospace Science Institute Briefing (2018) & University of Glasgow ERC Solspace Project'
+    },
+    // 14. SVG Cards (ch 2)
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1519501025264-65ba15a82390', photo: 'Aleksandar Pasaric',
+      eyebrow: 'GLOBAL SPACE MIRROR BENCHMARK',
+      title: '국가별 우주 거울 프로젝트 스펙 비교 및 지상 조도 수준',
+      cards: [
+        {
+          icon: 'solar:chart-2-bold',
+          title: '주요 프로젝트 반사 거울 면적 비교',
+          badge: '소형 실증부터 초대형까지',
+          chart: 'c_mirror_size',
+          foot: '즈나먀 2호(314㎡)와 에아렌딜-1(324㎡) 실증 후 차세대 대형 반사막으로 진화'
+        },
+        {
+          icon: 'solar:scale-bold',
+          title: '우주 거울 프로젝트별 목표 지상 밝기',
+          badge: '보름달 기준 배수 비교',
+          chart: 'c_brightness',
+          foot: '단일 위성은 보름달(0.25 lux) 수준이며, 발전용 효과를 내려면 수백 기 중첩 필수'
+        }
+      ],
+      note: '출처 · Znamya 2 Flight Report, Reflect Orbital FCC Filing & Chengdu Artificial Moon Specs'
+    },
+    // 15. Quote (ch 2)
+    {
+      layout: 'quote', chapter: 2,
+      bg: 'photo-1498084393753-b411b2d26b34', photo: 'Marc-Olivier Jodoin',
+      eyebrow: 'LESSONS FROM 30 YEARS OF ORBITAL EXPERIMENTS',
+      quote: '우주 거울을 펼치는 것 자체는 이미 1993년에 증명됐다.<br><em>진짜 난제는 경제성과 인류가 합의할 수 있는 밤하늘의 윤리다</em>',
+      by: 'AEROSPACE ENGINEERING & SPACE POLICY CONSENSUS · 2026'
+    },
+    // 16. Bullets (ch 3)
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
+      eyebrow: 'CHAPTER 04 · 2026 미국 FCC 승인과 과학계·환경계의 거센 반발',
+      title: '2026년 7월 FCC 발사 승인 이후<br><em>폭발한 4대 글로벌 논쟁</em>',
+      items: [
+        { icon: 'solar:eye-scan-bold', text: '천문 관측의 재앙: 미국천문학회(AAS) 등 천문학자들은 보름달 밝기의 궤도 반사광이 대형 망원경의 심우주 관측을 마비시킨다고 비판' },
+        { icon: 'solar:shield-warning-bold', text: '야간 생태계 및 생체리듬 교란: 밤하늘이 인위적으로 밝아지면 철새의 야간 항법, 야행성 곤충·양서류 번식과 인간 수면 주기 심각 훼손' },
+        { icon: 'solar:forbidden-circle-bold', text: '항공기 조종사 및 지상 시야 안전: 궤도에서 내려오는 강한 반사광 플레어가 야간 비행 조종사나 망원경 관측자의 시력을 위협할 우려' },
+        { icon: 'solar:lock-keyhole-bold', text: '밤하늘의 사유화 논란: 한 민간 기업이 전 인류의 공유재인 어두운 밤하늘(Dark Sky)을 상업적 이익을 위해 임의로 밝혀도 되는가' }
+      ],
+      note: '출처 · American Astronomical Society (AAS) Statement on Reflect Orbital & FCC License Order (July 2026)'
+    },
+    // 17. SVG Cards (ch 3)
+    {
+      layout: 'svg_cards', chapter: 3,
+      bg: 'photo-1666875753105-c63a6f3bdc86', photo: 'Deng Xiang',
+      eyebrow: 'PHYSICS REALITY CHECK & STAKEHOLDER RADAR',
+      title: '물리적 에너지 손실 한계와 찬반 핵심 가치 충돌 분석',
+      cards: [
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: '단일 위성 체류 시간과 광확산 한계',
+          badge: '통과 시간 4~5분 제약',
+          chart: 'c_physics_limit',
+          foot: '고도 625km에서 빛이 5km로 퍼져 정오 햇빛 대비 단일 위성 일사량은 극히 미미'
+        },
+        {
+          icon: 'solar:radar-2-bold',
+          title: '우주 거울 산업화 vs 밤하늘 보호 충돌',
+          badge: '5대 쟁점 스펙트럼',
+          chart: 'c_controversy_radar',
+          foot: '재난 구호·야간 발전 잠재력과 천문 관측·생태계 보존 가치가 첨예하게 대립'
+        }
+      ],
+      note: '출처 · Scientific American Space Mirror Physics Analysis & DarkSky International Assessment (2025~2026)'
+    },
+    // 18. Compare (ch 3)
+    {
+      layout: 'compare', chapter: 3,
+      bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
+      eyebrow: 'PROMISE VS REALITY OF ORBITAL SUNLIGHT',
+      title: '스타트업의 장밋빛 청사진 vs 물리학자·천문학자의 냉정한 검증',
+      left: {
+        title: '추진 측 주장 (Reflect Orbital 비전)',
+        icon: 'solar:rocket-bold',
+        items: [
+          '일몰 후 유휴 상태인 전 세계 태양광 발전소의 가동률을 획기적으로 향상',
+          '대규모 정전 및 야간 재난 현장에 즉각적인 구명 조명 인프라 제공',
+          '필요한 순간에 필요한 지점에만 빛을 비추고 즉시 각도를 틀어 공해 차단'
+        ]
+      },
+      right: {
+        title: '과학계 검증 (물리적·환경적 한계)',
+        icon: 'solar:danger-triangle-bold',
+        items: [
+          '태양 시직경(0.5도) 확산으로 지상 스팟이 넓어져 발전용 에너지 밀도 부족',
+          '유의미한 전력 생산을 위해선 수천 기 위성이 동시에 한 곳을 비춰야 함',
+          '구름·악천후 시 무용지물이며 우주 쓰레기 충돌 위험과 빛 공해 불가피'
+        ]
+      },
+      note: '태양광 발전보다는 상대적으로 적은 광량으로도 큰 효과를 내는 ‘야간 재난 구조 조명’이 더 현실적인 초기 시장으로 평가받습니다'
+    },
+    // 19. Flow (ch 3)
+    {
+      layout: 'flow', chapter: 3,
+      bg: 'photo-1647427060118-4911c9821b82', photo: 'Simon Kadula',
+      eyebrow: 'SPACE GOVERNANCE & SAFE DEPLOYMENT',
+      title: '우주 거울 기술이 인류에게 유익하려면 필요한 3대 국제 규범',
+      steps: [
+        { label: '천문 보호 구역 설정', desc: '전 세계 주요 천문대와 생태 보호구역<br>상공에서는 반사경 조향 원천 금지' },
+        { label: '재난·비상용 제한 허가', desc: '상업적 무분별 조사 대신 산불·지진 등<br>국가 재난 구조 요청 시에만 한시 가동' },
+        { label: '궤도 폐기 및 광도 규제', desc: '임무 종료 후 즉시 대기권 소각을 의무화하고<br>국제천문연맹(IAU) 밝기 상한선 준수' }
+      ],
+      note: '미국 FCC 역시 2026년 에아렌딜-1 승인 당시 천문대 좌표 회피와 엄격한 광도 모니터링 조건을 부과했습니다'
+    },
+    // 20. Closing (ch 3)
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1534298261662-f8fdd25317db', photo: 'Brad Knight',
+      eyebrow: 'BETWEEN INNOVATION AND PRESERVING THE NIGHT',
+      title: '밤을 비추는 우주 거울,<br><em>기술의 한계와 밤하늘의 가치를 함께 묻다</em>',
+      sub: '러시아 즈나먀에서 미국 리플렉트 오비탈까지 — 우주 조명 기술은 에너지·재난 구호의 가능성과 빛 공해라는 숙제를 동시에 안고 있습니다',
+      chips: [
+        '리플렉트 오비탈 Eärendil-1',
+        '18×18m 초박막 우주 거울',
+        '러시아 즈나먀 & 중국 인공 달',
+        '야간 재난 조명 vs 빛 공해'
+      ]
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // 1) 슬라이드 7 좌측: 일몰 후 태양광 발전 연장 효과 (Self-Drawing Area + Photon Particle)
+  c_duck_curve: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gDuckBase" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.32"/>
+        <stop offset="100%" stop-color="#94a3b8" stop-opacity="0.0"/>
+      </linearGradient>
+      <linearGradient id="gDuckBoost" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fde047" stop-opacity="0.45"/>
+        <stop offset="45%" stop-color="#00d2ff" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.02"/>
+      </linearGradient>
+      <filter id="glowDuck" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <line x1="55" y1="50" x2="590" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="125" x2="590" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="202" x2="590" y2="202" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <!-- 주간 일반 태양광 발전 곡선 -->
+    <path class="mg-area" d="M 140 202 C 185 110, 235 46, 290 46 C 345 46, 395 110, 440 202 Z" fill="url(#gDuckBase)"/>
+    <path class="mg-draw" d="M 140 202 C 185 110, 235 46, 290 46 C 345 46, 395 110, 440 202" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="6 4"/>
+
+    <!-- 우주 거울 야간/새벽 연장 구간 (Cyan-Gold Glow) -->
+    <path class="mg-area" d="M 75 202 C 95 140, 120 120, 160 140 L 140 202 Z" fill="url(#gDuckBoost)"/>
+    <path class="mg-area" d="M 415 135 C 465 105, 515 115, 560 202 L 440 202 Z" fill="url(#gDuckBoost)"/>
+    <path class="mg-draw" d="M 75 202 C 95 140, 120 120, 160 140" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glowDuck)"/>
+    <path id="duckBoostPath" class="mg-draw" d="M 415 135 C 465 105, 515 115, 560 202" fill="none" stroke="#fde047" stroke-width="4" stroke-linecap="round" filter="url(#glowDuck)"/>
+
+    <!-- 곡선을 따라 흐르는 광자 입자 -->
+    <circle r="5" fill="#ffffff" filter="url(#glowDuck)">
+      <animateMotion dur="2.6s" repeatCount="indefinite" path="M 415 135 C 465 105, 515 115, 560 202"/>
+    </circle>
+
+    <text x="115" y="112" fill="#38bdf8" font-size="14" font-weight="800" text-anchor="middle">일출 전 반사광</text>
+    <text x="290" y="34" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">정오 주간 발전 피크</text>
+    <circle class="mg-pulse" cx="485" cy="112" r="13" fill="rgba(253,224,71,0.28)"/>
+    <circle cx="485" cy="112" r="6.5" fill="#fde047" filter="url(#glowDuck)"/>
+    <text x="495" y="90" fill="#fde047" font-size="16" font-weight="900" text-anchor="middle">일몰 후 피크 연장 (+2~3h)</text>
+
+    <text x="105" y="228" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">05:00 새벽</text>
+    <text x="290" y="228" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">12:00 정오</text>
+    <text x="485" y="228" fill="#fde047" font-size="15" font-weight="800" text-anchor="middle">18:00~21:00 저녁 피크</text>
+  </svg>`,
+
+  // 2) 슬라이드 7 우측: 리플렉트 오비탈 위성 군집 확장 로드맵 (Self-Drawing + Orbiting Photon)
+  c_constellation: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gAreaConst" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.48"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glowConst" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="50" x2="585" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="125" x2="585" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="202" x2="585" y2="202" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <path class="mg-area" d="M 95 196 C 185 190, 240 165, 325 132 C 415 95, 485 60, 555 38 L 555 202 L 95 202 Z" fill="url(#gAreaConst)"/>
+    <path class="mg-draw" d="M 95 196 C 185 190, 240 165, 325 132 C 415 95, 485 60, 555 38" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glowConst)"/>
+
+    <!-- 궤적을 따라 상승하는 위성 광점 -->
+    <circle r="5.5" fill="#fde047" filter="url(#glowConst)">
+      <animateMotion dur="3.2s" repeatCount="indefinite" path="M 95 196 C 185 190, 240 165, 325 132 C 415 95, 485 60, 555 38"/>
+    </circle>
+
+    <circle cx="95" cy="196" r="6" fill="#0a101c" stroke="#94a3b8" stroke-width="3"/>
+    <text x="95" y="176" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">1기 (Eärendil-1)</text>
+    <text x="95" y="228" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">2026 실증</text>
+
+    <circle cx="325" cy="132" r="7" fill="#0a101c" stroke="#38bdf8" stroke-width="3.5"/>
+    <text x="325" y="112" fill="#ffffff" font-size="16" font-weight="800" text-anchor="middle">57기 초기 군집</text>
+    <text x="325" y="228" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">2027~2028 상용</text>
+
+    <circle class="mg-pulse" cx="555" cy="38" r="16" fill="rgba(0,210,255,0.28)"/>
+    <circle cx="555" cy="38" r="8" fill="#00d2ff" filter="url(#glowConst)"/>
+    <text x="530" y="32" fill="#00d2ff" font-size="20" font-weight="900" text-anchor="end">50,000기 목표</text>
+    <text x="555" y="228" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">2035 장기 비전</text>
+  </svg>`,
+
+  // 3) 슬라이드 14 좌측: 글로벌 우주 거울 반사 면적 비교 (Animated Horizontal Bars)
+  c_mirror_size: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gMirCyan" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="1.0"/>
+      </linearGradient>
+      <linearGradient id="gMirPurp" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#fde047" stop-opacity="0.95"/>
+      </linearGradient>
+    </defs>
+    <text x="28" y="42" fill="#cbd5e1" font-size="15" font-weight="700">러시아 즈나먀 2호 (1993년 궤도 실증 성공 · 원형 직경 20m)</text>
+    <rect class="mg-bar-h" x="28" y="52" width="210" height="28" rx="6" fill="rgba(148,163,184,0.55)"/>
+    <text x="250" y="72" fill="#e2e8f0" font-size="18" font-weight="800">314 ㎡ (실증 완료)</text>
+
+    <text x="28" y="114" fill="#00d2ff" font-size="15" font-weight="800">미국 리플렉트 오비탈 Eärendil-1 (2026 FCC 승인 · 정사각 18×18m)</text>
+    <rect class="mg-bar-h" x="28" y="124" width="225" height="28" rx="6" fill="url(#gMirCyan)"/>
+    <text x="265" y="144" fill="#00d2ff" font-size="19" font-weight="900">324 ㎡ (테니스 코트 규모)</text>
+
+    <text x="28" y="186" fill="#fde047" font-size="15" font-weight="700">리플렉트 차세대 상용기 &amp; 유럽 Solspace 구상 (대형 솔라 리플렉터)</text>
+    <rect class="mg-bar-h" x="28" y="196" width="430" height="28" rx="6" fill="url(#gMirPurp)"/>
+    <text x="470" y="216" fill="#fde047" font-size="18" font-weight="900">2,900 ㎡+ (54×54m급)</text>
+  </svg>`,
+
+  // 4) 슬라이드 14 우측: 프로젝트별 지상 목표 밝기 (Animated Vertical Columns)
+  c_brightness: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gBrtCyan" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.95"/>
+      </linearGradient>
+    </defs>
+    <line x1="55" y1="50" x2="585" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="125" x2="585" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="198" x2="585" y2="198" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <!-- 자연 보름달 -->
+    <rect class="mg-bar-v" x="85" y="176" width="76" height="22" rx="4" fill="#64748b"/>
+    <text x="123" y="164" fill="#94a3b8" font-size="15" font-weight="700" text-anchor="middle">1.0배 (0.25 lx)</text>
+    <text x="123" y="226" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">자연 보름달</text>
+
+    <!-- 에아렌딜-1 / 즈나먀 2호 -->
+    <rect class="mg-bar-v" x="225" y="158" width="76" height="40" rx="5" fill="url(#gBrtCyan)"/>
+    <text x="263" y="146" fill="#00d2ff" font-size="16" font-weight="900" text-anchor="middle">1 ~ 2배</text>
+    <text x="263" y="226" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">Eärendil-1 · 즈나먀2</text>
+
+    <!-- 즈나먀 2.5호 목표 -->
+    <rect class="mg-bar-v" x="365" y="102" width="76" height="96" rx="5" fill="#38bdf8"/>
+    <text x="403" y="90" fill="#38bdf8" font-size="16" font-weight="800" text-anchor="middle">5 ~ 10배</text>
+    <text x="403" y="226" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">즈나먀 2.5 목표</text>
+
+    <!-- 중국 청두 인공 달 구상 -->
+    <rect class="mg-bar-v" x="500" y="54" width="76" height="144" rx="5" fill="#fde047"/>
+    <text x="538" y="42" fill="#fde047" font-size="17" font-weight="900" text-anchor="middle">8배 ~ 수십배</text>
+    <text x="538" y="226" fill="#fde047" font-size="14" font-weight="700" text-anchor="middle">청두 인공달·군집</text>
+  </svg>`,
+
+  // 5) 슬라이드 17 좌측: 저궤도 물리적 한계 (Rotating Orbital Reticle + Dual Ring Gauge)
+  c_physics_limit: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <circle class="mg-ring-spin" cx="170" cy="110" r="84" fill="none" stroke="rgba(0,210,255,0.22)" stroke-width="1.5" stroke-dasharray="8 6"/>
+    <circle cx="170" cy="110" r="70" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="15"/>
+    <circle class="mg-draw" cx="170" cy="110" r="70" fill="none" stroke="#00d2ff" stroke-width="15" stroke-linecap="round" stroke-dasharray="110 440" transform="rotate(-90 170 110)"/>
+    <text x="170" y="118" fill="#ffffff" font-size="34" font-weight="900" text-anchor="middle">4~5분</text>
+    <text x="170" y="214" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">단일 위성 1회 통과 시 조명 시간</text>
+
+    <line x1="320" y1="28" x2="320" y2="232" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+
+    <circle class="mg-ring-spin" cx="470" cy="110" r="84" fill="none" stroke="rgba(244,63,94,0.25)" stroke-width="1.5" stroke-dasharray="8 6"/>
+    <circle cx="470" cy="110" r="70" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="15"/>
+    <circle class="mg-draw" cx="470" cy="110" r="70" fill="none" stroke="#f43f5e" stroke-width="15" stroke-linecap="round" stroke-dasharray="380 440" transform="rotate(-90 470 110)"/>
+    <text x="470" y="118" fill="#fb7185" font-size="32" font-weight="900" text-anchor="middle">5 km+</text>
+    <text x="470" y="214" fill="#fb7185" font-size="16" font-weight="800" text-anchor="middle">태양 시직경(0.5°)에 의한 빛 퍼짐</text>
+  </svg>`,
+
+  // 6) 슬라이드 17 우측: 우주 거울 상용화 가치 vs 천문·생태계 우려 5각 레이더 (Animated Radar Sweep)
+  c_controversy_radar: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowCont" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#00d2ff" flood-opacity="0.65"/>
+      </filter>
+    </defs>
+    <!-- Radar center: (215, 130), R=82 -->
+    <circle class="mg-ring-spin" cx="215" cy="130" r="90" fill="none" stroke="rgba(0,210,255,0.16)" stroke-dasharray="6 8"/>
+    <polygon points="215,48 293,105 263,196 167,196 137,105" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.2"/>
+    <polygon points="215,75 267,113 247,174 183,174 163,113" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+    <line x1="215" y1="130" x2="215" y2="48" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="293" y2="105" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="263" y2="196" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="167" y2="196" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="137" y2="105" stroke="rgba(255,255,255,0.12)"/>
+
+    <!-- 천문학·생태계 리스크 지수 (Violet) -->
+    <polygon class="mg-area" points="215,95 245,118 259,191 171,191 152,110" fill="rgba(192,132,252,0.24)" stroke="#c084fc" stroke-width="2.5"/>
+    <!-- 상업·재난 활용 기대치 (Cyan) -->
+    <polygon class="mg-draw" points="215,52 286,107 235,158 192,162 155,111" fill="rgba(0,210,255,0.26)" stroke="#00d2ff" stroke-width="3" filter="url(#glowCont)"/>
+
+    <circle class="mg-pulse" cx="215" cy="52" r="8" fill="rgba(0,210,255,0.35)"/>
+    <text x="215" y="36" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">재난 구조 조명</text>
+    <text x="303" y="108" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="start">야간 발전 연장</text>
+    <text x="272" y="216" fill="#c084fc" font-size="14" font-weight="800" text-anchor="middle">천문 관측 방해</text>
+    <text x="158" y="216" fill="#c084fc" font-size="14" font-weight="800" text-anchor="middle">생태계 빛공해</text>
+    <text x="126" y="108" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="end">궤도 안전성</text>
+
+    <!-- Legend -->
+    <rect x="430" y="78" width="185" height="92" rx="10" fill="rgba(15,23,42,0.75)" stroke="rgba(255,255,255,0.15)"/>
+    <circle cx="452" cy="106" r="7" fill="#00d2ff"/>
+    <text x="468" y="111" fill="#ffffff" font-size="15" font-weight="800">산업·구호 기대 효과</text>
+    <circle cx="452" cy="142" r="7" fill="#c084fc"/>
+    <text x="468" y="147" fill="#cbd5e1" font-size="15" font-weight="600">환경·천문 우려 지수</text>
+  </svg>`
+};
+
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  if (typeof animateNumbers === "function") animateNumbers();
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+
+/* ===================== 60FPS MULTI-SCENE MOTION GRAPHICS ENGINE v2 ===================== */
+(function initMotionGraphicsEngine() {
+  const stage = document.getElementById('stage');
+  const slideEl = document.getElementById('slide');
+  if (!stage || !slideEl) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'motion-canvas';
+  canvas.width = 1920;
+  canvas.height = 1080;
+  stage.insertBefore(canvas, slideEl);
+  const ctx = canvas.getContext('2d');
+
+  // Corner Telemetry Readouts
+  const hudTL = document.createElement('div');
+  hudTL.className = 'hud-telemetry tl';
+  hudTL.id = 'hud-tl';
+  stage.appendChild(hudTL);
+
+  const hudTR = document.createElement('div');
+  hudTR.className = 'hud-telemetry tr';
+  hudTR.id = 'hud-tr';
+  stage.appendChild(hudTR);
+
+  const hudBL = document.createElement('div');
+  hudBL.className = 'hud-telemetry bl';
+  hudBL.id = 'hud-bl';
+  stage.appendChild(hudBL);
+
+  // Starfield & Particles
+  const stars = Array.from({ length: 140 }, (_, i) => ({
+    x: (i * 173.7) % 1920,
+    y: (i * 97.3) % 1080,
+    r: 0.6 + (i % 4) * 0.45,
+    a: 0.25 + (i % 5) * 0.14,
+    s: 0.008 + (i % 7) * 0.004,
+    p: i * 1.1
+  }));
+
+  // 8 Distinct Motion Graphic Scenes mapped across all 20 slides
+  // 0: ORBITAL_BEAM      (Slides 1, 5, 20)
+  // 1: SOLAR_MATRIX      (Slides 2, 7)
+  // 2: ON_DEMAND_RADAR   (Slides 3, 10)
+  // 3: ALTITUDE_TIERS    (Slides 4, 19)
+  // 4: ORIGAMI_SAIL      (Slides 6, 8)
+  // 5: DUAL_ENERGY_FLOW  (Slides 9, 13, 18)
+  // 6: ZNAMYA_ARCHIVE    (Slides 11, 12, 14, 15)
+  // 7: DARK_SKY_HAZARD   (Slides 16, 17)
+  const SLIDE_SCENE = [
+    0, // 01 Cover
+    1, // 02 Stats (25%, 24h, 30,000+)
+    2, // 03 Bullets (Who is Reflect Orbital)
+    3, // 04 Flow (3km Balloon -> 625km SSO -> Relay)
+    0, // 05 Quote (Delivering the sun)
+    4, // 06 Stats (18x18m, 625km, 5km)
+    1, // 07 SVG Cards (Duck curve & 50,000 constellation)
+    4, // 08 Flow (Origami -> ADCS -> Spot lock)
+    5, // 09 Compare (ESS vs Orbital Mirror)
+    2, // 10 Bullets (4 Target Markets)
+    6, // 11 Timeline (1929~2026 History)
+    6, // 12 Bullets (Znamya-2 1993)
+    5, // 13 Compare (Chengdu Moon vs UK Solspace)
+    6, // 14 SVG Cards (Mirror Size & Brightness)
+    6, // 15 Quote (1993 Proof & Ethics)
+    7, // 16 Bullets (FCC Approval & 4 Controversies)
+    7, // 17 SVG Cards (Physics Limit & Radar)
+    5, // 18 Compare (Startup Vision vs Science Reality)
+    3, // 19 Flow (3 Global Governance Rules)
+    0  // 20 Closing
+  ];
+
+  const SCENE_META = [
+    { name: 'SCENE A · 625KM SSO ORBITAL BEAM TRACE', mode: 'MIRROR LOCK · SPOT Ø 5.0 KM' },
+    { name: 'SCENE B · 3D SOLAR PV GRID & PHOTON RAIN', mode: 'NIGHT PV CAPACITY BOOST +25%' },
+    { name: 'SCENE C · GLOBAL ON-DEMAND TARGET RADAR', mode: '30,000+ COORDINATES QUEUED' },
+    { name: 'SCENE D · MULTI-ALTITUDE TRAJECTORY VECTOR', mode: '3KM BALLOON → 625KM SSO → SAFE ZONE' },
+    { name: 'SCENE E · 18×18M MYLAR ORIGAMI & ADCS GYRO', mode: 'REACTION WHEEL TORQUE LOCK' },
+    { name: 'SCENE F · DUAL ENERGY ARCHITECTURE COMPARE', mode: 'GROUND STORAGE VS ORBITAL BEAM' },
+    { name: 'SCENE G · 1993 ZNAMYA-2 CENTRIFUGAL ARCHIVE', mode: '20M ROTATING FOIL · 8 KM/S SWEEP' },
+    { name: 'SCENE H · 0.5° SOLAR DIVERGENCE & DARK-SKY', mode: 'AAS OPTICAL INTERFERENCE ALERT' }
+  ];
+
+  let t = 0;
+
+  function drawStarfield() {
+    for (let i = 0; i < stars.length; i++) {
+      const st = stars[i];
+      const alpha = st.a * (0.45 + 0.55 * Math.sin(t * st.s * 60 + st.p));
+      ctx.fillStyle = `rgba(226, 232, 240, ${alpha.toFixed(3)})`;
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Scene 0: 625km SSO Orbital Mirror & Volumetric Beam (Slides 1, 5, 20)
+  function drawSceneOrbital(slideIdx) {
+    const earthCx = 960, earthCy = 2360, earthR = 1480;
+    const atmoGrad = ctx.createRadialGradient(earthCx, earthCy, earthR - 25, earthCx, earthCy, earthR + 90);
+    atmoGrad.addColorStop(0, 'rgba(6, 15, 32, 0.96)');
+    atmoGrad.addColorStop(0.55, 'rgba(0, 210, 255, 0.30)');
+    atmoGrad.addColorStop(0.82, 'rgba(56, 189, 248, 0.08)');
+    atmoGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = atmoGrad;
+    ctx.beginPath();
+    ctx.arc(earthCx, earthCy, earthR + 90, Math.PI * 1.15, Math.PI * 1.85);
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.45)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(earthCx, earthCy, earthR, Math.PI * 1.18, Math.PI * 1.82);
+    ctx.stroke();
+
+    const orbitR = earthR + 610;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([10, 10]);
+    ctx.beginPath();
+    ctx.arc(earthCx, earthCy, orbitR, Math.PI * 1.22, Math.PI * 1.78);
+    ctx.stroke();
+    ctx.restore();
+
+    const sweep = Math.sin(t * 0.55) * 0.14;
+    const satAngle = -Math.PI / 2 + sweep - 0.08;
+    const satX = earthCx + Math.cos(satAngle) * orbitR;
+    const satY = earthCy + Math.sin(satAngle) * orbitR;
+
+    const targetAngle = -Math.PI / 2 + 0.05;
+    const targetX = earthCx + Math.cos(targetAngle) * earthR;
+    const targetY = earthCy + Math.sin(targetAngle) * earthR;
+
+    // Incoming Solar Ray
+    ctx.save();
+    const sunGrad = ctx.createLinearGradient(120, -40, satX, satY);
+    sunGrad.addColorStop(0, 'rgba(253, 224, 71, 0)');
+    sunGrad.addColorStop(0.4, 'rgba(253, 224, 71, 0.16)');
+    sunGrad.addColorStop(1, 'rgba(253, 224, 71, 0.52)');
+    ctx.strokeStyle = sunGrad;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(120, -40);
+    ctx.lineTo(satX, satY);
+    ctx.stroke();
+    ctx.restore();
+
+    // Reflected Volumetric Beam
+    ctx.save();
+    const beamGrad = ctx.createLinearGradient(satX, satY, targetX, targetY);
+    beamGrad.addColorStop(0, 'rgba(253, 224, 71, 0.52)');
+    beamGrad.addColorStop(0.35, 'rgba(0, 210, 255, 0.24)');
+    beamGrad.addColorStop(1, 'rgba(0, 210, 255, 0.05)');
+    ctx.fillStyle = beamGrad;
+    ctx.beginPath();
+    ctx.moveTo(satX - 4, satY);
+    ctx.lineTo(targetX - 95, targetY);
+    ctx.lineTo(targetX + 95, targetY);
+    ctx.lineTo(satX + 4, satY);
+    ctx.closePath();
+    ctx.fill();
+
+    for (let p = 0; p < 6; p++) {
+      const prog = ((t * 0.65 + p / 6) % 1);
+      const px = satX + (targetX - satX) * prog;
+      const py = satY + (targetY - satY) * prog;
+      ctx.fillStyle = prog < 0.35 ? 'rgba(253,224,71,0.85)' : 'rgba(0,210,255,0.8)';
+      ctx.beginPath();
+      ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // Ground Spot
+    const spotGrad = ctx.createRadialGradient(targetX, targetY, 2, targetX, targetY, 110);
+    spotGrad.addColorStop(0, 'rgba(253, 224, 71, 0.85)');
+    spotGrad.addColorStop(0.4, 'rgba(0, 210, 255, 0.35)');
+    spotGrad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.fillStyle = spotGrad;
+    ctx.beginPath();
+    ctx.ellipse(targetX, targetY, 110, 24, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Satellite Diamond
+    ctx.save();
+    ctx.translate(satX, satY);
+    ctx.rotate(sweep * 1.4 + Math.PI / 4);
+    const flare = ctx.createRadialGradient(0, 0, 2, 0, 0, 42);
+    flare.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+    flare.addColorStop(0.4, 'rgba(253, 224, 71, 0.45)');
+    flare.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.fillStyle = flare;
+    ctx.beginPath();
+    ctx.arc(0, 0, 42, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#fde047';
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.fillRect(-10, -10, 20, 20);
+    ctx.strokeRect(-10, -10, 20, 20);
+    ctx.restore();
+  }
+
+  // Scene 1: 3D Perspective Solar PV Grid & Photon Rain (Slides 2, 7)
+  function drawSceneSolarMatrix() {
+    const horizonY = 700;
+    const vanishX = 960;
+
+    // Horizon Glow
+    const hGrad = ctx.createLinearGradient(0, horizonY - 80, 0, 1080);
+    hGrad.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    hGrad.addColorStop(0.25, 'rgba(0, 210, 255, 0.16)');
+    hGrad.addColorStop(1, 'rgba(6, 18, 38, 0.65)');
+    ctx.fillStyle = hGrad;
+    ctx.fillRect(0, horizonY - 80, 1920, 460);
+
+    // Perspective longitudinal lines
+    ctx.save();
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.24)';
+    ctx.lineWidth = 1.4;
+    for (let i = -10; i <= 10; i++) {
+      ctx.beginPath();
+      ctx.moveTo(vanishX + i * 35, horizonY);
+      ctx.lineTo(vanishX + i * 195, 1080);
+      ctx.stroke();
+    }
+    // Moving transverse grid lines
+    const offset = (t * 0.45) % 1;
+    for (let r = 0; r < 8; r++) {
+      const p = (r + offset) / 8;
+      const y = horizonY + Math.pow(p, 1.7) * 380;
+      ctx.strokeStyle = `rgba(56, 189, 248, ${(0.1 + p * 0.32).toFixed(2)})`;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(1920, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Falling Golden & Cyan Photon Rain from Space onto Solar Grid
+    for (let i = 0; i < 26; i++) {
+      const x = ((i * 79 + 90) % 1800) + 60;
+      const prog = (t * (0.35 + (i % 5) * 0.08) + i * 0.17) % 1;
+      const y = prog * 980;
+      const isGold = i % 3 === 0;
+      const grad = ctx.createLinearGradient(x, y - 70, x, y);
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(1, isGold ? 'rgba(253, 224, 71, 0.65)' : 'rgba(0, 210, 255, 0.55)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 70);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+
+      if (y > horizonY) {
+        ctx.fillStyle = isGold ? 'rgba(253, 224, 71, 0.45)' : 'rgba(0, 210, 255, 0.45)';
+        ctx.beginPath();
+        ctx.ellipse(x, y, 16 * (1 - prog + 0.3), 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  // Scene 2: Global On-Demand Target Radar & Coordinate Lock (Slides 3, 10)
+  function drawSceneRadar() {
+    const cx = 960, cy = 560;
+    ctx.save();
+    for (let r = 160; r <= 640; r += 160) {
+      ctx.strokeStyle = 'rgba(0, 210, 255, 0.16)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    // Crosshair lines
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+    ctx.beginPath();
+    ctx.moveTo(cx - 720, cy); ctx.lineTo(cx + 720, cy);
+    ctx.moveTo(cx, cy - 420); ctx.lineTo(cx, cy + 420);
+    ctx.stroke();
+
+    // Rotating Radar Sweep Sector
+    const ang = t * 1.15;
+    const sweepGrad = ctx.createRadialGradient(cx, cy, 20, cx, cy, 640);
+    sweepGrad.addColorStop(0, 'rgba(0, 210, 255, 0.22)');
+    sweepGrad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.fillStyle = sweepGrad;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, 640, ang - 0.45, ang);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.65)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(ang) * 640, cy + Math.sin(ang) * 640);
+    ctx.stroke();
+
+    // Target Lock Nodes
+    const targets = [
+      { x: 310, y: 310, label: 'CA SOLAR FARM · 35.3°N' },
+      { x: 1610, y: 290, label: 'DISASTER SAR · 37.5°N' },
+      { x: 280, y: 790, label: 'MINING SITE · 23.1°S' },
+      { x: 1630, y: 810, label: 'ARCTIC CITY · 68.9°N' }
+    ];
+    targets.forEach((tg, i) => {
+      const pulse = (t * 1.5 + i * 0.5) % 1;
+      ctx.strokeStyle = `rgba(253, 224, 71, ${(1 - pulse) * 0.7})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(tg.x, tg.y, 12 + pulse * 36, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#fde047';
+      ctx.beginPath();
+      ctx.arc(tg.x, tg.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(125, 211, 252, 0.75)';
+      ctx.font = '700 13px Pretendard, sans-serif';
+      ctx.fillText(tg.label, tg.x + 18, tg.y + 5);
+    });
+    ctx.restore();
+  }
+
+  // Scene 3: Multi-Altitude Trajectory Tiers (3km Balloon -> 625km SSO) (Slides 4, 19)
+  function drawSceneAltitudeTiers() {
+    const tiers = [
+      { y: 830, label: 'GROUND & 3KM BALLOON TEST LAYER', color: 'rgba(56, 189, 248, 0.32)' },
+      { y: 540, label: 'STRATOSPHERE & IAU DARK-SKY CORRIDOR', color: 'rgba(125, 211, 252, 0.25)' },
+      { y: 240, label: '625KM SUN-SYNCHRONOUS ORBIT (SSO)', color: 'rgba(253, 224, 71, 0.42)' }
+    ];
+    ctx.save();
+    tiers.forEach((tr, idx) => {
+      ctx.strokeStyle = tr.color;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([14, 10]);
+      ctx.beginPath();
+      ctx.moveTo(100, tr.y);
+      ctx.bezierCurveTo(640, tr.y - 55, 1280, tr.y - 55, 1820, tr.y);
+      ctx.stroke();
+
+      ctx.fillStyle = tr.color;
+      ctx.font = '800 13px Pretendard, sans-serif';
+      ctx.fillText(tr.label, 115, tr.y - 14);
+
+      // Moving vehicle node along curve
+      const u = (t * (0.18 + idx * 0.07) + idx * 0.3) % 1;
+      const vx = 100 + u * 1720;
+      const vy = tr.y - Math.sin(u * Math.PI) * 42;
+      ctx.setLineDash([]);
+      ctx.fillStyle = idx === 2 ? '#fde047' : '#00d2ff';
+      ctx.beginPath();
+      ctx.arc(vx, vy, 7, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Ascending trajectory arcs
+    for (let k = 0; k < 3; k++) {
+      const prog = (t * 0.4 + k / 3) % 1;
+      const ax = 480 + k * 480;
+      const ay = 850 - prog * 620;
+      ctx.fillStyle = `rgba(0, 210, 255, ${(1 - prog) * 0.75})`;
+      ctx.beginPath();
+      ctx.arc(ax, ay, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Scene 4: 18x18m Mylar Origami Mirror Blueprint & ADCS Gyro Rings (Slides 6, 8)
+  function drawSceneOrigami() {
+    const cx = 960, cy = 550;
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    // Outer ADCS Gyro Rings
+    for (let i = 0; i < 3; i++) {
+      ctx.save();
+      ctx.rotate(t * (0.22 - i * 0.11) + i);
+      ctx.strokeStyle = i === 0 ? 'rgba(0, 210, 255, 0.28)' : 'rgba(253, 224, 71, 0.22)';
+      ctx.lineWidth = 1.8;
+      ctx.setLineDash(i % 2 === 0 ? [18, 12] : [6, 10]);
+      ctx.beginPath();
+      ctx.arc(0, 0, 260 + i * 95, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Breathing / Rotating 18x18m Diamond Mylar Grid
+    const scale = 0.92 + 0.08 * Math.sin(t * 1.4);
+    ctx.rotate(Math.sin(t * 0.5) * 0.18 + Math.PI / 4);
+    ctx.scale(scale, scale);
+
+    const sz = 220;
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.35)';
+    ctx.lineWidth = 2.2;
+    ctx.strokeRect(-sz, -sz, sz * 2, sz * 2);
+
+    // Origami Fold Sub-Grid
+    ctx.strokeStyle = 'rgba(125, 211, 252, 0.18)';
+    ctx.lineWidth = 1.2;
+    for (let g = -sz + 55; g < sz; g += 55) {
+      ctx.beginPath();
+      ctx.moveTo(g, -sz); ctx.lineTo(g, sz);
+      ctx.moveTo(-sz, g); ctx.lineTo(sz, g);
+      ctx.stroke();
+    }
+    // Diagonal Tension Booms
+    ctx.strokeStyle = 'rgba(253, 224, 71, 0.38)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-sz, -sz); ctx.lineTo(sz, sz);
+    ctx.moveTo(sz, -sz); ctx.lineTo(-sz, sz);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Scene 5: Dual Energy Architecture Flow (Compare Slides 9, 13, 18)
+  function drawSceneDualCompare() {
+    ctx.save();
+    // Center energy divider
+    const divGrad = ctx.createLinearGradient(960, 140, 960, 960);
+    divGrad.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    divGrad.addColorStop(0.5, 'rgba(0, 210, 255, 0.45)');
+    divGrad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.strokeStyle = divGrad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(960, 140);
+    ctx.lineTo(960, 960);
+    ctx.stroke();
+
+    // Left Side: Ground / Urban Matrix Pulse (Amber/Slate)
+    for (let i = 0; i < 12; i++) {
+      const y = 200 + i * 68;
+      const w = 180 + 120 * Math.sin(t * 1.2 + i);
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.16)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(80, y);
+      ctx.lineTo(80 + w, y);
+      ctx.stroke();
+    }
+
+    // Right Side: Orbital High-Speed Photon Streams (Cyan/Gold)
+    for (let i = 0; i < 14; i++) {
+      const prog = (t * 0.55 + i * 0.11) % 1;
+      const sx = 1840 - prog * 780;
+      const sy = 160 + i * 58 + Math.sin(prog * 6 + i) * 18;
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(0, 210, 255, 0.55)' : 'rgba(253, 224, 71, 0.65)';
+      ctx.beginPath();
+      ctx.arc(sx, sy, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Scene 6: 1993 Znamya-2 Centrifugal Foil Spin & 8km/s Sweep (Slides 11, 12, 14, 15)
+  function drawSceneZnamya() {
+    const cx = 360, cy = 320;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(t * 0.85);
+
+    // 20m Circular Centrifugal Foil Turbine Blades
+    for (let b = 0; b < 12; b++) {
+      ctx.save();
+      ctx.rotate((b * Math.PI) / 6);
+      ctx.strokeStyle = b % 2 === 0 ? 'rgba(253, 224, 71, 0.32)' : 'rgba(0, 210, 255, 0.28)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(28, 0);
+      ctx.quadraticCurveTo(110, 45, 210, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.strokeStyle = 'rgba(253, 224, 71, 0.45)';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    ctx.arc(0, 0, 210, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+
+    // 8 km/s Sweeping Light Track across Continent
+    const sweepX = ((t * 260) % 2200) - 140;
+    const sweepY = 820 - (sweepX / 1920) * 160;
+    const trackGrad = ctx.createRadialGradient(sweepX, sweepY, 4, sweepX, sweepY, 170);
+    trackGrad.addColorStop(0, 'rgba(253, 224, 71, 0.55)');
+    trackGrad.addColorStop(0.5, 'rgba(0, 210, 255, 0.22)');
+    trackGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = trackGrad;
+    ctx.beginPath();
+    ctx.arc(sweepX, sweepY, 170, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Scene 7: 0.5° Solar Divergence Scatter & Dark-Sky Interference (Slides 16, 17)
+  function drawSceneHazard() {
+    const satX = 960, satY = 150;
+    ctx.save();
+    // Wide 0.5 deg Divergence Scatter Cone (Rose/Purple Warning)
+    const coneGrad = ctx.createLinearGradient(satX, satY, satX, 980);
+    coneGrad.addColorStop(0, 'rgba(244, 63, 94, 0.55)');
+    coneGrad.addColorStop(0.5, 'rgba(192, 132, 252, 0.22)');
+    coneGrad.addColorStop(1, 'rgba(244, 63, 94, 0.04)');
+    ctx.fillStyle = coneGrad;
+    ctx.beginPath();
+    ctx.moveTo(satX - 10, satY);
+    ctx.lineTo(satX - 540, 980);
+    ctx.lineTo(satX + 540, 980);
+    ctx.lineTo(satX + 10, satY);
+    ctx.closePath();
+    ctx.fill();
+
+    // Interference Streak Lines across Astronomy Field
+    for (let k = 0; k < 5; k++) {
+      const sy = 260 + k * 145;
+      const sx = ((t * (320 + k * 50) + k * 400) % 2400) - 240;
+      const stGrad = ctx.createLinearGradient(sx - 240, sy - 40, sx, sy);
+      stGrad.addColorStop(0, 'rgba(244, 63, 94, 0)');
+      stGrad.addColorStop(1, 'rgba(251, 113, 133, 0.65)');
+      ctx.strokeStyle = stGrad;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(sx - 240, sy - 40);
+      ctx.lineTo(sx, sy);
+      ctx.stroke();
+    }
+
+    // Pulsing Warning Rings at Observatory Ground Level
+    const rPulse = (t * 1.4) % 1;
+    ctx.strokeStyle = `rgba(244, 63, 94, ${(1 - rPulse) * 0.65})`;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(960, 920, 180 + rPulse * 320, 32 + rPulse * 40, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function renderFrame() {
+    t += 0.016;
+    ctx.clearRect(0, 0, 1920, 1080);
+
+    const slideIdx = typeof cur === 'number' ? cur : 0;
+    const sceneId = SLIDE_SCENE[slideIdx] ?? 0;
+
+    drawStarfield();
+
+    switch (sceneId) {
+      case 0: drawSceneOrbital(slideIdx); break;
+      case 1: drawSceneSolarMatrix(); break;
+      case 2: drawSceneRadar(); break;
+      case 3: drawSceneAltitudeTiers(); break;
+      case 4: drawSceneOrigami(); break;
+      case 5: drawSceneDualCompare(); break;
+      case 6: drawSceneZnamya(); break;
+      case 7: drawSceneHazard(); break;
+    }
+
+    const meta = SCENE_META[sceneId] || SCENE_META[0];
+    const deg = (42 + Math.sin(t * 0.7) * 8.4).toFixed(1);
+    hudTL.textContent = `${meta.name} · ALT 625.0 KM`;
+    hudTR.textContent = `${meta.mode} · TILT ${deg}°`;
+    hudBL.textContent = `SLIDE ${String(slideIdx + 1).padStart(2, '0')} / ${S.length} · 60FPS PROCEDURAL CANVAS`;
+
+    requestAnimationFrame(renderFrame);
+  }
+
+  requestAnimationFrame(renderFrame);
+})();
+
+/* ===================== 숫자 오도미터 카운트업 엔진 ===================== */
+function animateNumbers() {
+  const slideEl = document.getElementById('slide');
+  if (!slideEl) return;
+  const statVals = slideEl.querySelectorAll('.stat .v');
+  statVals.forEach(vEl => {
+    const smallEl = vEl.querySelector('small');
+    const unitHTML = smallEl ? smallEl.outerHTML : '';
+    const rawText = vEl.childNodes[0] ? vEl.childNodes[0].textContent.trim() : '';
+    if (!/^[0-9,]+$/.test(rawText)) return;
+    const target = parseInt(rawText.replace(/,/g, ''), 10);
+    if (isNaN(target)) return;
+    const hasComma = rawText.includes(',');
+    const dur = 1100;
+    const t0 = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      const ease = 1 - Math.pow(1 - p, 4);
+      const val = Math.round(target * ease);
+      const formatted = hasComma ? val.toLocaleString('en-US') : String(val);
+      vEl.innerHTML = `${formatted}${unitHTML}`;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+</script>
+</body>
+</html>
