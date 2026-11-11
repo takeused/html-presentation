@@ -1,0 +1,838 @@
+<!-- 시네마틱 발표자료: 재난안전 분야 스타링크 활용 — 제주 선박 비상폰부터 D2C 위성 구명망까지 (20장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>재난안전 분야 스타링크 활용 — 제주 선박 비상폰부터 D2C 위성 구명망까지 · 시네마틱 발표자료</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 ===================== */
+const DECK = {
+  brand: { name: 'STARLINK · DISASTER SAFETY', icon: 'solar:planet-3-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: [
+    '재난 통신의 골든타임',
+    '제주 어선 · 해상 구명망',
+    'Direct to Cell · 실전 투입',
+    '한국 재난안전망 고도화'
+  ],
+  slides: [
+    // 01. Cover (ch 0)
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1517976487492-5750f3195933', photo: 'SpaceX',
+      eyebrow: 'LOW EARTH ORBIT SATELLITE · EMERGENCY LIFELINE',
+      title: '재난안전의 판을 바꾸는 스타링크<br><em>하늘 위의 기지국이 생명을 구한다</em>',
+      sub: '제주 원해 어선의 비상 휴대폰부터 글로벌 대형 산불·태풍 현장까지 — 끊기지 않는 저궤도 위성통신 혁신',
+      meta: 'SPECIAL REPORT · MARITIME & DISASTER SAFETY · 20 SLIDES'
+    },
+    // 02. Stats (ch 0)
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1446776877081-d282a0f896e2', photo: 'NASA',
+      eyebrow: 'CHAPTER 01 · 통신 사각지대와 재난의 역설',
+      title: '지상 기지국이 멈추는 순간, <em>구조의 골든타임도 멈춘다</em>',
+      items: [
+        { value: '100', unit: 'km', label: '기존 연안 VHF·LTE 무선망의<br>해상 도달 한계 거리' },
+        { value: '550', unit: 'km', label: '스타링크 저궤도(LEO) 위성이<br>지구를 도는 초근접 고도' },
+        { value: '7,000', unit: '기+', label: '전 세계 바다와 험지를 실시간으로<br>연결하는 활성 위성 군집' }
+      ],
+      note: '출처 · SpaceX Starlink Constellation Status & 해양수산부 해상통신망 기준 (2025~2026)'
+    },
+    // 03. Compare (ch 0)
+    {
+      layout: 'compare', chapter: 0,
+      bg: 'photo-1507525428034-b723cf961d3e', photo: 'Sean Oulashin',
+      eyebrow: 'WHY TERRESTRIAL NETWORKS FAIL',
+      title: '극한 재난과 먼 바다에서 드러나는 기존 통신망의 한계',
+      left: {
+        title: '기존 지상망 · 정지궤도 위성 (GEO)',
+        icon: 'solar:shield-warning-bold',
+        items: [
+          '산불·태풍·지진 발생 시 기지국 단전 및 광케이블 소실로 즉시 불통',
+          '육지에서 100km 이상 떨어진 원해에서는 전파 미도달 및 잡음 심화',
+          '35,786km 상공 정지궤도 위성은 600ms 지연과 수백만 원대 고비용 한계'
+        ]
+      },
+      right: {
+        title: '스타링크 저궤도 위성통신 (LEO)',
+        icon: 'solar:planet-3-bold',
+        items: [
+          '지상 인프라가 전소되어도 하늘만 열려 있으면 15분 내 초고속망 개통',
+          '550km 상공 수천 기 위성이 레이저 메쉬(ISL)로 대양 한복판까지 직결',
+          '25~40ms 초저지연·220Mbps 대역폭으로 실시간 화상·CCTV 전송 구현'
+        ]
+      },
+      note: '재난안전 통신의 핵심은 평시 속도가 아니라 극한 상황에서의 생존성(Survivability)입니다'
+    },
+    // 04. SVG Cards (ch 0)
+    {
+      layout: 'svg_cards', chapter: 0,
+      bg: 'photo-1614064641938-3bbee52942c7', photo: 'FlyD',
+      eyebrow: 'HUD BENCHMARK · LATENCY & BANDWIDTH',
+      title: '고도는 65분의 1로 낮추고, 대역폭은 수십 배 넓히다',
+      cards: [
+        {
+          icon: 'solar:bolt-circle-bold',
+          title: '위성 궤도별 통신 지연시간 비교',
+          badge: '15배 빠른 응답',
+          chart: 'leo_latency',
+          foot: '정지궤도(600ms) 대비 지상 LTE 수준(25~40ms)의 실시간 양방향 소통 달성'
+        },
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '해상 위성통신 다운로드 속도 혁신',
+          badge: '초고속 영상 전송',
+          chart: 'leo_speed',
+          foot: '과거 문자 전송도 버거웠던 원해에서 고화질 CCTV·원격의료 영상 즉시 전송'
+        }
+      ],
+      note: '출처 · SpaceX Starlink Maritime Specifications & ITU 위성통신 지연시간 비교 자료'
+    },
+    // 05. Quote (ch 0)
+    {
+      layout: 'quote', chapter: 0,
+      bg: 'photo-1519681393784-d120267933ba', photo: 'Benjamin Voros',
+      eyebrow: 'PARADIGM SHIFT IN EMERGENCY RESPONSE',
+      quote: '재난 현장에서 통신은 단순한 편의가 아니라<br><em>생사와 직결되는 가장 먼저 연결해야 할 구명줄</em>이다',
+      by: 'GLOBAL DISASTER TELECOMMUNICATIONS PRINCIPLE · ITU'
+    },
+    // 06. Bullets (ch 1)
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1544039161-b0c20826c6f6', photo: 'Marek Szturc',
+      eyebrow: 'CHAPTER 02 · 제주 선박의 위성통신 휴대폰 비치 사례',
+      title: '제주 어선들은 왜 먼 바다에<br><em>스타링크 비상 휴대폰을 실었는가</em>',
+      items: [
+        { icon: 'solar:compass-bold', text: '기후변화와 고수온으로 갈치 채낚기 등 조업 해역이 동중국해·대만 수역까지 급격히 원거리화' },
+        { icon: 'solar:danger-triangle-bold', text: '본섬과 멀어질수록 기존 VHF 무전기가 끊기거나 심한 잡음으로 위급 상황 시 구조 요청 불가' },
+        { icon: 'solar:devices-bold', text: '선박 내 저궤도 위성 단말(Wi-Fi)과 비상용 스마트폰을 비치해 통신 음영 구역에서도 즉시 통화·메시지 발신' },
+        { icon: 'solar:shield-check-bold', text: '제주특별자치도·제주테크노파크·수협이 협력하여 연근해 어선 대상 위성통신 안전장비 보급 사업 전면 추진' }
+      ],
+      note: '출처 · 제주특별자치도·제주테크노파크 「위성통신 활용 어선안전관리 체계 구축 장비 지원사업」 (2025~2026)'
+    },
+    // 07. Flow (ch 1)
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
+      eyebrow: 'JEJU MARITIME SOS ARCHITECTURE',
+      title: '제주 어선 긴급 구조 시 스타링크 3단계 실시간 작동 체계',
+      steps: [
+        { label: '선박 위성단말 · 비상폰', desc: '화재·침수·응급환자 발생 즉시<br>선내 비치 휴대폰으로 SOS 발신' },
+        { label: '저궤도 위성 실시간 중계', desc: '음영지역 없이 정확한 GPS 좌표와<br>선내 CCTV 영상을 위성으로 전송' },
+        { label: '수협 FIS · 해경 상황실', desc: '어선안전조업시스템(FIS)이 좌표를<br>즉각 파악해 경비함정·헬기 급파' }
+      ],
+      note: '단순 음성 무전을 넘어 선내 실시간 영상과 승선원 데이터를 해경·수협 상황실과 즉시 공유합니다'
+    },
+    // 08. SVG Cards (ch 1)
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Unsplash',
+      eyebrow: 'MARITIME SAFETY CAPABILITY · JEJU CASE',
+      title: '원거리 조업 해역 100% 커버리지와 5대 구조 역량 도약',
+      cards: [
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: '원해 커버리지 및 FIS 실시간 연동',
+          badge: '음영지역 ZERO',
+          chart: 'jeju_coverage',
+          foot: '동중국해 원거리 조업 해역 어디서나 항해 위치·속도·영상 실시간 전송'
+        },
+        {
+          icon: 'solar:radar-2-bold',
+          title: '기존 VHF 무전 vs 스타링크 선박체계',
+          badge: '5대 지표 압도',
+          chart: 'jeju_radar',
+          foot: '원거리 도달성·CCTV 영상 전송·스마트폰 연동에서 기존 무전망 한계 돌파'
+        }
+      ],
+      note: '출처 · 수협중앙회 어선안전조업관리시스템(FIS) 및 제주 어선 안전관리 실증 데이터 종합'
+    },
+    // 09. Compare (ch 1)
+    {
+      layout: 'compare', chapter: 1,
+      bg: 'photo-1469474968028-56623f02e42e', photo: 'David Marcu',
+      eyebrow: 'BEFORE & AFTER STARLINK ON VESSEls',
+      title: '칠흑 같은 밤바다 조난 사고, 무엇이 달라졌는가',
+      left: {
+        title: '도입 이전: 암흑 속의 고립',
+        icon: 'solar:close-circle-bold',
+        items: [
+          '기관 고장·침수 시 치지직거리는 단파 무전에만 의존해 의사소통 지연',
+          '조류에 표류하는 어선의 정확한 실시간 위치 파악에 수 시간 허비',
+          '응급 부상자 발생 시 육상 의료진에게 환자 상태를 보여줄 방법 전무'
+        ]
+      },
+      right: {
+        title: '도입 이후: 연결된 해상 구명망',
+        icon: 'solar:verified-check-bold',
+        items: [
+          '선내 비치된 위성 연동 스마트폰으로 119·해경·수협과 또렷한 직통 연락',
+          '수협 어선안전조업시스템(FIS)에 실시간 항적·속도·선내 CCTV 자동 표출',
+          '고화질 화상통화로 육상 응급의학과 전문의의 실시간 원격 응급처치 지도'
+        ]
+      },
+      note: '비상시에는 생명을 구하는 긴급 전화가 되고, 평시에는 장기 조업 선원의 고립을 해소하는 복지망이 됩니다'
+    },
+    // 10. Stats (ch 1)
+    {
+      layout: 'stats', chapter: 1,
+      bg: 'photo-1520052205864-92d242b3a76b', photo: 'Meiying Ng',
+      eyebrow: 'KOREA MARITIME STARLINK ADOPTION · 2025~2026',
+      title: '제주 어선에서 대형 외항 상선·여객선까지 <em>폭발적 확산</em>',
+      items: [
+        { value: '12', unit: '월', label: '2025년 한국 스타링크 공식 상용화<br>및 해상 선박 도입 본격 개시' },
+        { value: '220', unit: 'Mbps', label: 'Starlink Maritime 선박용 단말의<br>해상 최대 다운로드 속도' },
+        { value: '24', unit: '시간', label: '원양 상선·연근해 어선·해경 함정의<br>무중단 실시간 안전 모니터링' }
+      ],
+      note: '출처 · 과학기술정보통신부 국경간 공급 협정 승인 및 SK텔링크·KT SAT 해상 도입 현황 (2025~2026)'
+    }
+ ,
+    // 11. Flow (ch 2)
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1585079374502-415f8516dcc3', photo: 'George Prentzas',
+      eyebrow: 'CHAPTER 03 · DIRECT TO CELL (D2C) 혁명',
+      title: '접시 안테나 없이 일반 스마트폰이 위성과 직접 통화하는 원리',
+      steps: [
+        { label: '일반 LTE·5G 스마트폰', desc: '별도 위성단말이나 앱 설치 없이<br>기존 휴대폰 그대로 하늘을 향해 발신' },
+        { label: '우주 기지국 (eNodeB)', desc: '스타링크 D2C 위성에 탑재된<br>첨단 위상배열 안테나가 신호 직접 수신' },
+        { label: '레이저 링크 · 지상 코어망', desc: '위성 간 광레이저(ISL)를 거쳐<br>통신사 코어망 및 119 상황실로 즉시 연결' }
+      ],
+      note: '출처 · SpaceX Direct to Cell Architecture (하늘 위의 휴대폰 기지국, Cell Tower in Space)'
+    },
+    // 12. Bullets (ch 2)
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1470252649378-9c29740c9fa8', photo: 'Dawid Zawiła',
+      eyebrow: 'GLOBAL DISASTER FIELD PROOF · 2024~2026',
+      title: '초대형 산불과 허리케인 현장에서 증명된 스타링크의 구명 위력',
+      items: [
+        { icon: 'solar:fire-bold', text: '2025년 1월 미국 LA 대형 산불: 지상 기지국 전소·단전 속 19만 8,000명에게 비상 위성 문자·재난경보 제공' },
+        { icon: 'solar:cloud-rain-bold', text: '허리케인 헬렌·밀턴(2024): 미국 노스캐롤라이나 고립 지역에 FCC 긴급 승인으로 D2C 위성 SOS 즉각 가동' },
+        { icon: 'solar:bolt-bold', text: '사이버트럭 이동형 기지국 투입: 산불 피해 외곽 거점마다 스타링크 장착 차량을 배치해 무료 개방형 Wi-Fi 공급' },
+        { icon: 'solar:global-bold', text: '일본 노토반도 지진 및 KDDI·T-Mobile 상용화: 해상·산악 조난자가 휴대폰만으로 위성 긴급 구조 요청 발신' }
+      ],
+      note: '출처 · FCC Emergency STA Report, T-Mobile & SpaceX LA Wildfire Response Data (2025)'
+    },
+    // 13. Stats (ch 2)
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1506744038136-46273834b3fb', photo: 'Bailey Zindel',
+      eyebrow: 'REAL-WORLD EMERGENCY METRICS',
+      title: '재난으로 지상망이 끊긴 순간, <em>위성이 받아낸 생명의 신호들</em>',
+      items: [
+        { value: '19.8', unit: '만명', label: '2025 LA 대형 산불 첫 주간<br>스타링크 D2C 긴급통신 이용자' },
+        { value: '650', unit: '기+', label: '스마트폰과 직접 통신하는<br>Direct to Cell 전용 저궤도 위성' },
+        { value: '15', unit: '분', label: '재난 현장에 스타링크 이동형 단말<br>투입 후 비상망 개통까지 걸리는 시간' }
+      ],
+      note: '출처 · SpaceX Direct to Cell Constellation & PC Magazine LA Wildfire Analysis (2025)'
+    },
+    // 14. SVG Cards (ch 2)
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1551288049-bebda4e38f71', photo: 'Luke Chesser',
+      eyebrow: 'D2C CONSTELLATION & RECOVERY TIME',
+      title: '폭발적으로 늘어나는 우주 기지국과<br><em>비상 통신망 복구 시간 98% 단축</em>',
+      cards: [
+        {
+          icon: 'solar:rocket-2-bold',
+          title: 'Direct to Cell 위성 군집 확장 추이',
+          badge: '글로벌 상용화',
+          chart: 'd2c_growth',
+          foot: '2024년 6기 시험 발사에서 2025~2026년 650기 이상 상용 궤도 배치 완료'
+        },
+        {
+          icon: 'solar:shield-up-bold',
+          title: '재난 현장 비상 통신망 개통 소요시간',
+          badge: '98% 시간 단축',
+          chart: 'disaster_recovery',
+          foot: '수일 걸리던 광케이블 복구 대신 위성 백홀로 15분 내 현장 지휘망 즉시 가동'
+        }
+      ],
+      note: '출처 · SpaceX Launch Manifest & 재난안전통신망 위성 백홀 실증 보고서 (2025~2026)'
+    },
+    // 15. Quote (ch 2)
+    {
+      layout: 'quote', chapter: 2,
+      bg: 'photo-1502904550040-7534597429ae', photo: 'Martins Zemlickis',
+      eyebrow: 'THE END OF DEAD ZONES',
+      quote: '하늘이 보이는 곳이라면 지구 어디서든,<br><em>당신의 주머니 속 휴대폰이 곧 위성 구조 신호기</em>가 된다',
+      by: 'STARLINK DIRECT TO CELL VISION · 2026'
+    },
+    // 16. Bullets (ch 3)
+    {
+      layout: 'bullets', chapter: 3,
+      bg: 'photo-1519501025264-65ba15a82390', photo: 'Aleksandar Pasaric',
+      eyebrow: 'CHAPTER 04 · 한국형 재난안전 통신망(PS-LTE)과의 결합',
+      title: '해양경찰 함정부터 산불 대피소까지, 국내 재난안전 도입 4대 축',
+      items: [
+        { icon: 'solar:routing-2-bold', text: '해경 경비함정 위성 백홀(Backhaul): 원해 작전 함정의 소형 기지국(PS-LTE)을 스타링크로 육상 본청과 직결' },
+        { icon: 'solar:devices-bold', text: '연근해 어선·여객선 비상폰 의무화 확산: 제주 어선 사례처럼 선박 내 위성 연동 비상 스마트폰 상시 비치' },
+        { icon: 'solar:shield-star-bold', text: '산불·수해 이동기지국 이중화: 강원·경북 산악 산불 등으로 지상 광선로 단절 시 스타링크 백홀로 즉시 전환' },
+        { icon: 'solar:eye-scan-bold', text: '드론·무인기 실시간 영상 관제: 해상 수색 구조 드론과 산불 감시 카메라의 고화질 영상을 끊김 없이 전송' }
+      ],
+      note: '출처 · 해양경찰청 위성통신망 고도화 계획 및 과학기술정보통신부·KT SAT·SK텔링크 도입 전략'
+    },
+    // 17. Flow (ch 3)
+    {
+      layout: 'flow', chapter: 3,
+      bg: 'photo-1498084393753-b411b2d26b34', photo: 'Marc-Olivier Jodoin',
+      eyebrow: 'HYBRID DISASTER NETWORK ARCHITECTURE',
+      title: '지상 재난망(PS-LTE) 마비 시 스타링크 위성 백홀 작동 구조',
+      steps: [
+        { label: '재난 현장 · 해경 함정', desc: '소방·해경 대원의 PS-LTE 단말과<br>조난 선박 비상 휴대폰이 신호 발신' },
+        { label: '스타링크 이동형 백홀', desc: '차량·선박의 스타링크 안테나가<br>지상 광케이블 대신 트래픽을 우주로 전송' },
+        { label: '중앙재난안전대책본부', desc: '현장 고화질 영상·드론 화면·생체신호를<br>실시간 수신해 골든타임 내 입체 지휘' }
+      ],
+      note: '정부 전파법·전기통신사업법 유권해석 및 국경간 공급 승인으로 저궤도 위성 백홀 활용 기반 완비'
+    },
+    // 18. Compare (ch 3)
+    {
+      layout: 'compare', chapter: 3,
+      bg: 'photo-1558002038-1055907df827', photo: 'Sebastian Scholz (Nuki)',
+      eyebrow: 'TWO-TRACK DEPLOYMENT STRATEGY',
+      title: '재난 유형과 현장에 맞춘 선박·차량형 vs 휴대폰 직결(D2C) 전략',
+      left: {
+        title: '선박·차량 단말 + Wi-Fi 비상폰 (현재 주력)',
+        icon: 'solar:server-minimalistic-bold',
+        items: [
+          '제주 어선·상선·해경 함정·소방 지휘차에 평면 위성 안테나 설치',
+          '선내·현장 반경에 초고속 Wi-Fi 및 소형 LTE 기지국(Femtocell) 형성',
+          '220Mbps급 대용량으로 다채널 CCTV·화상 원격의료·드론 영상 전송'
+        ]
+      },
+      right: {
+        title: 'Direct to Cell 위성-휴대폰 직결 (차세대 확장)',
+        icon: 'solar:bolt-circle-bold',
+        items: [
+          '구명조끼만 입고 표류하는 조난자나 등산객이 본인 스마트폰으로 발신',
+          '외부 안테나나 전원 공급이 끊긴 극한 고립 상황에서도 최후의 보루 작동',
+          '긴급 SOS 문자·위치 좌표(GPS)·음성·기상 재난문자(CBS) 즉시 수발신'
+        ]
+      },
+      note: '선박용 고성능 단말과 개인 휴대폰 D2C가 결합될 때 육·해·공 완벽한 2중 재난 안전망이 완성됩니다'
+    },
+    // 19. Timeline (ch 3)
+    {
+      layout: 'timeline', chapter: 3,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Unsplash',
+      eyebrow: 'KOREA SATELLITE SAFETY ROADMAP · 2025~2028',
+      title: '대한민국 저궤도 위성 기반 재난안전 고도화 로드맵',
+      items: [
+        { time: '2025', label: '국내 상용화 · 어선 실증', desc: '한국 스타링크 공식 개통(12월) 및<br>제주 원해 어선·대형 상선 보급 개시' },
+        { time: '2026', label: '해상 · 산림 재난망 확산', desc: '지자체 어선 안전장비 지원 확대 및<br>해경 함정·소방 위성 백홀 본격 도입', em: true },
+        { time: '2027', label: '국내 D2C 휴대폰 직결', desc: '이동통신사 협력 위성-휴대폰 직결로<br>전국 해상·산악 음영지역 완전 해소' },
+        { time: '2028~', label: '6G · K-LEO 위성 융합', desc: '한국형 저궤도 위성통신 시범망 발사 및<br>육·해·공 3차원 통합 재난망 완성' }
+      ],
+      note: '출처 · 과학기술정보통신부 6G·저궤도 위성통신 기술개발 사업 및 해양수산부·지자체 추진 계획'
+    },
+    // 20. Closing (ch 3)
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1451187580459-43490279c0fa', photo: 'NASA',
+      eyebrow: 'NEVER LOSE CONNECTION · SAVE EVERY LIFE',
+      title: '가장 먼 바다, 가장 깊은 재난 현장까지<br><em>끊기지 않는 연결이 생명을 지킵니다</em>',
+      sub: '제주 어선의 작은 비상 휴대폰에서 시작된 저궤도 위성 혁신이 대한민국 재난안전의 새로운 표준을 만듭니다',
+      chips: [
+        '제주 어선 비상 위성폰',
+        '550km 초저지연 LEO',
+        'Direct to Cell 구명망',
+        'PS-LTE 위성 백홀'
+      ]
+    }
+
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // 1) 슬라이드 4 좌측: 고도 및 왕복 지연시간(Latency) 비교 바 차트
+  leo_latency: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gBarRed" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#fb7185" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="gBarCyan" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="1.0"/>
+      </linearGradient>
+      <filter id="glowLat" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.7"/>
+      </filter>
+    </defs>
+    <text x="28" y="42" fill="#94a3b8" font-size="15" font-weight="700">기존 정지궤도 위성 (GEO · 고도 35,786 km)</text>
+    <rect x="28" y="54" width="460" height="32" rx="6" fill="url(#gBarRed)"/>
+    <text x="502" y="76" fill="#fb7185" font-size="21" font-weight="900">600 ms+</text>
+
+    <text x="28" y="118" fill="#cbd5e1" font-size="15" font-weight="700">해상 중궤도 위성 (MEO · 고도 8,000 km)</text>
+    <rect x="28" y="130" width="135" height="32" rx="6" fill="rgba(148,163,184,0.45)"/>
+    <text x="175" y="152" fill="#cbd5e1" font-size="19" font-weight="800">150 ms</text>
+
+    <text x="28" y="192" fill="#00d2ff" font-size="16" font-weight="800">스타링크 저궤도 위성 (LEO · 고도 550 km)</text>
+    <rect x="28" y="204" width="42" height="32" rx="6" fill="url(#gBarCyan)" filter="url(#glowLat)"/>
+    <text x="84" y="226" fill="#00d2ff" font-size="23" font-weight="900">25~40 ms (지상 LTE급 초저지연)</text>
+  </svg>`,
+
+  // 2) 슬라이드 4 우측: 해상 위성 대역폭(다운로드 속도) 비교
+  leo_speed: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gSpdCyan" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.95"/>
+      </linearGradient>
+      <filter id="glowSpd" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="45" x2="580" y2="45" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="120" x2="580" y2="120" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="198" x2="580" y2="198" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <rect x="105" y="192" width="84" height="6" rx="3" fill="#64748b"/>
+    <text x="147" y="180" fill="#94a3b8" font-size="16" font-weight="700" text-anchor="middle">0.1 Mbps</text>
+    <text x="147" y="226" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">기존 L-밴드</text>
+
+    <rect x="275" y="176" width="84" height="22" rx="4" fill="#94a3b8"/>
+    <text x="317" y="164" fill="#cbd5e1" font-size="17" font-weight="800" text-anchor="middle">4~10 Mbps</text>
+    <text x="317" y="226" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">기존 정지궤도 VSAT</text>
+
+    <rect x="445" y="42" width="90" height="156" rx="6" fill="url(#gSpdCyan)" filter="url(#glowSpd)"/>
+    <text x="490" y="30" fill="#00d2ff" font-size="22" font-weight="900" text-anchor="middle">220 Mbps</text>
+    <text x="490" y="226" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">Starlink Maritime</text>
+  </svg>`,
+
+  // 3) 슬라이드 8 좌측: 제주 원거리 어선 통신 가능 해역 & 조난 위치 전송 주기
+  jeju_coverage: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="170" cy="112" r="72" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="170" cy="112" r="72" fill="none" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-dasharray="452 452" transform="rotate(-90 170 112)"/>
+    <text x="170" y="118" fill="#ffffff" font-size="36" font-weight="900" text-anchor="middle">100%</text>
+    <text x="170" y="216" fill="#00d2ff" font-size="17" font-weight="800" text-anchor="middle">동중국해·배타적 경제수역 커버리지</text>
+
+    <line x1="320" y1="28" x2="320" y2="235" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+
+    <circle cx="470" cy="112" r="72" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="16"/>
+    <circle cx="470" cy="112" r="72" fill="none" stroke="#38bdf8" stroke-width="16" stroke-linecap="round" stroke-dasharray="415 452" transform="rotate(-90 470 112)"/>
+    <text x="470" y="118" fill="#ffffff" font-size="36" font-weight="900" text-anchor="middle">실시간</text>
+    <text x="470" y="216" fill="#38bdf8" font-size="17" font-weight="800" text-anchor="middle">어선안전조업시스템(FIS) 좌표·영상 연동</text>
+  </svg>`,
+
+  // 4) 슬라이드 8 우측: 기존 해상무선(VHF) vs 스타링크 선박 위성폰 5각 역량 비교
+  jeju_radar: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowRdr" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#00d2ff" flood-opacity="0.65"/>
+      </filter>
+    </defs>
+    <!-- Radar center: (220, 130), R=85 -->
+    <polygon points="220,45 301,104 270,199 170,199 139,104" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.2"/>
+    <polygon points="220,73 274,112 253,176 187,176 166,112" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+    <line x1="220" y1="130" x2="220" y2="45" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="220" y1="130" x2="301" y2="104" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="220" y1="130" x2="270" y2="199" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="220" y1="130" x2="170" y2="199" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="220" y1="130" x2="139" y2="104" stroke="rgba(255,255,255,0.12)"/>
+
+    <!-- 기존 VHF 무선망 (Violet/Gray) -->
+    <polygon points="220,102 246,121 235,152 205,152 185,118" fill="rgba(192,132,252,0.22)" stroke="#c084fc" stroke-width="2"/>
+    <!-- 스타링크 선박 위성통신 (Cyan) -->
+    <polygon points="220,48 298,105 267,195 173,195 144,106" fill="rgba(0,210,255,0.28)" stroke="#00d2ff" stroke-width="3" filter="url(#glowRdr)"/>
+
+    <text x="220" y="34" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">원거리 도달성</text>
+    <text x="312" y="106" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="start">CCTV 영상전송</text>
+    <text x="278" y="218" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="middle">스마트폰 연동</text>
+    <text x="162" y="218" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="middle">기상악화 생존성</text>
+    <text x="128" y="106" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="end">음성·화상 품질</text>
+
+    <!-- Legend on right -->
+    <rect x="435" y="78" width="180" height="92" rx="10" fill="rgba(15,23,42,0.75)" stroke="rgba(255,255,255,0.15)"/>
+    <circle cx="458" cy="106" r="7" fill="#00d2ff"/>
+    <text x="475" y="111" fill="#ffffff" font-size="15" font-weight="800">스타링크 위성체계</text>
+    <circle cx="458" cy="142" r="7" fill="#c084fc"/>
+    <text x="475" y="147" fill="#cbd5e1" font-size="15" font-weight="600">기존 VHF·단파 무전</text>
+  </svg>`,
+
+  // 5) 슬라이드 14 좌측: D2C 위성 군집 성장 추세 (Area + Glow Line)
+  d2c_growth: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gAreaD2C" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.48"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glowD2C" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="50" x2="590" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="125" x2="590" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="205" x2="590" y2="205" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <path d="M 90 198 C 175 190, 230 165, 325 125 C 420 85, 490 58, 565 38 L 565 205 L 90 205 Z" fill="url(#gAreaD2C)"/>
+    <path d="M 90 198 C 175 190, 230 165, 325 125 C 420 85, 490 58, 565 38" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" filter="url(#glowD2C)"/>
+
+    <circle cx="90" cy="198" r="6" fill="#0a101c" stroke="#94a3b8" stroke-width="3"/>
+    <text x="90" y="180" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">6기 시험발사</text>
+    <text x="90" y="232" fill="#94a3b8" font-size="15" font-weight="600" text-anchor="middle">2024.01</text>
+
+    <circle cx="325" cy="125" r="7" fill="#0a101c" stroke="#38bdf8" stroke-width="3.5"/>
+    <text x="325" y="105" fill="#ffffff" font-size="17" font-weight="800" text-anchor="middle">320기+ 재난투입</text>
+    <text x="325" y="232" fill="#cbd5e1" font-size="15" font-weight="700" text-anchor="middle">2024.12</text>
+
+    <circle cx="565" cy="38" r="14" fill="rgba(0,210,255,0.22)"/>
+    <circle cx="565" cy="38" r="8" fill="#00d2ff" filter="url(#glowD2C)"/>
+    <text x="530" y="28" fill="#00d2ff" font-size="21" font-weight="900" text-anchor="end">650기+ 상용망</text>
+    <text x="565" y="232" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">2025~2026</text>
+  </svg>`,
+
+  // 6) 슬라이드 14 우측: 재난 현장 임시 기지국 복구 및 통신 개통 시간 단축
+  disaster_recovery: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gRecCyan" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="1.0"/>
+      </linearGradient>
+    </defs>
+    <text x="30" y="48" fill="#94a3b8" font-size="16" font-weight="700">기존 광케이블·지상 이동기지국 복구 소요 시간</text>
+    <rect x="30" y="62" width="470" height="36" rx="8" fill="rgba(244,63,94,0.75)"/>
+    <text x="515" y="87" fill="#fb7185" font-size="21" font-weight="900">24 ~ 72시간</text>
+
+    <text x="30" y="142" fill="#00d2ff" font-size="16" font-weight="800">스타링크 위성 백홀 + 이동형 기지국 즉시 개통</text>
+    <rect x="30" y="156" width="52" height="36" rx="8" fill="url(#gRecCyan)"/>
+    <text x="96" y="181" fill="#00d2ff" font-size="23" font-weight="900">15분 이내 (복구 시간 98% 단축)</text>
+
+    <text x="30" y="226" fill="#cbd5e1" font-size="15" font-weight="600">※ 산불·지진·태풍으로 지상 광선로 단절 시 위성 안테나 전개 즉시 Wi-Fi·LTE 개통</text>
+  </svg>`
+};
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

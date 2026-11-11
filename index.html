@@ -1254,7 +1254,7 @@
     <div class="yt-header-right">
       <span class="deck-count-pill">
         <span class="status-dot"></span>
-        <span id="deckCountBadge">39 DECKS</span>
+        <span id="deckCountBadge">40 DECKS</span>
       </span>
 
       <button id="viewModeToggle" class="icon-btn" type="button" aria-label="보기 방식 전환" title="그리드 / 리스트 보기 전환">
@@ -1347,7 +1347,7 @@
         <span>Hub 돌아가기 (ESC)</span>
       </button>
 
-      <span class="viewer-pos" id="viewerPos">01 / 39</span>
+      <span class="viewer-pos" id="viewerPos">01 / 40</span>
 
       <nav class="viewer-rail" id="viewerRail"></nav>
 
@@ -1390,6 +1390,18 @@
     // 발표 목록 데이터 (워크스페이스 내 전체 36개 HTML 발표자료 전수 수록)
     // hook 필드는 16:9 썸네일 내부에 표시될 핵심 포스터 카피(아래 제목과 중복 방지)
     const DECKS = [
+      {
+        id: 'starlink-disaster-safety-cinematic',
+        src: 'starlink_disaster_safety_cinematic_presentation.html',
+        cat: '정책',
+        title: '재난안전의 판을 바꾸는 스타링크 — 제주 어선 비상폰부터 D2C 구명망까지',
+        hook: '제주 원해 어선 위성 비상폰 · 550km 초저지연 LEO · Direct to Cell · 해경 PS-LTE 백홀',
+        desc: '제주 원거리 조업 어선의 스타링크 비상 스마트폰 비치 및 수협 FIS 실시간 영상·위치 연동 사례부터, 안테나 없이 일반 휴대폰과 위성이 직결되는 Direct to Cell(2025 LA 산불·허리케인 구명 실증), 해양경찰 경비함정 및 국가재난안전통신망(PS-LTE) 위성 백홀 고도화까지 총망라한 20장 시네마틱 발표자료.',
+        slides: '20장',
+        isCinematic: true,
+        style: 'CINEMATIC',
+        thumb: 'photo-1517976487492-5750f3195933'
+      },
       {
         id: 'modern-health-triad-cinematic',
         src: 'modern_health_triad_cinematic_presentation.html',
