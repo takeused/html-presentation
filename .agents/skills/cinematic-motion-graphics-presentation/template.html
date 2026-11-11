@@ -442,19 +442,38 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
   50% { transform: translateY(-4px); box-shadow: 0 0 42px rgba(253, 224, 71, 0.55); }
 }
 
-/* Stats 빅 넘버 네온 홀로그램 광원 */
+/* Stats 빅 넘버 네온 홀로그램 광원 (3열 6~7자리 대형 수치 및 2~3글자 단위 줄바꿈/잘림 원천 차단) */
+.stats {
+  width: 100%;
+  max-width: 1760px;
+  margin-top: 56px !important;
+  justify-content: center;
+}
+.stat {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 38px !important;
+}
 .stat .v {
   position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  white-space: nowrap !important;
+  font-size: 132px !important;
   color: #ffffff !important;
   text-shadow:
     0 4px 24px rgba(0, 0, 0, 0.95),
     0 0 42px rgba(0, 210, 255, 0.6) !important;
 }
 .stat .v small {
+  font-size: 52px !important;
+  white-space: nowrap !important;
   color: #67e8f9 !important;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 22px rgba(0, 210, 255, 0.75) !important;
 }
 .stat .l {
+  font-size: 25px !important;
   color: #f1f5f9 !important;
 }
 

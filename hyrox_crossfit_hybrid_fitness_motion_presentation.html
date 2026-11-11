@@ -1,0 +1,1664 @@
+<!-- 시네마틱 모션 그래픽 발표자료: 하이록스(HYROX)와 크로스핏 하이브리드 피트니스 (15장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리플렉트 오비탈과 우주 거울 혁신 · 시네마틱 발표자료</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+
+/* === MOTION GRAPHICS PRESENTATION UPGRADE CSS v4 (ZERO WORD-BREAK & WIPE REVEAL) === */
+#motion-canvas {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 배경 실사는 은은한 텍스처로 낮추고 모션 캔버스와 텍스트 가독성 극대화 */
+.bg.show {
+  opacity: 0.22 !important;
+  filter: saturate(1.15) contrast(1.1);
+}
+
+/* 텔레메트리 HUD 코너 장식 업그레이드 */
+.hud {
+  border-color: rgba(0, 210, 255, 0.48) !important;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.22);
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+.hud-telemetry {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #38bdf8;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  z-index: 3;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 210, 255, 0.55);
+}
+.hud-telemetry.tl { left: 74px; top: 142px; }
+.hud-telemetry.tr { right: 74px; top: 142px; text-align: right; }
+.hud-telemetry.bl { left: 74px; bottom: 64px; }
+
+/* =========================================================================
+   1. 블록 전체 키네틱 스프링 + 블러 디졸브 등장 ([data-s])
+   - DOM 텍스트를 쪼개지 않고(Flexbox 붕괴 0%) 블록 단위로 탄성 있게 등장!
+   ========================================================================= */
+[data-s] {
+  opacity: 0;
+  transform: translateY(32px) scale(0.97);
+  filter: blur(10px);
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s),
+    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s);
+}
+[data-s].on {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* 불릿, 비교 리스트 항목, 스텝 설명이 순차적으로 좌→우 홀로그램 와이프로 나타나는 애니메이션 */
+.panel.hi.on ul li {
+  animation: hologramRowReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.panel.hi.on ul li:nth-child(1) { animation-delay: calc(var(--d, 0s) + 0.12s); }
+.panel.hi.on ul li:nth-child(2) { animation-delay: calc(var(--d, 0s) + 0.28s); }
+.panel.hi.on ul li:nth-child(3) { animation-delay: calc(var(--d, 0s) + 0.44s); }
+
+@keyframes hologramRowReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-22px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+/* 불릿 항목 등장 시 좌에서 우로 광자 스캔라인이 텍스트를 깨우며 지나가는 모션 */
+.bullet.on {
+  position: relative;
+  animation: bulletSlideGlow 0.78s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@keyframes bulletSlideGlow {
+  0% {
+    opacity: 0;
+    transform: translateX(-34px) scale(0.98);
+    filter: blur(8px) brightness(1.8);
+  }
+  60% {
+    filter: blur(0px) brightness(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* =========================================================================
+   2. 전 슬라이드 1줄(Single-Line) 및 박스 무결성 레이아웃 최적화
+   ========================================================================= */
+#slide {
+  padding: 36px 96px 104px !important;
+}
+.title {
+  font-size: 68px !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.03em !important;
+  word-break: keep-all !important;
+}
+.cover .title {
+  font-size: 104px !important;
+  line-height: 1.14 !important;
+}
+
+/* Bullets: 74자 장문도 1920px 안에서 아이콘 잘림이나 2줄 꺾임 없이 1줄에 완벽히 들어오도록 최적화 */
+.bullets {
+  width: 100%;
+  max-width: 1720px;
+  margin-top: 52px !important;
+  gap: 24px !important;
+}
+.bullet {
+  font-size: 27px !important;
+  gap: 22px !important;
+  white-space: nowrap !important;
+  color: #f8fafc !important;
+}
+.bullet .ico {
+  width: 62px !important;
+  height: 62px !important;
+  font-size: 30px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Compare: 박스 너비를 820px로 넓히고 헤더/항목이 절대 어색하게 끊기지 않도록 최적화 */
+.compare {
+  margin-top: 48px !important;
+  gap: 36px !important;
+  width: 100%;
+  max-width: 1680px;
+  justify-content: center;
+}
+.panel {
+  width: 820px !important;
+  padding: 38px 42px !important;
+}
+.panel h3 {
+  font-size: 32px !important;
+  white-space: nowrap !important;
+  margin-bottom: 24px !important;
+}
+.panel li {
+  font-size: 23px !important;
+  line-height: 1.5 !important;
+  color: #f1f5f9 !important;
+  word-break: keep-all !important;
+}
+
+/* =========================================================================
+   3. 초고대비(Ultra High-Visibility) 네온 강조 타이틀 (.title em, .quote em)
+   ========================================================================= */
+.title em, .quote em {
+  position: relative;
+  display: inline-block;
+  font-style: normal;
+  color: #67e8f9 !important;
+  background: none !important;
+  -webkit-text-fill-color: #67e8f9 !important;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.95),
+    0 6px 22px rgba(0, 0, 0, 0.95),
+    0 0 24px rgba(0, 210, 255, 0.85),
+    0 0 48px rgba(56, 189, 248, 0.45) !important;
+  padding-bottom: 4px;
+  animation: emBreathe 3.6s ease-in-out infinite;
+}
+.title em::after, .quote em::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(0,210,255,0.15), #00d2ff 25%, #fde047 50%, #00d2ff 75%, rgba(0,210,255,0.15));
+  background-size: 200% 100%;
+  box-shadow: 0 0 16px #00d2ff, 0 0 28px rgba(253, 224, 71, 0.55);
+  animation: laserLineScan 3.2s linear infinite;
+}
+@keyframes emBreathe {
+  0%, 100% {
+    color: #67e8f9 !important;
+    -webkit-text-fill-color: #67e8f9 !important;
+  }
+  50% {
+    color: #fef08a !important;
+    -webkit-text-fill-color: #fef08a !important;
+    text-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.95),
+      0 6px 22px rgba(0, 0, 0, 0.95),
+      0 0 28px rgba(250, 204, 21, 0.9),
+      0 0 54px rgba(0, 210, 255, 0.6) !important;
+  }
+}
+@keyframes laserLineScan {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 일반 텍스트 가시성 보강 */
+.eyebrow {
+  color: #38bdf8 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 18px rgba(0, 210, 255, 0.55) !important;
+}
+.sub {
+  color: #f1f5f9 !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95) !important;
+}
+
+/* 아이브로우 칩 레이저 펄스 */
+.cover .chip, .svg-badge {
+  position: relative;
+  overflow: hidden;
+  color: #7dd3fc !important;
+  background: rgba(8, 22, 44, 0.82) !important;
+  border-color: rgba(56, 189, 248, 0.65) !important;
+  animation: badgePulse 3.2s ease-in-out infinite;
+}
+.cover .chip::after, .svg-badge::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%; width: 70%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
+  transform: skewX(-25deg);
+  animation: lightSweep 4.2s ease-in-out infinite;
+}
+@keyframes lightSweep {
+  0%, 35% { left: -120%; }
+  75%, 100% { left: 160%; }
+}
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(0, 210, 255, 0.28); }
+  50% { box-shadow: 0 0 28px rgba(0, 210, 255, 0.62); }
+}
+
+/* 불릿 아이콘 궤도 회전 글로우 */
+.bullet .ico {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.bullet.em .ico {
+  animation: icoFloat 3s ease-in-out infinite;
+}
+@keyframes icoFloat {
+  0%, 100% { transform: translateY(0); box-shadow: 0 0 28px rgba(0, 210, 255, 0.45); }
+  50% { transform: translateY(-4px); box-shadow: 0 0 42px rgba(253, 224, 71, 0.55); }
+}
+
+/* Stats 빅 넘버 네온 홀로그램 광원 (3열 6~7자리 대형 수치 및 2~3글자 단위 줄바꿈/잘림 원천 차단) */
+.stats {
+  width: 100%;
+  max-width: 1760px;
+  margin-top: 56px !important;
+  justify-content: center;
+}
+.stat {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 38px !important;
+}
+.stat .v {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  white-space: nowrap !important;
+  font-size: 132px !important;
+  color: #ffffff !important;
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.95),
+    0 0 42px rgba(0, 210, 255, 0.6) !important;
+}
+.stat .v small {
+  font-size: 52px !important;
+  white-space: nowrap !important;
+  color: #67e8f9 !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 22px rgba(0, 210, 255, 0.75) !important;
+}
+.stat .l {
+  font-size: 25px !important;
+  color: #f1f5f9 !important;
+}
+
+/* Flow 마름모 회전 궤도 링 + 화살표 광자 패킷 이동 */
+.dia::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(0, 210, 255, 0.55);
+  animation: orbitSpin 14s linear infinite;
+}
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
+}
+.arrow {
+  overflow: visible !important;
+}
+.arrow::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 18px;
+  height: 8px;
+  border-radius: 99px;
+  background: #fde047;
+  box-shadow: 0 0 16px #fde047, 0 0 28px #00d2ff;
+  animation: photonFlow 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes photonFlow {
+  0% { left: 0%; opacity: 0; transform: scaleX(0.5); }
+  20% { opacity: 1; transform: scaleX(1.2); }
+  85% { opacity: 1; }
+  100% { left: 92%; opacity: 0; transform: scaleX(0.6); }
+}
+
+/* Timeline 소나 파동(Sonar Ripple) & 에너지 스트림 */
+.timeline::after {
+  content: '';
+  position: absolute;
+  top: 53px;
+  left: 8%;
+  width: 140px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, transparent, #00d2ff, #fde047, transparent);
+  box-shadow: 0 0 18px #00d2ff;
+  animation: timelineStream 3.6s ease-in-out infinite;
+}
+@keyframes timelineStream {
+  0% { left: 8%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 78%; opacity: 0; }
+}
+.tl-item .dot {
+  position: relative;
+}
+.tl-item .dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 210, 255, 0.65);
+  animation: sonarRipple 2.4s ease-out infinite;
+}
+.tl-item.em .dot::after {
+  border-color: #fde047;
+  animation-duration: 1.8s;
+}
+@keyframes sonarRipple {
+  0% { transform: scale(0.6); opacity: 0.95; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+
+/* Compare & SVG 카드 홀로그램 보더 스캔 */
+.panel.hi, .svg-card.hi {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(10, 18, 34, 0.88), rgba(6, 11, 22, 0.84)) !important;
+}
+.panel.hi::after, .svg-card.hi::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d2ff, #fde047, transparent);
+  box-shadow: 0 0 16px #00d2ff;
+  animation: cardBorderScan 5s ease-in-out infinite;
+}
+@keyframes cardBorderScan {
+  0% { left: -60%; }
+  50% { left: 110%; }
+  100% { left: 110%; }
+}
+
+/* === SVG 내부 셀프 드로잉 & 모션그래픽 키프레임 === */
+.mg-draw {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: svgLineDraw 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+.mg-draw-delay {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: svgLineDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards;
+}
+@keyframes svgLineDraw {
+  to { stroke-dashoffset: 0; }
+}
+.mg-area {
+  opacity: 0;
+  animation: svgAreaFade 1.4s ease 0.9s forwards;
+}
+@keyframes svgAreaFade {
+  to { opacity: 1; }
+}
+.mg-bar-h {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: svgBarH 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+.mg-bar-v {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transform: scaleY(0);
+  animation: svgBarV 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+@keyframes svgBarH {
+  to { transform: scaleX(1); }
+}
+@keyframes svgBarV {
+  to { transform: scaleY(1); }
+}
+.mg-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: svgNodePulse 2.2s ease-in-out infinite;
+}
+@keyframes svgNodePulse {
+  0%, 100% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.28); opacity: 0.55; }
+}
+.mg-ring-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbitSpin 18s linear infinite;
+}
+
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 ===================== */
+const DECK = {
+  brand: { name: 'HYROX & CROSSFIT · MOTION', icon: 'solar:dumbbell-large-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: [
+    '하이브리드 피트니스의 부상',
+    '하이록스(HYROX) 8×8 아키텍처',
+    '크로스핏 WOD와 맞대결 분석',
+    '퍼포먼스 과학과 12주 마스터플랜'
+  ],
+  slides: [
+    // 01. Cover (ch 0) — 고유 표지 bg: photo-1517838277536-f5f99be501cd
+    {
+      layout: 'cover', chapter: 0,
+      bg: 'photo-1517838277536-f5f99be501cd', photo: 'Victor Freitas',
+      eyebrow: '60FPS BIO-KINETIC MOTION ENGINE · HYBRID FITNESS REVOLUTION',
+      title: '심장을 뛰게 하는 강의실 밖의 전장<br><em>하이록스(HYROX)와 크로스핏의 모든 것</em>',
+      sub: '고립형 헬스장을 넘어 전 세계를 열광시킨 하이브리드 레이스 — 8km 러닝·8개 스테이션부터 WOD 훈련 과학까지',
+      meta: '8-SCENE 60FPS BIO-TELEMETRY CANVAS · SELF-DRAWING HUD SVG · 15 SLIDES'
+    },
+    // 02. Stats (ch 0)
+    {
+      layout: 'stats', chapter: 0,
+      bg: 'photo-1534438327276-14e5300c3a48', photo: 'Danielle Cerullo',
+      eyebrow: 'CHAPTER 01 · 전 세계를 휩쓴 하이브리드 피트니스 신드롬',
+      title: '보는 스포츠에서 직접 완주하는 스포츠로, <em>폭발하는 참가자 지표</em>',
+      items: [
+        { value: '550,000', unit: '명+', label: '전 세계 80개 이상 도시에서 열리는<br>하이록스(HYROX) 연간 글로벌 레이스 참가자' },
+        { value: '12,000', unit: '개+', label: '전 세계 150개국 이상에 구축된<br>글로벌 크로스핏(CrossFit) 공식 지부 박스' },
+        { value: '98', unit: '%', label: '컷오프 시간제한 없이 누구나 도전해<br>결승선을 통과하는 하이록스 공식 완주율' }
+      ],
+      note: '출처 · HYROX World Series Official Report (2025~2026) & CrossFit Global Affiliate Data'
+    },
+    // 03. Bullets (ch 0)
+    {
+      layout: 'bullets', chapter: 0,
+      bg: 'photo-1594882645126-14020914d58d', photo: 'Sporlab',
+      eyebrow: 'WHY HYBRID ATHLETES ARE EXPLODING',
+      title: '고립형 웨이트와 단순 마라톤에 지친 현대인이 <em>열광하는 4가지 이유</em>',
+      items: [
+        { icon: 'solar:dumbbell-large-bold', text: '보여주기식 근육에서 실전 체력으로: 거울 속 근육 크기가 아니라 심폐지구력·근지구력·파워를 동시에 증명하는 시대' },
+        { icon: 'solar:medal-ribbons-star-bold', text: '명확한 레이스 데이(Race Day) 목표: 막연한 다이어트 대신 대회 날짜를 잡아 훈련 동기와 성취감을 극대화' },
+        { icon: 'solar:users-group-two-rounded-bold', text: '강력한 커뮤니티 도파민: 혼자 이어폰을 끼고 런닝머신을 뛰는 대신 동료와 함께 땀 흘리고 응원하는 소속감' },
+        { icon: 'solar:ranking-bold', text: '데이터로 증명되는 게이미피케이션: 발목 타이밍 칩과 WOD 리더보드로 내 기록을 전 세계 참가자와 실시간 비교' }
+      ],
+      note: '출처 · ACSM Worldwide Survey of Fitness Trends (2025~2026) & Strava Year in Sport Report'
+    },
+    // 04. SVG Cards (ch 0)
+    {
+      layout: 'svg_cards', chapter: 0,
+      bg: 'photo-1551288049-bebda4e38f71', photo: 'Luke Chesser',
+      eyebrow: 'HUD DATA VISUALIZATION · GLOBAL GROWTH & RETENTION',
+      title: '하이록스 글로벌 참가자 급성장과 커뮤니티 운동 지속률 비교',
+      cards: [
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '하이록스 글로벌 연간 참가자 추이',
+          badge: '5년 만에 25배 폭증',
+          chart: 'c_hyrox_growth',
+          foot: '유럽에서 시작해 북미·아시아·한국(인천·서울·부산)까지 전 세계 확산'
+        },
+        {
+          icon: 'solar:chart-2-bold',
+          title: '운동 방식별 장기 지속률 및 완주율',
+          badge: '커뮤니티 & 목표 효과',
+          chart: 'c_retention_bar',
+          foot: '혼자 하는 헬스장 대비 그룹 훈련과 레이스 목표가 결합될 때 지속률 압도적 상승'
+        }
+      ],
+      note: '출처 · HYROX Global Participation Statistics & IHRSA Fitness Member Retention Study'
+    },
+    // 05. Flow (ch 1)
+    {
+      layout: 'flow', chapter: 1,
+      bg: 'photo-1552674605-db6ffd4facb5', photo: 'Chander R',
+      eyebrow: 'CHAPTER 02 · 하이록스(HYROX) 레이스 표준 구조',
+      title: '전 세계 어디서나 100% 동일한 규격으로 치러지는 3대 원칙',
+      steps: [
+        { label: '1km 러닝 × 8회 반복', desc: '실내 트랙 1km 달리기 후 즉시<br>기능성 운동 스테이션 진입을 8회 반복' },
+        { label: '록스존(Roxzone) 전환', desc: '러닝 트랙과 8개 운동 구역을 잇는<br>트랜지션 구역에서 호흡 및 동선 관리' },
+        { label: '4개 부문 맞춤형 도전', desc: '오픈·프로·더블(2인 분담)·릴레이(4인)로<br>초보자부터 엘리트까지 완벽 참여' }
+      ],
+      note: '2017년 독일 함부르크에서 크리스티안 토츠케와 모리츠 퓌르스테가 창설한 세계 최초 실내 피트니스 레이스입니다'
+    },
+    // 06. Timeline (ch 1)
+    {
+      layout: 'timeline', chapter: 1,
+      bg: 'photo-1486218119243-13883505764c', photo: 'Jenny Hill',
+      eyebrow: 'THE 8 WORKOUT STATIONS OF HYROX',
+      title: '1km 러닝 사이사이에 배치된 <em>하이록스 8대 지옥의 스테이션</em>',
+      items: [
+        { time: 'STATION 01 · 02', label: '스키에르그 & 슬레드 푸시', desc: '1,000m 상체·코어 스키 머신 직후<br>최대 202kg 고중량 썰매 50m 밀기' },
+        { time: 'STATION 03 · 04', label: '슬레드 풀 & 버피 점프', desc: '로프로 무거운 썰매 50m 당기기와<br>전신 심폐를 태우는 80m 버피 멀리뛰기' },
+        { time: 'STATION 05 · 06', label: '로잉 1km & 파머스 캐리', desc: '1,000m 로잉머신 페이스 조절 후<br>양손 고중량 케틀벨 들고 200m 질주' },
+        { time: 'STATION 07 · 08', label: '샌드백 런지 & 월볼 100회', desc: '어깨에 모래주머니 메고 100m 런지 후<br>마지막 100회 월볼 샷으로 피날레', em: true }
+      ],
+      note: '모든 스테이션 앞에 반드시 1km 러닝이 선행되어 총 8km 러닝 + 8개 스테이션을 연속 수행합니다'
+    },
+    // 07. SVG Cards (ch 1)
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1530143311094-34d807799e8f', photo: 'Fitsum Admasu',
+      eyebrow: 'PHYSIOLOGY OF HYROX · 심박수 파형과 시간 비중 분석',
+      title: '젖산 역치(Threshold) 위에서 펼쳐지는 75~90분의 사투',
+      cards: [
+        {
+          icon: 'solar:heart-pulse-bold',
+          title: '레이스 구간별 심박수(HR) 변화 파형',
+          badge: '평균 최대심박수 85~92%',
+          chart: 'c_hyrox_hr',
+          foot: '스테이션에서 치솟은 심박수를 다음 1km 러닝에서 안정화하는 능력이 핵심'
+        },
+        {
+          icon: 'solar:pie-chart-2-bold',
+          title: '완주 기록 내 러닝 vs 워크아웃 비중',
+          badge: '50 : 50 황금 밸런스',
+          chart: 'c_hyrox_split',
+          foot: '전체 완주 시간의 절반 이상이 러닝과 록스존에서 결정되므로 달리기 역량 필수'
+        }
+      ],
+      note: '출처 · Munich Technical University Exercise Physiology Study on HYROX Athletes (2024~2025)'
+    },
+    // 08. Bullets (ch 1)
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1518611012118-696072aa579a', photo: 'bruce mars',
+      eyebrow: 'CATEGORY & ENTRY STRATEGY',
+      title: '첫 출전자부터 고수까지 나에게 맞는 <em>하이록스 부문 선택 가이드</em>',
+      items: [
+        { icon: 'solar:user-check-bold', text: '싱글 오픈 (Open): 가장 대중적인 표준 무게 부문으로, 일반 피트니스 애호가의 첫 개인 완주 도전 코스' },
+        { icon: 'solar:users-group-two-rounded-bold', text: '더블 (Doubles · 2인 1조): 8km 러닝은 함께 뛰고 8개 스테이션 운동량은 둘이 자유롭게 분담해 입문 장벽 대폭 완화' },
+        { icon: 'solar:crown-star-bold', text: '싱글 프로 (Pro): 슬레드 202kg·케틀벨 32kg×2 등 고중량 규격으로 치러지는 상급자 및 엘리트 랭킹전' },
+        { icon: 'solar:cup-star-bold', text: '팀 릴레이 (Relay · 4인 1조): 4명이 각각 1km 러닝 + 스테이션 2개씩만 맡아 직장 동료·친구와 축제처럼 완주' }
+      ],
+      note: '첫 출전이라면 친구·연인과 함께 운동량을 나눌 수 있는 더블(Doubles) 부문이 가장 만족도가 높습니다'
+    },
+    // 09. Stats (ch 2)
+    {
+      layout: 'stats', chapter: 2,
+      bg: 'photo-1526506118085-60ce8714f8c5', photo: ' Edgar Chaparro',
+      eyebrow: 'CHAPTER 03 · 기능성 피트니스의 원조, 크로스핏(CrossFit)',
+      title: '예측 불가능한 미지의 도전에 대비하는 <em>10대 신체 능력의 완성</em>',
+      items: [
+        { value: '10', unit: '대 역량', label: '심폐지구력·스트렝스·파워·스피드·민첩성 등<br>크로스핏이 동시에 단련하는 신체 능력 지표' },
+        { value: '3', unit: '대 영역', label: '올림픽 역도(Weightlifting) · 체조(Gymnastics) ·<br>대사 컨디셔닝(Cardio)의 유기적 결합' },
+        { value: '20', unit: '분 내외', label: '매일 바뀌는 오늘의 운동(WOD)으로<br>짧은 시간 안에 최대 대사 출력을 뽑아내는 고강도 세션' }
+      ],
+      note: '출처 · CrossFit Level 1 Training Guide (What Is Fitness? — 10 General Physical Skills)'
+    },
+    // 10. Bullets (ch 2)
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1541534741688-6078c6bfb5c5', photo: 'John Arano',
+      eyebrow: 'CORE ARCHITECTURE OF CROSSFIT WOD',
+      title: '크로스핏 박스(Box)를 지배하는 <em>4대 핵심 훈련 시스템</em>',
+      items: [
+        { icon: 'solar:stopwatch-bold', text: 'AMRAP & EMOM 포맷: 정해진 시간 내 최대 라운드 수행(AMRAP) 또는 매분 정해진 과제를 완수(EMOM)하는 고밀도 훈련' },
+        { icon: 'solar:dumbbell-large-bold', text: '고난도 역도와 바벨 스트렝스: 스내치(Snatch)·클린 앤 저크·데드리프트로 전신 폭발적 파워와 신경계 협응력 강화' },
+        { icon: 'solar:bolt-circle-bold', text: '체조(Gymnastics) 바디 컨트롤: 풀업·토투바·머슬업·핸드스탠드 워크 등 자신의 체중을 완벽히 제어하는 상체·코어 기술' },
+        { icon: 'solar:cup-first-bold', text: '벤치마크 걸스(Girls) & 히어로 WOD: 프란(Fran)·머프(Murph) 등 표준화된 워크아웃 기록으로 과거의 나와 실력 대조' }
+      ],
+      note: '크로스핏의 모든 동작과 무게는 개인의 체력 수준에 맞춰 스케일링(Scaling·난이도 조절)이 가능합니다'
+    },
+    // 11. Compare (ch 2)
+    {
+      layout: 'compare', chapter: 2,
+      bg: 'photo-1571019614242-c5c5dee9f50b', photo: ' Anastase Maragos',
+      eyebrow: 'HEAD-TO-HEAD · HYROX VS CROSSFIT',
+      title: '하이록스(HYROX) vs 크로스핏(CrossFit) <em>핵심 차이점 완벽 비교</em>',
+      left: {
+        title: '하이록스 (HYROX · 표준 지구력 레이스)',
+        icon: 'solar:running-bold',
+        items: [
+          '종목 고정성: 전 세계 모든 대회가 8km 러닝 + 8개 동작으로 100% 사전 공개·동일',
+          '기술 난이도: 역도·물구나무서기 같은 고난도 기술이 없어 초보자도 즉시 참여 가능',
+          '에너지 시스템: 60~90분 이상 지속되는 유산소 엔진과 근지구력(Threshold) 중심'
+        ]
+      },
+      right: {
+        title: '크로스핏 (CrossFit · 전방위 기능성 단련)',
+        icon: 'solar:dumbbell-large-bold',
+        items: [
+          '종목 다양성: 매일 운동(WOD)이 바뀌며 대회 당일까지 종목이 비공개되는 무한 변주',
+          '기술 난이도: 바벨 올림픽 역도와 철봉·링 체조 등 숙련된 코칭과 기술 습득이 필수',
+          '에너지 시스템: 5~20분 내 폭발적인 무산소 파워·최대 근력(1RM)·민첩성까지 포괄'
+        ]
+      },
+      note: '최근에는 평소에 크로스핏 박스에서 기초 근력·체력을 기르고 주말 대회로 하이록스에 출전하는 크로스오버가 대세입니다'
+    },
+    // 12. SVG Cards (ch 2)
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1517963879433-6ad2b056d712', photo: 'Sven Mieke',
+      eyebrow: 'PERFORMANCE SPECTRUM & METABOLIC BURN',
+      title: '두 종목의 5대 신체 역량 스펙트럼과 대사 에너지 소모량 비교',
+      cards: [
+        {
+          icon: 'solar:radar-2-bold',
+          title: '하이록스 vs 크로스핏 5각 역량 비교',
+          badge: '지구력 vs 폭발적 파워',
+          chart: 'c_hybrid_radar',
+          foot: '하이록스는 러닝·지속력·입문성에, 크로스핏은 최대 근력·기술에 강점'
+        },
+        {
+          icon: 'solar:fire-bold',
+          title: '운동 종목별 세션당 칼로리 소모 비교',
+          badge: '강력한 애프터번(EPOC)',
+          chart: 'c_calorie_epoc',
+          foot: '고강도 복합 운동 특성상 운동 종료 후 24시간 동안 초과 산소섭취(EPOC) 지속'
+        }
+      ],
+      note: '출처 · Journal of Strength and Conditioning Research & Sports Medicine Hybrid Training Review'
+    },
+    // 13. Flow (ch 3)
+    {
+      layout: 'flow', chapter: 3,
+      bg: 'photo-1507166763745-bfe008fbb831', photo: 'Conor Sexton',
+      eyebrow: 'CHAPTER 04 · 부상 없이 기록을 단축하는 12주 하이브리드 훈련법',
+      title: '심폐 엔진과 하체 근지구력을 동시에 끌어올리는 3대 훈련 원칙',
+      steps: [
+        { label: '존2 러닝 60% 베이스', desc: '매주 고강도만 반복하면 번아웃 발생<br>대화 가능한 존2 유산소로 모세혈관 확장' },
+        { label: '컴파운드(타협) 러닝 훈련', desc: '스쿼트·런지 직후 다리가 무거운 상태에서<br>즉시 1km 페이스를 유지하는 전환 적응' },
+        { label: '그립 & 코어 내구성 강화', desc: '후반부 파머스 캐리와 월볼 100회를 버티는<br>악력(Grip)과 흉추·코어 안정성 확보' }
+      ],
+      note: '주 4~5회 훈련 기준: 존2 러닝 2회 + 근력 스트렝스 1~2회 + 하이록스/WOD 인터벌 시뮬레이션 1회 배분이 이상적입니다'
+    },
+    // 14. Quote (ch 3)
+    {
+      layout: 'quote', chapter: 3,
+      bg: 'photo-1519681393784-d120267933ba', photo: 'Benjamin Voros',
+      eyebrow: 'THE MINDSET OF HYBRID ATHLETES',
+      quote: '다리가 타들어 가고 숨이 턱 끝까지 차오를 때,<br><em>포기하지 않고 한 발을 더 내딛는 순간 어제의 한계는 부서진다</em>',
+      by: 'HYBRID ATHLETE CREDO · EVERY BODY IS BUILT TO RACE'
+    },
+    // 15. Closing (ch 3)
+    {
+      layout: 'closing', chapter: 3,
+      bg: 'photo-1534298261662-f8fdd25317db', photo: 'Brad Knight',
+      eyebrow: 'START YOUR HYBRID JOURNEY TODAY',
+      title: '강한 심장과 단단한 근육의 결합,<br><em>당신의 첫 번째 레이스를 시작하라</em>',
+      sub: '크로스핏 박스의 뜨거운 함성 속에서, 하이록스 피니시 아치 아래에서 — 운동은 노동이 아니라 가장 짜릿한 축제가 됩니다',
+      chips: [
+        'HYROX 8km Run + 8 Stations',
+        'CrossFit WOD & 10 Physical Skills',
+        'Zone 2 Aerobic + Threshold Engine',
+        'Injury-Free 12-Week Periodization'
+      ]
+    }
+  ]
+};
+
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // 1) 슬라이드 4 좌측: 글로벌 기능성 피트니스 & 하이록스 참가자 성장 추세 (Area + Glow Line + Photon Motion)
+  c_hyrox_growth: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gHyroxArea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.52"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glowHyrox" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <line x1="60" y1="50" x2="585" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="125" x2="585" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="60" y1="202" x2="585" y2="202" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <path class="mg-area" d="M 90 194 C 175 188, 255 162, 340 124 C 425 84, 495 56, 560 36 L 560 202 L 90 202 Z" fill="url(#gHyroxArea)"/>
+    <path id="pathHyroxGrowth" class="mg-draw" d="M 90 194 C 175 188, 255 162, 340 124 C 425 84, 495 56, 560 36" fill="none" stroke="#00d2ff" stroke-width="4.5" stroke-linecap="round" filter="url(#glowHyrox)"/>
+
+    <circle r="5.5" fill="#fde047" filter="url(#glowHyrox)">
+      <animateMotion dur="2.8s" repeatCount="indefinite" path="M 90 194 C 175 188, 255 162, 340 124 C 425 84, 495 56, 560 36"/>
+    </circle>
+
+    <circle cx="90" cy="194" r="6" fill="#0a101c" stroke="#94a3b8" stroke-width="3"/>
+    <text x="90" y="175" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">2.1만 명</text>
+    <text x="90" y="228" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">2019 초기</text>
+
+    <circle cx="245" cy="164" r="6.5" fill="#0a101c" stroke="#38bdf8" stroke-width="3"/>
+    <text x="245" y="144" fill="#e2e8f0" font-size="15" font-weight="800" text-anchor="middle">9만 명</text>
+    <text x="245" y="228" fill="#cbd5e1" font-size="14" font-weight="600" text-anchor="middle">2022 재도약</text>
+
+    <circle cx="400" cy="100" r="7" fill="#0a101c" stroke="#00d2ff" stroke-width="3.5"/>
+    <text x="400" y="80" fill="#ffffff" font-size="16" font-weight="800" text-anchor="middle">28만 명</text>
+    <text x="400" y="228" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">2024 열풍</text>
+
+    <circle class="mg-pulse" cx="560" cy="36" r="14" fill="rgba(0,210,255,0.24)"/>
+    <circle cx="560" cy="36" r="8" fill="#fde047" filter="url(#glowHyrox)"/>
+    <text x="540" y="30" fill="#fde047" font-size="20" font-weight="900" text-anchor="end">55만 명+ 돌파</text>
+    <text x="560" y="228" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">2025~2026</text>
+  </svg>`,
+
+  // 2) 슬라이드 4 우측: 기존 헬스장 vs 하이브리드 레이스 재등록·완주 몰입도 비교 (Neon Bar)
+  c_retention_bar: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gBarCyan" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="1.0"/>
+      </linearGradient>
+      <linearGradient id="gBarGold" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#eab308" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#fde047" stop-opacity="1.0"/>
+      </linearGradient>
+    </defs>
+    <text x="28" y="42" fill="#94a3b8" font-size="15" font-weight="700">일반 상업용 헬스장 6개월 이상 지속 출석률 (단독 웨이트)</text>
+    <rect class="mg-bar-h" x="28" y="52" width="125" height="28" rx="6" fill="rgba(148,163,184,0.45)"/>
+    <text x="165" y="72" fill="#cbd5e1" font-size="18" font-weight="800">28 % (중도 이탈 다수)</text>
+
+    <text x="28" y="114" fill="#00d2ff" font-size="15" font-weight="800">크로스핏 박스(Box) 커뮤니티 기반 회원 연간 유지율</text>
+    <rect class="mg-bar-h" x="28" y="124" width="335" height="28" rx="6" fill="url(#gBarCyan)"/>
+    <text x="375" y="144" fill="#00d2ff" font-size="19" font-weight="900">74 % (그룹 WOD 결속)</text>
+
+    <text x="28" y="186" fill="#fde047" font-size="15" font-weight="800">하이록스(HYROX) 레이스 참가자 공식 완주율 (컷오프 없음)</text>
+    <rect class="mg-bar-h" x="28" y="196" width="445" height="28" rx="6" fill="url(#gBarGold)"/>
+    <text x="485" y="216" fill="#fde047" font-size="19" font-weight="900">98 %+ (누구나 완주)</text>
+  </svg>`,
+
+  // 3) 슬라이드 7 좌측: 하이록스 레이스 중 심박수 존(HR Zone 4~5) 유지 및 젖산 역치 곡선
+  c_hyrox_hr: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gHrZone" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.46"/>
+        <stop offset="55%" stop-color="#00d2ff" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glowHr" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00d2ff" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+    <line x1="55" y1="48" x2="590" y2="48" stroke="rgba(244,63,94,0.35)" stroke-dasharray="6 4"/>
+    <text x="585" y="40" fill="#fb7185" font-size="13" font-weight="800" text-anchor="end">REDLINE · HR 180+ bpm (Zone 5)</text>
+    <line x1="55" y1="115" x2="590" y2="115" stroke="rgba(0,210,255,0.22)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="202" x2="590" y2="202" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <!-- 8회 러닝 + 8회 스테이션 톱니바퀴 심박 파형 -->
+    <path class="mg-area" d="M 65 185 L 110 95 L 145 112 L 190 78 L 225 98 L 275 68 L 310 92 L 360 62 L 395 88 L 445 55 L 485 82 L 535 46 L 575 42 L 575 202 L 65 202 Z" fill="url(#gHrZone)"/>
+    <path id="pathHrWave" class="mg-draw" d="M 65 185 L 110 95 L 145 112 L 190 78 L 225 98 L 275 68 L 310 92 L 360 62 L 395 88 L 445 55 L 485 82 L 535 46 L 575 42" fill="none" stroke="#00d2ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowHr)"/>
+
+    <circle r="5" fill="#fde047" filter="url(#glowHr)">
+      <animateMotion dur="3.2s" repeatCount="indefinite" path="M 65 185 L 110 95 L 145 112 L 190 78 L 225 98 L 275 68 L 310 92 L 360 62 L 395 88 L 445 55 L 485 82 L 535 46 L 575 42"/>
+    </circle>
+
+    <circle class="mg-pulse" cx="275" cy="68" r="6" fill="#00d2ff"/>
+    <text x="275" y="54" fill="#67e8f9" font-size="14" font-weight="800" text-anchor="middle">슬레드 푸시·풀 피크</text>
+
+    <circle class="mg-pulse" cx="575" cy="42" r="7" fill="#f43f5e"/>
+    <text x="530" y="28" fill="#fde047" font-size="15" font-weight="900" text-anchor="end">월볼 100회 피날레</text>
+
+    <text x="95" y="228" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">Run 1~2</text>
+    <text x="275" y="228" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">Station 3~5 (중반부)</text>
+    <text x="520" y="228" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">Station 7~8 (피니시)</text>
+  </svg>`,
+
+  // 4) 슬라이드 7 우측: 하이록스 완주 시간 구성 비중 (러닝 50% vs 8대 워크아웃 50%)
+  c_hyrox_split: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <circle class="mg-ring-spin" cx="170" cy="110" r="84" fill="none" stroke="rgba(0,210,255,0.22)" stroke-width="1.5" stroke-dasharray="8 8"/>
+    <circle cx="170" cy="110" r="68" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="15"/>
+    <circle class="mg-draw" cx="170" cy="110" r="68" fill="none" stroke="#00d2ff" stroke-width="15" stroke-linecap="round" stroke-dasharray="214 430" transform="rotate(-90 170 110)"/>
+    <text x="170" y="114" fill="#ffffff" font-size="30" font-weight="900" text-anchor="middle">50 %</text>
+    <text x="170" y="138" fill="#67e8f9" font-size="13" font-weight="700" text-anchor="middle">총 8km 러닝</text>
+    <text x="170" y="216" fill="#00d2ff" font-size="16" font-weight="800" text-anchor="middle">유산소 러닝 구간 (1km × 8회)</text>
+
+    <line x1="320" y1="28" x2="320" y2="232" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+
+    <circle class="mg-ring-spin" cx="470" cy="110" r="84" fill="none" stroke="rgba(253,224,71,0.25)" stroke-width="1.5" stroke-dasharray="8 8"/>
+    <circle cx="470" cy="110" r="68" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="15"/>
+    <circle class="mg-draw" cx="470" cy="110" r="68" fill="none" stroke="#fde047" stroke-width="15" stroke-linecap="round" stroke-dasharray="214 430" transform="rotate(90 470 110)"/>
+    <text x="470" y="114" fill="#fde047" font-size="30" font-weight="900" text-anchor="middle">50 %</text>
+    <text x="470" y="138" fill="#fef08a" font-size="13" font-weight="700" text-anchor="middle">8개 스테이션</text>
+    <text x="470" y="216" fill="#fde047" font-size="16" font-weight="800" text-anchor="middle">기능성 근지구력 + 록스존 전환</text>
+  </svg>`,
+
+  // 5) 슬라이드 12 좌측: 하이록스 vs 크로스핏 5각 역량 스펙트럼 레이더
+  c_hybrid_radar: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowFitRadar" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#00d2ff" flood-opacity="0.65"/>
+      </filter>
+    </defs>
+    <polygon points="215,46 295,104 264,196 166,196 135,104" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.2"/>
+    <polygon points="215,74 268,113 248,174 182,174 162,113" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+    <line x1="215" y1="130" x2="215" y2="46" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="295" y2="104" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="264" y2="196" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="166" y2="196" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="135" y2="104" stroke="rgba(255,255,255,0.12)"/>
+
+    <!-- 크로스핏 (CrossFit · Gold/Violet: 폭발적 근력·역도·체조 고난도) -->
+    <polygon class="mg-area" points="215,82 252,116 261,192 169,192 165,114" fill="rgba(253,224,71,0.22)" stroke="#fde047" stroke-width="2.5"/>
+    <!-- 하이록스 (HYROX · Cyan: 유산소 지속력·입문 접근성·표준화 극대화) -->
+    <polygon class="mg-area" points="215,49 291,105 232,154 198,156 142,106" fill="rgba(0,210,255,0.28)" stroke="#00d2ff" stroke-width="3" filter="url(#glowFitRadar)"/>
+
+    <text x="215" y="34" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">유산소·러닝 지속력</text>
+    <text x="305" y="108" fill="#67e8f9" font-size="14" font-weight="800" text-anchor="start">초보자 입문 접근성</text>
+    <text x="274" y="216" fill="#fde047" font-size="14" font-weight="800" text-anchor="middle">최대 스트렝스(1RM)</text>
+    <text x="156" y="216" fill="#fde047" font-size="14" font-weight="800" text-anchor="middle">역도·체조 기술 난이도</text>
+    <text x="125" y="108" fill="#e2e8f0" font-size="14" font-weight="700" text-anchor="end">글로벌 기록 표준화</text>
+
+    <rect x="428" y="76" width="188" height="94" rx="10" fill="rgba(15,23,42,0.78)" stroke="rgba(255,255,255,0.15)"/>
+    <circle cx="450" cy="105" r="7" fill="#00d2ff"/>
+    <text x="466" y="110" fill="#ffffff" font-size="15" font-weight="800">하이록스 (HYROX)</text>
+    <circle cx="450" cy="141" r="7" fill="#fde047"/>
+    <text x="466" y="146" fill="#fef08a" font-size="15" font-weight="700">크로스핏 (CrossFit)</text>
+  </svg>`,
+
+  // 6) 슬라이드 12 우측: 시간당 칼로리 소모 & EPOC(애프터번) 대사 효과 비교
+  c_calorie_epoc: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gColCyan" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="gColGold" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#ca8a04" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#fde047" stop-opacity="0.95"/>
+      </linearGradient>
+    </defs>
+    <line x1="55" y1="50" x2="585" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="125" x2="585" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="198" x2="585" y2="198" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <!-- 일반 걷기/머신 -->
+    <rect class="mg-bar-v" x="85" y="148" width="76" height="50" rx="5" fill="#64748b"/>
+    <text x="123" y="136" fill="#94a3b8" font-size="15" font-weight="700" text-anchor="middle">300 kcal</text>
+    <text x="123" y="226" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">일반 웨이트·걷기</text>
+
+    <!-- 중강도 러닝 -->
+    <rect class="mg-bar-v" x="225" y="110" width="76" height="88" rx="5" fill="#38bdf8"/>
+    <text x="263" y="98" fill="#38bdf8" font-size="16" font-weight="800" text-anchor="middle">550 kcal</text>
+    <text x="263" y="226" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">단독 로드 러닝</text>
+
+    <!-- 크로스핏 WOD -->
+    <rect class="mg-bar-v" x="365" y="76" width="76" height="122" rx="5" fill="url(#gColCyan)"/>
+    <text x="403" y="64" fill="#00d2ff" font-size="16" font-weight="900" text-anchor="middle">750 kcal+</text>
+    <text x="403" y="226" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">크로스핏 WOD</text>
+
+    <!-- 하이록스 레이스 -->
+    <rect class="mg-bar-v" x="500" y="48" width="76" height="150" rx="5" fill="url(#gColGold)"/>
+    <text x="538" y="36" fill="#fde047" font-size="17" font-weight="900" text-anchor="middle">900~1,200 kcal</text>
+    <text x="538" y="226" fill="#fde047" font-size="14" font-weight="800" text-anchor="middle">하이록스 풀코스</text>
+  </svg>`
+};
+
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title" ${n(1)}>${s.title}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  if (typeof animateNumbers === "function") animateNumbers();
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+
+/* ===================== 60FPS BIO-KINETIC 8-SCENE MOTION GRAPHICS ENGINE ===================== */
+(function initMotionGraphicsEngine() {
+  const stage = document.getElementById('stage');
+  const slideEl = document.getElementById('slide');
+  if (!stage || !slideEl) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'motion-canvas';
+  canvas.width = 1920;
+  canvas.height = 1080;
+  stage.insertBefore(canvas, slideEl);
+  const ctx = canvas.getContext('2d');
+
+  // Corner Bio-Telemetry Readouts
+  const hudTL = document.createElement('div');
+  hudTL.className = 'hud-telemetry tl';
+  hudTL.id = 'hud-tl';
+  stage.appendChild(hudTL);
+
+  const hudTR = document.createElement('div');
+  hudTR.className = 'hud-telemetry tr';
+  hudTR.id = 'hud-tr';
+  stage.appendChild(hudTR);
+
+  const hudBL = document.createElement('div');
+  hudBL.className = 'hud-telemetry bl';
+  hudBL.id = 'hud-bl';
+  stage.appendChild(hudBL);
+
+  // Bio-Energy Floating Sparks
+  const sparks = Array.from({ length: 120 }, (_, i) => ({
+    x: (i * 179.3) % 1920,
+    y: (i * 103.7) % 1080,
+    r: 0.8 + (i % 4) * 0.5,
+    a: 0.22 + (i % 5) * 0.12,
+    s: 0.01 + (i % 7) * 0.004,
+    p: i * 0.9
+  }));
+
+  // 8 Distinct Bio-Kinetic Motion Graphic Scenes mapped across all 15 slides
+  // 0: STADIUM_OVAL      (Slides 1, 14, 15: Cover, Quote, Closing)
+  // 1: METABOLIC_MATRIX  (Slides 2, 4: Stats & Growth SVG)
+  // 2: ATHLETE_RADAR     (Slides 3, 8: Why Hybrid & Categories)
+  // 3: ROXZONE_TIERS     (Slides 5, 13: 3-Step Flow & 12-Week Plan)
+  // 4: STATION_TURBINE   (Slide 6: 8 Workout Stations Timeline)
+  // 5: ECG_THRESHOLD     (Slide 7: Heart Rate Wave & 50:50 Split SVG)
+  // 6: WOD_CLOCK_RINGS   (Slides 9, 10: CrossFit 10 Skills & WOD Systems)
+  // 7: DUAL_ARENA_CLASH  (Slides 11, 12: HYROX vs CrossFit Compare & Radar SVG)
+  const SLIDE_SCENE = [
+    0, // 01 Cover
+    1, // 02 Stats (550,000+, 12,000+, 98%)
+    2, // 03 Bullets (4 Reasons Why Hybrid Explodes)
+    1, // 04 SVG Cards (HYROX Growth & Retention)
+    3, // 05 Flow (1km x 8, Roxzone, 4 Divisions)
+    4, // 06 Timeline (8 Workout Stations)
+    5, // 07 SVG Cards (HR Wave & 50:50 Split)
+    2, // 08 Bullets (Open, Doubles, Pro, Relay)
+    6, // 09 Stats (CrossFit 10 Skills, 3 Modalities, 20 min)
+    6, // 10 Bullets (AMRAP/EMOM, Barbell, Gymnastics, Girls WOD)
+    7, // 11 Compare (HYROX vs CrossFit)
+    7, // 12 SVG Cards (5-Axis Radar & Calorie EPOC)
+    3, // 13 Flow (Zone 2 Base, Compromised Running, Grip/Core)
+    0, // 14 Quote (Hybrid Athlete Mindset)
+    0  // 15 Closing
+  ];
+
+  const SCENE_META = [
+    { name: 'SCENE A · HYROX 8×1KM STADIUM ARENA TRACK', mode: 'ROXZONE TELEMETRY · PACE 04:15/KM' },
+    { name: 'SCENE B · 3D METABOLIC GRID & ATP SPARKS', mode: 'VO2 MAX OUTPUT · EPOC AFTERBURN' },
+    { name: 'SCENE C · GLOBAL ATHLETE LEADERBOARD RADAR', mode: '80+ CITIES · CHIP TIMING SYNC' },
+    { name: 'SCENE D · 3-TIER AEROBIC & LACTATE VECTOR', mode: 'ZONE 2 BASE → THRESHOLD → VO2 PEAK' },
+    { name: 'SCENE E · 8-STATION ERGO FLYWHEEL TURBINE', mode: 'SKIERG · SLED 202KG · WALL BALL 100' },
+    { name: 'SCENE F · LIVE CARDIAC ECG & LACTATE WAVE', mode: 'HR ZONE 4~5 · 178 BPM THRESHOLD' },
+    { name: 'SCENE G · CROSSFIT WOD TIMER & BARBELL GYRO', mode: 'AMRAP / EMOM · 10 PHYSICAL SKILLS' },
+    { name: 'SCENE H · ENDURANCE VS EXPLOSIVE POWER CLASH', mode: 'HYROX ENGINE VS CROSSFIT WOD' }
+  ];
+
+  let t = 0;
+
+  function drawSparks() {
+    for (let i = 0; i < sparks.length; i++) {
+      const sp = sparks[i];
+      const y = (sp.y - t * 24 * (1 + (i % 3) * 0.4) + 10800) % 1080;
+      const alpha = sp.a * (0.45 + 0.55 * Math.sin(t * sp.s * 60 + sp.p));
+      ctx.fillStyle = i % 4 === 0
+        ? `rgba(253, 224, 71, ${alpha.toFixed(3)})`
+        : `rgba(0, 210, 255, ${alpha.toFixed(3)})`;
+      ctx.beginPath();
+      ctx.arc(sp.x, y, sp.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Scene 0: HYROX 8x1km Stadium Oval Arena & Pacing Beacons (Slides 1, 14, 15)
+  function drawSceneStadiumOval() {
+    const cx = 960, cy = 560;
+    ctx.save();
+    for (let lane = 0; lane < 3; lane++) {
+      const rx = 680 + lane * 55;
+      const ry = 310 + lane * 30;
+      ctx.strokeStyle = lane === 1 ? 'rgba(0, 210, 255, 0.34)' : 'rgba(56, 189, 248, 0.14)';
+      ctx.lineWidth = lane === 1 ? 2.4 : 1.4;
+      if (lane === 2) ctx.setLineDash([12, 10]);
+      else ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // 8 Station Nodes around the inner Roxzone Arena
+    for (let st = 0; st < 8; st++) {
+      const ang = (st * Math.PI) / 4 - Math.PI / 2;
+      const sx = cx + Math.cos(ang) * 680;
+      const sy = cy + Math.sin(ang) * 310;
+      ctx.fillStyle = st % 2 === 0 ? 'rgba(0, 210, 255, 0.55)' : 'rgba(253, 224, 71, 0.55)';
+      ctx.beginPath();
+      ctx.arc(sx, sy, 6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // High-speed Athlete Pacing Beacons orbiting the track
+    for (let runner = 0; runner < 3; runner++) {
+      const rAng = t * (0.95 - runner * 0.15) + runner * 2.1;
+      const rx = 680 + (runner - 1) * 55;
+      const ry = 310 + (runner - 1) * 30;
+      const px = cx + Math.cos(rAng) * rx;
+      const py = cy + Math.sin(rAng) * ry;
+
+      const glow = ctx.createRadialGradient(px, py, 2, px, py, 38);
+      glow.addColorStop(0, runner === 0 ? 'rgba(253, 224, 71, 0.95)' : 'rgba(0, 210, 255, 0.9)');
+      glow.addColorStop(1, 'rgba(0, 210, 255, 0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(px, py, 38, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Scene 1: 3D Perspective Gym Turf Grid & Rising ATP Energy (Slides 2, 4)
+  function drawSceneMetabolicMatrix() {
+    const horizonY = 690;
+    const vanishX = 960;
+
+    const hGrad = ctx.createLinearGradient(0, horizonY - 80, 0, 1080);
+    hGrad.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    hGrad.addColorStop(0.3, 'rgba(0, 210, 255, 0.16)');
+    hGrad.addColorStop(1, 'rgba(6, 18, 38, 0.68)');
+    ctx.fillStyle = hGrad;
+    ctx.fillRect(0, horizonY - 80, 1920, 470);
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.25)';
+    ctx.lineWidth = 1.5;
+    for (let i = -9; i <= 9; i++) {
+      ctx.beginPath();
+      ctx.moveTo(vanishX + i * 38, horizonY);
+      ctx.lineTo(vanishX + i * 205, 1080);
+      ctx.stroke();
+    }
+    // Sled track yard lines moving toward viewer
+    const offset = (t * 0.65) % 1;
+    for (let r = 0; r < 8; r++) {
+      const p = (r + offset) / 8;
+      const y = horizonY + Math.pow(p, 1.7) * 390;
+      ctx.strokeStyle = `rgba(253, 224, 71, ${(0.08 + p * 0.30).toFixed(2)})`;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(1920, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Scene 2: Global Athlete Leaderboard Radar & City Lock (Slides 3, 8)
+  function drawSceneAthleteRadar() {
+    const cx = 960, cy = 560;
+    ctx.save();
+    for (let r = 160; r <= 640; r += 160) {
+      ctx.strokeStyle = 'rgba(0, 210, 255, 0.15)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    const ang = t * 1.25;
+    const sweepGrad = ctx.createRadialGradient(cx, cy, 20, cx, cy, 640);
+    sweepGrad.addColorStop(0, 'rgba(0, 210, 255, 0.22)');
+    sweepGrad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.fillStyle = sweepGrad;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, 640, ang - 0.45, ang);
+    ctx.closePath();
+    ctx.fill();
+
+    const cities = [
+      { x: 280, y: 290, label: 'HAMBURG · WORLD SERIES' },
+      { x: 1620, y: 280, label: 'SEOUL & INCHEON · KR' },
+      { x: 260, y: 810, label: 'CHICAGO · NORTH AMERICA' },
+      { x: 1610, y: 820, label: 'LONDON · OLYMPIA ARENA' }
+    ];
+    cities.forEach((ct, i) => {
+      const pulse = (t * 1.5 + i * 0.45) % 1;
+      ctx.strokeStyle = `rgba(253, 224, 71, ${(1 - pulse) * 0.7})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(ct.x, ct.y, 12 + pulse * 36, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = '#fde047';
+      ctx.beginPath();
+      ctx.arc(ct.x, ct.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(125, 211, 252, 0.78)';
+      ctx.font = '700 13px Pretendard, sans-serif';
+      ctx.fillText(ct.label, ct.x + 18, ct.y + 5);
+    });
+    ctx.restore();
+  }
+
+  // Scene 3: 3-Tier Heart Rate & Lactate Threshold Vector (Slides 5, 13)
+  function drawSceneRoxzoneTiers() {
+    const tiers = [
+      { y: 830, label: 'ZONE 2 AEROBIC BASE (60~70% HRMAX · FAT OXIDATION)', color: 'rgba(56, 189, 248, 0.34)' },
+      { y: 540, label: 'ZONE 4 LACTATE THRESHOLD (COMPROMISED RUNNING PACE)', color: 'rgba(0, 210, 255, 0.38)' },
+      { y: 250, label: 'ZONE 5 VO2 MAX REDLINE (STATION SPRINT & WALL BALLS)', color: 'rgba(253, 224, 71, 0.45)' }
+    ];
+    ctx.save();
+    tiers.forEach((tr, idx) => {
+      ctx.strokeStyle = tr.color;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([14, 10]);
+      ctx.beginPath();
+      ctx.moveTo(100, tr.y);
+      ctx.bezierCurveTo(640, tr.y - 50, 1280, tr.y + 50, 1820, tr.y);
+      ctx.stroke();
+      ctx.fillStyle = tr.color;
+      ctx.font = '800 13px Pretendard, sans-serif';
+      ctx.fillText(tr.label, 115, tr.y - 14);
+
+      const u = (t * (0.24 + idx * 0.08) + idx * 0.3) % 1;
+      const vx = 100 + u * 1720;
+      const vy = tr.y - Math.sin(u * Math.PI * 2) * 24;
+      ctx.setLineDash([]);
+      ctx.fillStyle = idx === 2 ? '#fde047' : '#00d2ff';
+      ctx.beginPath();
+      ctx.arc(vx, vy, 7, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.restore();
+  }
+
+  // Scene 4: 8-Station Ergo Flywheel Turbine (Slide 6)
+  function drawSceneStationTurbine() {
+    const cx = 960, cy = 540;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(t * 0.65);
+
+    for (let b = 0; b < 8; b++) {
+      ctx.save();
+      ctx.rotate((b * Math.PI) / 4);
+      ctx.strokeStyle = b % 2 === 0 ? 'rgba(0, 210, 255, 0.32)' : 'rgba(253, 224, 71, 0.32)';
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.moveTo(90, 0);
+      ctx.quadraticCurveTo(240, 75, 420, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.26)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([16, 12]);
+    ctx.beginPath();
+    ctx.arc(0, 0, 420, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Scene 5: Live Cardiac ECG & Threshold Pulse Wave (Slide 7)
+  function drawSceneEcgWave() {
+    ctx.save();
+    const baseY = 540;
+    ctx.strokeStyle = 'rgba(0, 210, 255, 0.28)';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    for (let x = 0; x <= 1920; x += 8) {
+      const phase = ((x + t * 420) % 380) / 380;
+      let dy = 0;
+      if (phase > 0.42 && phase < 0.46) dy = -35;
+      else if (phase >= 0.46 && phase < 0.50) dy = 140;
+      else if (phase >= 0.50 && phase < 0.55) dy = -190;
+      else if (phase >= 0.55 && phase < 0.60) dy = 55;
+      else dy = Math.sin(phase * Math.PI * 2) * 8;
+      const y = baseY + dy;
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Scene 6: CrossFit WOD Timer Rings & Barbell Gyro (Slides 9, 10)
+  function drawSceneWodClock() {
+    const cx = 960, cy = 550;
+    ctx.save();
+    ctx.translate(cx, cy);
+    for (let i = 0; i < 3; i++) {
+      ctx.save();
+      ctx.rotate(t * (0.35 - i * 0.18) + i * 1.2);
+      ctx.strokeStyle = i === 1 ? 'rgba(253, 224, 71, 0.32)' : 'rgba(0, 210, 255, 0.28)';
+      ctx.lineWidth = 3;
+      ctx.setLineDash(i === 0 ? [28, 14] : [8, 12]);
+      ctx.beginPath();
+      ctx.arc(0, 0, 250 + i * 95, 0, Math.PI * 1.65);
+      ctx.stroke();
+      ctx.restore();
+    }
+    // 60-second tick marks
+    for (let m = 0; m < 60; m++) {
+      const a = (m * Math.PI) / 30;
+      const r1 = m % 5 === 0 ? 455 : 465;
+      const r2 = 478;
+      ctx.strokeStyle = m % 5 === 0 ? 'rgba(253, 224, 71, 0.45)' : 'rgba(0, 210, 255, 0.2)';
+      ctx.lineWidth = m % 5 === 0 ? 2.2 : 1;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * r1, Math.sin(a) * r1);
+      ctx.lineTo(Math.cos(a) * r2, Math.sin(a) * r2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Scene 7: Endurance (Cyan Wave) vs Explosive Power (Gold Bars) Clash (Slides 11, 12)
+  function drawSceneDualClash() {
+    ctx.save();
+    const divGrad = ctx.createLinearGradient(960, 140, 960, 960);
+    divGrad.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    divGrad.addColorStop(0.5, 'rgba(253, 224, 71, 0.55)');
+    divGrad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.strokeStyle = divGrad;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(960, 140);
+    ctx.lineTo(960, 960);
+    ctx.stroke();
+
+    // Left: HYROX Continuous Endurance Wave
+    for (let i = 0; i < 12; i++) {
+      const prog = (t * 0.5 + i * 0.1) % 1;
+      const lx = 100 + prog * 780;
+      const ly = 200 + i * 62 + Math.sin(prog * 8 + i) * 16;
+      ctx.fillStyle = 'rgba(0, 210, 255, 0.55)';
+      ctx.beginPath();
+      ctx.arc(lx, ly, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // Right: CrossFit High-Power Barbell Force Bars
+    for (let i = 0; i < 12; i++) {
+      const y = 200 + i * 62;
+      const w = 160 + 150 * Math.abs(Math.sin(t * 1.8 + i * 0.7));
+      ctx.strokeStyle = 'rgba(253, 224, 71, 0.25)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(1820, y);
+      ctx.lineTo(1820 - w, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function renderFrame() {
+    t += 0.016;
+    ctx.clearRect(0, 0, 1920, 1080);
+
+    const slideIdx = typeof cur === 'number' ? cur : 0;
+    const sceneId = SLIDE_SCENE[slideIdx] ?? 0;
+
+    drawSparks();
+
+    switch (sceneId) {
+      case 0: drawSceneStadiumOval(); break;
+      case 1: drawSceneMetabolicMatrix(); break;
+      case 2: drawSceneAthleteRadar(); break;
+      case 3: drawSceneRoxzoneTiers(); break;
+      case 4: drawSceneStationTurbine(); break;
+      case 5: drawSceneEcgWave(); break;
+      case 6: drawSceneWodClock(); break;
+      case 7: drawSceneDualClash(); break;
+    }
+
+    const meta = SCENE_META[sceneId] || SCENE_META[0];
+    const bpm = Math.round(168 + Math.sin(t * 1.3) * 11);
+    hudTL.textContent = `${meta.name} · LIVE HR ${bpm} BPM`;
+    hudTR.textContent = `${meta.mode} · LACTATE 4.2 MMOL/L`;
+    hudBL.textContent = `SLIDE ${String(slideIdx + 1).padStart(2, '0')} / ${S.length} · 60FPS BIO-KINETIC CANVAS`;
+
+    requestAnimationFrame(renderFrame);
+  }
+
+  requestAnimationFrame(renderFrame);
+})();
+
+/* ===================== 숫자 오도미터 카운트업 엔진 ===================== */
+function animateNumbers() {
+  const slideEl = document.getElementById('slide');
+  if (!slideEl) return;
+  const statVals = slideEl.querySelectorAll('.stat .v');
+  statVals.forEach(vEl => {
+    const smallEl = vEl.querySelector('small');
+    const unitHTML = smallEl ? smallEl.outerHTML : '';
+    const rawText = vEl.childNodes[0] ? vEl.childNodes[0].textContent.trim() : '';
+    if (!/^[0-9,]+$/.test(rawText)) return;
+    const target = parseInt(rawText.replace(/,/g, ''), 10);
+    if (isNaN(target)) return;
+    const hasComma = rawText.includes(',');
+    const dur = 1100;
+    const t0 = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      const ease = 1 - Math.pow(1 - p, 4);
+      const val = Math.round(target * ease);
+      const formatted = hasComma ? val.toLocaleString('en-US') : String(val);
+      vEl.innerHTML = `${formatted}${unitHTML}`;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+</script>
+</body>
+</html>

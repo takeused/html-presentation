@@ -46,6 +46,7 @@ description: '"시네마틱 모션 그래픽 발표자료", "시네마틱 모션
 
 - **슬라이드 패딩 (`#slide`)**: `padding: 36px 96px 104px`으로 좌우 가용 폭(`1728px`)을 넓게 확보합니다.
 - **타이틀 크기 (`.title`)**: 본문 슬라이드 타이틀은 `68px`(`cover .title`은 `104px`)로 설정하여 40~45자 내외의 비교·분석 제목도 2줄로 꺾이지 않고 1줄에 안착시킵니다.
+- **스탯 (`stats`)**: 3열 대형 수치(`550,000명+`, `12,000개+` 등 6~7자리 숫자 + 다글자 단위)가 좌우로 넘치거나 `+` 기호가 아랫줄로 떨어지지 않도록 `.stats` 최대 폭을 `1760px`, `.stat`을 `flex: 1 1 0; padding: 0 38px`로 균등 배분하고, `.stat .v`에 `display: inline-flex; align-items: baseline; white-space: nowrap; font-size: 132px`(`small`은 `52px`)를 강제 적용합니다.
 - **불릿 (`bullets`)**: 최대 폭 `1720px`, 폰트 크기 `27px`, `white-space: nowrap`을 적용하여 65~74자 분량의 상세 설명문도 좌측 아이콘(`.ico` `62×62px`, `flex-shrink: 0`) 찌그러짐이나 우측 잘림 없이 **완벽한 1줄**로 표시합니다.
 - **비교 카드 (`compare`)**: 좌우 패널 폭을 각 **`820px`**(총 폭 `1676px`)로 확장하고, 패널 제목(`h3`)은 `32px`(`white-space: nowrap`), 리스트 항목(`li`)은 `23px`(`word-break: keep-all`)로 설정하여 카드 내부에서 단어가 세로로 깨지거나 우측 밖으로 잘리는 현상을 원천 방지합니다.
 
