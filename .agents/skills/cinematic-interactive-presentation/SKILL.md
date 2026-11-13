@@ -41,14 +41,15 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
 ## 2. 제작 순서
 
 1. **템플릿 복사**:
-   `.agents/skills/cinematic-interactive-presentation/template.html`을 프로젝트 루트에 `<주제>_cinematic_presentation.html`로 복사합니다.
+   아래에서 `<SKILL_DIR>`은 이 스킬 폴더입니다(Claude Code: `~/.claude/skills/cinematic-interactive-presentation`, 원본 저장소: `.agents/skills/cinematic-interactive-presentation`).
+   `<SKILL_DIR>/template.html`을 프로젝트 루트에 `<주제>_cinematic_presentation.html`로 복사합니다.
 2. **슬라이드 기획**:
    10~20장 내외(Cover 1 + 본문 + Closing 1), 챕터 3~4개로 구성합니다. 데이터 분석·성능 벤치마크·경쟁 비교·비즈니스 임팩트 슬라이드 중 **2~4장은 `svg_cards` 레이아웃**으로 기획하여 시각적 완성도를 높입니다.
 3. **고화질 사진 선별**:
    슬라이드별 영문 키워드로 Unsplash 무료 사진을 검색합니다.
 
    ```bash
-   python -I .agents/skills/cinematic-interactive-presentation/scripts/find_photos.py "artificial intelligence" "data network" --n 5
+   python -I <SKILL_DIR>/scripts/find_photos.py "artificial intelligence" "data network" --n 5
    ```
 
    출력된 `bg`, `photo` 값을 슬라이드 데이터에 매핑합니다. **특히 1번 표지(`cover`)의 `bg` 이미지는 프로젝트 내 기존 모든 시네마틱 발표자료(`*_cinematic_presentation.html`)의 표지 이미지와 절대 겹치지 않는 고유한 사진을 지정합니다.**
@@ -70,14 +71,14 @@ description: '"시네마틱 발표자료", "시네마틱 프레젠테이션", "�
    헤드리스 크롬(Playwright)으로 모든 슬라이드를 캡처하고 자동 점검합니다.
 
    ```bash
-   python -I .agents/skills/cinematic-interactive-presentation/scripts/shoot.py http://localhost:8765/<파일명>.html <슬라이드수> <출력폴더>
+   python -I <SKILL_DIR>/scripts/shoot.py http://localhost:8765/<파일명>.html <슬라이드수> <출력폴더>
    ```
 
    - `Pretendard 웹폰트: OK`가 나와야 합니다. "로드 안 됨"이면 폰트 링크가 바뀐 것이니 템플릿의 jsDelivr 링크로 되돌립니다.
    - `넘침: 0 건`이 될 때까지 고칩니다. 화면 밖(40~1880px) 이탈, 잘림, **카드 폭 초과**(`.step,.stat,.tl-item,.panel,.svg-card` 내부 요소나 SVG `<text>`가 자기 카드보다 넓어 겹침)를 잡아 줍니다. 카드 폭 초과는 `<br>`로 나누거나 문장을 줄입니다.
    - `넘침: 0 건` 및 `아이콘 누락: 0 건`이 될 때까지 고칩니다. 화면 밖(40~1880px) 이탈, 잘림, **카드 폭 초과**(`.step,.stat,.tl-item,.panel,.svg-card` 내부 요소나 SVG `<text>`가 자기 카드보다 넓어 겹침), 그리고 **빈 아이콘 박스**(`iconify-icon` 내부 SVG 미렌더링 또는 대문자 아이콘명)를 자동으로 잡아 줍니다. 카드 폭 초과는 `<br>`로 나누거나 문장을 줄입니다.
    - `errors: []`를 확인한 뒤 캡처 이미지를 직접 열어 눈으로도 확인합니다(레이더 차트 라벨과 범례 박스 간격 등도 육안으로 점검).
-6. **통합 허브(index.html) 연동**:
+6. **통합 허브(index.html) 연동** (작업 폴더에 `DECKS` 배열을 가진 허브 `index.html`이 있을 때만):
    `index.html`의 `DECKS` 목록 최상단에 신규 프레젠테이션 정보를 등록합니다.
    - *중요*: `id` 필드는 기존 덱과 겹치지 않는 **고유한 식별자(Unique ID, 예: `ai-agent-bot-cinematic`)**를 부여해야 iframe 뷰어 DOM 충돌이 발생하지 않습니다.
    - *중요 1*: `id` 필드는 기존 덱과 겹치지 않는 **고유한 식별자(Unique ID, 예: `ai-agent-bot-cinematic`)**를 부여해야 iframe 뷰어 DOM 충돌이 발생하지 않습니다.
