@@ -56,10 +56,10 @@ description: '"시네마틱 모션 그래픽 발표자료", "시네마틱 모션
 ## 3. 제작 순서
 
 1. **템플릿 기반 생성 또는 모듈 조립**:
-   - `.agents/skills/cinematic-motion-graphics-presentation/template.html`을 프로젝트 루트에 `<주제>_motion_presentation.html`로 복사하여 `DECK`, `CHARTS`, `SLIDE_SCENE`을 주제에 맞게 구성합니다.
+   - 이 스킬 폴더의 `template.html`(Claude Code: `~/.claude/skills/cinematic-motion-graphics-presentation/template.html`, 원본 저장소: `.agents/skills/cinematic-motion-graphics-presentation/template.html`)을 프로젝트 루트에 `<주제>_motion_presentation.html`로 복사하여 `DECK`, `CHARTS`, `SLIDE_SCENE`을 주제에 맞게 구성합니다.
    - **18장 이상 대형 발표자료 제작 시**: 단일 `write_file` 스트림 타임아웃을 방지하기 위해 `scratch/` 폴더에 슬라이드/차트 모듈을 나누어 작성한 뒤 Python 스크립트로 조립합니다.
 2. **아이콘 및 JS 문법 검증**:
    - 모든 Iconify 아이콘은 검증된 **100% 소문자 케밥케이스(`solar:*-bold`)**만 사용합니다 (대문자 포함 시 빈 박스로 노출됨).
    - 조립 후 `<script>` 블록을 추출하여 `node --check`로 문법 오류 0건을 반드시 검증합니다.
-3. **통합 허브(`index.html`) 등록**:
+3. **통합 허브(`index.html`) 등록** (작업 폴더에 `DECKS` 배열을 가진 허브 `index.html`이 있을 때만):
    - `index.html`의 `DECKS` 배열 최상단에 신규 모션 그래픽 발표자료를 등록할 때는 `isCinematic: true`, `style: 'MOTION GRAPHICS'`, 고유한 `id`(`*-motion`), `hook`, `thumb`(표지 Unsplash ID)를 부여하고 CRLF 줄바꿈을 유지합니다.
