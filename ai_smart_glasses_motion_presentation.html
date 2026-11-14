@@ -626,6 +626,136 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
   transform-origin: center;
   animation: orbitSpin 18s linear infinite;
 }
+
+/* === SELECTIVE TITLE MOTION GRAPHICS (일부 핵심 슬라이드 전용 타이틀 등장 효과) === */
+/* 1) cinematic-expand: 자간 수축 + 광학 포커스 인 (표지 / 클로징 전용) */
+.title[data-title-fx="cinematic-expand"].on {
+  animation: titleCinematicExpand 1.25s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@keyframes titleCinematicExpand {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.12em;
+    transform: scaleX(1.07) translateY(22px);
+    filter: blur(14px) brightness(2.2);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px) brightness(1.3);
+  }
+  100% {
+    opacity: 1;
+    letter-spacing: -0.03em;
+    transform: scaleX(1) translateY(0);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* 2) laser-wipe: 좌→우 홀로그램 레이저 마스크 스캔 와이프 (주요 챕터 오프닝 전용) */
+.title[data-title-fx="laser-wipe"] {
+  position: relative;
+}
+.title[data-title-fx="laser-wipe"].on {
+  animation: titleLaserWipe 1.05s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both;
+}
+.title[data-title-fx="laser-wipe"].on::before {
+  content: '';
+  position: absolute;
+  top: -8%;
+  bottom: -8%;
+  left: 0;
+  width: 6px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, transparent, #fde047, #00d2ff, transparent);
+  box-shadow: 0 0 24px #00d2ff, 0 0 42px #fde047;
+  pointer-events: none;
+  z-index: 4;
+  animation: titleLaserBeam 1.05s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both;
+}
+@keyframes titleLaserWipe {
+  0% {
+    opacity: 0.15;
+    clip-path: inset(-20% 100% -25% 0);
+    filter: brightness(1.85);
+  }
+  85% {
+    filter: brightness(1.15);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(-20% 0% -25% 0);
+    filter: brightness(1);
+  }
+}
+@keyframes titleLaserBeam {
+  0% { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* 3) word-cascade: 어절 단위 3D 퍼스펙티브 순차 캐스케이드 (핵심 전환 슬라이드 전용) */
+.title[data-title-fx="word-cascade"] {
+  perspective: 900px;
+}
+.title[data-title-fx="word-cascade"] .mg-word {
+  display: inline-block;
+  color: inherit;
+  -webkit-text-fill-color: inherit;
+  opacity: 0;
+  transform: translateY(34px) rotateX(-42deg) scale(0.92);
+  transform-origin: 50% 100%;
+  filter: blur(8px) brightness(1.9);
+}
+.title[data-title-fx="word-cascade"].on .mg-word {
+  animation: titleWordCascade 0.72s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--d, 0s) + var(--wi, 0) * 0.065s) forwards;
+}
+@keyframes titleWordCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(34px) rotateX(-42deg) scale(0.92);
+    filter: blur(8px) brightness(1.9);
+  }
+  65% {
+    filter: blur(0px) brightness(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* 4) prism-lock: 시안·골드 프리즘 색수차 수렴 락온 (클라이맥스 명언 전용) */
+.quote[data-title-fx="prism-lock"].on,
+.title[data-title-fx="prism-lock"].on {
+  animation: titlePrismLock 1.15s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@keyframes titlePrismLock {
+  0% {
+    opacity: 0;
+    transform: scale(1.06) translateY(18px);
+    filter: blur(10px) brightness(2);
+    text-shadow:
+      -24px 0 28px rgba(0, 210, 255, 0.95),
+       24px 0 28px rgba(253, 224, 71, 0.95),
+        0 4px 30px rgba(0, 0, 0, 0.95);
+  }
+  65% {
+    opacity: 1;
+    filter: blur(0px) brightness(1.2);
+    text-shadow:
+      -4px 0 12px rgba(0, 210, 255, 0.6),
+       4px 0 12px rgba(253, 224, 71, 0.6),
+       0 4px 30px rgba(0, 0, 0, 0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px) brightness(1);
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95);
+  }
+}
 </style>
 </head>
 <body>
@@ -654,18 +784,18 @@ const DECK = {
     '프라이버시 윤리와 2030 미래'
   ],
   slides: [
-    // 01. Cover (ch 0) — 고유 표지 bg: photo-1535223289827-42f1e9919769
+    // 01. Cover (ch 0) — 고유 표지 bg: photo-1535223289827-42f1e9919769 [선택적 타이틀 모션: cinematic-expand]
     {
-      layout: 'cover', chapter: 0,
+      layout: 'cover', chapter: 0, titleFx: 'cinematic-expand',
       bg: 'photo-1535223289827-42f1e9919769', photo: 'Minh Pham',
       eyebrow: '60FPS OPTIC-NEURAL MOTION ENGINE · POST-SMARTPHONE REVOLUTION',
       title: '시선이 곧 인터페이스가 되는 시대<br><em>AI 글라스와 스마트 글라스의 모든 것</em>',
       sub: '레이밴 메타의 돌풍부터 메타 오라이언·구글 안드로이드 XR·삼성·애플까지 — 손안의 스마트폰을 넘어 눈앞에 펼쳐지는 멀티모달 공간 컴퓨팅 혁명',
       meta: '8-SCENE 60FPS WAVEGUIDE & NEURAL CANVAS · SELF-DRAWING HUD SVG · 15 SLIDES'
     },
-    // 02. Stats (ch 0)
+    // 02. Stats (ch 0) — Chapter 1 오프닝 [선택적 타이틀 모션: laser-wipe]
     {
-      layout: 'stats', chapter: 0,
+      layout: 'stats', chapter: 0, titleFx: 'laser-wipe',
       bg: 'photo-1592478411213-6153e4ebc07d', photo: 'XPS',
       eyebrow: 'CHAPTER 01 · 왜 지금 전 세계 빅테크는 안경(Eyewear)에 사활을 거는가',
       title: '멀티모달 AI를 만나 마침내 폭발한 <em>스마트 글라스 핵심 지표</em>',
@@ -676,7 +806,7 @@ const DECK = {
       ],
       note: '출처 · EssilorLuxottica Earnings Report & Counterpoint / IDC Global Smart Eyewear Forecast (2025~2030)'
     },
-    // 03. Bullets (ch 0)
+    // 03. Bullets (ch 0) — 일반 클린 등장
     {
       layout: 'bullets', chapter: 0,
       bg: 'photo-1572635196237-14b3f281503f', photo: 'Giorgio Trovato',
@@ -690,7 +820,7 @@ const DECK = {
       ],
       note: '출처 · Meta Connect Keynote & Stanford HCI Pervasive Multimodal Interface Research (2025~2026)'
     },
-    // 04. Compare (ch 0)
+    // 04. Compare (ch 0) — 일반 클린 등장
     {
       layout: 'compare', chapter: 0,
       bg: 'photo-1518770660439-4636190af475', photo: 'Alexandre Debieve',
@@ -716,9 +846,9 @@ const DECK = {
       },
       note: '현재 시장은 가벼운 ‘AI 오디오·단색 HUD 글라스’가 대중화를 이끌고, 풀컬러 ‘광학 AR 글라스’로 진화하는 투트랙 구도입니다'
     },
-    // 05. Flow (ch 1)
+    // 05. Flow (ch 1) — Chapter 2 오프닝 [선택적 타이틀 모션: word-cascade]
     {
-      layout: 'flow', chapter: 1,
+      layout: 'flow', chapter: 1, titleFx: 'word-cascade',
       bg: 'photo-1618005182384-a83a8bd57fbe', photo: 'Milad Fakurian',
       eyebrow: 'CHAPTER 02 · 눈앞에 홀로그램을 띄우는 3단계 핵심 광학 원리',
       title: '안경다리 초소형 프로젝터에서 망막까지 <em>빛과 지능이 흐르는 과정</em>',
@@ -729,7 +859,7 @@ const DECK = {
       ],
       note: '야외 한낮 햇빛 아래에서도 선명한 홀로그램을 보려면 최소 3,000~5,000 니트(nits) 이상의 전면 투사 휘도가 필수입니다'
     },
-    // 06. SVG Cards (ch 1)
+    // 06. SVG Cards (ch 1) — 일반 클린 등장
     {
       layout: 'svg_cards', chapter: 1,
       bg: 'photo-1551288049-bebda4e38f71', photo: 'Luke Chesser',
@@ -753,7 +883,7 @@ const DECK = {
       ],
       note: '출처 · Counterpoint Research Smart Glasses Report & SPIE AR/VR/MR Optical Engineering Benchmark (2026)'
     },
-    // 07. Bullets (ch 1)
+    // 07. Bullets (ch 1) — 일반 클린 등장
     {
       layout: 'bullets', chapter: 1,
       bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
@@ -767,7 +897,7 @@ const DECK = {
       ],
       note: '출처 · IEEE Micro Special Issue on Wearable Spatial Computing & Meta Reality Labs Hardware Whitepaper'
     },
-    // 08. Flow (ch 1)
+    // 08. Flow (ch 1) — 일반 클린 등장
     {
       layout: 'flow', chapter: 1,
       bg: 'photo-1614064641938-3bbee52942c7', photo: 'FlyD',
@@ -780,9 +910,9 @@ const DECK = {
       ],
       note: '메타 오라이언(Orion)은 ‘눈으로 대상을 바라보고(Look) 손을 들지 않은 채 엄지·검지를 살짝 맞닿아 클릭(Pinch)’하는 표준을 정립했습니다'
     },
-    // 09. Timeline (ch 2)
+    // 09. Timeline (ch 2) — Chapter 3 오프닝 [선택적 타이틀 모션: laser-wipe]
     {
-      layout: 'timeline', chapter: 2,
+      layout: 'timeline', chapter: 2, titleFx: 'laser-wipe',
       bg: 'photo-1506744038136-46273834b3fb', photo: 'Bailey Zindel',
       eyebrow: 'CHAPTER 03 · 구글 글래스의 좌절에서 오라이언까지 (2013~2027)',
       title: '실패를 딛고 완성형 폼팩터로 부활한 <em>스마트 글라스 15년 진화사</em>',
@@ -794,7 +924,7 @@ const DECK = {
       ],
       note: '출처 · The Verge, Bloomberg Tech & Global XR Industry Historical Archive (2013~2026)'
     },
-    // 10. Bullets (ch 2)
+    // 10. Bullets (ch 2) — 일반 클린 등장
     {
       layout: 'bullets', chapter: 2,
       bg: 'photo-1639322537228-f710d846310a', photo: 'Shubham Dhage',
@@ -808,7 +938,7 @@ const DECK = {
       ],
       note: '출처 · Bloomberg Mark Gurman Report, Google I/O Android XR Keynote & Counterpoint XR Tracker (2025~2026)'
     },
-    // 11. SVG Cards (ch 2)
+    // 11. SVG Cards (ch 2) — 일반 클린 등장
     {
       layout: 'svg_cards', chapter: 2,
       bg: 'photo-1519501025264-65ba15a82390', photo: 'Aleksandar Pasaric',
@@ -832,7 +962,7 @@ const DECK = {
       ],
       note: '출처 · Omdia Wearable Display Report & Industry Analyst Ecosystem Scorecard (2026)'
     },
-    // 12. Compare (ch 2)
+    // 12. Compare (ch 2) — 일반 클린 등장
     {
       layout: 'compare', chapter: 2,
       bg: 'photo-1581091226825-a6a2a5aee158', photo: 'ThisisEngineering',
@@ -858,9 +988,9 @@ const DECK = {
       },
       note: '소음과 위험이 상존하는 물류·제조·의료 현장에서는 이미 양손 자유(Hands-Free) 스마트 글라스가 작업 효율을 30% 이상 높이고 있습니다'
     },
-    // 13. Bullets (ch 3)
+    // 13. Bullets (ch 3) — Chapter 4 오프닝 [선택적 타이틀 모션: word-cascade]
     {
-      layout: 'bullets', chapter: 3,
+      layout: 'bullets', chapter: 3, titleFx: 'word-cascade',
       bg: 'photo-1550751827-4bd374c3f58b', photo: 'Adi Goldstein',
       eyebrow: 'CHAPTER 04 · 구글 글래스의 전철을 밟지 않기 위한 사회적 과제',
       title: '스마트 글라스 대중화를 위해 넘어야 할 <em>4대 프라이버시·안전 쟁점과 해법</em>',
@@ -872,17 +1002,17 @@ const DECK = {
       ],
       note: '출처 · Electronic Frontier Foundation (EFF) Wearable Privacy Guidelines & EU AI Act Biometric Rules (2026)'
     },
-    // 14. Quote (ch 3)
+    // 14. Quote (ch 3) — 클라이맥스 명언 [선택적 타이틀 모션: prism-lock]
     {
-      layout: 'quote', chapter: 3,
+      layout: 'quote', chapter: 3, titleFx: 'prism-lock',
       bg: 'photo-1519681393784-d120267933ba', photo: 'Benjamin Voros',
       eyebrow: 'THE PARADIGM SHIFT OF COMPUTING',
       quote: '고개를 숙여 작은 유리판을 들여다보던 시대는 끝나간다.<br><em>세상 그 자체가 스크린이 되고, AI는 당신의 시선 끝에 머물 것이다</em>',
       by: 'SPATIAL & AMBIENT COMPUTING VISION · 2026~2030'
     },
-    // 15. Closing (ch 3)
+    // 15. Closing (ch 3) — 피날레 [선택적 타이틀 모션: cinematic-expand]
     {
-      layout: 'closing', chapter: 3,
+      layout: 'closing', chapter: 3, titleFx: 'cinematic-expand',
       bg: 'photo-1534298261662-f8fdd25317db', photo: 'Brad Knight',
       eyebrow: 'BEYOND THE SMARTPHONE · AMBIENT AI ON YOUR EYES',
       title: '눈앞에 펼쳐지는 지능형 세상,<br><em>AI & 스마트 글라스가 여는 넥스트 모바일</em>',
@@ -902,8 +1032,41 @@ const S = DECK.slides;
 let cur = 0, step = 0, maxStep = 0, bgFlip = false;
 const $ = id => document.getElementById(id);
 
+// 선택적 타이틀 모션그래픽 포매터 (s.titleFx가 지정된 일부 슬라이드에만 동작)
+function formatTitleHtml(html, fx) {
+  if (!fx || fx !== 'word-cascade') return html;
+  const box = document.createElement('div');
+  box.innerHTML = html;
+  let wi = 0;
+  function walk(node) {
+    if (node.nodeType === 3) {
+      const parts = node.nodeValue.split(/(\s+)/);
+      const frag = document.createDocumentFragment();
+      parts.forEach(p => {
+        if (!p) return;
+        if (/^\s+$/.test(p)) {
+          frag.appendChild(document.createTextNode(p));
+        } else {
+          const span = document.createElement('span');
+          span.className = 'mg-word';
+          span.style.setProperty('--wi', wi++);
+          span.textContent = p;
+          frag.appendChild(span);
+        }
+      });
+      node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+      [...node.childNodes].forEach(walk);
+    }
+  }
+  [...box.childNodes].forEach(walk);
+  return box.innerHTML;
+}
+
+const titleFxAttr = s => s.titleFx ? ` data-title-fx="${s.titleFx}"` : '';
+
 const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
-  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  `<h2 class="title"${titleFxAttr(s)} ${n(0)}>${formatTitleHtml(s.title, s.titleFx)}</h2>` +
   (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
 
 const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
@@ -1049,7 +1212,7 @@ const CHARTS = {
 const LAYOUTS = {
   cover: (s, n) => `<div class="cover">
       ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
-      <h1 class="title" ${n(1)}>${s.title}</h1>
+      <h1 class="title"${titleFxAttr(s)} ${n(1)}>${formatTitleHtml(s.title, s.titleFx)}</h1>
       ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
       ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
   bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
@@ -1064,7 +1227,7 @@ const LAYOUTS = {
   compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
       `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
   quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
-      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+      `<blockquote class="quote"${titleFxAttr(s)} ${n(1)}>${formatTitleHtml(s.quote, s.titleFx)}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
   timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
       `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
   closing: (s, n) => `<div class="closing">${head(s, n)}

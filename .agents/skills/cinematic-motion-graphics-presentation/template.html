@@ -627,6 +627,120 @@ html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:
   animation: orbitSpin 18s linear infinite;
 }
 
+/* ===================== SELECTIVE TITLE MOTION GRAPHICS (일부 핵심 슬라이드 전용) ===================== */
+/* 1. Cinematic Tracking Expand (영화 예고편 스타일 광학 트래킹 & 블러 포커스 수렴) */
+.title.r[data-title-fx="cinematic-expand"],
+.quote.r[data-title-fx="cinematic-expand"] {
+  letter-spacing: 0.16em;
+  filter: blur(16px) brightness(2.2);
+  transform: scale(1.06) translateY(10px);
+  transition:
+    opacity 1.05s cubic-bezier(.16, 1, .3, 1),
+    letter-spacing 1.25s cubic-bezier(.16, 1, .3, 1),
+    filter 1.1s cubic-bezier(.16, 1, .3, 1),
+    transform 1.15s cubic-bezier(.16, 1, .3, 1);
+}
+.title.r.on[data-title-fx="cinematic-expand"],
+.quote.r.on[data-title-fx="cinematic-expand"] {
+  letter-spacing: -0.025em;
+  filter: blur(0px) brightness(1);
+  transform: scale(1) translateY(0);
+}
+
+/* 2. Laser Horizon Wipe (수평 레이저 빔이 타이틀을 스캔하며 각인하는 HUD 모션) */
+.title.r[data-title-fx="laser-wipe"],
+.quote.r[data-title-fx="laser-wipe"] {
+  clip-path: inset(0 100% 0 0);
+  filter: blur(0px) brightness(1.4);
+  transform: translateY(0);
+  transition:
+    opacity 0.4s ease,
+    clip-path 1.15s cubic-bezier(.19, 1, .22, 1),
+    filter 1.15s ease;
+}
+.title.r.on[data-title-fx="laser-wipe"],
+.quote.r.on[data-title-fx="laser-wipe"] {
+  clip-path: inset(-15% -5% -25% -5%);
+  filter: blur(0px) brightness(1);
+}
+.title.r.on[data-title-fx="laser-wipe"]::before,
+.quote.r.on[data-title-fx="laser-wipe"]::before {
+  content: '';
+  position: absolute;
+  top: -8%;
+  bottom: -12%;
+  left: 0;
+  width: 4px;
+  background: linear-gradient(180deg, transparent, #fde047, #ffffff, #00d2ff, transparent);
+  box-shadow: 0 0 22px #00d2ff, 0 0 42px #fde047;
+  pointer-events: none;
+  animation: titleLaserBeam 1.15s cubic-bezier(.19, 1, .22, 1) forwards;
+}
+@keyframes titleLaserBeam {
+  0% { left: 0%; opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 102%; opacity: 0; }
+}
+
+/* 3. Kinetic Word Cascade (어절 단위로 시차를 두고 정밀하게 떠오르는 키네틱 타이포그래피) */
+.title.r[data-title-fx="word-cascade"],
+.quote.r[data-title-fx="word-cascade"] {
+  filter: none;
+  transform: none;
+}
+.title[data-title-fx="word-cascade"] .mg-word,
+.quote[data-title-fx="word-cascade"] .mg-word {
+  display: inline-block;
+  opacity: 0;
+  color: inherit;
+  -webkit-text-fill-color: inherit;
+  transform: translateY(26px) rotateX(-38deg) scale(0.94);
+  filter: blur(8px) brightness(1.7);
+  transform-origin: 50% 100%;
+  transition:
+    opacity 0.68s cubic-bezier(.16, 1, .3, 1),
+    transform 0.75s cubic-bezier(.16, 1, .3, 1),
+    filter 0.68s cubic-bezier(.16, 1, .3, 1);
+  transition-delay: calc(var(--wi, 0) * 65ms + 80ms);
+}
+.title.on[data-title-fx="word-cascade"] .mg-word,
+.quote.on[data-title-fx="word-cascade"] .mg-word {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg) scale(1);
+  filter: blur(0px) brightness(1);
+}
+
+/* 4. Prism Chromatic Lock (시안·마젠타 광학 프리즘 수차가 정합되며 선명하게 고정되는 효과) */
+.title.r[data-title-fx="prism-lock"],
+.quote.r[data-title-fx="prism-lock"] {
+  filter: blur(10px) brightness(1.8);
+  transform: scale(0.95) translateY(14px);
+}
+.title.r.on[data-title-fx="prism-lock"],
+.quote.r.on[data-title-fx="prism-lock"] {
+  animation: prismChromaticLock 1.05s cubic-bezier(.16, 1, .3, 1) forwards;
+}
+@keyframes prismChromaticLock {
+  0% {
+    opacity: 0;
+    filter: blur(12px) brightness(2.1);
+    transform: scale(0.95) translateY(14px);
+    text-shadow: -18px 0 2px rgba(0, 210, 255, 0.85), 18px 0 2px rgba(244, 63, 94, 0.85);
+  }
+  45% {
+    opacity: 1;
+    filter: blur(2px) brightness(1.35);
+    transform: scale(1.01) translateY(-2px);
+    text-shadow: -6px 0 1px rgba(0, 210, 255, 0.65), 6px 0 1px rgba(253, 224, 71, 0.65);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px) brightness(1);
+    transform: scale(1) translateY(0);
+    text-shadow: 0 4px 28px rgba(0, 0, 0, 0.95), 0 0 24px rgba(var(--ac-rgb), 0.22);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -657,16 +771,16 @@ const DECK = {
   slides: [
     // 01. Cover (ch 0)
     {
-      layout: 'cover', chapter: 0,
+      layout: 'cover', chapter: 0, titleFx: 'cinematic-expand',
       bg: 'photo-1446776877081-d282a0f896e2', photo: 'NASA',
       eyebrow: '60FPS 8-SCENE MOTION ENGINE · SPACE MIRROR REVOLUTION',
       title: '밤하늘에 거울을 띄워 햇빛을 판다<br><em>리플렉트 오비탈과 우주 거울의 진실</em>',
       sub: '미국 스타트업 Reflect Orbital의 야간 태양광·재난 조명 혁신부터 러시아 즈나먀·중국 인공 달, 천문학계 빛 공해 논쟁까지',
-      meta: '8종 슬라이드별 맞춤 모션 캔버스 · 어절 단위 키네틱 텍스트 등장 · 실시간 오도미터 탑재'
+      meta: '8종 슬라이드별 맞춤 모션 캔버스 · 선택적 타이틀 모션그래픽 · 실시간 오도미터 탑재'
     },
     // 02. Stats (ch 0)
     {
-      layout: 'stats', chapter: 0,
+      layout: 'stats', chapter: 0, titleFx: 'laser-wipe',
       bg: 'photo-1451187580459-43490279c0fa', photo: 'NASA',
       eyebrow: 'CHAPTER 01 · 태양광의 역설과 우주 거울의 등장',
       title: '해가 지면 멈추는 태양광 발전, <em>우주에서 답을 찾다</em>',
@@ -714,7 +828,7 @@ const DECK = {
     },
     // 06. Stats (ch 1)
     {
-      layout: 'stats', chapter: 1,
+      layout: 'stats', chapter: 1, titleFx: 'word-cascade',
       bg: 'photo-1501290301209-7a0323622985', photo: 'Robin Pierre',
       eyebrow: 'CHAPTER 02 · 첫 실증 위성 에아렌딜-1 (Eärendil-1) 스펙',
       title: '테니스 코트 크기의 초경량 거울을 품은 <em>에아렌딜-1</em>',
@@ -804,7 +918,7 @@ const DECK = {
     },
     // 11. Timeline (ch 2)
     {
-      layout: 'timeline', chapter: 2,
+      layout: 'timeline', chapter: 2, titleFx: 'laser-wipe',
       bg: 'photo-1506744038136-46273834b3fb', photo: 'Bailey Zindel',
       eyebrow: 'CHAPTER 03 · 인류의 우주 거울 도전사 (1929~2026)',
       title: '100년의 상상에서 실제 궤도 실증까지, <em>우주 거울의 역사</em>',
@@ -882,7 +996,7 @@ const DECK = {
     },
     // 15. Quote (ch 2)
     {
-      layout: 'quote', chapter: 2,
+      layout: 'quote', chapter: 2, titleFx: 'prism-lock',
       bg: 'photo-1498084393753-b411b2d26b34', photo: 'Marc-Olivier Jodoin',
       eyebrow: 'LESSONS FROM 30 YEARS OF ORBITAL EXPERIMENTS',
       quote: '우주 거울을 펼치는 것 자체는 이미 1993년에 증명됐다.<br><em>진짜 난제는 경제성과 인류가 합의할 수 있는 밤하늘의 윤리다</em>',
@@ -890,7 +1004,7 @@ const DECK = {
     },
     // 16. Bullets (ch 3)
     {
-      layout: 'bullets', chapter: 3,
+      layout: 'bullets', chapter: 3, titleFx: 'word-cascade',
       bg: 'photo-1586165368502-1bad197a6461', photo: 'Hassan Pasha',
       eyebrow: 'CHAPTER 04 · 2026 미국 FCC 승인과 과학계·환경계의 거센 반발',
       title: '2026년 7월 FCC 발사 승인 이후<br><em>폭발한 4대 글로벌 논쟁</em>',
@@ -967,7 +1081,7 @@ const DECK = {
     },
     // 20. Closing (ch 3)
     {
-      layout: 'closing', chapter: 3,
+      layout: 'closing', chapter: 3, titleFx: 'cinematic-expand',
       bg: 'photo-1534298261662-f8fdd25317db', photo: 'Brad Knight',
       eyebrow: 'BETWEEN INNOVATION AND PRESERVING THE NIGHT',
       title: '밤을 비추는 우주 거울,<br><em>기술의 한계와 밤하늘의 가치를 함께 묻다</em>',
@@ -987,8 +1101,43 @@ const S = DECK.slides;
 let cur = 0, step = 0, maxStep = 0, bgFlip = false;
 const $ = id => document.getElementById(id);
 
+/* 선택된 슬라이드(s.titleFx)에만 모션그래픽 타이틀 포맷팅 적용 */
+function formatTitleHtml(html, fx) {
+  if (!html || fx !== 'word-cascade') return html;
+  const tpl = document.createElement('template');
+  tpl.innerHTML = html;
+  let wi = 0;
+  function walk(node) {
+    Array.from(node.childNodes).forEach(child => {
+      if (child.nodeType === 3) {
+        const parts = child.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        parts.forEach(p => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) {
+            frag.appendChild(document.createTextNode(p));
+          } else {
+            const span = document.createElement('span');
+            span.className = 'mg-word';
+            span.style.setProperty('--wi', wi++);
+            span.textContent = p;
+            frag.appendChild(span);
+          }
+        });
+        node.replaceChild(frag, child);
+      } else if (child.nodeType === 1 && child.tagName !== 'BR') {
+        walk(child);
+      }
+    });
+  }
+  walk(tpl.content);
+  return tpl.innerHTML;
+}
+
+const titleFxAttr = s => s.titleFx ? ` data-title-fx="${s.titleFx}"` : '';
+
 const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
-  `<h2 class="title" ${n(0)}>${s.title}</h2>` +
+  `<h2 class="title"${titleFxAttr(s)} ${n(0)}>${formatTitleHtml(s.title, s.titleFx)}</h2>` +
   (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
 
 const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
@@ -1194,7 +1343,7 @@ const CHARTS = {
 const LAYOUTS = {
   cover: (s, n) => `<div class="cover">
       ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
-      <h1 class="title" ${n(1)}>${s.title}</h1>
+      <h1 class="title"${titleFxAttr(s)} ${n(1)}>${formatTitleHtml(s.title, s.titleFx)}</h1>
       ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
       ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
   bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
@@ -1209,7 +1358,7 @@ const LAYOUTS = {
   compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
       `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
   quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
-      `<blockquote class="quote" ${n(1)}>${s.quote}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+      `<blockquote class="quote"${titleFxAttr(s)} ${n(1)}>${formatTitleHtml(s.quote, s.titleFx)}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
   timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
       `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
   closing: (s, n) => `<div class="closing">${head(s, n)}

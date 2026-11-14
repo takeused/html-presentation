@@ -1,0 +1,1911 @@
+<!-- 시네마틱 모션 그래픽 발표자료: 하늘 위의 3차원 고속도로 — eVTOL 도심항공교통(UAM)과 AI 항공관제 (15장) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>하늘 위의 3차원 고속도로 — eVTOL 도심항공교통(UAM)과 AI 항공관제 · 시네마틱 모션 그래픽 발표자료</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<style>
+:root{
+  --navy:10,16,28;
+  --ac:#00d2ff;
+  --ac-rgb:0,210,255;
+  --ink:#ffffff;
+  --mu:rgba(235,242,255,.82);
+  --dim:rgba(180,200,230,.58);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070c;font-family:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink)}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#05070c}
+
+/* 배경 2중 레이어 (크로스페이드 + 켄번스) */
+.bg{position:absolute;inset:-4%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:transform,opacity}
+.bg.show{opacity:1;animation:kenburns 18s cubic-bezier(.25,1,.3,1) infinite alternate}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translate(-0.8%,-0.5%)}}
+
+/* 다크 비네팅 & 시네마틱 오버레이 (선명한 실사 배경 최적화) */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 85% 75% at 50% 50%,rgba(var(--navy),.35) 0%,rgba(var(--navy),.65) 65%,rgba(var(--navy),.88) 100%),
+    linear-gradient(180deg,rgba(var(--navy),.62) 0%,rgba(var(--navy),.22) 30%,rgba(var(--navy),.26) 70%,rgba(var(--navy),.82) 100%);
+}
+.rays{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg at 50% 118%,rgba(var(--ac-rgb),.05) 0deg 1.2deg,transparent 1.2deg 9deg);
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%);
+          mask:radial-gradient(ellipse 60% 70% at 50% 100%,#000 10%,transparent 75%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hud{position:absolute;width:46px;height:46px;border:2px solid rgba(255,255,255,.22);pointer-events:none}
+.hud.tl{left:56px;top:136px;border-right:0;border-bottom:0}
+.hud.tr{right:56px;top:136px;border-left:0;border-bottom:0}
+.hud.bl{left:56px;bottom:56px;border-right:0;border-top:0}
+.hud.br{right:56px;bottom:56px;border-left:0;border-top:0}
+
+/* --- 상단 인터랙티브 챕터 바 --- */
+#topbar{position:absolute;left:48px;right:48px;top:34px;height:66px;display:flex;align-items:center;gap:8px;padding:8px;
+  background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;height:100%;padding:0 18px 0 12px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(var(--ac-rgb),.22),rgba(var(--ac-rgb),.05));border:1px solid rgba(var(--ac-rgb),.35);
+  font-size:15px;font-weight:800;letter-spacing:.12em;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,box-shadow .15s}
+.brand:hover{box-shadow:0 0 18px rgba(var(--ac-rgb),.4);transform:translateY(-1px)}
+.brand iconify-icon{font-size:24px;color:var(--ac)}
+.tab{flex:1;position:relative;height:100%;display:flex;align-items:center;gap:12px;padding:0 18px;border-radius:10px;
+  color:var(--dim);font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;transition:color .3s,background .3s,border-color .3s;
+  border:1px solid transparent;cursor:pointer;user-select:none}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.tab b{font-size:14px;font-weight:700;opacity:.8;font-variant-numeric:tabular-nums}
+.tab.on{color:var(--ink);background:rgba(var(--ac-rgb),.13);border-color:rgba(var(--ac-rgb),.38)}
+.tab.on:hover{background:rgba(var(--ac-rgb),.2);border-color:rgba(var(--ac-rgb),.55)}
+.tab.on b{color:var(--ac);opacity:1}
+.tab.done{color:rgba(235,240,250,.62)}
+.tab .gauge{position:absolute;left:18px;right:18px;bottom:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .4s}
+.tab.on .gauge{opacity:1}
+.tab .gauge i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* --- 슬라이드 본문 공통 --- */
+#slide{position:absolute;left:0;right:0;top:100px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 160px 110px;text-align:center;z-index:2;word-break:keep-all}
+.eyebrow{font-size:23px;font-weight:600;color:var(--ac);letter-spacing:.04em;margin-bottom:18px;text-shadow:0 0 18px rgba(var(--ac-rgb),.6), 0 2px 8px rgba(0,0,0,.9);word-break:keep-all}
+.title{font-size:76px;font-weight:800;line-height:1.18;letter-spacing:-.03em;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 2px 10px rgba(0,0,0,1);word-break:keep-all}
+.title em,.quote em{font-style:normal;color:var(--ac)}
+.sub{font-size:30px;font-weight:500;color:var(--mu);margin-top:26px;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.85);word-break:keep-all}
+.note{position:absolute;left:0;right:0;bottom:74px;font-size:21px;color:var(--dim);font-weight:500;text-shadow:0 2px 10px rgba(0,0,0,.9);word-break:keep-all}
+.credit{position:absolute;left:120px;bottom:22px;font-size:13px;color:rgba(255,255,255,.3);z-index:3;letter-spacing:.02em}
+
+/* --- reveal: data-s 순서대로 페이드업 --- */
+[data-s]{opacity:0;transform:translateY(26px);transition:opacity .75s ease var(--d,0s),transform .85s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+[data-s].on{opacity:1;transform:none}
+
+/* cover */
+.cover .chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;font-size:20px;font-weight:700;letter-spacing:.14em;color:var(--ac);
+  background:rgba(var(--ac-rgb),.1);border:1px solid rgba(var(--ac-rgb),.4);margin-bottom:34px;word-break:keep-all}
+.cover .title{font-size:112px;line-height:1.12}
+.cover .meta{margin-top:48px;font-size:19px;letter-spacing:.24em;color:var(--dim);font-weight:600}
+
+/* bullets */
+.bullets{margin-top:58px;display:flex;flex-direction:column;gap:26px;text-align:left}
+.bullet{display:flex;align-items:center;gap:26px;font-size:34px;font-weight:500;color:var(--mu);text-shadow:0 2px 14px rgba(0,0,0,.95);word-break:keep-all}
+.ico{flex:none;width:68px;height:68px;border-radius:16px;display:grid;place-items:center;font-size:32px;color:var(--ac);
+  background:rgba(var(--navy),.75);border:1.5px solid rgba(var(--ac-rgb),.5);box-shadow:0 0 24px rgba(var(--ac-rgb),.2)}
+.bullet.em{color:var(--ink);font-weight:800}
+.bullet.em .ico{background:rgba(var(--navy),.85);border-color:var(--ac);box-shadow:0 0 34px rgba(var(--ac-rgb),.45)}
+
+/* stats (1줄 완벽 대칭 최적화) */
+.stats{margin-top:64px;display:flex;align-items:stretch;justify-content:center}
+.stat{padding:0 70px;display:flex;flex-direction:column;align-items:center}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.14)}
+.stat .v{font-size:180px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 4px 30px rgba(0,0,0,.95), 0 0 50px rgba(var(--ac-rgb),.35)}
+.stat .v small{font-size:64px;color:var(--ac);margin-left:6px;letter-spacing:0}
+.stat .l{margin-top:22px;font-size:27px;color:var(--mu);font-weight:500;max-width:700px;white-space:nowrap;line-height:1.45;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+
+/* flow: 마름모 배지 + 화살표 (단어 쪼개짐 방지 최적화) */
+.flow{margin-top:70px;display:flex;align-items:flex-start;justify-content:center}
+.step{width:420px;display:flex;flex-direction:column;align-items:center}
+.dia{width:112px;height:112px;display:grid;place-items:center;position:relative;margin:14px 0 40px}
+.dia::before{content:'';position:absolute;inset:0;transform:rotate(45deg) scale(.82);border-radius:14px;
+  background:rgba(var(--navy),.75);border:2px solid rgba(var(--ac-rgb),.75);box-shadow:0 0 30px rgba(var(--ac-rgb),.4),inset 0 0 22px rgba(var(--ac-rgb),.18)}
+.dia span{position:relative;font-size:38px;font-weight:800;color:var(--ac);font-variant-numeric:tabular-nums}
+.step .lb{font-size:38px;font-weight:700;line-height:1.3;white-space:nowrap}
+.step .lb::after{content:'';display:block;width:56px;height:3px;margin:18px auto 0;background:var(--ac);border-radius:2px;opacity:.8}
+.step .ds{margin-top:16px;font-size:23px;color:var(--mu);line-height:1.45;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.arrow{width:100px;height:2px;margin-top:68px;position:relative;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(var(--ac-rgb),.1),var(--ac));box-shadow:0 0 12px rgba(var(--ac-rgb),.6)}
+.arrow::after{content:'';position:absolute;right:-2px;top:-6px;border-left:12px solid var(--ac);border-top:7px solid transparent;border-bottom:7px solid transparent}
+.arrow[data-s]{transform:scaleX(0)}
+.arrow[data-s].on{transform:scaleX(1)}
+
+/* compare: 단어 쪼개짐 방지 및 가독성 최적화 */
+.compare{margin-top:54px;display:flex;gap:40px;text-align:left}
+.panel{width:700px;padding:44px 48px;border-radius:24px;background:rgba(var(--navy),.55);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.panel.hi{background:rgba(var(--ac-rgb),.1);border-color:rgba(var(--ac-rgb),.5);box-shadow:0 0 50px rgba(var(--ac-rgb),.18)}
+.panel h3{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:800;margin-bottom:28px;word-break:keep-all}
+.panel h3 iconify-icon{font-size:40px;color:var(--dim);flex-shrink:0}
+.panel.hi h3 iconify-icon{color:var(--ac)}
+.panel li{list-style:none;font-size:26px;line-height:1.45;color:var(--mu);padding:14px 0;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:14px;align-items:flex-start;word-break:keep-all}
+.panel li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;margin-top:12px}
+.panel.hi li{color:var(--ink)}
+.panel.hi li::before{background:var(--ac);box-shadow:0 0 10px var(--ac)}
+
+/* svg_cards: 시네마틱 HUD 네온 SVG 차트 그리드 */
+.svg-grid{margin-top:44px;display:flex;gap:36px;text-align:left;align-items:stretch;justify-content:center}
+.svg-card{width:720px;padding:32px 38px 28px;border-radius:24px;background:rgba(var(--navy),.68);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08)}
+.svg-card.hi{background:linear-gradient(165deg,rgba(var(--ac-rgb),.13) 0%,rgba(var(--navy),.75) 100%);border-color:rgba(var(--ac-rgb),.52);box-shadow:0 0 48px rgba(var(--ac-rgb),.18),0 16px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(var(--ac-rgb),.25)}
+.svg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.svg-head h3{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:-.02em}
+.svg-head h3 iconify-icon{font-size:32px;color:var(--ac);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(var(--ac-rgb),.5))}
+.svg-badge{padding:6px 16px;border-radius:999px;font-size:17px;font-weight:800;letter-spacing:.03em;color:var(--ac);background:rgba(var(--ac-rgb),.14);border:1px solid rgba(var(--ac-rgb),.45);white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:0 0 16px rgba(var(--ac-rgb),.2)}
+.svg-wrap{width:100%;height:268px;display:flex;align-items:center;justify-content:center;position:relative}
+.svg-wrap svg{width:100%;height:100%;overflow:visible}
+.svg-foot{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-size:20px;font-weight:500;color:var(--mu);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.svg-foot::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);flex-shrink:0}
+
+/* quote (따옴표 가상요소 제거 & 볼드 타이포) */
+.quote{font-size:74px;font-weight:700;line-height:1.35;letter-spacing:-.025em;text-shadow:0 4px 30px rgba(0,0,0,.95);position:relative}
+.quote::before, .quote::after{content:none !important;display:none !important}
+.by{margin-top:44px;font-size:24px;color:var(--dim);letter-spacing:.08em}
+
+/* timeline (다크 글래스 카드 탑재) */
+.timeline{margin-top:54px;display:flex;position:relative;width:1520px;padding:46px 40px 38px;background:rgba(var(--navy),.75);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(8px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.timeline::before{content:'';position:absolute;left:14%;right:14%;top:59px;height:2px;background:linear-gradient(90deg,rgba(var(--ac-rgb),.2),var(--ac),rgba(var(--ac-rgb),.2))}
+.tl-item{flex:1;display:flex;flex-direction:column;align-items:center}
+.tl-item .dot{width:28px;height:28px;border-radius:50%;background:#0a0f1a;border:3px solid var(--ac);box-shadow:0 0 20px rgba(var(--ac-rgb),.7);position:relative}
+.tl-item.em .dot{background:var(--ac)}
+.tl-item .t{margin-top:28px;font-size:24px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.tl-item .lb{margin-top:10px;font-size:36px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.tl-item .ds{margin-top:14px;font-size:22px;color:var(--mu);line-height:1.6;white-space:nowrap;word-break:keep-all;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+
+/* closing */
+.closing .title{font-size:104px}
+.chips{margin-top:56px;display:flex;gap:18px;justify-content:center}
+.chips span{padding:16px 30px;border-radius:999px;font-size:25px;font-weight:600;background:rgba(var(--navy),.55);border:1px solid rgba(var(--ac-rgb),.45);backdrop-filter:blur(6px)}
+
+/* --- 네비 · 점프 --- */
+#nav{position:absolute;right:120px;bottom:20px;display:flex;align-items:center;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#nav:hover{opacity:1}
+#nav button{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(var(--navy),.6);color:var(--ink);font-size:16px;cursor:pointer}
+#counter{min-width:84px;text-align:center;font-size:17px;font-weight:600;color:var(--mu);cursor:pointer;font-variant-numeric:tabular-nums}
+#jump-toast{position:absolute;left:50%;top:130px;transform:translateX(-50%);padding:14px 26px;border-radius:14px;font-size:22px;font-weight:700;
+  background:rgba(var(--navy),.85);border:1px solid rgba(var(--ac-rgb),.5);z-index:9;display:none}
+#jump-toast b{color:var(--ac)}
+#jump-modal{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:10}
+#jump-modal.open{display:grid}
+#jump-modal form{padding:40px 48px;border-radius:22px;background:rgba(var(--navy),.92);border:1px solid rgba(var(--ac-rgb),.45);display:flex;flex-direction:column;gap:20px;align-items:center}
+#jump-modal label{font-size:24px;font-weight:700;color:var(--ac)}
+#jump-input{width:160px;height:56px;font-size:32px;font-weight:700;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#05070c;color:var(--ink)}
+#jump-modal button{padding:12px 32px;border-radius:12px;font-size:18px;font-weight:700;background:var(--ac);color:#05070c;border:none;cursor:pointer}
+@media (prefers-reduced-motion:reduce){
+  .bg.show{animation:none}
+  [data-s]{transition:none}
+}
+
+/* === MOTION GRAPHICS PRESENTATION UPGRADE CSS v4 (ZERO WORD-BREAK & WIPE REVEAL) === */
+#motion-canvas {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 배경 실사는 은은한 텍스처로 낮추고 모션 캔버스와 텍스트 가독성 극대화 */
+.bg.show {
+  opacity: 0.22 !important;
+  filter: saturate(1.15) contrast(1.1);
+}
+
+/* 텔레메트리 HUD 코너 장식 업그레이드 */
+.hud {
+  border-color: rgba(0, 210, 255, 0.48) !important;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.22);
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+.hud-telemetry {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #38bdf8;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  z-index: 3;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 210, 255, 0.55);
+}
+.hud-telemetry.tl { left: 74px; top: 142px; }
+.hud-telemetry.tr { right: 74px; top: 142px; text-align: right; }
+.hud-telemetry.bl { left: 74px; bottom: 64px; }
+
+/* =========================================================================
+   1. 블록 전체 키네틱 스프링 + 블러 디졸브 등장 ([data-s])
+   - DOM 텍스트를 쪼개지 않고(Flexbox 붕괴 0%) 블록 단위로 탄성 있게 등장!
+   ========================================================================= */
+[data-s] {
+  opacity: 0;
+  transform: translateY(32px) scale(0.97);
+  filter: blur(10px);
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s),
+    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s);
+}
+[data-s].on {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* 불릿, 비교 리스트 항목, 스텝 설명이 순차적으로 좌→우 홀로그램 와이프로 나타나는 애니메이션 */
+.panel.hi.on ul li {
+  animation: hologramRowReveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.panel.hi.on ul li:nth-child(1) { animation-delay: calc(var(--d, 0s) + 0.12s); }
+.panel.hi.on ul li:nth-child(2) { animation-delay: calc(var(--d, 0s) + 0.28s); }
+.panel.hi.on ul li:nth-child(3) { animation-delay: calc(var(--d, 0s) + 0.44s); }
+
+@keyframes hologramRowReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-22px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+/* 불릿 항목 등장 시 좌에서 우로 광자 스캔라인이 텍스트를 깨우며 지나가는 모션 */
+.bullet.on {
+  position: relative;
+  animation: bulletSlideGlow 0.78s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@keyframes bulletSlideGlow {
+  0% {
+    opacity: 0;
+    transform: translateX(-34px) scale(0.98);
+    filter: blur(8px) brightness(1.8);
+  }
+  60% {
+    filter: blur(0px) brightness(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* =========================================================================
+   2. 전 슬라이드 1줄(Single-Line) 및 박스 무결성 레이아웃 최적화
+   ========================================================================= */
+#slide {
+  padding: 36px 96px 104px !important;
+}
+.title {
+  font-size: 68px !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.03em !important;
+  word-break: keep-all !important;
+}
+.cover .title {
+  font-size: 104px !important;
+  line-height: 1.14 !important;
+}
+
+/* Bullets: 74자 장문도 1920px 안에서 아이콘 잘림이나 2줄 꺾임 없이 1줄에 완벽히 들어오도록 최적화 */
+.bullets {
+  width: 100%;
+  max-width: 1720px;
+  margin-top: 52px !important;
+  gap: 24px !important;
+}
+.bullet {
+  font-size: 27px !important;
+  gap: 22px !important;
+  white-space: nowrap !important;
+  color: #f8fafc !important;
+}
+.bullet .ico {
+  width: 62px !important;
+  height: 62px !important;
+  font-size: 30px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Compare: 박스 너비를 820px로 넓히고 헤더/항목이 절대 어색하게 끊기지 않도록 최적화 */
+.compare {
+  margin-top: 48px !important;
+  gap: 36px !important;
+  width: 100%;
+  max-width: 1680px;
+  justify-content: center;
+}
+.panel {
+  width: 820px !important;
+  padding: 38px 42px !important;
+}
+.panel h3 {
+  font-size: 32px !important;
+  white-space: nowrap !important;
+  margin-bottom: 24px !important;
+}
+.panel li {
+  font-size: 23px !important;
+  line-height: 1.5 !important;
+  color: #f1f5f9 !important;
+  word-break: keep-all !important;
+}
+
+/* =========================================================================
+   3. 초고대비(Ultra High-Visibility) 네온 강조 타이틀 (.title em, .quote em)
+   ========================================================================= */
+.title em, .quote em {
+  position: relative;
+  display: inline-block;
+  font-style: normal;
+  color: #67e8f9 !important;
+  background: none !important;
+  -webkit-text-fill-color: #67e8f9 !important;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.95),
+    0 6px 22px rgba(0, 0, 0, 0.95),
+    0 0 24px rgba(0, 210, 255, 0.85),
+    0 0 48px rgba(56, 189, 248, 0.45) !important;
+  padding-bottom: 4px;
+  animation: emBreathe 3.6s ease-in-out infinite;
+}
+.title em::after, .quote em::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(0,210,255,0.15), #00d2ff 25%, #fde047 50%, #00d2ff 75%, rgba(0,210,255,0.15));
+  background-size: 200% 100%;
+  box-shadow: 0 0 16px #00d2ff, 0 0 28px rgba(253, 224, 71, 0.55);
+  animation: laserLineScan 3.2s linear infinite;
+}
+@keyframes emBreathe {
+  0%, 100% {
+    color: #67e8f9 !important;
+    -webkit-text-fill-color: #67e8f9 !important;
+  }
+  50% {
+    color: #fef08a !important;
+    -webkit-text-fill-color: #fef08a !important;
+    text-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.95),
+      0 6px 22px rgba(0, 0, 0, 0.95),
+      0 0 28px rgba(250, 204, 21, 0.9),
+      0 0 54px rgba(0, 210, 255, 0.6) !important;
+  }
+}
+@keyframes laserLineScan {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 일반 텍스트 가시성 보강 */
+.eyebrow {
+  color: #38bdf8 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 18px rgba(0, 210, 255, 0.55) !important;
+}
+.sub {
+  color: #f1f5f9 !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95) !important;
+}
+
+/* 아이브로우 칩 레이저 펄스 */
+.cover .chip, .svg-badge {
+  position: relative;
+  overflow: hidden;
+  color: #7dd3fc !important;
+  background: rgba(8, 22, 44, 0.82) !important;
+  border-color: rgba(56, 189, 248, 0.65) !important;
+  animation: badgePulse 3.2s ease-in-out infinite;
+}
+.cover .chip::after, .svg-badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.35) 50%, transparent 65%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  animation: lightSweep 4.2s ease-in-out infinite;
+}
+@keyframes lightSweep {
+  0%, 35% { background-position: 100% 0; }
+  75%, 100% { background-position: 0% 0; }
+}
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(0, 210, 255, 0.28); }
+  50% { box-shadow: 0 0 28px rgba(0, 210, 255, 0.62); }
+}
+
+/* 불릿 아이콘 궤도 회전 글로우 */
+.bullet .ico {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.bullet.em .ico {
+  animation: icoFloat 3s ease-in-out infinite;
+}
+@keyframes icoFloat {
+  0%, 100% { transform: translateY(0); box-shadow: 0 0 28px rgba(0, 210, 255, 0.45); }
+  50% { transform: translateY(-4px); box-shadow: 0 0 42px rgba(253, 224, 71, 0.55); }
+}
+
+/* Stats 빅 넘버 네온 홀로그램 광원 (3열 6~7자리 대형 수치 및 2~3글자 단위 줄바꿈/잘림 원천 차단) */
+.stats {
+  width: 100%;
+  max-width: 1760px;
+  margin-top: 56px !important;
+  justify-content: center;
+}
+.stat {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 38px !important;
+}
+.stat .v {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  white-space: nowrap !important;
+  font-size: 132px !important;
+  color: #ffffff !important;
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.95),
+    0 0 42px rgba(0, 210, 255, 0.6) !important;
+}
+.stat .v small {
+  font-size: 52px !important;
+  white-space: nowrap !important;
+  color: #67e8f9 !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 22px rgba(0, 210, 255, 0.75) !important;
+}
+.stat .l {
+  font-size: 25px !important;
+  color: #f1f5f9 !important;
+}
+
+/* Flow 마름모 궤도 링 + 화살표 광자 패킷 이동 */
+.dia::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 210, 255, 0.28);
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.12);
+}
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
+}
+.arrow {
+  overflow: visible !important;
+}
+.arrow::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 18px;
+  height: 8px;
+  border-radius: 99px;
+  background: #fde047;
+  box-shadow: 0 0 16px #fde047, 0 0 28px #00d2ff;
+  animation: photonFlow 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes photonFlow {
+  0% { left: 0%; opacity: 0; transform: scaleX(0.5); }
+  20% { opacity: 1; transform: scaleX(1.2); }
+  85% { opacity: 1; }
+  100% { left: 92%; opacity: 0; transform: scaleX(0.6); }
+}
+
+/* Timeline 소나 파동(Sonar Ripple) & 에너지 스트림 */
+.timeline::after {
+  content: '';
+  position: absolute;
+  top: 53px;
+  left: 8%;
+  width: 140px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, transparent, #00d2ff, #fde047, transparent);
+  box-shadow: 0 0 18px #00d2ff;
+  animation: timelineStream 3.6s ease-in-out infinite;
+}
+@keyframes timelineStream {
+  0% { left: 8%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 78%; opacity: 0; }
+}
+.tl-item .dot {
+  position: relative;
+}
+.tl-item .dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 210, 255, 0.65);
+  animation: sonarRipple 2.4s ease-out infinite;
+}
+.tl-item.em .dot::after {
+  border-color: #fde047;
+  animation-duration: 1.8s;
+}
+@keyframes sonarRipple {
+  0% { transform: scale(0.6); opacity: 0.95; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+
+/* Compare & SVG 카드 홀로그램 보더 스캔 */
+.panel.hi, .svg-card.hi {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(10, 18, 34, 0.88), rgba(6, 11, 22, 0.84)) !important;
+}
+.panel.hi::after, .svg-card.hi::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d2ff, #fde047, transparent);
+  box-shadow: 0 0 16px #00d2ff;
+  animation: cardBorderScan 5s ease-in-out infinite;
+}
+@keyframes cardBorderScan {
+  0% { left: -60%; }
+  50% { left: 110%; }
+  100% { left: 110%; }
+}
+
+/* === SVG 내부 셀프 드로잉 & 모션그래픽 키프레임 === */
+.mg-draw {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: svgLineDraw 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+.mg-draw-delay {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: svgLineDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards;
+}
+@keyframes svgLineDraw {
+  to { stroke-dashoffset: 0; }
+}
+.mg-area {
+  opacity: 0;
+  animation: svgAreaFade 1.4s ease 0.9s forwards;
+}
+@keyframes svgAreaFade {
+  to { opacity: 1; }
+}
+.mg-bar-h {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: svgBarH 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+.mg-bar-v {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transform: scaleY(0);
+  animation: svgBarV 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+@keyframes svgBarH {
+  to { transform: scaleX(1); }
+}
+@keyframes svgBarV {
+  to { transform: scaleY(1); }
+}
+.mg-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: svgNodePulse 2.2s ease-in-out infinite;
+}
+@keyframes svgNodePulse {
+  0%, 100% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.28); opacity: 0.55; }
+}
+.mg-ring-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbitSpin 18s linear infinite;
+}
+
+/* === SELECTIVE TITLE MOTION GRAPHICS (일부 핵심 슬라이드 전용 타이틀 등장 효과) === */
+/* 1) cinematic-expand: 자간 수축 + 광학 포커스 인 (표지 / 클로징 전용) */
+.title[data-title-fx="cinematic-expand"].on {
+  animation: titleCinematicExpand 1.25s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@keyframes titleCinematicExpand {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.12em;
+    transform: scaleX(1.07) translateY(22px);
+    filter: blur(14px) brightness(2.2);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px) brightness(1.3);
+  }
+  100% {
+    opacity: 1;
+    letter-spacing: -0.03em;
+    transform: scaleX(1) translateY(0);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* 2) laser-wipe: 좌→우 홀로그램 레이저 마스크 스캔 와이프 (주요 챕터 오프닝 전용) */
+.title[data-title-fx="laser-wipe"] {
+  position: relative;
+}
+.title[data-title-fx="laser-wipe"].on {
+  animation: titleLaserWipe 1.05s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both;
+}
+.title[data-title-fx="laser-wipe"].on::before {
+  content: '';
+  position: absolute;
+  top: -8%;
+  bottom: -8%;
+  left: 0;
+  width: 6px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, transparent, #fde047, #00d2ff, transparent);
+  box-shadow: 0 0 24px #00d2ff, 0 0 42px #fde047;
+  pointer-events: none;
+  z-index: 4;
+  animation: titleLaserBeam 1.05s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both;
+}
+@keyframes titleLaserWipe {
+  0% {
+    opacity: 0.15;
+    clip-path: inset(-20% 100% -25% 0);
+    filter: brightness(1.85);
+  }
+  85% {
+    filter: brightness(1.15);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(-20% 0% -25% 0);
+    filter: brightness(1);
+  }
+}
+@keyframes titleLaserBeam {
+  0% { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* 3) word-cascade: 어절 단위 3D 퍼스펙티브 순차 캐스케이드 (핵심 전환 슬라이드 전용) */
+.title[data-title-fx="word-cascade"] {
+  perspective: 900px;
+}
+.title[data-title-fx="word-cascade"] .mg-word {
+  display: inline-block;
+  color: inherit;
+  -webkit-text-fill-color: inherit;
+  opacity: 0;
+  transform: translateY(34px) rotateX(-42deg) scale(0.92);
+  transform-origin: 50% 100%;
+  filter: blur(8px) brightness(1.9);
+}
+.title[data-title-fx="word-cascade"].on .mg-word {
+  animation: titleWordCascade 0.72s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--d, 0s) + var(--wi, 0) * 0.065s) forwards;
+}
+@keyframes titleWordCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(34px) rotateX(-42deg) scale(0.92);
+    filter: blur(8px) brightness(1.9);
+  }
+  65% {
+    filter: blur(0px) brightness(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* 4) prism-lock: 시안·골드 프리즘 색수차 수렴 락온 (클라이맥스 명언 전용) */
+.quote[data-title-fx="prism-lock"].on,
+.title[data-title-fx="prism-lock"].on {
+  animation: titlePrismLock 1.15s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@keyframes titlePrismLock {
+  0% {
+    opacity: 0;
+    transform: scale(1.06) translateY(18px);
+    filter: blur(10px) brightness(2);
+    text-shadow:
+      -24px 0 28px rgba(0, 210, 255, 0.95),
+       24px 0 28px rgba(253, 224, 71, 0.95),
+        0 4px 30px rgba(0, 0, 0, 0.95);
+  }
+  65% {
+    opacity: 1;
+    filter: blur(0px) brightness(1.2);
+    text-shadow:
+      -4px 0 12px rgba(0, 210, 255, 0.6),
+       4px 0 12px rgba(253, 224, 71, 0.6),
+       0 4px 30px rgba(0, 0, 0, 0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px) brightness(1);
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95);
+  }
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div><div class="bg" id="bgB"></div>
+  <div class="shade"></div><div class="rays"></div><div class="grain"></div>
+  <div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+  <div id="topbar"></div>
+  <div id="slide"></div>
+  <div class="credit" id="credit"></div>
+  <div id="nav"><button id="prev" aria-label="이전">◀</button><span id="counter" title="클릭하거나 G 키로 페이지 이동"></span><button id="next" aria-label="다음">▶</button></div>
+  <div id="jump-toast">Go to <b id="jump-num"></b></div>
+  <div id="jump-modal"><form><label for="jump-input">페이지 바로 이동</label><input id="jump-input" type="number" min="1"><button>이동</button></form></div>
+</div>
+
+<script>
+/* ===================== 덱 데이터 ===================== */
+const DECK = {
+  brand: { name: 'UAM · eVTOL & AI AIR TRAFFIC CONTROL', icon: 'solar:routing-2-bold' },
+  accent: '#00d2ff',
+  reveal: 'auto',
+  chapters: [
+    '2차원 교통 포화와 3차원 하늘길의 개막',
+    'eVTOL 핵심 아키텍처와 45dBA의 기적',
+    '버티포트 인프라와 AI 항공관제(UATM)',
+    '글로벌 인증 전쟁과 K-UAM 상용화 전략'
+  ],
+  slides: [
+    // 01. Cover (ch 0) — 고유 표지 bg: photo-1519501025264-65ba15a82390 [선택적 타이틀 모션: cinematic-expand]
+    {
+      layout: 'cover', chapter: 0, titleFx: 'cinematic-expand',
+      bg: 'photo-1519501025264-65ba15a82390', photo: 'Aleksandar Pasaric',
+      eyebrow: '60FPS 3D CORRIDOR & ACOUSTIC ENGINE · URBAN AIR MOBILITY & eVTOL',
+      title: '하늘 위의 3차원 고속도로<br><em>eVTOL(UAM)과 AI 항공관제 혁명</em>',
+      sub: '꽉 막힌 2차원 지상 도로의 한계를 넘어 고도 300~600m 도심 회랑을 여는 전동 수직이착륙기(eVTOL)와 자율 비행 관제 패러다임의 모든 것',
+      meta: '8-SCENE 60FPS VOLUMETRIC CANVAS · SELECTIVE TITLE MOTION · SELF-DRAWING HUD SVG · 15 SLIDES'
+    },
+    // 02. Stats (ch 0) — Chapter 1 오프닝 [선택적 타이틀 모션: laser-wipe]
+    {
+      layout: 'stats', chapter: 0, titleFx: 'laser-wipe',
+      bg: 'photo-1498084393753-b411b2d26b34', photo: 'Marc-Olivier Jodoin',
+      eyebrow: 'CHAPTER 01 · 지상 도로망의 구조적 한계와 도심 상공 300~600m의 경제학',
+      title: '도심 이동 시간을 75% 압축하는 <em>3차원 항공 모빌리티의 핵심 지표</em>',
+      items: [
+        { value: '20', unit: '분', label: '김포·인천공항에서 서울 도심(강남·여의도)까지<br>지상 80분 정체를 뚫고 주파하는 eVTOL 비행시간' },
+        { value: '45', unit: 'dBA', label: '순항·도심 접근 시 목표 소음도 — 기존 헬리콥터(85dBA)<br>대비 소음 에너지를 1/100로 줄인 조용한 비행' },
+        { value: '1,000', unit: '조원+', label: '모건스탠리·롤랜드버거가 전망한 2040년 글로벌<br>자율 도심항공교통(UAM·AAM) 누적 시장 규모' }
+      ],
+      note: '출처 · Morgan Stanley Urban Air Mobility Report & 국토교통부 K-UAM 기술로드맵 (2025~2026)'
+    },
+    // 03. Compare (ch 0) — 일반 클린 등장
+    {
+      layout: 'compare', chapter: 0,
+      bg: 'photo-1502904550040-7534597429ae', photo: 'Martins Zemlickis',
+      eyebrow: 'LEGACY HELICOPTER TRANSPORT VS NEXT-GEN eVTOL AIR TAXI',
+      title: '기존 내연기관 헬기 vs 차세대 eVTOL 에어택시 비교',
+      left: {
+        title: '기존 도심 헬리콥터 (고소음 · 고비용 · 단일 고장점)',
+        icon: 'solar:danger-triangle-bold',
+        items: [
+          '단일 메인 로터·테일로터 및 가스터빈 엔진 구조로 부품 결함 시 치명적 사고 위험',
+          '이착륙 시 85~95dBA에 달하는 폭음과 진동으로 도심 밀집지 운항 및 야간 비행 불가',
+          '높은 항공유 연료비와 정비 인건비로 인해 1인당 탑승 요금이 수백만 원에 달하는 VIP 전용'
+        ]
+      },
+      right: {
+        title: '차세대 eVTOL (분산전기추진 · 저소음 · 대중화)',
+        icon: 'solar:shield-check-bold',
+        items: [
+          '6~12개 독립 모터·로터를 분산 배치(DEP)하여 일부 로터 정지 시에도 안전 착륙 보장',
+          '저회전 다중 블레이드와 전기모터로 대화 수준(45~62dBA) 정숙성을 달성해 도심 빌딩 숲 진입',
+          '탄소 배출 0g 및 자동화 충전·정비로 상용화 성숙기 기준 모범택시·우버 블랙 수준 요금 구현'
+        ]
+      },
+      note: '출처 · FAA / EASA eVTOL 안전 규정 & NASA 분산전기추진(DEP) 연구 (2026)'
+    },
+    // 04. SVG Cards (ch 0) — 일반 클린 등장
+    {
+      layout: 'svg_cards', chapter: 0,
+      bg: 'photo-1551288049-bebda4e38f71', photo: 'Luke Chesser',
+      eyebrow: 'HUD DATA VISUALIZATION · TRAVEL TIME & ACOUSTIC DECIBEL COMPARISON',
+      title: '수도권 이동 시간 단축 효과와 기체별 소음 데시벨(dBA) 비교',
+      cards: [
+        {
+          icon: 'solar:graph-new-up-bold',
+          title: '거리별 지상 vs UAM 소요 시간',
+          badge: '75% 단축',
+          chart: 'c_travel_time_curve',
+          foot: '병목이 심한 30~50km 광역 구간을 82분 → 18분으로 압축'
+        },
+        {
+          icon: 'solar:soundwave-bold',
+          title: '운항 수단별 소음(dBA) 비교',
+          badge: '소음 -90%',
+          chart: 'c_noise_decibel_bars',
+          foot: '10dBA 감소마다 음향 에너지 1/10 — 도심 소음에 묻힘'
+        }
+      ],
+      note: '출처 · Joby Aviation / NASA Acoustic Flight Test Data & K-UAM 수도권 실증 노선 시뮬레이션 (2026)'
+    },
+    // 05. Flow (ch 1) — Chapter 2 오프닝 [선택적 타이틀 모션: word-cascade]
+    {
+      layout: 'flow', chapter: 1, titleFx: 'word-cascade',
+      bg: 'photo-1614064641938-3bbee52942c7', photo: 'FlyD',
+      eyebrow: 'CHAPTER 02 · 헬리콥터의 수직 기동성과 비행기의 고속 순항을 결합하다',
+      title: '활주로 없이 떠서 항공기처럼 나는 <em>3단계 천이비행 메커니즘</em>',
+      steps: [
+        { label: '수직 이륙 · 호버링', desc: '버티포트 패드에서 로터를 하늘로 세워<br>활주로 없이 수직 상승 및 정밀 제자리 비행' },
+        { label: '틸트로터 천이비행', desc: '고도 300m 진입 후 프로펠러 각도를 전방으로<br>기울여 회전익 양력을 고정익 날개 양력으로 전환' },
+        { label: '320km/h 고속 순항', desc: '비행기처럼 날개 양력으로 시속 250~320km<br>순항하며 배터리 소모와 소음을 동시에 최소화' }
+      ],
+      note: '수직 이륙에서 수평 비행으로 넘어가는 ‘천이비행’ 와류 제어가 비행제어의 핵심입니다'
+    },
+    // 06. Bullets (ch 1) — 일반 클린 등장
+    {
+      layout: 'bullets', chapter: 1,
+      bg: 'photo-1518770660439-4636190af475', photo: 'Alexandre Debieve',
+      eyebrow: 'THREE ARCHETYPES OF eVTOL PROPULSION ARCHITECTURE',
+      title: '글로벌 선두 기업들이 선택한 <em>3대 eVTOL 추진 방식과 대표 기체</em>',
+      items: [
+        { icon: 'solar:wind-bold', text: '벡트러드 스러스트 (조비 S4 · 현대 슈퍼널): 로터 전체가 90도 틸팅되어 이착륙과 고속 순항을 겸하며 최장 항속거리 달성', em: true },
+        { icon: 'solar:layers-minimalistic-bold', text: '리프트 앤 크루즈 (아처 Midnight): 수직 이륙 전용 로터와 전진 전용 프로펠러를 분리해 기구적 신뢰도와 인증 속도 극대화' },
+        { icon: 'solar:settings-bold', text: '멀티콥터 (이항 EH216-S · 볼로콥터): 다수의 고정 수직 로터만으로 비행해 구조가 단순하며 도심 내 단거리 셔틀에 최적화' },
+        { icon: 'solar:battery-charge-bold', text: '고비에너지 항공 배터리 & 수소 하이브리드: 300Wh/kg급 차세대 셀과 급속 냉각 팩으로 20분 내 80% 초고속 충전 구현' }
+      ],
+      note: '출처 · FAA / EASA eVTOL Type Certification Tracker & Vertical Flight Society World eVTOL Directory (2026)'
+    },
+    // 07. SVG Cards (ch 1) — 일반 클린 등장
+    {
+      layout: 'svg_cards', chapter: 1,
+      bg: 'photo-1526374965328-7f61d4dc18c5', photo: 'Markus Spiske',
+      eyebrow: 'PROPULSION ARCHITECTURE SPECTRUM & BATTERY ENERGY DENSITY',
+      title: '추진 아키텍처별 순항 성능과 항공용 배터리 에너지 밀도 돌파구',
+      cards: [
+        {
+          icon: 'solar:chart-square-bold',
+          title: '아키텍처별 항속거리 · 속도',
+          badge: '322km/h',
+          chart: 'c_evtol_arch_bars',
+          foot: '단거리는 멀티콥터, 공항-도심 장거리는 틸트로터가 주도'
+        },
+        {
+          icon: 'solar:bolt-circle-bold',
+          title: 'EV 대비 eVTOL 배터리 성능',
+          badge: '310Wh/kg',
+          chart: 'c_battery_density_gauge',
+          foot: '이착륙 고출력 방전(5C+)과 열폭주 차단 설계가 핵심'
+        }
+      ],
+      note: '출처 · NREL Electric Aircraft Battery Benchmark & Joby / Archer Technical Spec Sheet (2026)'
+    },
+    // 08. Compare (ch 1) — 일반 클린 등장
+    {
+      layout: 'compare', chapter: 1,
+      bg: 'photo-1592659762303-90081d34b277', photo: 'Vishnu Mohanan',
+      eyebrow: 'GLOBAL TOP-TIER eVTOL RIVALRY · JOBY AVIATION VS ARCHER AVIATION',
+      title: '미국 FAA 인증 투톱 대결 — 조비(Joby S4) vs 아처(Midnight)',
+      left: {
+        title: '조비 에비에이션 (Joby S4 · 수직계열화)',
+        icon: 'solar:medal-star-circle-bold',
+        items: [
+          '6개 전방위 틸트로터 탑재 — 시속 322km, 항속거리 161km의 업계 최고 수준 비행 스펙',
+          '모터·배터리·비행제어 SW·탄소섬유 기체를 직접 설계·제조하는 테슬라식 수직계열화 전략',
+          '토요타 대규모 제조 동맹 및 델타항공·우버 연동으로 글로벌 직접 운항 서비스 생태계 구축'
+        ]
+      },
+      right: {
+        title: '아처 에비에이션 (Midnight · 빠른 양산)',
+        icon: 'solar:rocket-2-bold',
+        items: [
+          '전방 6개 틸트로터 + 후방 6개 고정 리프트 로터(총 12개) 조합으로 천이비행 안정성 확보',
+          '하니웰·사프란 등 검증된 항공 Tier-1 부품사 공급망을 적극 활용해 FAA 인증 기간 단축',
+          '스텔란티스(Stellantis) 조지아 양산 공장과 유나이티드 항공 기체 선주문으로 빠른 시장 진입'
+        ]
+      },
+      note: '현대차 슈퍼널(S-A2)도 8개 틸트로터와 자동차 양산 공법으로 2028년 상용화를 겨냥합니다'
+    },
+    // 09. Timeline (ch 2) — Chapter 3 오프닝 [선택적 타이틀 모션: laser-wipe]
+    {
+      layout: 'timeline', chapter: 2, titleFx: 'laser-wipe',
+      bg: 'photo-1451187580459-43490279c0fa', photo: 'NASA',
+      eyebrow: 'CHAPTER 03 · 조종사 1명 시대에서 수천 대 무인 AI 자율 군집 관제로',
+      title: '지상 관제탑을 넘어서는 <em>UAM 항공교통관제(UATM) 진화 단계</em>',
+      items: [
+        { time: 'Phase 1 · 초기 상용화', label: '조종사 + 전용 회랑', desc: '기장 1명이 직접 탑승해 고정된<br>회랑으로 공항-도심 셔틀 운항' },
+        { time: 'Phase 2 · 성장기 전환', label: '원격 지휘 + 동적 회랑', desc: '지상 통제사가 다수 기체를 원격<br>모니터링하며 기상 우회 관리' },
+        { time: 'Phase 3 · 고밀도 성숙기', label: '완전 자율 · AI UATM', desc: '조종사 없이 온보드 AI와 관제가<br>실시간 4D 궤적 협상 운항', em: true },
+        { time: 'Phase 4 · 모빌리티 통합', label: 'MaaS 3차원 심리스', desc: '로보택시·철도·버티포트가 하나의<br>AI 스케줄러로 직결 연결' }
+      ],
+      note: '출처 · NASA Air Mobility Pathfinders (AMP) & FAA / 국토교통부 K-UAM 운용개념서(ConOps) 2.0'
+    },
+    // 10. Bullets (ch 2) — 일반 클린 등장
+    {
+      layout: 'bullets', chapter: 2,
+      bg: 'photo-1585079374502-415f8516dcc3', photo: 'George Prentzas',
+      eyebrow: 'VERTIPORT INFRASTRUCTURE & AI SKYWAY ARCHITECTURE',
+      title: '도심 정류장 ‘버티포트’와 <em>AI 4D 항로 관제 4대 핵심 기술</em>',
+      items: [
+        { icon: 'solar:buildings-2-bold', text: '모듈형 복합 환승 버티포트: 백화점·철도역·공항 옥상에 이착륙 패드(TLOF)를 배치해 5분 내 승하차와 급속충전 회전율 달성' },
+        { icon: 'solar:radar-2-bold', text: 'AI 4D 궤적 기반 관제 (TBO): 위도·경도·고도에 ‘초 단위 도착 시각’을 결합해 공중 교차로 충돌 위험을 사전에 원천 제거' },
+        { icon: 'solar:shield-warning-bold', text: '실시간 빌딩풍 예측 디지털 트윈: 초고층 빌딩 사이 급변하는 난류와 돌풍을 라이다·기상 AI로 스캔해 우회 항로 0.1초 재계산' },
+        { icon: 'solar:transmission-circle-bold', text: '5G·6G 상공망(CNSi) & 저궤도 위성(LEO) 이중화: 고도 300~600m 음영 없이 자율 회피(DAA) 데이터를 초저지연 전송' }
+      ],
+      note: '출처 · EASA Vertiport Design Technical Specifications & 한국공항공사·SKT·한화시스템 K-UAM 컨소시엄'
+    },
+    // 11. SVG Cards (ch 2) — 일반 클린 등장
+    {
+      layout: 'svg_cards', chapter: 2,
+      bg: 'photo-1446776811953-b23d57bd21aa', photo: 'NASA',
+      eyebrow: '3D URBAN AIRSPACE LAYER DESIGN & 5-AXIS UATM RADAR',
+      title: '도심 고도별 3차원 공역 분리 체계와 AI 관제 5축 성숙도 비교',
+      cards: [
+        {
+          icon: 'solar:layers-bold',
+          title: '도심 고도별 3D 공역 구조',
+          badge: '300~600m',
+          chart: 'c_airspace_layers',
+          foot: '150m 이하 드론, 300~600m UAM, 1,000m+ 민항기로 분리'
+        },
+        {
+          icon: 'solar:radar-2-bold',
+          title: '기존 ATC vs AI UATM 5축 비교',
+          badge: '수용량 10배',
+          chart: 'c_uatm_radar',
+          foot: 'AI가 충돌 회피·기상 우회·버티포트 슬롯을 자동 배정'
+        }
+      ],
+      note: '출처 · ICAO Unmanned & Urban Air Traffic Management Framework & NASA UTM/UATM Benchmark (2026)'
+    },
+    // 12. Flow (ch 2) — 일반 클린 등장
+    {
+      layout: 'flow', chapter: 2,
+      bg: 'photo-1506744038136-46273834b3fb', photo: 'Bailey Zindel',
+      eyebrow: 'SEAMLESS 20-MINUTE AIRPORT-TO-DOWNTOWN PASSENGER JOURNEY',
+      title: '호출부터 도심 착륙까지 경험하는 <em>3단계 심리스 탑승 여정</em>',
+      steps: [
+        { label: 'MaaS 예약 · 생체 인증', desc: '앱 하나로 지상 택시·eVTOL·도착지 모빌리티를<br>동시 호출하고 안면인식으로 60초 내 보안 통과' },
+        { label: '5분 내 탑승 및 이륙', desc: '버티포트 루프탑에서 초고속 충전이 완료된<br>4인승 기체에 탑승해 수직 상승 후 회랑 진입' },
+        { label: '도심 착륙 · 즉시 환승', desc: '도심 한복판 버티포트에 45dBA 정숙 착륙 후<br>엘리베이터로 지하철·오피스와 즉시 직결' }
+      ],
+      note: '보안·수속이 길면 20분 비행의 가치가 반감됩니다 — 핵심은 ‘60초 패스트트랙’입니다'
+    },
+    // 13. Bullets (ch 3) — Chapter 4 오프닝 [선택적 타이틀 모션: word-cascade]
+    {
+      layout: 'bullets', chapter: 3, titleFx: 'word-cascade',
+      bg: 'photo-1550751827-4bd374c3f58b', photo: 'Adi Goldstein',
+      eyebrow: 'CHAPTER 04 · 10억 비행시간당 사고 1건 이하의 극한 안전 기준과 K-UAM 전략',
+      title: '하늘길 대중화를 위해 넘어야 할 <em>4대 상용화 관문과 K-UAM 해법</em>',
+      items: [
+        { icon: 'solar:verified-check-bold', text: '감항인증(Type Certification) 돌파: 여객기 수준의 신뢰도(10⁻⁹ 실패 확률)를 입증하는 FAA·EASA 형식인증 완주' },
+        { icon: 'solar:city-bold', text: '수도권 K-UAM 그랜드챌린지 실증: 아라뱃길·한강 회랑(김포~여의도~잠실)에서 기체·관제·통신 통합 실증으로 도심 상용망 구축' },
+        { icon: 'solar:heart-pulse-bold', text: '공공·응급 의료(EMS) 우선 도입: 도서·산간 응급환자 이송 및 재난 정찰에 선제 투입해 시민 수용성과 초기 운항 데이터 축적' },
+        { icon: 'solar:wallet-money-bold', text: '자율비행 전환을 통한 요금 파괴: 초기 조종사 탑승 셔틀에서 시작해 무인 자율비행 성숙기 진입 시 1km당 운임을 절반 이하로 절감' }
+      ],
+      note: '출처 · 국토교통부 K-UAM 그랜드챌린지 2단계 도심 실증 계획 & McKinsey Future Air Mobility Economics (2026)'
+    },
+    // 14. Quote (ch 3) — 클라이맥스 명언 [선택적 타이틀 모션: prism-lock]
+    {
+      layout: 'quote', chapter: 3, titleFx: 'prism-lock',
+      bg: 'photo-1519681393784-d120267933ba', photo: 'Benjamin Voros',
+      eyebrow: 'THE THIRD DIMENSION OF URBAN INFRASTRUCTURE',
+      quote: '지난 100년간 인류는 땅 위 도로와 터널만 파왔지만,<br><em>진짜 고속도로는 바로 머리 위 300m 하늘에 있었다</em>',
+      by: 'URBAN AIR MOBILITY & NEXT-GEN AVIATION ARCHITECTURE INSIGHT · 2026'
+    },
+    // 15. Closing (ch 3) — 피날레 [선택적 타이틀 모션: cinematic-expand]
+    {
+      layout: 'closing', chapter: 3, titleFx: 'cinematic-expand',
+      bg: 'photo-1534298261662-f8fdd25317db', photo: 'Brad Knight',
+      eyebrow: 'BEYOND GROUND CONGESTION · ARCHITECT THE 3D SKYWAY',
+      title: '도시의 물리적 시공간을 재정의하는<br><em>eVTOL과 AI 항공관제가 여는 3차원 모빌리티 혁명</em>',
+      sub: '분산전기추진(DEP)의 정숙한 날개와 AI 4D 궤적 관제망이 결합할 때, 출퇴근과 도시 공간의 경계는 완전히 새로 쓰입니다',
+      chips: [
+        '45dBA 분산전기추진 eVTOL',
+        '고도 300~600m 도심 회랑',
+        '복합 환승 허브 버티포트',
+        'AI 4D 자율 항공관제(UATM)'
+      ]
+    }
+  ]
+};
+
+/* ===================== 시네마틱 인터랙티브 렌더링 엔진 ===================== */
+const S = DECK.slides;
+let cur = 0, step = 0, maxStep = 0, bgFlip = false;
+const $ = id => document.getElementById(id);
+
+// 선택적 타이틀 모션그래픽 포매터 (s.titleFx가 지정된 일부 슬라이드에만 동작)
+function formatTitleHtml(html, fx) {
+  if (!fx || fx !== 'word-cascade') return html;
+  const box = document.createElement('div');
+  box.innerHTML = html;
+  let wi = 0;
+  function walk(node) {
+    if (node.nodeType === 3) {
+      const parts = node.nodeValue.split(/(\s+)/);
+      const frag = document.createDocumentFragment();
+      parts.forEach(p => {
+        if (!p) return;
+        if (/^\s+$/.test(p)) {
+          frag.appendChild(document.createTextNode(p));
+        } else {
+          const span = document.createElement('span');
+          span.className = 'mg-word';
+          span.style.setProperty('--wi', wi++);
+          span.textContent = p;
+          frag.appendChild(span);
+        }
+      });
+      node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+      [...node.childNodes].forEach(walk);
+    }
+  }
+  [...box.childNodes].forEach(walk);
+  return box.innerHTML;
+}
+
+const titleFxAttr = s => s.titleFx ? ` data-title-fx="${s.titleFx}"` : '';
+
+const head = (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+  `<h2 class="title"${titleFxAttr(s)} ${n(0)}>${formatTitleHtml(s.title, s.titleFx)}</h2>` +
+  (s.sub ? `<p class="sub" ${n(0)}>${s.sub}</p>` : '');
+
+const note = (s, n, idx) => s.note ? `<div class="note" ${n(idx)}>${s.note}</div>` : '';
+
+const CHARTS = {
+  // 1) 슬라이드 4 좌측: 도심 이동 거리별 지상 교통 vs UAM 소요 시간 (Self-Drawing Dual Curves + Photon Particle)
+  c_travel_time_curve: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gUamArea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.0"/>
+      </linearGradient>
+      <filter id="glowUam" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00d2ff" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <line x1="65" y1="50" x2="585" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="65" y1="125" x2="585" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="65" y1="200" x2="585" y2="200" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <!-- 지상 차량 정체 소요 시간 (급상승) -->
+    <path class="mg-draw" d="M 85 182 C 180 155, 280 112, 380 65 C 455 38, 515 26, 560 22" fill="none" stroke="#fb7185" stroke-width="3.5" stroke-dasharray="7 5"/>
+
+    <!-- eVTOL UAM 비행 소요 시간 (초고속 평탄화) -->
+    <path class="mg-area" d="M 85 182 C 185 178, 285 170, 380 162 C 455 157, 515 154, 560 152 L 560 200 L 85 200 Z" fill="url(#gUamArea)"/>
+    <path class="mg-draw" d="M 85 182 C 185 178, 285 170, 380 162 C 455 157, 515 154, 560 152" fill="none" stroke="#00d2ff" stroke-width="4.5" stroke-linecap="round" filter="url(#glowUam)"/>
+
+    <circle r="5.5" fill="#fde047" filter="url(#glowUam)">
+      <animateMotion dur="2.6s" repeatCount="indefinite" path="M 85 182 C 185 178, 285 170, 380 162 C 455 157, 515 154, 560 152"/>
+    </circle>
+
+    <circle cx="85" cy="182" r="6" fill="#0a101c" stroke="#cbd5e1" stroke-width="3"/>
+    <text x="85" y="226" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">10km (도심권)</text>
+
+    <circle cx="245" cy="173" r="6.5" fill="#0a101c" stroke="#38bdf8" stroke-width="3"/>
+    <text x="245" y="226" fill="#cbd5e1" font-size="14" font-weight="600" text-anchor="middle">25km (부도심)</text>
+
+    <circle cx="400" cy="160" r="7" fill="#0a101c" stroke="#00d2ff" stroke-width="3.5"/>
+    <text x="400" y="226" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">35km (김포~잠실)</text>
+
+    <circle class="mg-pulse" cx="560" cy="152" r="14" fill="rgba(0,210,255,0.26)"/>
+    <circle cx="560" cy="152" r="8" fill="#fde047" filter="url(#glowUam)"/>
+    <text x="365" y="42" fill="#fb7185" font-size="16" font-weight="800" text-anchor="end">지상 차량 정체 (82분)</text>
+    <text x="542" y="132" fill="#fde047" font-size="18" font-weight="900" text-anchor="end">eVTOL 비행 (18분 · -78%)</text>
+    <text x="560" y="226" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">50km (인천~강남)</text>
+  </svg>`,
+
+  // 2) 슬라이드 4 우측: 운항 수단별 소음 데시벨(dBA) 체감 크기 비교 (Animated Horizontal Bars)
+  c_noise_decibel_bars: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gNoiseCyan" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="1.0"/>
+      </linearGradient>
+      <linearGradient id="gNoiseGold" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#fde047" stop-opacity="1.0"/>
+      </linearGradient>
+    </defs>
+    <text x="28" y="42" fill="#cbd5e1" font-size="15" font-weight="700">기존 내연기관 헬리콥터 (메인·테일로터 폭음 · 도심 야간 운항 불가)</text>
+    <rect class="mg-bar-h" x="28" y="52" width="380" height="28" rx="6" fill="rgba(251,113,133,0.72)"/>
+    <text x="420" y="72" fill="#fb7185" font-size="18" font-weight="800">87 dBA (도심 소음 공해)</text>
+
+    <text x="28" y="114" fill="#00d2ff" font-size="15" font-weight="800">도심 간선도로 대형 트럭 · 지상 철도 통과음 (일상 배경 소음)</text>
+    <rect class="mg-bar-h" x="28" y="124" width="295" height="28" rx="6" fill="url(#gNoiseCyan)"/>
+    <text x="335" y="144" fill="#00d2ff" font-size="18" font-weight="900">76 dBA (도로 소음)</text>
+
+    <text x="28" y="186" fill="#fde047" font-size="15" font-weight="800">차세대 eVTOL 순항 소음 (고도 300m 통과 시 분산전기추진 정숙성)</text>
+    <rect class="mg-bar-h" x="28" y="196" width="145" height="28" rx="6" fill="url(#gNoiseGold)"/>
+    <text x="185" y="216" fill="#fde047" font-size="19" font-weight="900">45 dBA (조용한 대화 · 체감 -90%)</text>
+  </svg>`,
+
+  // 3) 슬라이드 7 좌측: 3대 eVTOL 아키텍처별 최고 항속거리 및 순항속도 (Animated Vertical Columns)
+  c_evtol_arch_bars: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gArchCyan" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="gArchGold" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#fde047" stop-opacity="1.0"/>
+      </linearGradient>
+    </defs>
+    <line x1="55" y1="50" x2="585" y2="50" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="125" x2="585" y2="125" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4"/>
+    <line x1="55" y1="198" x2="585" y2="198" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+
+    <!-- 멀티콥터 -->
+    <rect class="mg-bar-v" x="75" y="152" width="82" height="46" rx="4" fill="#64748b"/>
+    <text x="116" y="140" fill="#94a3b8" font-size="14" font-weight="800" text-anchor="middle">35km / 130km/h</text>
+    <text x="116" y="226" fill="#94a3b8" font-size="14" font-weight="600" text-anchor="middle">멀티콥터</text>
+
+    <!-- 리프트 앤 크루즈 -->
+    <rect class="mg-bar-v" x="208" y="106" width="82" height="92" rx="5" fill="#38bdf8"/>
+    <text x="249" y="94" fill="#38bdf8" font-size="14" font-weight="800" text-anchor="middle">100km / 240km/h</text>
+    <text x="249" y="226" fill="#cbd5e1" font-size="14" font-weight="700" text-anchor="middle">리프트+크루즈</text>
+
+    <!-- 하이브리드 틸트 -->
+    <rect class="mg-bar-v" x="341" y="80" width="82" height="118" rx="5" fill="url(#gArchCyan)"/>
+    <text x="382" y="68" fill="#00d2ff" font-size="14" font-weight="900" text-anchor="middle">120km / 270km/h</text>
+    <text x="382" y="226" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">하이브리드 틸트</text>
+
+    <!-- 전방위 틸트로터 -->
+    <rect class="mg-bar-v" x="474" y="44" width="82" height="154" rx="5" fill="url(#gArchGold)"/>
+    <text x="515" y="32" fill="#fde047" font-size="15" font-weight="900" text-anchor="middle">161km / 322km/h</text>
+    <text x="515" y="226" fill="#fde047" font-size="14" font-weight="800" text-anchor="middle">전방위 틸트로터</text>
+  </svg>`,
+
+  // 4) 슬라이드 7 우측: 전기차(EV) 대비 항공용(eVTOL) 배터리 팩 요구 성능 (Dual Rotating Orbital Ring Gauges)
+  c_battery_density_gauge: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <circle class="mg-ring-spin" cx="170" cy="110" r="84" fill="none" stroke="rgba(148,163,184,0.25)" stroke-width="1.5" stroke-dasharray="8 6"/>
+    <circle cx="170" cy="110" r="70" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="15"/>
+    <circle class="mg-draw" cx="170" cy="110" r="70" fill="none" stroke="#94a3b8" stroke-width="15" stroke-linecap="round" stroke-dasharray="255 440" transform="rotate(-90 170 110)"/>
+    <text x="170" y="108" fill="#cbd5e1" font-size="32" font-weight="900" text-anchor="middle">180</text>
+    <text x="170" y="132" fill="#94a3b8" font-size="14" font-weight="700" text-anchor="middle">Wh/kg · EV 팩</text>
+    <text x="170" y="216" fill="#94a3b8" font-size="15" font-weight="700" text-anchor="middle">지상 전기차 · 1~2C 방전</text>
+
+    <line x1="320" y1="28" x2="320" y2="232" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4 4"/>
+
+    <circle class="mg-ring-spin" cx="470" cy="110" r="84" fill="none" stroke="rgba(0,210,255,0.28)" stroke-width="1.5" stroke-dasharray="8 6"/>
+    <circle cx="470" cy="110" r="70" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="15"/>
+    <circle class="mg-draw" cx="470" cy="110" r="70" fill="none" stroke="#00d2ff" stroke-width="15" stroke-linecap="round" stroke-dasharray="395 440" transform="rotate(-90 470 110)"/>
+    <text x="470" y="108" fill="#fde047" font-size="32" font-weight="900" text-anchor="middle">310</text>
+    <text x="470" y="132" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">Wh/kg · eVTOL</text>
+    <text x="470" y="216" fill="#00d2ff" font-size="15" font-weight="800" text-anchor="middle">항공용 · 이착륙 5C+ 고출력</text>
+  </svg>`,
+
+  // 5) 슬라이드 11 좌측: 도심 고도별 항공 모빌리티 공역(Corridor) 할당 구조 (Layered Corridor Bands)
+  c_airspace_layers: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gLayerCyan" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#0284c7" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#00d2ff" stop-opacity="1.0"/>
+      </linearGradient>
+      <linearGradient id="gLayerGold" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#fde047" stop-opacity="1.0"/>
+      </linearGradient>
+    </defs>
+    <text x="28" y="42" fill="#cbd5e1" font-size="15" font-weight="700">고도 1,000m 이상 · 기존 여객기 · 헬리콥터 공역 (관제탑 ATC 구역)</text>
+    <rect class="mg-bar-h" x="28" y="52" width="405" height="28" rx="6" fill="rgba(148,163,184,0.52)"/>
+    <text x="445" y="72" fill="#e2e8f0" font-size="17" font-weight="800">유인 민항기 공역</text>
+
+    <text x="28" y="114" fill="#fde047" font-size="15" font-weight="800">고도 300~600m · eVTOL 에어택시 전용 고속도로 (K-UAM 회랑)</text>
+    <rect class="mg-bar-h" x="28" y="124" width="405" height="28" rx="6" fill="url(#gLayerGold)"/>
+    <text x="445" y="144" fill="#fde047" font-size="18" font-weight="900">AI UATM 4D 관제</text>
+
+    <text x="28" y="186" fill="#00d2ff" font-size="15" font-weight="800">고도 150m 이하 · 소형 물류 드론 · 시설 점검 비가시권(BVLOS)</text>
+    <rect class="mg-bar-h" x="28" y="196" width="405" height="28" rx="6" fill="url(#gLayerCyan)"/>
+    <text x="445" y="216" fill="#00d2ff" font-size="18" font-weight="900">저고도 드론 UTM 망</text>
+  </svg>`,
+
+  // 6) 슬라이드 11 우측: 기존 항공관제(ATC) vs AI 자율 관제(UATM) 5축 비교 (Animated Radar Sweep)
+  c_uatm_radar: `<svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glowUatm" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#00d2ff" flood-opacity="0.65"/>
+      </filter>
+    </defs>
+    <!-- Radar center: (215, 130), R=82 -->
+    <circle class="mg-ring-spin" cx="215" cy="130" r="90" fill="none" stroke="rgba(0,210,255,0.16)" stroke-dasharray="6 8"/>
+    <polygon points="215,48 293,105 263,196 167,196 137,105" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.2"/>
+    <polygon points="215,75 267,113 247,174 183,174 163,113" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+    <line x1="215" y1="130" x2="215" y2="48" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="293" y2="105" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="263" y2="196" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="167" y2="196" stroke="rgba(255,255,255,0.12)"/>
+    <line x1="215" y1="130" x2="137" y2="105" stroke="rgba(255,255,255,0.12)"/>
+
+    <!-- 기존 음성 관제 ATC (Slate) -->
+    <polygon class="mg-area" points="215,96 250,120 232,158 194,160 176,118" fill="rgba(148,163,184,0.22)" stroke="#94a3b8" stroke-width="2"/>
+    <!-- AI 자율 관제 UATM (Cyan-Gold) -->
+    <polygon class="mg-draw" points="215,49 291,106 261,193 169,193 139,106" fill="rgba(0,210,255,0.28)" stroke="#00d2ff" stroke-width="3" filter="url(#glowUatm)"/>
+
+    <circle class="mg-pulse" cx="215" cy="49" r="8" fill="rgba(0,210,255,0.35)"/>
+    <text x="215" y="35" fill="#fde047" font-size="14" font-weight="800" text-anchor="middle">동시 관제 용량</text>
+    <text x="303" y="108" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="start">기상·돌풍 우회</text>
+    <text x="276" y="216" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="middle">4D 충돌 예측</text>
+    <text x="154" y="216" fill="#fde047" font-size="14" font-weight="800" text-anchor="middle">버티포트 슬롯</text>
+    <text x="126" y="108" fill="#00d2ff" font-size="14" font-weight="800" text-anchor="end">무인 자율 대응</text>
+
+    <!-- Legend -->
+    <rect x="424" y="76" width="194" height="96" rx="10" fill="rgba(15,23,42,0.75)" stroke="rgba(255,255,255,0.15)"/>
+    <circle cx="446" cy="105" r="7" fill="#00d2ff"/>
+    <text x="462" y="110" fill="#ffffff" font-size="15" font-weight="800">AI 자율 관제 (UATM)</text>
+    <circle cx="446" cy="143" r="7" fill="#94a3b8"/>
+    <text x="462" y="148" fill="#cbd5e1" font-size="15" font-weight="600">기존 음성 관제 (ATC)</text>
+  </svg>`
+};
+
+const LAYOUTS = {
+  cover: (s, n) => `<div class="cover">
+      ${s.eyebrow ? `<div class="chip" ${n(0)}>${s.eyebrow}</div>` : ''}
+      <h1 class="title"${titleFxAttr(s)} ${n(1)}>${formatTitleHtml(s.title, s.titleFx)}</h1>
+      ${s.sub ? `<p class="sub" ${n(2)}>${s.sub}</p>` : ''}
+      ${s.meta ? `<div class="meta" ${n(3)}>${s.meta}</div>` : ''}</div>`,
+  bullets: (s, n) => head(s, n) + `<div class="bullets">${s.items.map((it, i) =>
+      `<div class="bullet${it.em ? ' em' : ''}" ${n(i + 1)}><span class="ico"><iconify-icon icon="${it.icon}"></iconify-icon></span>${it.text}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  svg_cards: (s, n) => head(s, n) + `<div class="svg-grid">${s.cards.map((c, i) =>
+      `<div class="svg-card hi" ${n(i + 1)}><div class="svg-head"><h3><iconify-icon icon="${c.icon}"></iconify-icon>${c.title}</h3><span class="svg-badge">${c.badge}</span></div><div class="svg-wrap">${CHARTS[c.chart] || ''}</div><div class="svg-foot">${c.foot}</div></div>`).join('')}</div>` + note(s, n, s.cards.length + 1),
+  stats: (s, n) => head(s, n) + `<div class="stats">${s.items.map((it, i) =>
+      `<div class="stat" ${n(i + 1)}><div class="v">${it.value}<small>${it.unit || ''}</small></div><div class="l">${it.label}</div></div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  flow: (s, n) => head(s, n) + `<div class="flow">${s.steps.map((it, i) =>
+      (i ? `<div class="arrow" ${n(i * 2)}></div>` : '') +
+      `<div class="step" ${n(i * 2 + 1)}><div class="dia"><span>${String(i + 1).padStart(2, '0')}</span></div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.steps.length * 2),
+  compare: (s, n) => head(s, n) + `<div class="compare">${[s.left, s.right].map((p, i) =>
+      `<div class="panel hi" ${n(i + 1)}><h3><iconify-icon icon="${p.icon}"></iconify-icon>${p.title}</h3><ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul></div>`).join('')}</div>` + note(s, n, 3),
+  quote: (s, n) => (s.eyebrow ? `<div class="eyebrow" ${n(0)}>${s.eyebrow}</div>` : '') +
+      `<blockquote class="quote"${titleFxAttr(s)} ${n(1)}>${formatTitleHtml(s.quote, s.titleFx)}</blockquote>${s.by ? `<div class="by" ${n(2)}>${s.by}</div>` : ''}`,
+  timeline: (s, n) => head(s, n) + `<div class="timeline">${s.items.map((it, i) =>
+      `<div class="tl-item${it.em ? ' em' : ''}" ${n(i + 1)}><div class="dot"></div><div class="t">${it.time}</div><div class="lb">${it.label}</div>${it.desc ? `<div class="ds">${it.desc}</div>` : ''}</div>`).join('')}</div>` + note(s, n, s.items.length + 1),
+  closing: (s, n) => `<div class="closing">${head(s, n)}
+      ${s.chips ? `<div class="chips" ${n(1)}>${s.chips.map(c => `<span>${c}</span>`).join('')}</div>` : ''}</div>`
+};
+
+const bgUrl = id => /^(https?:|data:|\.|\/)/.test(id) ? id : `https://images.unsplash.com/${id}?w=2560&q=88&auto=format&fit=crop`;
+const fallback = `radial-gradient(ellipse 60% 50% at 30% 30%,rgba(var(--ac-rgb),.5),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 70%,rgba(110,80,255,.35),transparent 70%),linear-gradient(160deg,#0c1426,#05070c)`;
+
+function setBg(s) {
+  const show = bgFlip ? $('bgB') : $('bgA'), hide = bgFlip ? $('bgA') : $('bgB');
+  bgFlip = !bgFlip;
+  show.style.backgroundImage = (s.bg ? `url("${bgUrl(s.bg)}"),` : '') + fallback;
+  show.style.backgroundPosition = s.focus || 'center';
+  show.classList.remove('show'); void show.offsetWidth; show.classList.add('show');
+  hide.classList.remove('show');
+  $('credit').textContent = '';
+  if (s.bg && s.photo) {
+    const img = new Image();
+    img.onload = () => { if (S[cur] === s) $('credit').textContent = `Photo · ${s.photo} / Unsplash`; };
+    img.src = bgUrl(s.bg);
+  }
+}
+
+function renderTopbar() {
+  const s = S[cur], ch = s.chapter ?? 0;
+  const inCh = S.map((x, i) => [x, i]).filter(([x]) => (x.chapter ?? 0) === ch);
+  const pos = inCh.findIndex(([, i]) => i === cur) + 1;
+  $('topbar').innerHTML = `<div class="brand" data-slide="0" title="첫 페이지로 이동"><iconify-icon icon="${DECK.brand.icon}"></iconify-icon>${DECK.brand.name}</div>` +
+    DECK.chapters.map((c, i) => {
+      const firstSlideIdx = S.findIndex(x => (x.chapter ?? 0) === i);
+      const slideNum = firstSlideIdx >= 0 ? firstSlideIdx : 0;
+      return `<div class="tab${i === ch ? ' on' : i < ch ? ' done' : ''}" data-slide="${slideNum}" title="${c} (슬라이드 ${slideNum + 1} 이동)"><b>${String(i + 1).padStart(2, '0')}</b>${c}<span class="gauge"><i></i></span></div>`;
+    }).join('');
+  const g = $('topbar').querySelector('.tab.on .gauge i');
+  if (g) requestAnimationFrame(() => requestAnimationFrame(() => g.style.width = (pos / inCh.length * 100) + '%'));
+}
+
+function go(i, full) {
+  cur = Math.max(0, Math.min(S.length - 1, i));
+  const s = S[cur];
+  $('slide').innerHTML = LAYOUTS[s.layout](s, k => `data-s="${k}"`);
+  setBg(s); renderTopbar();
+  $('counter').textContent = `${cur + 1} / ${S.length}`;
+  if (typeof animateNumbers === "function") animateNumbers();
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) { }
+  const els = [...$('slide').querySelectorAll('[data-s]')];
+  maxStep = Math.max(0, ...els.map(e => +e.dataset.s));
+  const mode = s.reveal || DECK.reveal;
+  step = (full || mode === 'auto') ? maxStep : 0;
+  els.forEach(e => e.style.setProperty('--d', mode === 'auto' && !full ? (0.15 + e.dataset.s * 0.32) + 's' : '0s'));
+  requestAnimationFrame(() => requestAnimationFrame(showSteps));
+  [S[cur + 1], S[cur - 1]].forEach(n => { if (n && n.bg) new Image().src = bgUrl(n.bg); });
+}
+function showSteps() { $('slide').querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', +e.dataset.s <= step)); }
+function next() { if (step < maxStep) { step++; showSteps(); } else if (cur < S.length - 1) go(cur + 1); }
+function prev() { if (cur > 0) go(cur - 1, true); }
+
+function scale() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  $('stage').style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+
+let buf = '', bufT;
+function jumpTo(v) { const n = parseInt(v, 10); if (n >= 1 && n <= S.length) go(n - 1, true); }
+function openModal() { $('jump-modal').classList.add('open'); const inp = $('jump-input'); inp.max = S.length; inp.value = ''; inp.focus(); }
+function closeModal() { $('jump-modal').classList.remove('open'); }
+$('jump-modal').querySelector('form').addEventListener('submit', e => { e.preventDefault(); jumpTo($('jump-input').value); closeModal(); });
+$('jump-modal').addEventListener('click', e => { if (e.target.id === 'jump-modal') closeModal(); });
+$('counter').addEventListener('click', openModal);
+$('prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+$('next').addEventListener('click', e => { e.stopPropagation(); next(); });
+
+// 상단 탑바 챕터 탭 및 브랜드 클릭 시 해당 슬라이드로 즉시 이동
+$('topbar').addEventListener('click', e => {
+  e.stopPropagation();
+  const target = e.target.closest('[data-slide]');
+  if (target && target.dataset.slide !== undefined) {
+    const idx = parseInt(target.dataset.slide, 10);
+    if (!isNaN(idx)) go(idx, true);
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if ($('jump-modal').classList.contains('open')) { if (e.key === 'Escape') closeModal(); return; }
+  if (/^[0-9]$/.test(e.key)) {
+    buf += e.key; $('jump-num').textContent = buf; $('jump-toast').style.display = 'block';
+    clearTimeout(bufT); bufT = setTimeout(() => { jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; }, 1200);
+    return;
+  }
+  if (e.key === 'Enter' && buf) { clearTimeout(bufT); jumpTo(buf); buf = ''; $('jump-toast').style.display = 'none'; return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(S.length - 1, true);
+  else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); openModal(); }
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+});
+$('stage').addEventListener('click', e => { if (!e.target.closest('#nav,#jump-modal,#topbar')) next(); });
+let tx0 = null;
+addEventListener('touchstart', e => tx0 = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) dx < 0 ? next() : prev(); tx0 = null; });
+
+const hex = DECK.accent.replace('#', '');
+document.documentElement.style.setProperty('--ac', DECK.accent);
+document.documentElement.style.setProperty('--ac-rgb', [0, 2, 4].map(i => parseInt(hex.substr(i, 2), 16)).join(','));
+addEventListener('resize', scale); scale();
+window.addEventListener('hashchange', () => go((parseInt(location.hash.slice(1), 10) || 1) - 1));
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+
+/* ===================== 60FPS ARCHITECTURAL VOLUMETRIC MOTION ENGINE v3 (ZERO STARFIELD) ===================== */
+(function initMotionGraphicsEngine() {
+  const stage = document.getElementById('stage');
+  const slideEl = document.getElementById('slide');
+  if (!stage || !slideEl) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'motion-canvas';
+  canvas.width = 1920;
+  canvas.height = 1080;
+  stage.insertBefore(canvas, slideEl);
+  const ctx = canvas.getContext('2d');
+
+  // Corner Optic-Neural HUD Readouts (Steady, non-flickering architectural labels)
+  const hudTL = document.createElement('div');
+  hudTL.className = 'hud-telemetry tl';
+  hudTL.id = 'hud-tl';
+  stage.appendChild(hudTL);
+
+  const hudTR = document.createElement('div');
+  hudTR.className = 'hud-telemetry tr';
+  hudTR.id = 'hud-tr';
+  stage.appendChild(hudTR);
+
+  const hudBL = document.createElement('div');
+  hudBL.className = 'hud-telemetry bl';
+  hudBL.id = 'hud-bl';
+  stage.appendChild(hudBL);
+
+  // 8 Distinct Architectural & Volumetric Scenes (Zero random twinkling stars/dots)
+  // 0: 3D_CORRIDOR_HORIZON      (Slides 1, 14, 15: Cover, Quote, Closing)
+  // 1: ACOUSTIC_TIME_MATRIX     (Slides 2, 4: Stats & Travel Time / Noise Decibel SVG)
+  // 2: VERTIPORT_LIDAR_SCAN     (Slides 6, 10: 3 Propulsion Types & 4D UATM Architecture)
+  // 3: TILT_ROTOR_CONDUIT       (Slides 5, 12: 3-Step Transition Flight & 3-Step Boarding)
+  // 4: DEP_HARMONIC_WAVE        (Slide 7: Architecture Performance & 310Wh/kg Battery SVG)
+  // 5: DUAL_AIRCRAFT_PRISM      (Slides 3, 8: Helicopter vs eVTOL & Joby vs Archer)
+  // 6: TRAJECTORY_4D_CAUSTICS   (Slides 9, 11: UATM Evolution Timeline & 3D Airspace Radar)
+  // 7: SAFETY_CERT_SHIELD       (Slide 13: 4 Commercialization Gates & K-UAM Strategy)
+  const SLIDE_SCENE = [
+    0, // 01 Cover
+    1, // 02 Stats (20분, 45dBA, 1,000조원+)
+    5, // 03 Compare (Helicopter vs eVTOL)
+    1, // 04 SVG Cards (Travel Time Curve & Noise Decibel Bars)
+    3, // 05 Flow (Vertical Takeoff -> Tilt Transition -> High-Speed Cruise)
+    2, // 06 Bullets (3 eVTOL Propulsion Types & Aviation Battery)
+    4, // 07 SVG Cards (Architecture Range/Speed & Battery Density Gauge)
+    5, // 08 Compare (Joby S4 vs Archer Midnight)
+    6, // 09 Timeline (Phase 1 Pilot ~ Phase 4 Autonomous MaaS)
+    2, // 10 Bullets (Vertiport & AI 4D UATM Core Tech)
+    6, // 11 SVG Cards (3D Airspace Corridor & UATM 5-Axis Radar)
+    3, // 12 Flow (MaaS Booking -> 5-Min Turnaround -> Last-Mile Transfer)
+    7, // 13 Bullets (4 Commercialization Gates & K-UAM Grand Challenge)
+    0, // 14 Quote (The 300m Skyway Above Us)
+    0  // 15 Closing
+  ];
+
+  const SCENE_META = [
+    { name: 'SKYWAY ENGINE 01 · 3D CORRIDOR HORIZON', mode: 'ALTITUDE 300~600M · URBAN AIRWAY' },
+    { name: 'SKYWAY ENGINE 02 · ACOUSTIC & TIME MATRIX', mode: '45 dBA STEALTH · 75% TIME SAVED' },
+    { name: 'SKYWAY ENGINE 03 · VERTIPORT LIDAR SCAN', mode: 'URBAN CANYON WIND · CNSi 5G/LEO' },
+    { name: 'SKYWAY ENGINE 04 · TILT-ROTOR TRANSITION', mode: 'HOVER → TILT TRANSITION → 320KM/H' },
+    { name: 'SKYWAY ENGINE 05 · DEP HARMONIC WAVEFORM', mode: '310Wh/kg PACK · 5C DISCHARGE' },
+    { name: 'SKYWAY ENGINE 06 · DUAL AIRCRAFT PRISM', mode: 'HELICOPTER VS eVTOL · JOBY VS ARCHER' },
+    { name: 'SKYWAY ENGINE 07 · 4D TRAJECTORY LATTICE', mode: 'UATM AUTONOMOUS AIRSPACE CONTROL' },
+    { name: 'SKYWAY ENGINE 08 · 10⁻⁹ SAFETY SHIELD', mode: 'FAA/EASA CERTIFICATION · K-UAM' }
+  ];
+
+  let t = 0;
+  let activeScene = SLIDE_SCENE[0];
+  let prevScene = SLIDE_SCENE[0];
+  let transitionProg = 1;
+  let lastSlideIdx = -1;
+
+  // Peripheral Optical Calibration Scale (Static outer frame precision ticks — never enters text zone)
+  function drawPeripheralFrame() {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(125, 211, 252, 0.10)';
+    ctx.lineWidth = 1;
+    // Left and right vertical millimeter ticks in outer margin (x = 58, x = 1862)
+    for (let y = 200; y <= 880; y += 34) {
+      const len = (y % 136 === 64) ? 12 : 5;
+      ctx.beginPath();
+      ctx.moveTo(56, y); ctx.lineTo(56 + len, y);
+      ctx.moveTo(1864, y); ctx.lineTo(1864 - len, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Helper: Draw a silky translucent volumetric wave ribbon (Apple VisionOS / Siri style)
+  function drawVolumetricRibbon(yBase, amp1, amp2, speed, freq, colorTop, colorBot, thickness) {
+    ctx.save();
+    const grad = ctx.createLinearGradient(0, yBase - amp1 - thickness, 0, yBase + amp1 + thickness);
+    grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    grad.addColorStop(0.35, colorTop);
+    grad.addColorStop(0.65, colorBot);
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+
+    ctx.beginPath();
+    for (let x = 0; x <= 1920; x += 24) {
+      const nx = x / 1920;
+      const env = Math.sin(nx * Math.PI); // Smoothly tapers to 0 at left/right edges
+      const y = yBase +
+        Math.sin(nx * freq + t * speed) * amp1 * env +
+        Math.cos(nx * (freq * 1.6) - t * (speed * 0.7)) * amp2 * env;
+      if (x === 0) ctx.moveTo(x, y - thickness * env);
+      else ctx.lineTo(x, y - thickness * env);
+    }
+    for (let x = 1920; x >= 0; x -= 24) {
+      const nx = x / 1920;
+      const env = Math.sin(nx * Math.PI);
+      const y = yBase +
+        Math.sin(nx * freq + t * speed) * amp1 * env +
+        Math.cos(nx * (freq * 1.6) - t * (speed * 0.7)) * amp2 * env;
+      ctx.lineTo(x, y + thickness * env);
+    }
+    ctx.closePath();
+    ctx.fill();
+
+    // Subtle crisp core filament line
+    const lineGrad = ctx.createLinearGradient(160, yBase, 1760, yBase);
+    lineGrad.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    lineGrad.addColorStop(0.5, colorTop);
+    lineGrad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.strokeStyle = lineGrad;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let x = 0; x <= 1920; x += 24) {
+      const nx = x / 1920;
+      const env = Math.sin(nx * Math.PI);
+      const y = yBase +
+        Math.sin(nx * freq + t * speed) * amp1 * env +
+        Math.cos(nx * (freq * 1.6) - t * (speed * 0.7)) * amp2 * env;
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Scene 0: Bionic Dual-Eyebox Caustics & Sapphire Lens Curvature (Slides 1, 14, 15)
+  function drawSceneBionicAurora() {
+    ctx.save();
+    // Wide ambient optical horizon glow at top and bottom bevels
+    const topGlow = ctx.createRadialGradient(960, -180, 80, 960, -180, 980);
+    topGlow.addColorStop(0, 'rgba(0, 210, 255, 0.22)');
+    topGlow.addColorStop(0.55, 'rgba(14, 116, 144, 0.07)');
+    topGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = topGlow;
+    ctx.fillRect(0, 0, 1920, 1080);
+
+    // Dual curved eyewear lens caustics placed gracefully in the outer left/right wings
+    const shift = Math.sin(t * 0.35) * 28;
+    [340, 1580].forEach((cx, idx) => {
+      const dir = idx === 0 ? 1 : -1;
+      const lensGrad = ctx.createRadialGradient(cx + shift * dir, 540, 40, cx, 540, 460);
+      lensGrad.addColorStop(0, 'rgba(0, 210, 255, 0.11)');
+      lensGrad.addColorStop(0.5, 'rgba(56, 189, 248, 0.04)');
+      lensGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = lensGrad;
+      ctx.beginPath();
+      ctx.ellipse(cx, 540, 420, 310, dir * 0.12, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sleek outer lens rim arc (only outer peripheral sector so center text is 100% clean)
+      ctx.strokeStyle = 'rgba(103, 232, 249, 0.18)';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      if (idx === 0) {
+        ctx.arc(cx + 120, 540, 390, Math.PI * 0.68, Math.PI * 1.32);
+      } else {
+        ctx.arc(cx - 120, 540, 390, -Math.PI * 0.32, Math.PI * 0.32);
+      }
+      ctx.stroke();
+    });
+
+    // Lower volumetric caustic wave
+    drawVolumetricRibbon(915, 26, 12, 0.55, Math.PI * 2, 'rgba(0, 210, 255, 0.20)', 'rgba(253, 224, 71, 0.08)', 48);
+    ctx.restore();
+  }
+
+  // Scene 1: 3D Perspective Waveguide Horizon & Silky Interference Ribbon (Slides 2, 6)
+  function drawSceneWaveguideRibbon() {
+    const horizonY = 770;
+    const vanishX = 960;
+
+    ctx.save();
+    // Soft horizon glow well below the main stat/chart cards
+    const hGrad = ctx.createLinearGradient(0, horizonY - 60, 0, 1080);
+    hGrad.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    hGrad.addColorStop(0.35, 'rgba(0, 210, 255, 0.12)');
+    hGrad.addColorStop(1, 'rgba(6, 18, 38, 0.55)');
+    ctx.fillStyle = hGrad;
+    ctx.fillRect(0, horizonY - 60, 1920, 370);
+
+    // Architectural perspective lines with soft fade at top
+    for (let i = -9; i <= 9; i++) {
+      const lineGrad = ctx.createLinearGradient(vanishX + i * 45, horizonY, vanishX + i * 210, 1080);
+      lineGrad.addColorStop(0, 'rgba(0, 210, 255, 0)');
+      lineGrad.addColorStop(0.4, 'rgba(0, 210, 255, 0.16)');
+      lineGrad.addColorStop(1, 'rgba(56, 189, 248, 0.24)');
+      ctx.strokeStyle = lineGrad;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(vanishX + i * 45, horizonY);
+      ctx.lineTo(vanishX + i * 210, 1080);
+      ctx.stroke();
+    }
+
+    // Smoothly gliding horizontal waveguide grating planes
+    const offset = (t * 0.28) % 1;
+    for (let r = 0; r < 6; r++) {
+      const p = (r + offset) / 6;
+      const y = horizonY + Math.pow(p, 1.8) * 310;
+      const alpha = (Math.sin(p * Math.PI) * 0.22).toFixed(3);
+      ctx.strokeStyle = `rgba(103, 232, 249, ${alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(120, y);
+      ctx.lineTo(1800, y);
+      ctx.stroke();
+    }
+
+    // Silky interference ribbons in upper & lower periphery
+    drawVolumetricRibbon(165, 16, 8, 0.45, Math.PI * 2, 'rgba(0, 210, 255, 0.15)', 'rgba(56, 189, 248, 0.04)', 32);
+    drawVolumetricRibbon(775, 22, 10, 0.6, Math.PI * 3, 'rgba(253, 224, 71, 0.14)', 'rgba(0, 210, 255, 0.10)', 40);
+    ctx.restore();
+  }
+
+  // Scene 2: Peripheral Spatial FOV Framing & Smooth Vertical Light Curtain (Slides 3, 10)
+  function drawSceneSpatialScanner() {
+    ctx.save();
+    // Smooth vertical scanning light curtain sweeping slowly across background
+    const scanX = 960 + Math.sin(t * 0.38) * 680;
+    const curtain = ctx.createLinearGradient(scanX - 260, 0, scanX + 260, 0);
+    curtain.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    curtain.addColorStop(0.5, 'rgba(0, 210, 255, 0.085)');
+    curtain.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.fillStyle = curtain;
+    ctx.fillRect(scanX - 260, 120, 520, 880);
+
+    // Left & Right Peripheral Optical Rangefinder Arcs (Framing the bullets without touching them)
+    [
+      { cx: -220, cy: 540, r1: 340, r2: 380, a1: -0.42, a2: 0.42 },
+      { cx: 2140, cy: 540, r1: 340, r2: 380, a1: Math.PI - 0.42, a2: Math.PI + 0.42 }
+    ].forEach(arc => {
+      ctx.strokeStyle = 'rgba(0, 210, 255, 0.22)';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.arc(arc.cx, arc.cy, arc.r1, arc.a1, arc.a2);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(253, 224, 71, 0.14)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(arc.cx, arc.cy, arc.r2, arc.a1 * 0.8, arc.a2 * 0.8);
+      ctx.stroke();
+    });
+
+    // Subtle top/bottom framing horizon glow
+    drawVolumetricRibbon(930, 18, 8, 0.4, Math.PI * 2, 'rgba(0, 210, 255, 0.16)', 'rgba(0, 210, 255, 0.03)', 36);
+    ctx.restore();
+  }
+
+  // Scene 3: RGB Micro-LED Photon Conduit Ribbons (Slide 5 — Flow)
+  function drawScenePhotonConduit() {
+    ctx.save();
+    // Three smooth optical wavelength ribbons flowing through the lower and upper peripheral channels
+    drawVolumetricRibbon(880, 32, 14, 0.65, Math.PI * 2.2, 'rgba(0, 210, 255, 0.24)', 'rgba(56, 189, 248, 0.06)', 52);
+    drawVolumetricRibbon(905, 24, 12, -0.5, Math.PI * 1.8, 'rgba(253, 224, 71, 0.18)', 'rgba(0, 210, 255, 0.05)', 38);
+    drawVolumetricRibbon(170, 18, 8, 0.45, Math.PI * 2.0, 'rgba(125, 211, 252, 0.15)', 'rgba(0, 210, 255, 0.03)', 30);
+
+    // Smooth traveling light pulse along the flow axis (soft radial glow, not a hard dot)
+    const pulseX = 240 + ((t * 0.22) % 1) * 1440;
+    const pulseGlow = ctx.createRadialGradient(pulseX, 620, 10, pulseX, 620, 280);
+    pulseGlow.addColorStop(0, 'rgba(0, 210, 255, 0.12)');
+    pulseGlow.addColorStop(0.5, 'rgba(253, 224, 71, 0.04)');
+    pulseGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = pulseGlow;
+    ctx.fillRect(pulseX - 280, 340, 560, 560);
+    ctx.restore();
+  }
+
+  // Scene 4: Harmonic sEMG Bio-Neural Ribbons & Corner Iris Aperture (Slides 7, 8)
+  function drawSceneNeuralWave() {
+    ctx.save();
+    // Multi-harmonic Siri/VisionOS style neural ribbons in the lower bezel
+    drawVolumetricRibbon(900, 36, 16, 0.75, Math.PI * 2.5, 'rgba(0, 210, 255, 0.25)', 'rgba(56, 189, 248, 0.05)', 46);
+    drawVolumetricRibbon(912, 28, 18, -0.62, Math.PI * 3.0, 'rgba(167, 139, 250, 0.18)', 'rgba(0, 210, 255, 0.04)', 38);
+    drawVolumetricRibbon(892, 20, 10, 0.90, Math.PI * 2.0, 'rgba(253, 224, 71, 0.15)', 'rgba(0, 210, 255, 0.03)', 28);
+
+    // Subtle precision iris aperture arcs in the upper-right and lower-left outer corners
+    [
+      { x: 1800, y: 210, r: 120 },
+      { x: 120, y: 870, r: 120 }
+    ].forEach((c, idx) => {
+      const breathe = 1 + Math.sin(t * 0.8 + idx) * 0.05;
+      ctx.strokeStyle = 'rgba(0, 210, 255, 0.16)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.r * breathe, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(253, 224, 71, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.r * 0.68 / breathe, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+    ctx.restore();
+  }
+
+  // Scene 5: Dual-Spectrum Prism Split (Compare Slides 4, 12)
+  function drawSceneDualSpectrum() {
+    ctx.save();
+    // Soft vertical optical beam splitter at center x = 960
+    const divGlow = ctx.createLinearGradient(960, 160, 960, 940);
+    divGlow.addColorStop(0, 'rgba(0, 210, 255, 0)');
+    divGlow.addColorStop(0.5, 'rgba(0, 210, 255, 0.32)');
+    divGlow.addColorStop(1, 'rgba(0, 210, 255, 0)');
+    ctx.strokeStyle = divGlow;
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.moveTo(960, 160);
+    ctx.lineTo(960, 940);
+    ctx.stroke();
+
+    // Left Wing: Soft expanding acoustic harmonic arcs from far-left edge
+    for (let r = 0; r < 4; r++) {
+      const p = (t * 0.25 + r / 4) % 1;
+      const alpha = Math.sin(p * Math.PI) * 0.20;
+      ctx.strokeStyle = `rgba(0, 210, 255, ${alpha.toFixed(3)})`;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.arc(-80, 560, 180 + p * 420, -Math.PI * 0.28, Math.PI * 0.28);
+      ctx.stroke();
+    }
+
+    // Right Wing: Warm gold/cyan volumetric light fan from far-right edge
+    const rightFan = ctx.createRadialGradient(2040, 560, 60, 2040, 560, 760);
+    rightFan.addColorStop(0, 'rgba(253, 224, 71, 0.16)');
+    rightFan.addColorStop(0.5, 'rgba(0, 210, 255, 0.06)');
+    rightFan.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = rightFan;
+    ctx.fillRect(1160, 140, 760, 840);
+
+    drawVolumetricRibbon(925, 20, 8, 0.5, Math.PI * 2, 'rgba(0, 210, 255, 0.16)', 'rgba(253, 224, 71, 0.08)', 36);
+    ctx.restore();
+  }
+
+  // Scene 6: Silicon Carbide (SiC) Volumetric Prism Caustics (Slides 9, 11)
+  function drawSceneSicCaustics() {
+    ctx.save();
+    // Slow-rotating large geometric SiC crystal in outer upper-left periphery (never behind center text)
+    const cx = 150, cy = 220;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(t * 0.15);
+    for (let layer = 1; layer <= 2; layer++) {
+      const rad = layer * 95;
+      ctx.strokeStyle = layer === 2 ? 'rgba(253, 224, 71, 0.18)' : 'rgba(0, 210, 255, 0.20)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let v = 0; v < 6; v++) {
+        const a = (v * Math.PI) / 3;
+        const vx = Math.cos(a) * rad;
+        const vy = Math.sin(a) * rad;
+        if (v === 0) ctx.moveTo(vx, vy);
+        else ctx.lineTo(vx, vy);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Diagonal Volumetric Prism Dispersion Ray (Soft atmospheric light shaft)
+    const rayShift = Math.sin(t * 0.3) * 60;
+    const beamGrad = ctx.createLinearGradient(150, 220, 1650, 920 + rayShift);
+    beamGrad.addColorStop(0, 'rgba(0, 210, 255, 0.14)');
+    beamGrad.addColorStop(0.5, 'rgba(56, 189, 248, 0.05)');
+    beamGrad.addColorStop(1, 'rgba(253, 224, 71, 0)');
+    ctx.fillStyle = beamGrad;
+    ctx.beginPath();
+    ctx.moveTo(150, 180);
+    ctx.lineTo(1780, 820 + rayShift);
+    ctx.lineTo(1620, 980 + rayShift);
+    ctx.lineTo(110, 260);
+    ctx.closePath();
+    ctx.fill();
+
+    drawVolumetricRibbon(920, 24, 10, 0.45, Math.PI * 2, 'rgba(253, 224, 71, 0.15)', 'rgba(0, 210, 255, 0.08)', 42);
+    ctx.restore();
+  }
+
+  // Scene 7: On-Device Privacy Shield & Optical Aperture (Slide 13)
+  function drawScenePrivacyShield() {
+    ctx.save();
+    // Soft ambient top bezel aperture glow
+    const camX = 960, camY = 125;
+    const coneGrad = ctx.createRadialGradient(camX, camY, 10, camX, camY + 320, 680);
+    coneGrad.addColorStop(0, 'rgba(244, 63, 94, 0.18)');
+    coneGrad.addColorStop(0.45, 'rgba(168, 85, 247, 0.07)');
+    coneGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = coneGrad;
+    ctx.fillRect(160, 100, 1600, 880);
+
+    // Smooth breathing optical shield rings in lower periphery
+    const breathe = 0.5 + 0.5 * Math.sin(t * 1.1);
+    ctx.strokeStyle = `rgba(0, 210, 255, ${(0.12 + breathe * 0.12).toFixed(3)})`;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.ellipse(960, 935, 420 + breathe * 40, 34, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    drawVolumetricRibbon(925, 20, 10, 0.5, Math.PI * 2, 'rgba(244, 63, 94, 0.16)', 'rgba(0, 210, 255, 0.12)', 38);
+    ctx.restore();
+  }
+
+  function drawSceneById(id) {
+    switch (id) {
+      case 0: drawSceneBionicAurora(); break;
+      case 1: drawSceneWaveguideRibbon(); break;
+      case 2: drawSceneSpatialScanner(); break;
+      case 3: drawScenePhotonConduit(); break;
+      case 4: drawSceneNeuralWave(); break;
+      case 5: drawSceneDualSpectrum(); break;
+      case 6: drawSceneSicCaustics(); break;
+      case 7: drawScenePrivacyShield(); break;
+    }
+  }
+
+  function renderFrame() {
+    t += 0.016;
+    ctx.clearRect(0, 0, 1920, 1080);
+
+    const slideIdx = typeof cur === 'number' ? cur : 0;
+    const targetScene = SLIDE_SCENE[slideIdx] ?? 0;
+
+    if (slideIdx !== lastSlideIdx) {
+      if (lastSlideIdx !== -1 && targetScene !== activeScene) {
+        prevScene = activeScene;
+        activeScene = targetScene;
+        transitionProg = 0;
+      } else {
+        activeScene = targetScene;
+        prevScene = targetScene;
+        transitionProg = 1;
+      }
+      lastSlideIdx = slideIdx;
+
+      const meta = SCENE_META[activeScene] || SCENE_META[0];
+      hudTL.textContent = meta.name;
+      hudTR.textContent = `${meta.mode} · UAM SKYWAY ARCHITECTURE`;
+      hudBL.textContent = `SLIDE ${String(slideIdx + 1).padStart(2, '0')} / ${S.length} · VOLUMETRIC MOTION ENGINE`;
+    }
+
+    drawPeripheralFrame();
+
+    if (transitionProg < 1) {
+      transitionProg = Math.min(1, transitionProg + 0.045);
+      ctx.save();
+      ctx.globalAlpha = 1 - transitionProg;
+      drawSceneById(prevScene);
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalAlpha = transitionProg;
+      drawSceneById(activeScene);
+      ctx.restore();
+    } else {
+      drawSceneById(activeScene);
+    }
+
+    requestAnimationFrame(renderFrame);
+  }
+
+  requestAnimationFrame(renderFrame);
+})();
+
+/* ===================== 숫자 오도미터 카운트업 엔진 ===================== */
+function animateNumbers() {
+  const slideEl = document.getElementById('slide');
+  if (!slideEl) return;
+  const statVals = slideEl.querySelectorAll('.stat .v');
+  statVals.forEach(vEl => {
+    const smallEl = vEl.querySelector('small');
+    const unitHTML = smallEl ? smallEl.outerHTML : '';
+    const rawText = vEl.childNodes[0] ? vEl.childNodes[0].textContent.trim() : '';
+    if (!/^[0-9,]+$/.test(rawText)) return;
+    const target = parseInt(rawText.replace(/,/g, ''), 10);
+    if (isNaN(target)) return;
+    const hasComma = rawText.includes(',');
+    const dur = 1100;
+    const t0 = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      const ease = 1 - Math.pow(1 - p, 4);
+      const val = Math.round(target * ease);
+      const formatted = hasComma ? val.toLocaleString('en-US') : String(val);
+      vEl.innerHTML = `${formatted}${unitHTML}`;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+</script>
+</body>
+</html>
