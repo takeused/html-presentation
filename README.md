@@ -26,6 +26,12 @@
      - 세로 레버(`Blackwell → Blackwell Ultra → Vera Rubin`) 연동 랙 스케일 스펙 비교
      - 추론 경제학(`30x` 처리량 / `25x` 에너지 효율 / `95%` 원가 절감), 소버린 AI 수요 다변화, 피지컬 AI 3-컴퓨터 파이프라인(`DGX → Omniverse·Cosmos → AGX Thor`) 수록
 
+3. **국가 R&D · AI 정책 브리핑 (15쪽, 정책 보고서형 재구성판)**
+   - 단일 파일: [`national_rnd_ai_policy_briefing.html`](./national_rnd_ai_policy_briefing.html) (원본: `national_rnd_policy_ai_planning_briefing.html`)
+   - 기업 브리핑 틀을 걷어내고 정책 보고서 문법(Ⅰ 추진배경 → Ⅱ 비전·전략 → Ⅲ 추진과제 → Ⅳ 이행관리)으로 재구성
+   - 한 장 요약, 병목 진단 행렬(As-Is → To-Be), 비전·목표·전략 체계도, 전주기 순환도, 4계층 아키텍처, 성숙도 계단, 재원 브릿지(폭포) 차트, SDL 순환 루프, AI·사람 역할 분담표
+   - 1920×1080 고정 스테이지, 쪽별 출처 각주, 글자 편집·HTML 저장·PDF 인쇄(쪽당 1페이지)
+
 ## 🛠️ 재사용 스킬 (Skill)
 
 - 경로: [`skill/interactive-motion-briefing-presentation/`](./skill/interactive-motion-briefing-presentation/)
@@ -33,3 +39,6 @@
   - [`template.html`](./skill/interactive-motion-briefing-presentation/template.html): 11장 기본형 템플릿
   - [`template_15slides.html`](./skill/interactive-motion-briefing-presentation/template_15slides.html): 15장 심층 확장형 템플릿
   - [`scripts/generate_assets.py`](./skill/interactive-motion-briefing-presentation/scripts/generate_assets.py): Python PIL + FFmpeg 기반 아키텍처 개념도 및 15초 모션그래픽 MP4 생성 스크립트
+- 경로: [`skill/policy-briefing-presentation/`](./skill/policy-briefing-presentation/) — **정책 브리핑형 스킬**
+  - [`SKILL.md`](./skill/policy-briefing-presentation/SKILL.md): 내용 유형 → 레이아웃 매핑표, 15쪽 장 구조, 정책 팔레트, 인터랙션·데이터 원칙, 체크리스트
+  - [`template.html`](./skill/policy-briefing-presentation/template.html): 국가 R&D × AI 정책 브리핑 완성본 템플릿
