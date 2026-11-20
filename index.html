@@ -5,1390 +5,459 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presentation Hub</title>
-  <meta name="description" content="AI, 국가 정책, 연구 기획부터 라이프까지 — 유튜브 스타일로 한눈에 탐색하고 즉시 발표하는 프레젠테이션 아카이브">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ff0033'/%3E%3Cpolygon points='12,9 24,16 12,23' fill='%23ffffff'/%3E%3C/svg%3E">
+  <meta name="description" content="AI, R&D 기획, 정책, 라이프 발표자료를 고르고 바로 발표하는 아카이브">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='7' width='26' height='16' rx='2' fill='%231b1f27'/%3E%3Crect x='14' y='23' width='4' height='4' fill='%231b1f27'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ===== Reset & YouTube-Inspired Design Tokens ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #ffffff;
-      --bg-elevated: #f8f8f8;
-      --bg-chip: #f2f2f2;
-      --bg-chip-hover: #e5e5e5;
-      --bg-hover: #f2f2f2;
-      --border: #e5e5e5;
-      --ink: #0f0f0f;
-      --ink-muted: #606060;
-      --ink-subtle: #909090;
-      --brand-red: #ff0033;
-      --primary: #0f62fe;
-      --chip-active-bg: #0f0f0f;
-      --chip-active-ink: #ffffff;
+      --wall: #e9ebee;
+      --sheet: #ffffff;
+      --ink: #1b1f27;
+      --ink-2: #4a5160;
+      --muted: #7a8190;
+      --line: #dfe2e7;
+      --select: #f1f3f6;
+      --screen: #161a21;
 
-      --cat-ai: #7c3aed;
-      --cat-plan: #ea580c;
-      --cat-policy: #0284c7;
-      --cat-life: #0d9488;
+      --cat-ai: #5b4fd6;
+      --cat-plan: #d0702a;
+      --cat-policy: #1f7fb8;
+      --cat-life: #2e9a7e;
 
-      --header-h: 56px;
-      --sidebar-w: 236px;
-      --sidebar-mini-w: 74px;
-
-      --f-body: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+      --f: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+      --list-w: 520px;
+      --bar-h: 52px;
       color-scheme: light;
     }
 
-    [data-theme="dark"] {
-      --bg: #0f0f0f;
-      --bg-elevated: #181818;
-      --bg-chip: #272727;
-      --bg-chip-hover: #3f3f3f;
-      --bg-hover: #272727;
-      --border: #272727;
-      --ink: #f1f1f1;
-      --ink-muted: #aaaaaa;
-      --ink-subtle: #717171;
-      --brand-red: #ff0033;
-      --primary: #3ea6ff;
-      --chip-active-bg: #f1f1f1;
-      --chip-active-ink: #0f0f0f;
-
-      --cat-ai: #a78bfa;
-      --cat-plan: #fb923c;
-      --cat-policy: #38bdf8;
-      --cat-life: #2dd4bf;
-
-      color-scheme: dark;
-    }
-
+    html { -webkit-text-size-adjust: 100%; }
     body {
-      font-family: var(--f-body);
-      font-size: 14px;
-      line-height: 1.45;
-      background: var(--bg);
+      font-family: var(--f);
+      background: var(--wall);
       color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    body.viewing {
-      overflow: hidden;
-    }
-
-    button, input, select {
-      font-family: inherit;
-      color: inherit;
-    }
-
-    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
-    }
-
-    mark.hl {
-      background: rgba(255, 214, 10, 0.32);
-      color: inherit;
-      padding: 0 2px;
-      border-radius: 3px;
-      font-weight: 700;
-    }
-
-    /* ===== Top Sticky YouTube Header ===== */
-    .yt-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--header-h);
-      background: color-mix(in srgb, var(--bg) 92%, transparent);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      gap: 16px;
-      z-index: 45;
-    }
-
-    .yt-header-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-shrink: 0;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
-      background: transparent;
-      color: var(--ink);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .icon-btn:hover {
-      background: var(--bg-hover);
-    }
-
-    .icon-btn svg {
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.8;
-    }
-
-    .yt-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      text-decoration: none;
-      color: var(--ink);
-      font-weight: 800;
-      font-size: 18px;
-      letter-spacing: -0.03em;
-      user-select: none;
-    }
-
-    .yt-logo-badge {
-      width: 30px;
-      height: 22px;
-      border-radius: 6px;
-      background: var(--brand-red);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 8px rgba(255, 0, 51, 0.35);
-    }
-
-    .yt-logo-badge svg {
-      width: 12px;
-      height: 12px;
-      fill: #ffffff;
-    }
-
-    .yt-logo sup {
-      font-family: var(--f-mono);
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--ink-muted);
-      margin-left: -4px;
-      letter-spacing: 0.02em;
-    }
-
-    /* Center Search Pill */
-    .yt-header-center {
-      flex: 1;
-      max-width: 620px;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-box {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      height: 40px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: var(--bg-elevated);
-      overflow: hidden;
-      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-    }
-
-    .search-box:focus-within {
-      border-color: var(--primary);
-      background: var(--bg);
-      box-shadow: 0 0 0 1px var(--primary);
-    }
-
-    .search-lead-icon {
-      width: 16px;
-      height: 16px;
-      margin-left: 16px;
-      color: var(--ink-subtle);
-      flex-shrink: 0;
-    }
-
-    #searchInput {
-      flex: 1;
-      height: 100%;
-      border: none;
-      background: transparent;
-      padding: 0 12px;
-      font-size: 14px;
-      color: var(--ink);
-      outline: none;
-    }
-
-    #searchInput::placeholder {
-      color: var(--ink-subtle);
-    }
-
-    .search-clear {
-      background: none;
-      border: none;
-      color: var(--ink-muted);
-      cursor: pointer;
-      padding: 4px 8px;
       font-size: 15px;
-      display: none;
+      line-height: 1.5;
+      font-feature-settings: "tnum";
+      -webkit-font-smoothing: antialiased;
     }
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; background: none; border: 0; }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-    .search-clear.visible {
-      display: inline-flex;
-    }
-
-    .search-kbd {
-      font-family: var(--f-mono);
-      font-size: 11px;
-      color: var(--ink-subtle);
-      background: var(--bg-chip);
-      border: 1px solid var(--border);
-      padding: 2px 7px;
-      border-radius: 999px;
-      margin-right: 12px;
-      pointer-events: none;
-      flex-shrink: 0;
-    }
-
-    /* Right Controls */
-    .yt-header-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .deck-count-pill {
-      font-family: var(--f-mono);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: var(--bg-chip);
-      color: var(--ink-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10b981;
-      display: inline-block;
-    }
-
-    .icon-sun { display: none; }
-    [data-theme="dark"] .icon-sun { display: block; }
-    [data-theme="dark"] .icon-moon { display: none; }
-
-    /* ===== App Body Layout (Sidebar + Main Feed) ===== */
-    .yt-layout {
-      display: flex;
-      padding-top: var(--header-h);
-      min-height: 100vh;
-    }
-
-    /* Mobile Backdrop for Drawer */
-    .sidebar-backdrop {
-      position: fixed;
-      inset: var(--header-h) 0 0 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 38;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    body.sidebar-open .sidebar-backdrop {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Left Sidebar */
-    .yt-sidebar {
-      position: fixed;
-      top: var(--header-h);
-      left: 0;
-      bottom: 0;
-      width: var(--sidebar-w);
-      background: var(--bg);
-      border-right: 1px solid var(--border);
-      padding: 12px 12px 24px;
-      overflow-y: auto;
-      z-index: 40;
-      transition: width 0.2s ease, transform 0.22s ease;
-      scrollbar-width: thin;
-    }
-
-    body.sidebar-mini .yt-sidebar {
-      width: var(--sidebar-mini-w);
-      padding: 12px 6px;
-    }
-
-    .side-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .side-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 12px 8px;
-    }
-
-    .side-heading {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-subtle);
-      padding: 6px 12px;
-    }
-
-    body.sidebar-mini .side-heading,
-    body.sidebar-mini .side-footer,
-    body.sidebar-mini .side-count {
-      display: none;
-    }
-
-    .side-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      width: 100%;
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: none;
-      background: transparent;
-      color: var(--ink);
-      font-size: 13.5px;
-      font-weight: 500;
-      cursor: pointer;
-      text-align: left;
-      transition: background 0.15s;
-    }
-
-    .side-btn:hover {
-      background: var(--bg-hover);
-    }
-
-    .side-btn.active {
-      background: var(--bg-chip);
-      font-weight: 700;
-    }
-
-    .side-btn-left {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      min-width: 0;
-    }
-
-    .side-btn svg {
-      width: 19px;
-      height: 19px;
-      flex-shrink: 0;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.8;
-    }
-
-    .side-cat-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin: 0 4px;
-    }
-
-    .side-count {
-      font-family: var(--f-mono);
-      font-size: 11px;
-      color: var(--ink-subtle);
-    }
-
-    body.sidebar-mini .side-btn {
-      flex-direction: column;
-      justify-content: center;
-      padding: 11px 4px;
-      gap: 5px;
-      font-size: 10px;
-      text-align: center;
-    }
-
-    body.sidebar-mini .side-btn-left {
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .side-footer {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 10px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--ink-muted);
-      line-height: 1.6;
-    }
-
-    .side-footer b {
-      color: var(--ink);
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .side-footer kbd {
-      font-family: var(--f-mono);
-      font-size: 10px;
-      padding: 1px 5px;
-      border-radius: 4px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-    }
-
-    /* ===== Main Content Area ===== */
-    .yt-main {
-      flex: 1;
-      margin-left: var(--sidebar-w);
-      min-width: 0;
-      transition: margin-left 0.2s ease;
-    }
-
-    body.sidebar-mini .yt-main {
-      margin-left: var(--sidebar-mini-w);
-    }
-
-    /* Sticky Category & Style Chips Bar */
-    .yt-chips-bar {
-      position: sticky;
-      top: var(--header-h);
-      z-index: 25;
-      background: color-mix(in srgb, var(--bg) 94%, transparent);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .yt-chips-bar::-webkit-scrollbar { display: none; }
-
-    .chips-left {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      flex-wrap: nowrap;
-    }
-
-    .chip-btn {
-      border: none;
-      background: var(--bg-chip);
-      color: var(--ink);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .chip-btn:hover {
-      background: var(--bg-chip-hover);
-    }
-
-    .chip-btn.active {
-      background: var(--chip-active-bg);
-      color: var(--chip-active-ink);
-    }
-
-    .chip-btn b {
-      font-family: var(--f-mono);
-      font-size: 11px;
-      opacity: 0.75;
-    }
-
-    .chip-sep {
-      width: 1px;
-      height: 20px;
-      background: var(--border);
-      margin: 0 4px;
-      flex-shrink: 0;
-    }
-
-    .chips-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .sort-select {
-      background: var(--bg-chip);
-      color: var(--ink);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 5px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    /* Filter Status Bar (shown when filtered/searched) */
-    .filter-status {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-      padding: 10px 16px;
-      border-radius: 10px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      font-size: 13px;
-      color: var(--ink-muted);
-    }
-
-    .filter-status.show {
-      display: flex;
-    }
-
-    .filter-status b {
-      color: var(--ink);
-    }
-
-    .reset-filter-btn {
-      background: var(--bg-chip);
-      border: 1px solid var(--border);
-      color: var(--ink);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .reset-filter-btn:hover {
-      background: var(--bg-chip-hover);
-    }
-
-    /* ===== YouTube Video Grid (3~4 Columns) ===== */
-    .yt-feed {
-      padding: 22px 24px 72px;
-    }
-
-    .yt-grid {
+    /* ===== Hub layout ===== */
+    #hub {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 28px 18px;
+      grid-template-columns: var(--list-w) 1fr;
+      height: 100vh;
+      height: 100dvh;
     }
 
-    /* Optional Compact List Mode */
-    .yt-grid.list-mode {
-      grid-template-columns: 1fr;
-      max-width: 1080px;
-      gap: 14px;
-    }
-
-    .yt-card {
+    /* Left: index */
+    .index {
+      background: var(--sheet);
+      border-right: 1px solid var(--line);
       display: flex;
       flex-direction: column;
+      min-height: 0;
+    }
+    .index-head {
+      padding: 22px 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .brand .count { color: var(--muted); font-size: 13px; }
+
+    .search {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 12px;
+      background: var(--select);
+      border-radius: 8px;
+    }
+    .search svg { width: 16px; height: 16px; flex: none; stroke: var(--muted); fill: none; stroke-width: 2; }
+    .search input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      outline: none;
+      font-size: 15px;
+    }
+    .search input::placeholder { color: var(--muted); }
+    .search input::-webkit-search-cancel-button { display: none; }
+    .search kbd {
+      font: inherit;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: var(--sheet);
+      border-radius: 4px;
+      padding: 0 6px;
+    }
+    .search .clear { display: none; color: var(--muted); font-size: 13px; padding: 4px; }
+    .search.has-q .clear { display: block; }
+    .search.has-q kbd { display: none; }
+
+    .filters {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      position: relative;
+      padding: 10px 10px 12px;
+      font-size: 14px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
+    .tab[aria-pressed="true"]::after {
+      content: "";
+      position: absolute;
+      left: 10px; right: 10px; bottom: -1px;
+      height: 2px;
+      background: var(--ink);
+    }
+    .style-select {
+      flex: none;
+      border: 0;
+      background: transparent;
+      font-size: 13px;
+      color: var(--ink-2);
+      padding: 6px 2px;
+      margin-bottom: 4px;
       cursor: pointer;
-      border-radius: 14px;
-      transition: transform 0.18s ease;
     }
 
-    .yt-grid.list-mode .yt-card {
-      flex-direction: row;
-      gap: 18px;
-      align-items: flex-start;
-      padding: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg-elevated);
+    .list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0 32px;
+      overscroll-behavior: contain;
+    }
+    .group-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 24px 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-2);
+    }
+    .group-title i { width: 8px; height: 8px; border-radius: 2px; }
+    .group-title span { color: var(--muted); font-weight: 400; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 88px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 8px 24px;
+      text-align: left;
+      border-left: 3px solid transparent;
+    }
+    .row:hover { background: var(--select); }
+    .row.is-selected { background: var(--select); border-left-color: var(--ink); }
+    .row-thumb {
+      width: 88px;
+      aspect-ratio: 16 / 9;
+      border-radius: 4px;
+      background: #cfd4db center / cover no-repeat;
+    }
+    .row-title {
+      font-size: 14.5px;
+      line-height: 1.4;
+      color: var(--ink);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .row-len { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+    mark { background: #fde68a; color: inherit; border-radius: 2px; }
+
+    .empty {
+      display: none;
+      padding: 48px 24px;
+      color: var(--ink-2);
+    }
+    .empty.show { display: block; }
+    .empty button {
+      margin-top: 12px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--sheet);
+      font-size: 14px;
     }
 
-    .yt-grid.list-mode .yt-thumb {
-      width: 320px;
-      flex-shrink: 0;
+    /* Right: projector */
+    .stage {
+      min-width: 0;
+      overflow-y: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px clamp(24px, 5vw, 80px);
     }
+    .stage-inner { width: 100%; max-width: 1040px; }
 
-    /* 16:9 Thumbnail Box */
-    .yt-thumb {
+    .screen {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      border-radius: 12px;
+      background: var(--screen) center / cover no-repeat;
+      border-radius: 6px;
       overflow: hidden;
-      background: #101624;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 24px 48px -24px rgba(27,31,39,.45);
+      cursor: pointer;
     }
-
-    .yt-thumb-img {
+    .screen iframe {
       position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
-    }
-
-    .yt-card:hover .yt-thumb-img {
-      transform: scale(1.06);
-    }
-
-    /* Cinematic Gradient Vignette Overlay on Thumbnail */
-    .yt-thumb-shade {
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(8, 12, 22, 0.52) 0%, rgba(8, 12, 22, 0.14) 38%, rgba(8, 12, 22, 0.90) 100%);
-    }
-
-    /* Top Badges on Thumbnail */
-    .yt-thumb-top {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      z-index: 2;
-    }
-
-    .yt-top-left-badges {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .yt-ep-badge {
-      font-family: var(--f-mono);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 5px;
-      background: rgba(10, 14, 24, 0.78);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      backdrop-filter: blur(6px);
-    }
-
-    .yt-new-badge {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      padding: 3px 7px;
-      border-radius: 5px;
-      background: var(--brand-red);
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(255, 0, 51, 0.4);
-    }
-
-    .yt-style-badge {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      padding: 3px 8px;
-      border-radius: 5px;
-      text-transform: uppercase;
-      backdrop-filter: blur(6px);
-    }
-
-    .yt-style-badge.cinematic {
-      background: rgba(0, 210, 255, 0.88);
-      color: #041019;
-    }
-
-    .yt-style-badge.briefing {
-      background: rgba(255, 255, 255, 0.92);
-      color: #0f172a;
-    }
-
-    .yt-style-badge.mckinsey {
-      background: rgba(0, 112, 173, 0.92);
-      color: #ffffff;
-    }
-
-    .yt-style-badge.interactive {
-      background: rgba(124, 58, 237, 0.88);
-      color: #ffffff;
-    }
-
-    /* Poster Hook Overlay inside Thumbnail (Distinct from Title below) */
-    .yt-thumb-poster {
-      position: absolute;
-      left: 12px;
-      right: 72px;
-      bottom: 12px;
-      z-index: 2;
-      color: #ffffff;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-    }
-
-    .yt-thumb-cat {
-      display: inline-block;
-      font-family: var(--f-mono);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #38bdf8;
-      margin-bottom: 3px;
-    }
-
-    .yt-thumb-headline {
-      font-size: 14.5px;
-      font-weight: 800;
-      line-height: 1.3;
-      letter-spacing: -0.02em;
-      color: rgba(255, 255, 255, 0.96);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      word-break: keep-all;
-    }
-
-    /* Bottom-Right YouTube Duration / Slide Count Pill */
-    .yt-duration {
-      position: absolute;
-      right: 8px;
-      bottom: 10px;
-      z-index: 3;
-      background: rgba(0, 0, 0, 0.86);
-      color: #ffffff;
-      font-family: var(--f-mono);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 7px;
-      border-radius: 5px;
-      letter-spacing: 0.02em;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-    }
-
-    /* Center Play Button on Hover */
-    .yt-play-hover {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.25);
+      top: 0; left: 0;
+      width: 1920px;
+      height: 1080px;
+      border: 0;
+      transform-origin: 0 0;
+      pointer-events: none;
       opacity: 0;
-      transition: opacity 0.2s ease;
-      z-index: 2;
+      transition: opacity .35s ease;
+      background: var(--screen);
     }
-
-    .yt-card:hover .yt-play-hover {
-      opacity: 1;
-    }
-
-    .yt-play-circle {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255, 0, 51, 0.92);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-      transform: scale(0.9);
-      transition: transform 0.2s ease;
-    }
-
-    .yt-card:hover .yt-play-circle {
-      transform: scale(1);
-    }
-
-    .yt-play-circle svg {
-      width: 18px;
-      height: 18px;
-      fill: #ffffff;
-      margin-left: 2px;
-    }
-
-    /* Bottom Progress Bar Accent on Thumbnail */
-    .yt-thumb-bar {
+    .screen iframe.ready { opacity: 1; }
+    .screen-hint {
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.18);
-      z-index: 3;
-    }
-
-    .yt-thumb-bar i {
-      display: block;
-      height: 100%;
-      width: 0%;
-      background: var(--brand-red);
-      transition: width 0.35s ease;
-    }
-
-    .yt-card:hover .yt-thumb-bar i {
-      width: 100%;
-    }
-
-    /* Card Details Below Thumbnail */
-    .yt-meta {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding-top: 12px;
-    }
-
-    .yt-grid.list-mode .yt-meta {
-      padding-top: 4px;
-      flex: 1;
-    }
-
-    .yt-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-top: 2px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-      letter-spacing: -0.02em;
-    }
-
-    .yt-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .yt-title {
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.38;
-      color: var(--ink);
-      margin-bottom: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      word-break: keep-all;
-      transition: color 0.15s;
-    }
-
-    .yt-card:hover .yt-title {
-      color: var(--primary);
-    }
-
-    .yt-subline {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--ink-muted);
-      margin-bottom: 5px;
-      flex-wrap: wrap;
-    }
-
-    .yt-verified {
-      width: 13px;
-      height: 13px;
-      fill: var(--ink-muted);
-      flex-shrink: 0;
-    }
-
-    .yt-desc {
+      left: 16px; bottom: 14px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: rgba(22,26,33,.72);
+      color: #fff;
       font-size: 12.5px;
-      color: var(--ink-subtle);
-      line-height: 1.48;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      word-break: keep-all;
+      opacity: 0;
+      transition: opacity .2s ease;
     }
+    .screen:hover .screen-hint, .screen:focus-visible .screen-hint { opacity: 1; }
 
-    .empty-state {
-      padding: 72px 20px;
-      text-align: center;
-      color: var(--ink-subtle);
-      font-size: 15px;
-      border: 1px dashed var(--border);
-      border-radius: 12px;
-      display: none;
-      flex-direction: column;
+    .info { margin-top: 28px; max-width: 720px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--muted); }
+    .tags .cat { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); font-weight: 600; }
+    .tags .cat i { width: 8px; height: 8px; border-radius: 2px; }
+    .info h2 {
+      margin-top: 10px;
+      font-size: clamp(22px, 2.1vw, 30px);
+      line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+    }
+    .info .hook { margin-top: 10px; font-size: 16px; color: var(--ink-2); }
+    .info .desc {
+      margin-top: 14px;
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+    .actions { display: flex; gap: 8px; margin-top: 24px; }
+    .btn {
+      display: inline-flex;
       align-items: center;
-      gap: 14px;
+      gap: 8px;
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 8px;
+      font-size: 14.5px;
+      font-weight: 600;
+      text-decoration: none;
     }
+    .btn svg { width: 14px; height: 14px; }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { background: #000; }
+    .btn-ghost { color: var(--ink-2); border: 1px solid var(--line); background: var(--sheet); }
+    .btn-ghost:hover { color: var(--ink); border-color: #c4c9d1; }
 
-    .empty-state.show {
-      display: flex;
-    }
-
-    /* ===== Fullscreen Presentation Viewer ===== */
+    /* ===== Viewer ===== */
     #viewer {
       position: fixed;
       inset: 0;
-      z-index: 100;
-      background: #05070c;
+      z-index: 50;
       display: flex;
       flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
+      background: #000;
+      visibility: hidden;
     }
+    body.viewing #viewer { visibility: visible; }
+    body.viewing #hub { visibility: hidden; }
 
-    body.viewing #viewer {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .viewer-bar {
-      height: 48px;
-      background: #11151f;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    .vbar {
+      height: var(--bar-h);
+      flex: none;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      gap: 10px;
-      color: #fff;
-      z-index: 10;
+      gap: 12px;
+      padding: 0 12px;
+      background: var(--sheet);
+      border-bottom: 1px solid var(--line);
     }
-
-    .back-btn, .viewer-action-btn {
+    .vbtn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      height: 34px;
+      padding: 0 10px;
       border-radius: 6px;
-      color: #fff;
-      padding: 5px 11px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
+      font-size: 14px;
+      color: var(--ink-2);
       text-decoration: none;
       white-space: nowrap;
-      transition: background 0.15s;
     }
-
-    .back-btn:hover, .viewer-action-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-    }
-
-    .back-btn svg, .viewer-action-btn svg {
-      width: 14px;
-      height: 14px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-    }
-
-    .viewer-pos {
-      font-family: var(--f-mono);
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
-      flex-shrink: 0;
-    }
-
-    .viewer-pos b {
-      color: #fff;
-    }
-
-    .viewer-rail {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      overflow-x: auto;
+    .vbtn:hover { background: var(--select); color: var(--ink); }
+    .vbtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .vtitle {
       flex: 1;
-      padding: 0 10px;
-      scrollbar-width: none;
-    }
-
-    .viewer-rail::-webkit-scrollbar { display: none; }
-
-    .rail-pill {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 999px;
-      padding: 4px 11px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.65);
-      cursor: pointer;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: color 0.15s, border-color 0.15s, background 0.15s;
-    }
-
-    .rail-pill:hover {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-
-    .rail-pill.active {
-      color: #fff;
-      background: var(--brand-red);
-      border-color: var(--brand-red);
+      min-width: 0;
+      font-size: 14.5px;
       font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .vpos { font-size: 13px; color: var(--muted); white-space: nowrap; }
+    .vstage { flex: 1; position: relative; }
+    .vstage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 960px) {
+      #hub { grid-template-columns: minmax(0, 1fr); height: auto; }
+      .index { border-right: 0; min-height: 100vh; min-width: 0; }
+      .row.is-selected { background: none; border-left-color: transparent; }
+      .index-head { position: sticky; top: 0; z-index: 5; background: var(--sheet); padding: 16px 16px 0; }
+      .list { overflow: visible; }
+      .group-title { padding: 18px 16px 6px; }
+      .row { padding: 8px 16px; grid-template-columns: 96px 1fr; }
+      .row-thumb { width: 96px; }
+      .row-len { display: none; }
+      .stage { display: none; }
+      .search kbd { display: none; }
+      .vbtn span { display: none; }
+      .vpos { display: none; }
     }
 
-    .cat-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .viewer-controls-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .viewer-step {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .viewer-step button {
-      width: 28px;
-      height: 28px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 4px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .viewer-step button:hover {
-      background: rgba(255, 255, 255, 0.16);
-    }
-
-    .viewer-step button svg {
-      width: 14px;
-      height: 14px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-    }
-
-    .viewer-stage {
-      flex: 1;
-      position: relative;
-      background: #000;
-    }
-
-    .viewer-frame {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .viewer-frame.active {
-      opacity: 1;
-    }
-
-    body.viewing .viewer-frame.active {
-      pointer-events: auto;
-    }
-
-    .viewer-frame iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: #05070c;
-    }
-
-    /* ===== Scroll to Top ===== */
-    .scroll-top {
-      position: fixed;
-      right: 24px;
-      bottom: 24px;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--bg-elevated);
-      color: var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(8px);
-      pointer-events: none;
-      transition: opacity 0.2s, transform 0.2s, background 0.15s;
-      z-index: 35;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-    }
-
-    .scroll-top.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .scroll-top:hover {
-      background: var(--brand-red);
-      color: #fff;
-      border-color: var(--brand-red);
-    }
-
-    .scroll-top svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-    }
-
-    /* ===== Responsive & Drawer Behavior ===== */
-    @media (max-width: 1024px) {
-      .yt-sidebar {
-        transform: translateX(-100%);
-        width: var(--sidebar-w) !important;
-        padding: 12px 12px 24px !important;
-        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.35);
-      }
-      body.sidebar-open .yt-sidebar {
-        transform: translateX(0);
-      }
-      .yt-main, body.sidebar-mini .yt-main {
-        margin-left: 0;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .yt-chips-bar { padding: 10px 14px; }
-      .yt-feed { padding: 16px 14px 60px; }
-      .deck-count-pill, .search-kbd, .viewer-action-btn span { display: none; }
-      .yt-grid.list-mode .yt-card { flex-direction: column; }
-      .yt-grid.list-mode .yt-thumb { width: 100%; }
-      .viewer-rail { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; scroll-behavior: auto !important; }
     }
   </style>
-  <script>
-    // FOUC 방지 테마 초기화
-    (function () {
-      try {
-        const saved = localStorage.getItem('theme');
-        const isDark = saved ? saved === 'dark' : true;
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      } catch (e) { }
-    })();
-  </script>
 </head>
 
 <body>
 
-  <!-- ===== Top Sticky YouTube Header ===== -->
-  <header class="yt-header">
-    <div class="yt-header-left">
-      <button id="sidebarToggle" class="icon-btn" type="button" aria-label="사이드바 토글" title="메뉴 접기/펼치기">
-        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
-      </button>
-      <a href="#hub" id="logoHome" class="yt-logo" title="Presentation Hub 홈">
-        <span class="yt-logo-badge">
-          <svg viewBox="0 0 16 16"><polygon points="4,2.5 13.5,8 4,13.5"/></svg>
-        </span>
-        <span>Presentation Hub</span>
-        <sup>KR</sup>
-      </a>
-    </div>
-
-    <div class="yt-header-center">
-      <div class="search-box">
-        <svg class="search-lead-icon" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-        </svg>
-        <input id="searchInput" type="search" placeholder="발표 제목, 키워드, 카테고리 검색..." autocomplete="off" aria-label="발표 검색">
-        <button id="searchClear" class="search-clear" type="button" aria-label="검색 지우기">✕</button>
-        <span class="search-kbd">/</span>
-      </div>
-    </div>
-
-    <div class="yt-header-right">
-      <span class="deck-count-pill">
-        <span class="status-dot"></span>
-        <span id="deckCountBadge">40 DECKS</span>
-      </span>
-
-      <button id="viewModeToggle" class="icon-btn" type="button" aria-label="보기 방식 전환" title="그리드 / 리스트 보기 전환">
-        <svg id="iconGrid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-      </button>
-
-      <button id="themeToggle" class="icon-btn" type="button" aria-label="테마 전환" title="다크 / 라이트 테마 전환">
-        <svg class="icon-moon" viewBox="0 0 16 16" fill="currentColor" stroke="none"><path d="M6 1a6.5 6.5 0 1 0 8.5 8.5A5.5 5.5 0 0 1 6 1z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3.2"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.2 1.2M11.8 11.8L13 13M3 13l1.2-1.2M11.8 4.2L13 3"/></svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- Mobile/Tablet Drawer Backdrop -->
-  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-
-  <!-- ===== Main YouTube Layout (Sidebar + Content) ===== -->
-  <div class="yt-layout">
-
-    <!-- Left Collapsible Sidebar -->
-    <aside class="yt-sidebar" id="sidebar" aria-label="카테고리 및 스타일 내비게이션">
-      <div class="side-group" id="sideMainGroup">
-        <!-- JS 렌더링 -->
-      </div>
-
-      <div class="side-divider"></div>
-      <div class="side-heading">주제별 채널</div>
-      <div class="side-group" id="sideCatGroup">
-        <!-- JS 렌더링 -->
-      </div>
-
-      <div class="side-divider"></div>
-      <div class="side-footer">
-        <b>단축키 가이드</b>
-        <div><kbd>/</kbd> 또는 <kbd>⌘K</kbd> 즉시 검색</div>
-        <div><kbd>ESC</kbd> 발표 종료 후 허브 복귀</div>
-        <div><kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동</div>
-        <div><kbd>G</kbd> 슬라이드 번호 점프</div>
-      </div>
-    </aside>
-
-    <!-- Main Feed -->
-    <div class="yt-main">
-
-      <!-- Sticky Chips Bar -->
-      <div class="yt-chips-bar">
-        <div class="chips-left" id="chipBar">
-          <!-- JS 렌더링 -->
+  <div id="hub">
+    <section class="index" aria-label="발표자료 목록">
+      <div class="index-head">
+        <div class="brand">
+          <h1>Presentation Hub</h1>
+          <span class="count" id="count"></span>
         </div>
-        <div class="chips-right">
-          <select id="sortSelect" class="sort-select" aria-label="정렬 기준">
-            <option value="latest">최신 등록순</option>
-            <option value="slides-desc">슬라이드 많은 순</option>
-            <option value="slides-asc">슬라이드 적은 순</option>
-            <option value="title">제목 가나다순</option>
+
+        <label class="search" id="searchBox">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input id="q" type="search" placeholder="제목이나 키워드로 찾기" autocomplete="off" aria-label="발표자료 검색">
+          <button class="clear" id="qClear" type="button" aria-label="검색어 지우기">지우기</button>
+          <kbd>/</kbd>
+        </label>
+
+        <div class="filters">
+          <div class="tabs" id="tabs" role="group" aria-label="주제"></div>
+          <select class="style-select" id="styleSel" aria-label="스타일">
+            <option value="all">모든 스타일</option>
+            <option value="CINEMATIC">시네마틱</option>
+            <option value="MOTION GRAPHICS">모션그래픽</option>
+            <option value="BRIEFING">브리핑</option>
+            <option value="INTERACTIVE">인터랙티브</option>
           </select>
         </div>
       </div>
 
-      <!-- 16:9 Thumbnail Grid -->
-      <main class="yt-feed">
-        <div class="filter-status" id="filterStatus">
-          <span id="filterStatusText"></span>
-          <button type="button" class="reset-filter-btn" id="resetFilterBtn">필터 초기화 ↺</button>
+      <div class="list" id="list"></div>
+      <div class="empty" id="empty">
+        <p>찾는 발표자료가 없습니다. 다른 단어로 찾거나 필터를 해제하세요.</p>
+        <button type="button" id="resetBtn">필터 해제</button>
+      </div>
+    </section>
+
+    <section class="stage" aria-label="미리보기">
+      <div class="stage-inner">
+        <div class="screen" id="screen" role="button" tabindex="0" aria-label="선택한 발표 시작">
+          <span class="screen-hint">눌러서 발표 시작</span>
         </div>
-
-        <div class="yt-grid" id="cardGrid">
-          <!-- JS 렌더링 -->
-        </div>
-
-        <div class="empty-state" id="emptyState">
-          <div>검색어 또는 선택한 필터 조건에 일치하는 발표 자료가 없습니다.</div>
-          <button type="button" class="reset-filter-btn" id="emptyResetBtn">전체 발표 목록 보기 ↺</button>
-        </div>
-      </main>
-
-    </div>
-  </div>
-
-  <!-- Scroll Top Button -->
-  <button id="scrollTop" class="scroll-top" type="button" aria-label="맨 위로" title="맨 위로 이동">
-    <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-  </button>
-
-  <!-- ===== Fullscreen Presentation Viewer ===== -->
-  <section id="viewer" aria-label="발표 전체 화면 뷰어">
-    <div class="viewer-bar">
-      <button class="back-btn" id="viewerBack" type="button">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-        <span>Hub 돌아가기 (ESC)</span>
-      </button>
-
-      <span class="viewer-pos" id="viewerPos">01 / 40</span>
-
-      <nav class="viewer-rail" id="viewerRail"></nav>
-
-      <div class="viewer-controls-right">
-        <a id="viewerNewTab" class="viewer-action-btn" href="#" target="_blank" rel="noopener" title="새 탭에서 단독 창으로 열기">
-          <svg viewBox="0 0 24 24"><path d="M14 3h7v7M10 14L21 3M21 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h6"/></svg>
-          <span>새 탭 열기</span>
-        </a>
-        <button id="viewerFullscreen" class="viewer-action-btn" type="button" title="전체화면 토글">
-          <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-          <span>전체화면</span>
-        </button>
-        <div class="viewer-step">
-          <button id="viewerPrev" type="button" aria-label="이전 발표" title="이전 발표자료"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <button id="viewerNext" type="button" aria-label="다음 발표" title="다음 발표자료"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <div class="info">
+          <div class="tags" id="pTags"></div>
+          <h2 id="pTitle"></h2>
+          <p class="hook" id="pHook"></p>
+          <p class="desc" id="pDesc"></p>
+          <div class="actions">
+            <button class="btn btn-primary" id="pOpen" type="button">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5l9.5 5.5L4 13.5z"/></svg>
+              발표 시작
+            </button>
+            <a class="btn btn-ghost" id="pNewTab" href="#" target="_blank" rel="noopener">새 탭에서 열기</a>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+  </div>
 
-    <div class="viewer-stage" id="viewerStage">
-      <!-- 동적 iframe 컨테이너 -->
+  <section id="viewer" aria-label="발표 화면">
+    <div class="vbar">
+      <button class="vbtn" id="vBack" type="button" title="목록으로 (Esc)">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg><span>목록</span>
+      </button>
+      <div class="vtitle" id="vTitle"></div>
+      <span class="vpos" id="vPos"></span>
+      <button class="vbtn" id="vPrev" type="button" aria-label="이전 발표자료" title="이전 발표자료">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="vbtn" id="vNext" type="button" aria-label="다음 발표자료" title="다음 발표자료">
+        <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <a class="vbtn" id="vNewTab" href="#" target="_blank" rel="noopener" title="새 탭에서 열기">
+        <svg viewBox="0 0 24 24"><path d="M14 4h6v6M10 14L20 4M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg><span>새 탭</span>
+      </a>
+      <button class="vbtn" id="vFull" type="button" title="전체화면">
+        <svg viewBox="0 0 24 24"><path d="M8 3H4v4M20 7V3h-4M16 21h4v-4M4 17v4h4"/></svg><span>전체화면</span>
+      </button>
     </div>
+    <div class="vstage" id="vStage"></div>
   </section>
 
   <script>
-    const CAT_COLORS = {
-      'AI': 'var(--cat-ai)',
-      '기획': 'var(--cat-plan)',
-      '정책': 'var(--cat-policy)',
-      '라이프': 'var(--cat-life)'
-    };
+    const CATS = ['AI', '기획', '정책', '라이프'];
+    const CAT_COLORS = { 'AI': 'var(--cat-ai)', '기획': 'var(--cat-plan)', '정책': 'var(--cat-policy)', '라이프': 'var(--cat-life)' };
+    const CAT_LABELS = { 'AI': '인공지능', '기획': 'R&D 기획', '정책': '정책', '라이프': '라이프' };
+    const STYLE_LABELS = { 'CINEMATIC': '시네마틱', 'MOTION GRAPHICS': '모션그래픽', 'BRIEFING': '브리핑', 'MCKINSEY': '브리핑', 'INTERACTIVE': '인터랙티브' };
 
-    const CAT_LABELS = {
-      'AI': 'AI · 인공지능',
-      '기획': '기획 · R&D 전략',
-      '정책': '정책 · 거버넌스',
-      '라이프': '라이프 · 웰니스'
-    };
-
-    // 발표 목록 데이터 (루트 + briefing/ 폴더의 HTML 발표자료 전수 수록)
-    // hook 필드는 16:9 썸네일 내부에 표시될 핵심 포스터 카피(아래 제목과 중복 방지)
+    // 발표 목록 (위에 있을수록 최근 등록). 새 발표는 배열 맨 앞에 한 항목을 추가한다.
     const DECKS = [
       // ── briefing/ : 인터랙티브 모션 브리핑 · 정책 브리핑 (구 261116 TESLA 프로젝트) ──
       {
@@ -2066,287 +1135,158 @@
     ];
 
     const $ = id => document.getElementById(id);
-    const pad = n => String(n + 1).padStart(2, '0');
-    const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const fine = matchMedia('(hover: hover) and (min-width: 961px)');
 
-    let filterCat = '전체';
-    let filterStyle = 'all'; // all, CINEMATIC, BRIEFING, MCKINSEY, INTERACTIVE
-    let sortBy = 'latest';   // latest, slides-desc, slides-asc, title
+    let cat = 'all';
+    let style = 'all';
+    let selectedId = null;
     let currentId = null;
-    let isListMode = false;
+    let shown = [];
 
-    function thumbUrl(id) {
-      if (!id) return '';
-      if (id.includes('/')) return id; // 로컬 이미지 경로 (예: briefing/assets/...)
-      return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=720&q=80`;
+    function thumbUrl(t, w = 480) {
+      if (!t) return '';
+      if (t.includes('/')) return t;
+      return `https://images.unsplash.com/${t}?auto=format&fit=crop&w=${w}&q=75`;
     }
+    // 목록에는 짧은 제목: [모션그래픽] 같은 접두어와 ' — ' 뒤 부제를 뗀다.
+    const shortTitle = t => t.replace(/^\[[^\]]+\]\s*/, '').split(' — ')[0];
+    const fullTitle = t => t.replace(/^\[[^\]]+\]\s*/, '');
+    const styleOf = d => STYLE_LABELS[d.style] || '인터랙티브';
 
-    function parseSlideCount(s) {
-      const m = String(s).match(/\d+/);
-      return m ? parseInt(m[0], 10) : 0;
-    }
-
-    // 검색어 하이라이트 헬퍼
-    function highlightText(text, query) {
+    function mark(text, q) {
       const safe = esc(text);
-      if (!query) return safe;
-      const escapedQ = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      return safe.replace(new RegExp(`(${escapedQ})`, 'gi'), '<mark class="hl">$1</mark>');
+      if (!q) return safe;
+      const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return safe.replace(re, '<mark>$1</mark>');
     }
 
-    // 좌측 사이드바 렌더링
-    function renderSidebar() {
-      const total = DECKS.length;
-      const cineCount = DECKS.filter(d => d.style === 'CINEMATIC').length;
-      const briefCount = DECKS.filter(d => d.style === 'BRIEFING' || d.style === 'MCKINSEY').length;
-      const interCount = DECKS.filter(d => d.style === 'INTERACTIVE').length;
-
-      $('sideMainGroup').innerHTML = `
-        <button class="side-btn ${filterCat === '전체' && filterStyle === 'all' ? 'active' : ''}" type="button" data-nav="all">
-          <span class="side-btn-left">
-            <svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1v-9.5z" stroke-linejoin="round"/></svg>
-            <span>홈 (전체)</span>
-          </span>
-          <span class="side-count">${total}</span>
-        </button>
-        <button class="side-btn ${filterStyle === 'CINEMATIC' ? 'active' : ''}" type="button" data-style="CINEMATIC">
-          <span class="side-btn-left">
-            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2.5"/><polygon points="10,8.5 16,12 10,15.5" fill="currentColor" stroke="none"/></svg>
-            <span>시네마틱 덱</span>
-          </span>
-          <span class="side-count">${cineCount}</span>
-        </button>
-        <button class="side-btn ${filterStyle === 'BRIEFING' ? 'active' : ''}" type="button" data-style="BRIEFING">
-          <span class="side-btn-left">
-            <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg>
-            <span>브리핑 · 맥킨지</span>
-          </span>
-          <span class="side-count">${briefCount}</span>
-        </button>
-        <button class="side-btn ${filterStyle === 'INTERACTIVE' ? 'active' : ''}" type="button" data-style="INTERACTIVE">
-          <span class="side-btn-left">
-            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            <span>다크 인터랙티브</span>
-          </span>
-          <span class="side-count">${interCount}</span>
-        </button>
-      `;
-
-      const cats = ['전체', 'AI', '기획', '정책', '라이프'];
-      $('sideCatGroup').innerHTML = cats.map(cat => {
-        const count = cat === '전체' ? total : DECKS.filter(d => d.cat === cat).length;
-        const color = cat === '전체' ? 'var(--ink-subtle)' : CAT_COLORS[cat];
-        const label = cat === '전체' ? '전체 카테고리' : (CAT_LABELS[cat] || cat);
-        return `
-          <button class="side-btn ${filterCat === cat ? 'active' : ''}" type="button" data-cat="${cat}">
-            <span class="side-btn-left">
-              <span class="side-cat-dot" style="background:${color};"></span>
-              <span>${label}</span>
-            </span>
-            <span class="side-count">${count}</span>
-          </button>
-        `;
-      }).join('');
-    }
-
-    // 상단 칩 바 렌더링
-    function renderChips() {
-      const cats = ['전체', 'AI', '기획', '정책', '라이프'];
-      const catChips = cats.map(cat => {
-        const count = cat === '전체' ? DECKS.length : DECKS.filter(d => d.cat === cat).length;
-        return `
-          <button class="chip-btn ${filterCat === cat ? 'active' : ''}" type="button" data-cat="${cat}">
-            <span>${cat}</span>
-            <b>${count}</b>
-          </button>
-        `;
-      }).join('');
-
-      const styleChips = `
-        <span class="chip-sep"></span>
-        <button class="chip-btn ${filterStyle === 'all' ? 'active' : ''}" type="button" data-style="all">전체 스타일</button>
-        <button class="chip-btn ${filterStyle === 'CINEMATIC' ? 'active' : ''}" type="button" data-style="CINEMATIC">🎬 시네마틱</button>
-        <button class="chip-btn ${filterStyle === 'BRIEFING' ? 'active' : ''}" type="button" data-style="BRIEFING">📊 브리핑 · 맥킨지</button>
-        <button class="chip-btn ${filterStyle === 'INTERACTIVE' ? 'active' : ''}" type="button" data-style="INTERACTIVE">⚡ 인터랙티브</button>
-      `;
-
-      $('chipBar').innerHTML = catChips + styleChips;
-    }
-
-    // 덱 필터링 및 정렬
-    function getFilteredDecks() {
-      const q = $('searchInput').value.trim().toLowerCase();
-      const filtered = DECKS.filter(d => {
-        const matchesCat = filterCat === '전체' || d.cat === filterCat;
-        const matchesStyle = filterStyle === 'all'
-          ? true
-          : filterStyle === 'BRIEFING'
-            ? (d.style === 'BRIEFING' || d.style === 'MCKINSEY')
-            : d.style === filterStyle;
-        const text = (d.title + ' ' + (d.hook || '') + ' ' + d.desc + ' ' + d.cat + ' ' + (d.style || '')).toLowerCase();
-        const matchesQuery = !q || text.includes(q);
-        return matchesCat && matchesStyle && matchesQuery;
+    function filtered() {
+      const q = $('q').value.trim().toLowerCase();
+      return DECKS.filter(d => {
+        if (cat !== 'all' && d.cat !== cat) return false;
+        if (style !== 'all' && styleOf(d) !== STYLE_LABELS[style]) return false;
+        if (!q) return true;
+        return (d.title + ' ' + (d.hook || '') + ' ' + d.desc + ' ' + d.cat + ' ' + styleOf(d)).toLowerCase().includes(q);
       });
-
-      if (sortBy === 'slides-desc') {
-        filtered.sort((a, b) => parseSlideCount(b.slides) - parseSlideCount(a.slides));
-      } else if (sortBy === 'slides-asc') {
-        filtered.sort((a, b) => parseSlideCount(a.slides) - parseSlideCount(b.slides));
-      } else if (sortBy === 'title') {
-        filtered.sort((a, b) => a.title.localeCompare(b.title, 'ko'));
-      }
-      return filtered;
     }
 
-    // 유튜브 16:9 썸네일 그리드 렌더링
-    function renderCards() {
-      const q = $('searchInput').value.trim();
-      const filtered = getFilteredDecks();
-
-      // 필터 상태 배너 업데이트
-      const isFiltered = filterCat !== '전체' || filterStyle !== 'all' || !!q || sortBy !== 'latest';
-      $('filterStatus').classList.toggle('show', isFiltered);
-      if (isFiltered) {
-        const parts = [];
-        if (filterCat !== '전체') parts.push(`카테고리: <b>${esc(filterCat)}</b>`);
-        if (filterStyle !== 'all') parts.push(`스타일: <b>${esc(filterStyle)}</b>`);
-        if (q) parts.push(`검색어: <b>"${esc(q)}"</b>`);
-        parts.push(`표시 중: <b>${filtered.length}개</b> / 전체 ${DECKS.length}개`);
-        $('filterStatusText').innerHTML = parts.join(' &nbsp;·&nbsp; ');
-      }
-
-      $('cardGrid').innerHTML = filtered.map(d => {
-        const catColor = CAT_COLORS[d.cat] || 'var(--primary)';
-        const origIdx = DECKS.indexOf(d);
-        const idx = pad(origIdx);
-        const isNew = origIdx < 3;
-        const styleKey = (d.style || 'INTERACTIVE').toLowerCase();
-        const styleLabel = d.style || 'INTERACTIVE';
-        const bgImg = d.thumb ? `background-image: url('${thumbUrl(d.thumb)}');` : '';
-        const posterHook = d.hook || d.title;
-
-        return `
-          <article class="yt-card" data-id="${d.id}">
-            <div class="yt-thumb">
-              <div class="yt-thumb-img" style="${bgImg}"></div>
-              <div class="yt-thumb-shade"></div>
-
-              <div class="yt-thumb-top">
-                <div class="yt-top-left-badges">
-                  <span class="yt-ep-badge">#${idx}</span>
-                  ${isNew ? '<span class="yt-new-badge">NEW</span>' : ''}
-                </div>
-                <span class="yt-style-badge ${styleKey}">${esc(styleLabel)}</span>
-              </div>
-
-              <div class="yt-thumb-poster">
-                <span class="yt-thumb-cat">${esc(d.cat)} · ${esc(styleLabel)}</span>
-                <div class="yt-thumb-headline">${highlightText(posterHook, q)}</div>
-              </div>
-
-              <span class="yt-duration">${esc(d.slides)}</span>
-
-              <div class="yt-play-hover">
-                <div class="yt-play-circle">
-                  <svg viewBox="0 0 16 16"><polygon points="4,2.5 13.5,8 4,13.5"/></svg>
-                </div>
-              </div>
-
-              <div class="yt-thumb-bar"><i></i></div>
-            </div>
-
-            <div class="yt-meta">
-              <div class="yt-avatar" style="background:${catColor};" title="${esc(d.cat)} 채널">
-                ${esc(d.cat === '라이프' ? 'LIFE' : d.cat)}
-              </div>
-              <div class="yt-info">
-                <h3 class="yt-title">${highlightText(d.title, q)}</h3>
-                <div class="yt-subline">
-                  <span>${esc(CAT_LABELS[d.cat] || d.cat)}</span>
-                  <svg class="yt-verified" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
-                  <span>•</span>
-                  <span>${d.isCinematic ? '시네마틱 16:9' : styleLabel + ' 덱'}</span>
-                  <span>•</span>
-                  <span>슬라이드 ${esc(d.slides)}</span>
-                </div>
-                <p class="yt-desc">${highlightText(d.desc, q)}</p>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join('');
-
-      $('emptyState').classList.toggle('show', filtered.length === 0);
+    function renderTabs() {
+      const items = [['all', '전체', DECKS.length], ...CATS.map(c => [c, CAT_LABELS[c], DECKS.filter(d => d.cat === c).length])];
+      $('tabs').innerHTML = items.map(([key, label]) =>
+        `<button class="tab" type="button" data-cat="${key}" aria-pressed="${cat === key}">${label}</button>`).join('');
     }
 
-    function resetAllFilters() {
-      filterCat = '전체';
-      filterStyle = 'all';
-      sortBy = 'latest';
-      $('sortSelect').value = 'latest';
-      $('searchInput').value = '';
-      $('searchClear').classList.remove('visible');
-      refreshUI();
-    }
+    function renderList() {
+      const q = $('q').value.trim();
+      shown = filtered();
+      const groups = CATS.map(c => [c, shown.filter(d => d.cat === c)]).filter(([, ds]) => ds.length);
 
-    function refreshUI() {
-      renderSidebar();
-      renderChips();
-      renderCards();
-    }
-
-    // 뷰어 빌드 및 열기
-    function buildViewer() {
-      $('viewerRail').innerHTML = DECKS.map(d => `
-        <button class="rail-pill" type="button" data-id="${d.id}">
-          <span class="cat-dot" style="background:${CAT_COLORS[d.cat] || '#fff'};"></span>
-          <span>${esc(d.title)}</span>
-        </button>
+      $('list').innerHTML = groups.map(([c, ds]) => `
+        <div class="group-title"><i style="background:${CAT_COLORS[c]}"></i>${CAT_LABELS[c]}<span>${ds.length}</span></div>
+        ${ds.map(d => `
+          <button class="row" type="button" data-id="${d.id}">
+            <span class="row-thumb" style="background-image:url('${thumbUrl(d.thumb, 240)}')"></span>
+            <span class="row-title">${mark(shortTitle(d.title), q)}</span>
+            <span class="row-len">${esc(d.slides)}</span>
+          </button>`).join('')}
       `).join('');
 
-      $('viewerStage').innerHTML = DECKS.map(d => `
-        <div class="viewer-frame" id="frame-${d.id}">
-          <iframe id="iframe-${d.id}" title="${esc(d.title)}"></iframe>
-        </div>
-      `).join('');
+      // 화면 순서(그룹 순)대로 다시 정렬해 키보드 이동과 맞춘다.
+      shown = groups.flatMap(([, ds]) => ds);
+      $('empty').classList.toggle('show', shown.length === 0);
+      $('count').textContent = shown.length === DECKS.length ? `${DECKS.length}개` : `${shown.length} / ${DECKS.length}개`;
+
+      if (!shown.some(d => d.id === selectedId)) selectedId = shown[0] ? shown[0].id : null;
+      select(selectedId, { scroll: false });
     }
 
+    // ---- 미리보기 (프로젝터) ----
+    let liveTimer = null;
+    function select(id, { scroll = true, live = true } = {}) {
+      selectedId = id;
+      document.querySelectorAll('.row').forEach(r => r.classList.toggle('is-selected', r.dataset.id === id));
+      const d = DECKS.find(x => x.id === id);
+      if (!d) return;
+
+      if (scroll) {
+        const row = document.querySelector(`.row[data-id="${id}"]`);
+        if (row) row.scrollIntoView({ block: 'nearest' });
+      }
+
+      $('pTags').innerHTML = `
+        <span class="cat"><i style="background:${CAT_COLORS[d.cat]}"></i>${CAT_LABELS[d.cat]}</span>
+        <span>${styleOf(d)}</span>
+        <span>${esc(d.slides)}</span>`;
+      $('pTitle').textContent = fullTitle(d.title);
+      $('pHook').textContent = d.hook || '';
+      $('pDesc').textContent = d.desc || '';
+      $('pNewTab').href = d.src;
+
+      const screen = $('screen');
+      screen.style.backgroundImage = `url('${thumbUrl(d.thumb, 1280)}')`;
+      const old = screen.querySelector('iframe');
+      if (old) old.remove();
+
+      clearTimeout(liveTimer);
+      if (live && fine.matches) liveTimer = setTimeout(() => loadLive(d), 450);
+    }
+
+    // 잠시 머물면 실제 덱 첫 장을 축소해 띄운다 (포인터·포커스는 받지 않음).
+    function loadLive(d) {
+      if (selectedId !== d.id || currentId) return;
+      const screen = $('screen');
+      const f = document.createElement('iframe');
+      f.title = `${shortTitle(d.title)} 미리보기`;
+      f.tabIndex = -1;
+      f.setAttribute('aria-hidden', 'true');
+      f.addEventListener('load', () => {
+        try {
+          f.contentWindow.document.querySelectorAll('video, audio').forEach(m => { m.muted = true; });
+        } catch (e) { }
+        f.classList.add('ready');
+      });
+      f.src = d.src;
+      screen.prepend(f);
+      fitLive();
+    }
+    function fitLive() {
+      const screen = $('screen');
+      const f = screen.querySelector('iframe');
+      if (f) f.style.transform = `scale(${screen.clientWidth / 1920})`;
+    }
+    new ResizeObserver(fitLive).observe($('screen'));
+
+    // ---- 발표 화면 ----
     function openDeck(id, push = true) {
-      const idx = DECKS.findIndex(d => d.id === id);
-      if (idx < 0) return showHub(push);
-
-      const deck = DECKS[idx];
+      const d = DECKS.find(x => x.id === id);
+      if (!d) return showHub(push);
       currentId = id;
+      clearTimeout(liveTimer);
+      const live = $('screen').querySelector('iframe');
+      if (live) live.remove();
+
       document.body.classList.add('viewing');
-      document.body.classList.remove('sidebar-open');
+      const order = shown.length ? shown : DECKS;
+      const i = order.findIndex(x => x.id === id);
+      $('vTitle').textContent = shortTitle(d.title);
+      $('vPos').textContent = i >= 0 ? `${i + 1} / ${order.length}` : '';
+      $('vNewTab').href = d.src;
+      document.title = `${shortTitle(d.title)} · Presentation Hub`;
 
-      document.querySelectorAll('.rail-pill').forEach(p => p.classList.toggle('active', p.dataset.id === id));
-      document.querySelectorAll('.viewer-frame').forEach(f => f.classList.toggle('active', f.id === `frame-${id}`));
-
-      $('viewerPos').innerHTML = `<b>${pad(idx)}</b> / ${String(DECKS.length).padStart(2, '0')}`;
-      $('viewerNewTab').href = deck.src;
-      document.title = `${deck.title} · Presentation Hub`;
-
-      const frame = $(`iframe-${id}`);
-      if (!frame.getAttribute('src')) {
-        frame.addEventListener('load', () => {
-          try {
-            frame.contentWindow.addEventListener('keydown', e => {
-              if (e.key === 'Escape' && currentId) { e.preventDefault(); showHub(); }
-            });
-          } catch (err) { }
-        });
-        frame.src = deck.src;
-      }
-
-      const activePill = document.querySelector('.rail-pill.active');
-      if (activePill) {
-        activePill.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
-      }
-
-      setTimeout(() => {
-        try { frame.contentWindow.focus(); } catch (e) { }
-      }, 150);
+      const f = document.createElement('iframe');
+      f.title = shortTitle(d.title);
+      f.setAttribute('allow', 'fullscreen; autoplay');
+      f.addEventListener('load', () => {
+        try {
+          f.contentWindow.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && currentId) { e.preventDefault(); showHub(); }
+          });
+        } catch (e) { }
+        try { f.contentWindow.focus(); } catch (e) { }
+      });
+      f.src = d.src;
+      $('vStage').replaceChildren(f);
 
       if (push) history.replaceState(null, '', `#tab=${id}`);
     }
@@ -2356,181 +1296,110 @@
       currentId = null;
       document.body.classList.remove('viewing');
       document.title = 'Presentation Hub';
-      if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
-        document.activeElement.blur();
-        window.focus();
-      }
-
-      if (last) {
-        const lastCard = document.querySelector(`.yt-card[data-id="${last}"]`);
-        if (lastCard) lastCard.scrollIntoView({ block: 'nearest' });
-      }
-
+      $('vStage').replaceChildren();
+      if (last && shown.some(d => d.id === last)) select(last);
+      else if (selectedId) select(selectedId, { scroll: false });
       if (push) history.replaceState(null, '', '#hub');
     }
 
     function stepDeck(dir) {
-      const idx = DECKS.findIndex(d => d.id === currentId);
-      if (idx < 0) return;
-      const nextIdx = (idx + dir + DECKS.length) % DECKS.length;
-      openDeck(DECKS[nextIdx].id);
+      const order = shown.length ? shown : DECKS;
+      const i = order.findIndex(d => d.id === currentId);
+      const next = order[((i < 0 ? 0 : i) + dir + order.length) % order.length];
+      selectedId = next.id;
+      openDeck(next.id);
     }
 
-    function routeFromHash() {
+    function route() {
       const m = location.hash.match(/#tab=([^&]+)/);
-      if (m) {
-        openDeck(decodeURIComponent(m[1]), false);
-      } else {
-        showHub(false);
-      }
+      if (m) openDeck(decodeURIComponent(m[1]), false);
+      else if (currentId) showHub(false);
     }
 
-    // 사이드바 접기/펼치기 (데스크탑은 미니 모드 토글, 태블릿/모바일은 드로어 토글)
-    $('sidebarToggle').addEventListener('click', () => {
-      if (window.innerWidth <= 1024) {
-        document.body.classList.toggle('sidebar-open');
-      } else {
-        document.body.classList.toggle('sidebar-mini');
-      }
+    // ---- 이벤트 ----
+    $('tabs').addEventListener('click', e => {
+      const b = e.target.closest('.tab');
+      if (!b) return;
+      cat = b.dataset.cat;
+      renderTabs();
+      renderList();
+      $('list').scrollTop = 0;
     });
+    $('styleSel').addEventListener('change', e => { style = e.target.value; renderList(); });
 
-    $('sidebarBackdrop').addEventListener('click', () => {
-      document.body.classList.remove('sidebar-open');
+    $('q').addEventListener('input', () => {
+      $('searchBox').classList.toggle('has-q', !!$('q').value);
+      renderList();
     });
-
-    // 로고 클릭 시 전체 보기 초기화
-    $('logoHome').addEventListener('click', e => {
+    $('qClear').addEventListener('click', e => {
       e.preventDefault();
-      resetAllFilters();
-      showHub();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      $('q').value = '';
+      $('searchBox').classList.remove('has-q');
+      renderList();
+      $('q').focus();
+    });
+    $('resetBtn').addEventListener('click', () => {
+      cat = 'all'; style = 'all';
+      $('styleSel').value = 'all';
+      $('q').value = '';
+      $('searchBox').classList.remove('has-q');
+      renderTabs(); renderList();
     });
 
-    // 그리드 / 리스트 보기 토글
-    $('viewModeToggle').addEventListener('click', () => {
-      isListMode = !isListMode;
-      $('cardGrid').classList.toggle('list-mode', isListMode);
+    $('list').addEventListener('click', e => {
+      const r = e.target.closest('.row');
+      if (r) openDeck(r.dataset.id);
+    });
+    $('list').addEventListener('mouseover', e => {
+      const r = e.target.closest('.row');
+      if (r && fine.matches && r.dataset.id !== selectedId) select(r.dataset.id, { scroll: false });
+    });
+    $('list').addEventListener('focusin', e => {
+      const r = e.target.closest('.row');
+      if (r && r.dataset.id !== selectedId) select(r.dataset.id, { scroll: false });
     });
 
-    // 테마 전환
-    $('themeToggle').addEventListener('click', () => {
-      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
-      const next = cur === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
+    $('screen').addEventListener('click', () => selectedId && openDeck(selectedId));
+    $('screen').addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && selectedId) { e.preventDefault(); openDeck(selectedId); }
     });
+    $('pOpen').addEventListener('click', () => selectedId && openDeck(selectedId));
 
-    // 좌측 사이드바 클릭 이벤트
-    $('sidebar').addEventListener('click', e => {
-      const btn = e.target.closest('.side-btn');
-      if (!btn) return;
-      if (btn.dataset.nav === 'all') {
-        filterCat = '전체';
-        filterStyle = 'all';
-      } else if (btn.dataset.style) {
-        filterStyle = btn.dataset.style;
-      } else if (btn.dataset.cat) {
-        filterCat = btn.dataset.cat;
-      }
-      document.body.classList.remove('sidebar-open');
-      refreshUI();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // 상단 칩 바 클릭 이벤트
-    $('chipBar').addEventListener('click', e => {
-      const btn = e.target.closest('.chip-btn');
-      if (!btn) return;
-      if (btn.dataset.cat) {
-        filterCat = btn.dataset.cat;
-      } else if (btn.dataset.style) {
-        filterStyle = btn.dataset.style;
-      }
-      refreshUI();
-    });
-
-    // 정렬 변경
-    $('sortSelect').addEventListener('change', e => {
-      sortBy = e.target.value;
-      renderCards();
-    });
-
-    // 필터 초기화 버튼
-    $('resetFilterBtn').addEventListener('click', resetAllFilters);
-    $('emptyResetBtn').addEventListener('click', resetAllFilters);
-
-    // 검색 입력 이벤트
-    $('searchInput').addEventListener('input', e => {
-      $('searchClear').classList.toggle('visible', !!e.target.value);
-      renderCards();
-    });
-
-    $('searchClear').addEventListener('click', () => {
-      $('searchInput').value = '';
-      $('searchClear').classList.remove('visible');
-      $('searchInput').focus();
-      renderCards();
-    });
-
-    // 카드 클릭 시 뷰어 열기
-    $('cardGrid').addEventListener('click', e => {
-      const card = e.target.closest('.yt-card');
-      if (card) openDeck(card.dataset.id);
-    });
-
-    $('viewerRail').addEventListener('click', e => {
-      const pill = e.target.closest('.rail-pill');
-      if (pill) openDeck(pill.dataset.id);
-    });
-
-    $('viewerBack').addEventListener('click', () => showHub());
-    $('viewerPrev').addEventListener('click', () => stepDeck(-1));
-    $('viewerNext').addEventListener('click', () => stepDeck(1));
-    $('viewerFullscreen').addEventListener('click', () => {
+    $('vBack').addEventListener('click', () => showHub());
+    $('vPrev').addEventListener('click', () => stepDeck(-1));
+    $('vNext').addEventListener('click', () => stepDeck(1));
+    $('vFull').addEventListener('click', () => {
       document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
     });
 
-    window.addEventListener('scroll', () => {
-      $('scrollTop').classList.toggle('visible', window.scrollY > 300);
-    });
-    $('scrollTop').addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
     window.addEventListener('keydown', e => {
-      if (!currentId && e.target !== $('searchInput') && (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
+      if (currentId) {
+        if (e.key === 'Escape') { e.preventDefault(); showHub(); }
+        return;
+      }
+      const typing = e.target === $('q');
+      if (!typing && (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
+        e.preventDefault(); $('q').focus(); return;
+      }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        if (!shown.length) return;
         e.preventDefault();
-        $('searchInput').focus();
-        return;
+        const i = shown.findIndex(d => d.id === selectedId);
+        const n = Math.min(shown.length - 1, Math.max(0, i + (e.key === 'ArrowDown' ? 1 : -1)));
+        select(shown[n].id);
+        if (!typing) document.querySelector(`.row[data-id="${shown[n].id}"]`)?.focus({ preventScroll: true });
+      } else if (e.key === 'Enter' && typing && selectedId) {
+        e.preventDefault(); openDeck(selectedId);
+      } else if (e.key === 'Escape' && typing) {
+        $('q').blur();
       }
-
-      if (!currentId) {
-        if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
-          document.body.classList.remove('sidebar-open');
-        }
-        return;
-      }
-
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        showHub();
-        return;
-      }
-
-      try {
-        $(`iframe-${currentId}`).contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
-          key: e.key, code: e.code, keyCode: e.keyCode, which: e.which, bubbles: true
-        }));
-      } catch (err) { }
     });
 
-    window.addEventListener('hashchange', routeFromHash);
+    window.addEventListener('hashchange', route);
 
-    // 초기화
-    if ($('deckCountBadge')) $('deckCountBadge').textContent = `${DECKS.length} DECKS`;
-    refreshUI();
-    buildViewer();
-    routeFromHash();
+    renderTabs();
+    renderList();
+    route();
   </script>
 </body>
 
