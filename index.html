@@ -1387,9 +1387,106 @@
       '라이프': '라이프 · 웰니스'
     };
 
-    // 발표 목록 데이터 (워크스페이스 내 전체 36개 HTML 발표자료 전수 수록)
+    // 발표 목록 데이터 (루트 + briefing/ 폴더의 HTML 발표자료 전수 수록)
     // hook 필드는 16:9 썸네일 내부에 표시될 핵심 포스터 카피(아래 제목과 중복 방지)
     const DECKS = [
+      // ── briefing/ : 인터랙티브 모션 브리핑 · 정책 브리핑 (구 261116 TESLA 프로젝트) ──
+      {
+        id: 'briefing-national-disaster-ai-rnd',
+        src: 'briefing/national_disaster_ai_rnd_strategy_briefing.html',
+        cat: '기획',
+        title: '국가 복합·신흥재난 AI 선제대응 기술수준 진단 및 차세대 R&D 전략기획',
+        hook: '행정안전부 고유임무 전략사업 발굴 · 기술수준 진단 · 차세대 R&D 로드맵',
+        desc: '복합·신흥재난에 대한 AI 선제대응 기술수준을 진단하고 행정안전부 고유임무 전략사업과 차세대 R&D 추진전략을 Ⅰ~Ⅳ장 정책 보고서 구조로 정리한 15쪽 정책 브리핑.',
+        slides: '15장',
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'photo-1591552265137-99c59d9f4927'
+      },
+      {
+        id: 'briefing-ai-decision-model',
+        src: 'briefing/ai_decision_model_briefing.html',
+        cat: 'AI',
+        title: '인공지능 판단모델 (AI Decision & Reasoning Models) 전략 브리핑',
+        hook: '그럴듯한 생성을 넘어 — 근거 기반으로 판단하는 AI',
+        desc: '생성형 AI를 넘어 판단·추론 모델로 가는 흐름과 도입 전략을 Ⅰ~Ⅳ장 정책 보고서 구조로 정리한 15쪽 브리핑.',
+        slides: '15장',
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'photo-1674027444485-cec3da58eef4'
+      },
+      {
+        id: 'briefing-research-official-ai-policy',
+        src: 'briefing/research_official_ai_policy_briefing.html',
+        cat: '정책',
+        title: '연구직 공무원 AI 역량 정책 브리핑 (정책 보고서형)',
+        hook: '4대 병목 진단 · 4대 핵심역량 · 주 40시간 재배분 · 3단계 인증 트랙',
+        desc: '3개년 업무 변화, 4대 병목 진단, 4대 핵심역량 체계도, 직무 진화 4단계, 주 40시간 재배분 브릿지, 직렬별 특화 역량과 3단계 인증 트랙을 Ⅰ 추진배경 → Ⅳ 이행관리로 재구성한 15쪽 정책 브리핑.',
+        slides: '15장',
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'briefing/assets/official-poster.jpg'
+      },
+      {
+        id: 'briefing-national-rnd-ai-policy',
+        src: 'briefing/national_rnd_ai_policy_briefing.html',
+        cat: '기획',
+        title: '국가 R&D · AI 정책 브리핑 (정책 보고서형)',
+        hook: '병목 진단 행렬 · 비전 체계도 · 성숙도 계단 · 재원 브릿지',
+        desc: '한 장 요약, As-Is → To-Be 병목 진단 행렬, 비전·목표·전략 체계도, 전주기 순환도, 4계층 아키텍처, 성숙도 계단, 재원 폭포 차트, SDL 순환 루프를 담은 15쪽 정책 브리핑.',
+        slides: '15장',
+        isCinematic: false,
+        style: 'BRIEFING',
+        thumb: 'briefing/assets/rnd-poster.jpg'
+      },
+      {
+        id: 'briefing-research-official-ai-competency',
+        src: 'briefing/research_official_ai_competency_briefing.html',
+        cat: '정책',
+        title: '연구직 공무원 · AI 시대의 업무변화와 핵심역량 (인터랙티브)',
+        hook: '15초 모션그래픽 · 바텀 시트 · 단계별 모달 인터랙션',
+        desc: '연구직 공무원의 AI 시대 업무 변화와 핵심역량을 모션그래픽 영상, 레버 연동 차트, 바텀 시트·모달로 풀어낸 15장 인터랙티브 모션 브리핑 원본.',
+        slides: '15장',
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'briefing/assets/official-brand-poster.jpg'
+      },
+      {
+        id: 'briefing-national-rnd-ai-planning',
+        src: 'briefing/national_rnd_policy_ai_planning_briefing.html',
+        cat: '기획',
+        title: '국가 R&D · AI 기반 연구개발 정책 및 기획 (인터랙티브)',
+        hook: '15초 모션그래픽 · 레버 연동 차트 · 3단계 성숙도 모달',
+        desc: '국가 R&D 정책과 AI 기반 연구개발 기획을 모션그래픽 영상, 레버 연동 차트, 바텀 시트·모달로 풀어낸 15장 인터랙티브 모션 브리핑 원본.',
+        slides: '15장',
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'briefing/assets/rnd-brand-poster.jpg'
+      },
+      {
+        id: 'briefing-nvidia-ai-factory-rubin',
+        src: 'briefing/nvidia_ai_factory_rubin_briefing.html',
+        cat: 'AI',
+        title: 'NVIDIA · AI 팩토리와 차세대 Rubin & 피지컬 AI',
+        hook: 'FY24→FY26 매출 $130.5B · Blackwell → Vera Rubin · 피지컬 AI 3-컴퓨터',
+        desc: '3개년 실적 점프 대시보드, 풀스택 4계층 생태계 해자, Blackwell → Blackwell Ultra → Vera Rubin 랙 스케일 레버, 추론 경제학, 소버린 AI, 피지컬 AI 파이프라인을 담은 15장 인터랙티브 모션 브리핑.',
+        slides: '15장',
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'briefing/assets/nvidia-poster.jpg'
+      },
+      {
+        id: 'briefing-tesla-roadster',
+        src: 'briefing/tesla_business_roadster_briefing.html',
+        cat: 'AI',
+        title: 'TESLA · 사업 현황과 신형 Roadster',
+        hook: '3개년 실적 대시보드 · 4대 성장 로드맵 · Roadster 냉가스 추력기',
+        desc: '15초 모션그래픽 영상, 레버 연동 Chart.js 매출 차트와 영업이익 브릿지, 2023~2025 실적 대시보드, Cybercab·Semi·Megapack·Optimus 로드맵, Roadster 3단 사양 레버와 3대 핵심 기술 모달을 담은 11장 인터랙티브 모션 브리핑.',
+        slides: '11장',
+        isCinematic: false,
+        style: 'INTERACTIVE',
+        thumb: 'briefing/assets/tesla-poster.jpg'
+      },
       {
         id: 'uam-evtol-air-mobility-motion',
         src: 'uam_evtol_air_mobility_motion_presentation.html',
@@ -1980,6 +2077,7 @@
 
     function thumbUrl(id) {
       if (!id) return '';
+      if (id.includes('/')) return id; // 로컬 이미지 경로 (예: briefing/assets/...)
       return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=720&q=80`;
     }
 
