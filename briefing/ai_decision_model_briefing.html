@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>인공지능 판단모델 (AI Decision & Reasoning Models) 전략 브리핑</title>
+<meta name="description" content="확률적 생성(System 1)을 넘어 숙고형 추론·인과·시뮬레이션 기반 판단모델(System 2)로의 전환을 패러다임·진단 → 비전·체계 → 핵심 아키텍처 → 거버넌스 순으로 정리한 15쪽 전략 브리핑.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareR.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareB.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareEB.woff2') format('woff2');font-weight:800;font-display:swap}
+
+/* ───────── 디자인 토큰 : 고신뢰 전략 브리핑 (Enhanced Policy & Tech Briefing) ───────── */
+:root{
+  --navy:#0c2340;      /* 구조·제목·체계도 */
+  --navy-deep:#071629; /* 딥 다크 패널 */
+  --blue:#1a5cba;      /* 주 데이터·현재 선택·System 2 추론 */
+  --indigo:#3b4cca;    /* 뉴로심볼릭·심층 아키텍처 포인트 */
+  --teal:#098a83;      /* To-Be·판단모델 적용 성과 */
+  --amber:#c87116;     /* As-Is·병목·주의 */
+  --red:#bf3b35;       /* 리스크·환각·비용 감축 */
+  --ink:#18202f;
+  --body:#364152;
+  --muted:#5e6a7e;
+  --faint:#909bad;
+  --line:#d8dfe9;
+  --line-soft:#e8edf4;
+  --tint:#edf3fc;      /* 파란 틴트 배경 */
+  --teal-tint:#e4f5f3;
+  --amber-tint:#fcf1e5;
+  --paper:#ffffff;
+  --surface:#f8fafd;
+  --canvas:#e4e8f0;
+  --shadow-sm:0 2px 10px rgba(12,35,64,.04);
+  --shadow-md:0 8px 26px rgba(12,35,64,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--canvas);overflow:hidden}
+body{font-family:NanumSquare,'Pretendard','Malgun Gothic',sans-serif;color:var(--ink);word-break:keep-all;overflow-wrap:normal;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+b,strong{font-weight:800}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+
+/* ───────── 1920×1080 고정 스테이지 + 비율 축소 ───────── */
+#viewport{position:fixed;inset:0;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;background:var(--paper);transform-origin:center center;transform:translate(-50%,-50%);box-shadow:0 14px 60px rgba(12,35,64,.22);overflow:hidden}
+
+/* 상단 바 */
+.chrome-top{position:absolute;left:0;right:0;top:0;height:76px;display:flex;align-items:center;padding:0 88px;border-bottom:1px solid var(--line);z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:14px;font-weight:800;font-size:20px;color:var(--navy);letter-spacing:-.3px;min-width:430px}
+.brand i{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--navy),var(--blue));display:grid;place-items:center;color:#fff;font-style:normal;font-size:13px;letter-spacing:.5px;box-shadow:0 3px 8px rgba(26,92,186,.25)}
+.brand span{font-weight:600;color:var(--muted);font-size:14px;border-left:1px solid var(--line);padding-left:12px}
+.chapters{display:flex;gap:6px;margin:0 auto;background:var(--surface);padding:4px;border-radius:999px;border:1px solid var(--line-soft)}
+.chapters button{font-size:15.5px;padding:8px 18px;border-radius:999px;color:var(--muted);transition:all .2s;font-weight:700}
+.chapters button:hover{background:var(--tint);color:var(--navy)}
+.chapters button[aria-current=true]{background:var(--navy);color:#fff;font-weight:800;box-shadow:0 2px 8px rgba(12,35,64,.2)}
+.tools{display:flex;gap:8px;min-width:430px;justify-content:flex-end}
+.tools button{font-size:13.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:8px 13px;background:var(--paper);transition:all .18s}
+.tools button:hover{color:var(--navy);border-color:var(--navy);background:var(--surface)}
+.tools button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#fff}
+
+/* 하단 바 + 슬라이드 퀵점프 */
+.chrome-bottom{position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;padding:0 88px;gap:24px;border-top:1px solid var(--line);z-index:10;background:var(--paper)}
+.source{flex:1;font-size:14px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dots{display:flex;gap:5px;align-items:center}
+.dots button{width:22px;height:8px;border-radius:4px;background:var(--line);transition:all .25s;position:relative}
+.dots button:hover{background:var(--blue);opacity:.7}
+.dots button[aria-current=true]{width:36px;background:var(--blue)}
+.pager{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--muted)}
+.pager b{color:var(--navy);font-size:18px}
+.pager button{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;font-size:17px;color:var(--navy);transition:all .18s;display:grid;place-items:center}
+.pager button:hover:not(:disabled){background:var(--navy);border-color:var(--navy);color:#fff}
+.pager button:disabled{opacity:.3;cursor:default}
+.progress{position:absolute;left:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--teal));transition:width .4s ease;z-index:11}
+
+/* ───────── 슬라이드 공통 ───────── */
+.slide{position:absolute;left:0;right:0;top:76px;bottom:64px;padding:38px 88px 32px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s .35s;background:linear-gradient(180deg,#ffffff 0%,#fbfcfe 100%)}
+.slide.active{opacity:1;visibility:visible;transition:opacity .35s ease}
+.sh{margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px}
+.sh-left{flex:1}
+.sh-right{text-align:right;flex-shrink:0}
+.tag{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:800;color:var(--blue);letter-spacing:.3px;margin-bottom:10px}
+.tag em{font-style:normal;background:var(--navy);color:#fff;border-radius:5px;padding:3px 10px;font-size:13.5px;letter-spacing:.4px}
+.sh h2{font-size:43px;line-height:1.25;font-weight:800;color:var(--navy);letter-spacing:-1.1px}
+.sh h2 mark{background:linear-gradient(transparent 66%,rgba(26,92,186,.16) 66%);color:var(--blue);padding:0 2px}
+.sh p{font-size:19.5px;line-height:1.5;color:var(--muted);margin-top:8px;max-width:1420px}
+.sh-pill{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:14.5px;color:var(--muted);font-weight:700}
+.sh-pill b{color:var(--navy)}
+
+.body{flex:1;min-height:0;display:grid;gap:26px}
+.card{border:1px solid var(--line);border-radius:12px;padding:24px 26px;background:var(--paper);box-shadow:var(--shadow-sm);position:relative}
+.card.accent-navy{border-top:4px solid var(--navy)}
+.card.accent-blue{border-top:4px solid var(--blue)}
+.card.accent-teal{border-top:4px solid var(--teal)}
+.card.accent-amber{border-top:4px solid var(--amber)}
+.card h3{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.4px}
+.card p{font-size:17px;line-height:1.58;color:var(--body)}
+.label{font-size:13.5px;font-weight:800;letter-spacing:1.1px;color:var(--faint);text-transform:uppercase;display:block}
+.note{font-size:15px;line-height:1.52;color:var(--muted);border-left:3px solid var(--amber);background:var(--surface);border-radius:0 6px 6px 0;padding:8px 14px}
+.chip{align-self:flex-start;justify-self:start;width:max-content;display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:800;border-radius:6px;padding:5px 11px;margin-bottom:6px}
+.chip.asis{background:var(--amber-tint);color:var(--amber)}
+.chip.tobe{background:var(--teal-tint);color:var(--teal)}
+.chip.goal{background:var(--tint);color:var(--blue)}
+
+/* 진입 애니메이션 */
+.slide .rise{opacity:0;transform:translateY(14px)}
+.slide.active .rise{animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
+.slide.active .rise:nth-child(2){animation-delay:.07s}.slide.active .rise:nth-child(3){animation-delay:.14s}
+.slide.active .rise:nth-child(4){animation-delay:.21s}.slide.active .rise:nth-child(5){animation-delay:.28s}
+@keyframes rise{to{opacity:1;transform:none}}
+.slide.active.settled .rise,#stage.init .rise{opacity:1;transform:none;animation:none}
+#stage.init .slide{transition:none}
+.slide.active.settled .grow,.slide.active.settled .growx{transform:none;animation:none}
+@media (prefers-reduced-motion:reduce){.slide .rise{opacity:1;transform:none}.slide.active .rise{animation:none}}
+
+/* 선택형 버튼(탭) 공통 */
+.seg{display:inline-flex;gap:6px;background:var(--surface);padding:4px;border-radius:10px;border:1px solid var(--line)}
+.seg button{border-radius:7px;padding:8px 16px;font-size:16px;font-weight:700;color:var(--muted);transition:all .18s}
+.seg button:hover{color:var(--blue)}
+.seg button[aria-selected=true]{background:var(--blue);color:#fff;font-weight:800;box-shadow:0 2px 6px rgba(26,92,186,.22)}
+[data-panel]:not(.on):not(.keep){display:none!important}
+[data-panel].on{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* SVG 차트 공통 */
+svg text{font-family:NanumSquare,'Pretendard',sans-serif}
+.bar{transition:opacity .3s,fill .3s}
+.grow{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
+.slide.active .grow{animation:growY .75s cubic-bezier(.2,.7,.2,1) forwards}
+.growx{transform-box:fill-box;transform-origin:left;transform:scaleX(0)}
+.slide.active .growx{animation:growX .75s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes growY{to{transform:scaleY(1)}}@keyframes growX{to{transform:scaleX(1)}}
+.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.slide.active .draw{animation:draw 1.1s ease forwards .15s}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ───────── 01 표지 ───────── */
+.cover{padding:0;flex-direction:row;background:var(--paper)}
+.cover-main{flex:1;padding:78px 88px 60px;display:flex;flex-direction:column;position:relative}
+.cover-kicker{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:800;color:var(--blue);letter-spacing:1.4px;background:var(--tint);padding:7px 16px;border-radius:999px;width:max-content}
+.cover-kicker i{width:8px;height:8px;border-radius:50%;background:var(--teal);display:inline-block}
+.cover h1{font-size:74px;line-height:1.18;font-weight:800;color:var(--navy);letter-spacing:-2.4px;margin:26px 0 24px}
+.cover h1 mark{background:linear-gradient(transparent 62%,#cbe0fc 62%);color:var(--blue);padding:0 4px}
+.cover-sub{font-size:23px;line-height:1.62;color:var(--body);max-width:960px}
+.cover-paradigm{margin-top:32px;display:grid;grid-template-columns:1fr 56px 1.15fr;align-items:center;gap:14px;max-width:980px}
+.p-box{border:1px solid var(--line);border-radius:12px;padding:18px 22px;background:var(--surface)}
+.p-box.s2{border:2px solid var(--blue);background:var(--tint);box-shadow:var(--shadow-md)}
+.p-box span{font-size:13px;font-weight:800;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:4px}
+.p-box.s2 span{color:var(--blue)}
+.p-box strong{font-size:21px;color:var(--navy);display:block;margin-bottom:4px}
+.p-box p{font-size:15.5px;color:var(--body);line-height:1.45}
+.p-arrow{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;font-size:20px;font-weight:800;margin:0 auto}
+.cover-flow{margin-top:auto;display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.cover-flow span{font-size:17.5px;font-weight:800;color:var(--navy);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:9px 20px}
+.cover-flow i{font-style:normal;color:var(--blue);font-weight:800;font-size:18px}
+.cover-meta{display:grid;grid-template-columns:repeat(4,auto);gap:36px;font-size:15.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:22px}
+.cover-meta b{display:block;color:var(--navy);font-size:18px;margin-top:4px}
+.cover-side{width:640px;background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);color:#fff;padding:78px 58px 60px;display:flex;flex-direction:column;gap:28px;position:relative;overflow:hidden}
+.cover-side:before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
+.cover-side:after{content:'';position:absolute;right:-140px;bottom:-140px;width:440px;height:440px;border:1px solid rgba(110,224,214,.18);border-radius:50%;box-shadow:0 0 0 55px rgba(255,255,255,.02),0 0 0 110px rgba(255,255,255,.015)}
+.cover-side .label{color:#8fb3e6;position:relative;z-index:1}
+.kpi-big{border-top:1px solid rgba(255,255,255,.15);padding-top:20px;position:relative;z-index:1}
+.kpi-big strong{font-size:58px;letter-spacing:-2px;line-height:1;display:block}
+.kpi-big strong small{font-size:24px;margin-left:5px;font-weight:700;color:#b8d0f0}
+.kpi-big p{font-size:17.5px;color:#c9d7ec;margin-top:9px;line-height:1.48}
+.kpi-big .delta{color:#6ee0d6;font-weight:800}
+.cover-mini-arch{margin-top:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:16px 20px;position:relative;z-index:1}
+.cover-mini-arch .arch-t{font-size:13px;font-weight:800;color:#6ee0d6;letter-spacing:1px;margin-bottom:8px}
+.cover-mini-arch .arch-nodes{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;font-weight:700;color:#fff}
+.cover-mini-arch .arch-nodes span{background:rgba(255,255,255,.1);padding:6px 11px;border-radius:6px}
+
+/* ───────── 02 한 장 요약 ───────── */
+.summary-wrap{grid-template-rows:1fr auto;gap:20px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);background:var(--paper)}
+.keymsg{background:linear-gradient(90deg,var(--navy) 0%,#153863 100%);color:#fff;border-radius:12px;padding:22px 32px;display:flex;align-items:center;gap:26px;font-size:23px;font-weight:700;letter-spacing:-.4px;box-shadow:var(--shadow-md)}
+.keymsg .label{color:#8fb3e6;white-space:nowrap;border-right:1px solid rgba(255,255,255,.2);padding-right:22px}
+.keymsg mark{background:none;color:#6ee0d6;font-weight:800}
+.sum-col{padding:30px 28px 26px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:14px;position:relative}
+.sum-col:last-child{border-right:0;background:linear-gradient(180deg,var(--tint) 0%,#f5f9ff 100%)}
+.sum-col .step{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:var(--blue);letter-spacing:.8px;background:var(--tint);padding:4px 11px;border-radius:6px;width:max-content}
+.sum-col:last-child .step{background:var(--teal);color:#fff}
+.sum-col h3{font-size:28px;font-weight:800;color:var(--navy);line-height:1.34;letter-spacing:-.5px}
+.sum-col li{font-size:18.5px;line-height:1.54;color:var(--body);padding-left:16px;position:relative;margin-bottom:10px}
+.sum-col li:before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.sum-col .big{margin-top:auto;border-top:1px dashed var(--line);padding-top:16px}
+.sum-col .big strong{font-size:52px;color:var(--navy);letter-spacing:-1.5px;line-height:1.05;display:block}
+.sum-col .big span{display:block;font-size:16px;color:var(--muted);margin-top:5px;font-weight:700}
+.arrow-col:after{content:'';position:absolute;right:-13px;top:50%;width:24px;height:24px;background:var(--paper);border-top:1px solid var(--line);border-right:1px solid var(--line);transform:translateY(-50%) rotate(45deg);z-index:2}
+
+/* ───────── 03 패러다임 전환·투자 현황 ───────── */
+.invest{grid-template-columns:1.15fr 1fr}
+.chart-card{display:flex;flex-direction:column}
+.chart-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.legend{display:flex;gap:18px;font-size:14.5px;color:var(--muted);font-weight:700}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.chart-host{flex:1;min-height:0}
+.chart-host svg{width:100%;height:100%;display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:10px;padding:16px 18px}
+.kpi span{font-size:14.5px;color:var(--muted);font-weight:700}
+.kpi strong{display:block;font-size:38px;color:var(--navy);letter-spacing:-1.2px;margin:5px 0 3px}
+.kpi strong small{font-size:17px;margin-left:3px}
+.kpi em{font-style:normal;font-size:14.5px;font-weight:800;color:var(--teal)}
+table.data{width:100%;border-collapse:collapse;font-size:16.5px;background:var(--paper);border-radius:8px;overflow:hidden}
+table.data th{font-size:14px;color:var(--muted);font-weight:800;text-align:right;padding:10px 12px;border-bottom:2px solid var(--navy);background:var(--surface)}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data td{padding:10.5px 12px;border-bottom:1px solid var(--line-soft);text-align:right;color:var(--body)}
+table.data td.sel,table.data th.sel{background:var(--tint);color:var(--navy);font-weight:800}
+table.data tr.group td{font-weight:800;color:var(--navy);background:#f4f7fb}
+
+/* ───────── 04 현행 한계 진단 ───────── */
+.diag{grid-template-rows:auto repeat(4,1fr);gap:0;border:1px solid var(--line);border-top:3px solid var(--navy);border-radius:0 0 12px 12px;background:var(--paper);overflow:hidden;box-shadow:var(--shadow-sm)}
+.diag-row{display:grid;grid-template-columns:280px 1fr 64px 1.05fr 260px;align-items:center;border-bottom:1px solid var(--line-soft);padding:0 22px}
+.diag-row:last-child{border-bottom:0}
+.diag-row.head{font-size:15px;font-weight:800;color:var(--muted);letter-spacing:.8px;padding:13px 22px;background:var(--surface);border-bottom:1px solid var(--line)}
+.diag-row h3{font-size:25px;color:var(--navy);font-weight:800;letter-spacing:-.4px}
+.diag-row h3 span{display:inline-block;font-size:14px;font-weight:700;color:var(--amber);background:var(--amber-tint);padding:3px 9px;border-radius:4px;margin-top:6px}
+.diag-row p{font-size:19.5px;line-height:1.52;color:var(--body);padding-right:18px}
+.diag-row .to{color:var(--ink);font-weight:700}
+.diag-arrow{width:40px;height:40px;border-radius:50%;background:var(--teal-tint);color:var(--teal);font-size:22px;font-weight:800;display:grid;place-items:center;margin:0 auto}
+.metric-pair{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;column-gap:8px;text-align:right}
+.metric-pair .from{font-size:20px;font-weight:700;color:var(--muted);white-space:nowrap}
+.metric-pair .from:after{content:'→';margin-left:8px;font-size:22px;font-weight:800;color:var(--teal)}
+.metric-pair .to-n{white-space:nowrap;font-size:38px;font-weight:800;color:var(--teal);letter-spacing:-1px}
+.metric-pair small{flex-basis:100%;margin-top:2px;font-size:14.5px;color:var(--faint);font-weight:700}
+
+/* ───────── 05 비전·아키텍처 체계도 ───────── */
+.frame{grid-template-rows:auto auto 1fr auto;gap:16px}
+.vision{background:linear-gradient(90deg,var(--navy) 0%,#163b68 100%);color:#fff;border-radius:12px;padding:20px 32px;display:flex;align-items:center;gap:28px;box-shadow:var(--shadow-sm)}
+.vision .label{color:#8fb3e6;min-width:130px;border-right:1px solid rgba(255,255,255,.2);padding-right:20px}
+.vision strong{font-size:31px;letter-spacing:-.8px}
+.vision strong mark{background:none;color:#6ee0d6}
+.goals{display:grid;grid-template-columns:136px repeat(3,1fr);gap:16px;align-items:stretch}
+.row-label{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.3;color:var(--navy);background:var(--surface);border:1px solid var(--line);border-radius:10px;text-align:center;padding:12px}
+.goal{border:2px solid var(--blue);border-radius:12px;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--paper);box-shadow:var(--shadow-sm)}
+.goal h3{font-size:23px;color:var(--navy);font-weight:800;line-height:1.32}
+.goal h3 small{display:block;font-size:14.5px;color:var(--muted);font-weight:700;margin-top:4px}
+.goal .t{text-align:right;white-space:nowrap}
+.goal .t strong{font-size:40px;color:var(--blue);letter-spacing:-1px;display:block;line-height:1}
+.goal .t small{display:block;font-size:13px;color:var(--teal);font-weight:800;margin-top:4px}
+.strats{display:grid;grid-template-columns:136px repeat(4,1fr);gap:16px}
+.strat{background:var(--tint);border:1px solid #d0e0f7;border-top:4px solid var(--blue);border-radius:12px;padding:22px 22px;display:flex;flex-direction:column;gap:12px}
+.strat .no{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:800;color:var(--blue)}
+.strat .no i{font-style:normal;width:32px;height:32px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:15px}
+.strat h3{font-size:24px;color:var(--navy);font-weight:800;line-height:1.32;letter-spacing:-.4px}
+.strat ul{margin-top:2px}.strat li{font-size:18px;line-height:1.48;color:var(--body);padding-left:15px;position:relative;margin-bottom:8px}
+.strat li:before{content:'•';position:absolute;left:0;font-weight:800;color:var(--blue)}
+.base{display:grid;grid-template-columns:136px 1fr;gap:16px}
+.base-bar{border:1.5px dashed var(--navy);background:var(--surface);border-radius:10px;padding:15px 24px;display:flex;justify-content:space-around;font-size:17.5px;font-weight:800;color:var(--navy)}
+.base-bar span:before{content:'■';color:var(--teal);margin-right:8px;font-size:13px;vertical-align:2px}
+
+/* ───────── 06 판단 전주기 프로세스 ───────── */
+.cycle{grid-template-rows:auto 1fr;gap:34px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;padding-bottom:52px}
+.flow:before{content:'';position:absolute;left:12%;right:12%;bottom:16px;height:28px;border:2px solid var(--teal);border-top:0;border-radius:0 0 14px 14px}
+.flow:after{content:'↺ 역전파 환류 (Calibration Loop) : 실제 실행 결과와 예측 기대값의 오차를 보상모델·인과그래프에 즉시 업데이트';position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:var(--paper);padding:0 18px;font-size:18.5px;line-height:34px;font-weight:800;color:var(--teal);white-space:nowrap}
+.stage-btn{position:relative;text-align:left;border:2px solid var(--line);border-radius:12px;padding:22px 26px;transition:all .22s;background:var(--paper);box-shadow:var(--shadow-sm)}
+.stage-btn:not(:last-child):after{content:'';position:absolute;right:-21px;top:50%;width:16px;height:16px;border-top:3px solid var(--faint);border-right:3px solid var(--faint);transform:translateY(-50%) rotate(45deg)}
+.stage-btn .s{font-size:13.5px;font-weight:800;color:var(--faint);letter-spacing:1px}
+.stage-btn h3{font-size:29px;color:var(--navy);font-weight:800;margin:6px 0 4px}
+.stage-btn p{font-size:17.5px;color:var(--muted);font-weight:700}
+.stage-btn:hover{border-color:var(--blue);transform:translateY(-2px)}
+.stage-btn[aria-selected=true]{border-color:var(--blue);background:var(--tint);box-shadow:var(--shadow-md)}
+.stage-btn[aria-selected=true] .s{color:var(--blue)}
+.stage-detail{display:grid;grid-template-columns:1fr 1.05fr 1.05fr;gap:22px;height:100%}
+.cycle>.rise{min-height:0}.cycle [data-panel].on{height:100%}
+.stage-detail .card{display:flex;flex-direction:column;gap:14px;padding:26px 28px}
+.stage-detail li{font-size:19.5px;line-height:1.54;color:var(--body);padding-left:30px;position:relative;margin-bottom:14px}
+.stage-detail ul li:before{content:'✓';position:absolute;left:0;color:var(--teal);font-weight:800}
+.stage-detail ol{counter-reset:c}
+.stage-detail ol li:before{counter-increment:c;content:counter(c);position:absolute;left:0;top:2px;width:23px;height:23px;border-radius:50%;background:var(--blue);color:#fff;font-size:13.5px;display:grid;place-items:center;font-weight:800}
+.asis-tobe{display:flex;flex-direction:column;gap:12px}
+.asis-tobe div{border-radius:9px;padding:18px 20px;font-size:19.5px;line-height:1.52;flex:1}
+.asis-tobe .a{background:var(--amber-tint);border:1px solid rgba(200,113,22,.2)}
+.asis-tobe .b{background:var(--teal-tint);border:1px solid rgba(9,138,131,.2)}
+
+/* ───────── 07 4계층 아키텍처 ───────── */
+.arch{grid-template-columns:220px 60px 1fr 490px;gap:16px;align-items:stretch}
+.io{display:flex;flex-direction:column;justify-content:center;gap:9px}
+.io .label{margin-bottom:4px}
+.io span{font-size:16.5px;font-weight:700;border:1px solid var(--line);border-left:3px solid var(--navy);border-radius:7px;padding:11px 13px;color:var(--body);background:var(--paper);box-shadow:var(--shadow-sm)}
+.io-in{justify-content:flex-end;padding-bottom:6px}
+.io-link{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:88px;gap:4px;color:var(--amber);font-weight:800}
+.io-link b{font-size:32px;line-height:1}
+.io-link small{font-size:13.5px;text-align:center;line-height:1.3}
+.lhead{display:grid;grid-template-columns:1fr 32px 235px;gap:10px;font-size:15px;font-weight:800;color:var(--muted);letter-spacing:.2px}
+.lhead span:last-child{grid-column:3;color:var(--teal)}
+.lrow{display:grid;grid-template-columns:1fr 32px 235px;gap:10px;align-items:center}
+.lrow .to{font-size:24px;font-weight:800;color:var(--teal);text-align:center}
+.users{display:flex;flex-wrap:wrap;gap:6px}
+.users span{font-size:16.5px;font-weight:800;color:var(--teal);border:1.5px solid var(--teal);border-radius:6px;padding:6px 10px;background:var(--paper);transition:opacity .25s,background .25s}
+.users.lbase span{border-style:dashed;border-color:var(--line);color:var(--muted);font-weight:700}
+.lrow .to.lbase{color:var(--faint)}
+.layers.has-sel .users{opacity:.38;transition:opacity .25s}
+.layers.has-sel .lrow:has(.layer[aria-selected=true]) .users{opacity:1}
+.layers.has-sel .lrow:has(.layer[aria-selected=true]) .users:not(.lbase) span{background:var(--teal-tint)}
+.layers{display:flex;flex-direction:column-reverse;gap:12px;justify-content:center;position:relative}
+.layer{display:grid;grid-template-columns:70px 1fr;align-items:center;text-align:left;border-radius:10px;padding:22px 24px;color:#fff;transition:transform .22s,box-shadow .22s,opacity .22s}
+.layer .n{font-size:36px;font-weight:800;opacity:.65}
+.layer h3{font-size:25px;font-weight:800;letter-spacing:-.4px}
+.layer p{font-size:17px;opacity:.88;margin-top:4px}
+.layer[data-tab="0"]{background:#293c5a}.layer[data-tab="1"]{background:#1c4d8c}.layer[data-tab="2"]{background:#1a5cba}.layer[data-tab="3"]{background:#098a83}
+.layers.has-sel .layer{opacity:.45}
+.layers.has-sel .layer[aria-selected=true]{opacity:1;transform:translateX(8px);box-shadow:-6px 0 0 var(--amber),var(--shadow-md)}
+.arch .detail{display:flex;flex-direction:column;gap:14px}
+.arch .detail .card{flex:1;border-top:4px solid var(--blue)}
+.arch .detail h3{font-size:29px;line-height:1.38;margin:8px 0 14px}
+.arch .detail p{font-size:20px;line-height:1.62}
+.arch .detail .arch-specs{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.arch .detail .arch-specs div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.arch .detail .arch-specs b{display:block;font-size:13.5px;color:var(--blue);margin-bottom:3px}
+.arch .detail .arch-specs span{font-size:16px;font-weight:700;color:var(--navy)}
+
+/* ───────── 08 3대 코어 엔진 ───────── */
+.engines{grid-template-columns:repeat(3,1fr);grid-template-rows:auto 1fr auto auto;column-gap:24px;row-gap:0}
+.engine{border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:12px;display:grid;grid-row:span 4;grid-template-rows:subgrid;overflow:hidden;background:var(--paper);box-shadow:var(--shadow-sm)}
+.engine:nth-child(2){border-top-color:var(--blue)}
+.engine:nth-child(3){border-top-color:var(--teal)}
+.engine header{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;gap:15px;align-items:center;background:var(--surface)}
+.engine header i{font-style:normal;width:50px;height:50px;border-radius:10px;background:var(--navy);color:#fff;font-size:22px;font-weight:800;display:grid;place-items:center;flex:none}
+.engine:nth-child(2) header i{background:var(--blue)}
+.engine:nth-child(3) header i{background:var(--teal)}
+.engine header h3{font-size:25px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.engine header small{display:block;font-size:12.5px;color:var(--faint);letter-spacing:.8px;margin-top:3px;font-weight:800}
+.engine ol{padding:24px 26px 8px;display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-around}
+.engine ol li{display:grid;grid-template-columns:38px 1fr;gap:14px;padding-bottom:20px;position:relative}
+.engine ol li:not(:last-child):before{content:'';position:absolute;left:15px;top:32px;bottom:2px;width:2px;background:var(--line)}
+.engine ol li b{width:32px;height:32px;border-radius:50%;border:2px solid var(--blue);color:var(--blue);display:grid;place-items:center;font-size:14.5px;background:var(--paper);position:relative;font-weight:800}
+.engine ol li strong{font-size:20.5px;color:var(--navy);display:block;margin-bottom:3px}
+.engine ol li span{font-size:17.5px;line-height:1.48;color:var(--body)}
+.engine .eff{background:var(--teal-tint);padding:20px 26px;display:flex;flex-direction:column;justify-content:center;font-size:18px;line-height:1.52;color:#1d3b3a}
+.engine .eff b{color:var(--teal);display:block;font-size:13px;letter-spacing:1px;margin-bottom:4px}
+.engine .use{padding:15px 26px 18px;font-size:16px;line-height:1.48;color:var(--muted);border-top:1px solid var(--line);font-weight:700}
+
+/* ───────── 09 자율성 성숙도 모델 ───────── */
+.maturity{grid-template-columns:1.05fr 1fr;grid-template-rows:minmax(0,1fr);gap:36px}
+.stairs{position:relative;display:flex;align-items:flex-end;gap:14px;padding-top:24px;height:100%;min-height:0}
+.stair{flex:1;text-align:left;border-radius:12px 12px 0 0;padding:22px 22px;color:#fff;display:flex;flex-direction:column;gap:6px;transition:all .28s;position:relative}
+.stair[data-tab="0"]{height:46%;background:#6c84a8}.stair[data-tab="1"]{height:70%;background:#1a5cba}.stair[data-tab="2"]{height:92%;background:#0c2340}
+.stair .lv{font-size:14.5px;font-weight:800;opacity:.8;letter-spacing:1px}
+.stair h3{font-size:30px;font-weight:800;letter-spacing:-.6px}
+.stair p{font-size:17.5px;opacity:.9;line-height:1.45}
+.stair .when{margin-top:auto;font-size:14px;font-weight:800;border-top:1px solid rgba(255,255,255,.28);padding-top:10px}
+.stairs.has-sel .stair{opacity:.45}
+.stairs.has-sel .stair[aria-selected=true]{opacity:1;box-shadow:0 -6px 0 var(--amber) inset,var(--shadow-md)}
+.stairs:before{content:'추론 깊이 · 자율 위임 수준 ↑';position:absolute;left:0;top:-4px;font-size:20px;color:var(--navy);font-weight:800;letter-spacing:-.3px}
+.lv-detail .card{height:100%;display:flex;flex-direction:column;padding:30px 34px;gap:18px;border-top:4px solid var(--blue)}
+.lv-detail h3{font-size:29px;line-height:1.38}
+.lv-detail p{font-size:19.5px;line-height:1.62}.lv-detail p.note{font-size:16.5px;margin-top:auto}
+.range{margin-top:6px;background:var(--surface);padding:16px 18px;border-radius:10px;border:1px solid var(--line)}
+.range .track{position:relative;height:42px;background:var(--amber-tint);border-radius:6px;overflow:hidden}
+.range .fill{position:absolute;left:0;top:0;bottom:0;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;color:#fff;font-weight:800;font-size:16.5px}
+.range .scale{display:flex;justify-content:space-between;font-size:13.5px;color:var(--muted);margin-top:8px;font-weight:700}
+
+/* ───────── 10·11 성과 지표 ───────── */
+.perf{grid-template-columns:1fr 1fr;gap:28px}
+.perf .card{display:flex;flex-direction:column}
+.perf .hero{display:flex;align-items:baseline;gap:14px;margin:4px 0 8px}
+.perf .hero strong{font-size:60px;color:var(--teal);letter-spacing:-2px}
+.perf .hero strong small{font-size:23px;margin-left:3px}
+.perf .hero>span{font-size:18px;color:var(--muted);font-weight:700}
+.multi{grid-template-columns:1.25fr 1fr;gap:30px}
+.mult-switch{margin-bottom:12px}
+.insight{display:flex;flex-direction:column;gap:18px}
+.insight .card{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:28px 30px}
+.insight .card h3{font-size:26px;margin:0!important}
+.insight .card p{font-size:19px;line-height:1.6}
+
+/* ───────── 12 포트폴리오 ───────── */
+.portfolio{grid-template-columns:1.08fr 1fr;gap:32px}
+.stack100{display:flex;height:76px;border-radius:10px;overflow:hidden;margin:6px 0 18px;box-shadow:var(--shadow-sm)}
+.stack100 button{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:23px;font-weight:800;transition:opacity .25s,filter .25s;line-height:1.15}
+.stack100 button small{font-size:12.5px;opacity:.85;font-weight:700}
+.stack100.has-sel button{opacity:.42}
+.stack100.has-sel button[aria-selected=true]{opacity:1}
+.axis-list{display:flex;flex-direction:column;gap:11px;flex:1}
+.axis-list .card{padding:18px 22px}
+.axis-list [data-panel]{opacity:.52;transition:opacity .22s,border-color .22s;cursor:pointer}
+.axis-list [data-panel].on{opacity:1;border-color:var(--blue);box-shadow:inset 4px 0 0 var(--blue),var(--shadow-sm);animation:none}
+.axis-list p{font-size:17px;line-height:1.52}
+.axis-list h3{display:flex;align-items:center;gap:10px;font-size:20.5px;margin-bottom:5px}
+.axis-list h3 i{width:13px;height:13px;border-radius:3px;display:inline-block;flex:none}
+
+/* ───────── 13 닫힌 판단 루프 (Closed-Loop) ───────── */
+.sdl{grid-template-columns:680px 1fr;gap:36px}
+.loop{position:relative;width:640px;height:580px;margin:0 auto}
+.loop svg{position:absolute;inset:0}
+.loop-node{position:absolute;width:250px;text-align:center;border:2px solid var(--line);background:var(--paper);border-radius:14px;padding:18px 16px;transition:all .22s;box-shadow:var(--shadow-sm)}
+.loop-node b{display:block;font-size:13.5px;color:var(--blue);letter-spacing:1px}
+.loop-node h3{font-size:21px;color:var(--navy);font-weight:800;margin-top:6px;line-height:1.34}
+.loop-node[aria-selected=true]{border-color:var(--blue);background:var(--tint);box-shadow:0 8px 24px rgba(26,92,186,.18)}
+.loop-node[data-tab="0"]{left:195px;top:0}.loop-node[data-tab="1"]{left:390px;top:340px}.loop-node[data-tab="2"]{left:0;top:340px}
+.loop-center{position:absolute;left:210px;top:215px;width:220px;text-align:center;font-size:15px;color:var(--muted);line-height:1.48;background:var(--surface);padding:14px;border-radius:50%;border:1px dashed var(--teal)}
+.loop-center strong{display:block;font-size:23px;color:var(--teal);margin-bottom:2px}
+.sdl-right{display:flex;flex-direction:column;gap:18px}
+
+/* ───────── 14 거버넌스 ───────── */
+.gov{grid-template-columns:1fr 1.06fr;gap:32px}
+.check-list{display:flex;flex-direction:column;gap:13px}
+.check-list .label{margin-bottom:2px}
+.check{flex:1;display:grid;grid-template-columns:64px 1fr;gap:16px;align-content:center;border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:10px;padding:20px 24px;background:var(--paper);box-shadow:var(--shadow-sm)}
+.check .n{font-size:36px;font-weight:800;color:var(--amber)}
+.check h3{font-size:23.5px;color:var(--navy);font-weight:800;margin-bottom:5px}
+.check p{font-size:18px;line-height:1.52;color:var(--body)}
+.roles{border:1px solid var(--line);border-radius:12px;overflow:hidden;flex:1;display:flex;box-shadow:var(--shadow-sm);background:var(--paper)}
+.roles table{height:100%;width:100%;border-collapse:collapse}
+.roles th{font-size:19px;padding:16px 22px;text-align:left;color:#fff}
+.roles th.ai{background:var(--teal)}.roles th.hu{background:var(--navy)}
+.roles td{font-size:18px;line-height:1.48;padding:14px 22px;border-bottom:1px solid var(--line-soft);vertical-align:top;width:50%;color:var(--body)}
+.roles td:first-child{border-right:1px solid var(--line-soft)}
+.roles tr:last-child td{border-bottom:0}
+.roles .stage{font-size:13px;font-weight:800;color:var(--blue);letter-spacing:.8px;display:inline-block;background:var(--tint);padding:2px 8px;border-radius:4px;margin-bottom:4px}
+
+/* ───────── 15 결론 ───────── */
+.closing{grid-template-columns:1fr 1.06fr;gap:36px}
+.recs{display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.rec{flex:1;display:grid;grid-template-columns:72px 1fr;gap:12px;align-content:center;padding:20px 24px;border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;background:var(--paper);box-shadow:var(--shadow-sm)}
+.rec:nth-child(2){border-left-color:var(--teal)}
+.rec:nth-child(3){border-left-color:var(--navy)}
+.rec .n{font-size:46px;font-weight:800;color:var(--blue);line-height:1}
+.rec:nth-child(2) .n{color:var(--teal)}
+.rec:nth-child(3) .n{color:var(--navy)}
+.rec h3{font-size:25.5px;color:var(--navy);font-weight:800;margin-bottom:6px;letter-spacing:-.4px}
+.rec p{font-size:18.5px;line-height:1.52;color:var(--body)}
+.closing table.data{font-size:18.5px}.closing table.data td{padding:14px 14px}.closing table.data th{font-size:15px}
+.refs{font-size:15px;line-height:1.58;color:var(--muted);margin-top:14px;background:var(--surface);padding:14px 18px;border-radius:8px;border:1px solid var(--line)}
+.refs b{color:var(--navy)}
+
+/* ───────── 편집 모드 ───────── */
+body.editing [data-edit]{outline:1px dashed rgba(200,113,22,.6);outline-offset:3px;cursor:text}
+body.editing [data-edit]:focus{outline:2px solid var(--amber);background:var(--amber-tint)}
+.toast{position:absolute;left:50%;top:90px;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:15.5px;font-weight:800;padding:10px 22px;border-radius:999px;z-index:20;display:none;box-shadow:var(--shadow-md)}
+body.editing .toast{display:block}
+
+/* ───────── 인쇄(PDF 저장) : 한 장 = 한 페이지 ───────── */
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;height:auto;background:#fff}
+  #viewport{position:static;display:block}
+  #stage{position:static;transform:none!important;box-shadow:none;height:auto;overflow:visible}
+  .chrome-top,.chrome-bottom,.progress,.toast{display:none}
+  .slide{position:relative;top:auto;bottom:auto;height:1080px;opacity:1;visibility:visible;page-break-after:always;break-after:page;padding-top:56px}
+  .slide .rise,.grow,.growx{opacity:1!important;transform:none!important;animation:none!important}
+  .draw{stroke-dashoffset:0!important;animation:none!important}
+  [data-panel]{display:none}[data-panel].on{display:block}
+}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<header class="chrome-top">
+  <div class="brand"><i>AI</i>인공지능 판단모델 전략 브리핑 <span>System 2 추론 · 의사결정 지능</span></div>
+  <nav class="chapters" aria-label="장 이동">
+    <button data-goto="0">표지·요약</button>
+    <button data-goto="2">Ⅰ 패러다임·진단</button>
+    <button data-goto="4">Ⅱ 비전·체계</button>
+    <button data-goto="6">Ⅲ 핵심 아키텍처</button>
+    <button data-goto="13">Ⅳ 거버넌스·제언</button>
+  </nav>
+  <div class="tools">
+    <button id="editBtn" aria-pressed="false" title="문구를 클릭해 직접 수정">글자 편집</button>
+    <button id="saveBtn" title="수정본을 HTML로 저장">HTML 저장</button>
+    <button id="printBtn" title="한 장씩 PDF로 저장">PDF 인쇄</button>
+    <button id="fsBtn" title="전체화면">전체화면</button>
+  </div>
+</header>
+<div class="toast">편집 모드 · 점선 영역을 클릭해 직접 수정하세요 (브라우저 자동 저장)</div>
+
+<main id="slides">
+
+<!-- ═════════ 01 표지 ═════════ -->
+<section class="slide cover" data-chapter="0" data-source="근거: Gartner Decision Intelligence · OpenAI/DeepMind Inference Scaling · Judea Pearl Causal AI · EU AI Act 고위험 의사결정 기준 재구성">
+  <div class="cover-main">
+    <div class="cover-kicker rise" data-edit><i></i>STRATEGY BRIEFING · AI DECISION & REASONING MODELS</div>
+    <h1 class="rise" data-edit>그럴듯한 생성을 넘어<br><mark>근거로 판단</mark>하는 AI</h1>
+    <p class="cover-sub rise" data-edit>확률적 다음 단어 예측(System 1)에서 다단계 숙고 추론·인과 검증·반사실 시뮬레이션 기반의 판단모델(System 2)로 — 고신뢰 의사결정 지능 아키텍처와 도입 전략</p>
+    <div class="cover-paradigm rise">
+      <div class="p-box">
+        <span>AS-IS · SYSTEM 1 (생성형 모델)</span>
+        <strong data-edit>확률적 패턴 매칭과 직관적 생성</strong>
+        <p data-edit>빠른 요약·초안 작성에 강하지만, 복합 제약조건 미준수·인과 왜곡·환각 리스크 상존</p>
+      </div>
+      <div class="p-arrow">→</div>
+      <div class="p-box s2">
+        <span>TO-BE · SYSTEM 2 (인공지능 판단모델)</span>
+        <strong data-edit>다단계 추론 · 인과 · 시뮬레이션 검증</strong>
+        <p data-edit>Test-Time Compute 탐색, 기호 솔버 결합, 신뢰구간 정량화로 감사 가능한 최적 의사결정 도출</p>
+      </div>
+    </div>
+    <div class="cover-flow rise">
+      <span>상황 인지(Observe)</span><i>→</i><span>인과·맥락(Orient)</span><i>→</i><span>대안 시뮬레이션(Decide)</span><i>→</i><span>제약 실행(Act)</span><i>↺</i><span style="background:var(--teal-tint);color:var(--teal);border-color:var(--teal)">보상 보정(Calibrate)</span>
+    </div>
+    <div class="cover-meta rise">
+      <div>브리핑 구분<b data-edit>AI 기술·전략 브리핑</b></div>
+      <div>핵심 주제<b data-edit>인공지능 판단모델 (System 2)</b></div>
+      <div>적용 영역<b data-edit>금융·제조·의료·공공 정책</b></div>
+      <div>문서 구성<b data-edit>4개 장 · 15쪽 완결</b></div>
+    </div>
+  </div>
+  <aside class="cover-side">
+    <span class="label">KEY PERFORMANCE INDICATORS</span>
+    <div class="kpi-big rise"><strong class="num"><span data-count="96.1" data-dec="1">96.1</span><small>%</small></strong><p data-edit>복합 제약 의사결정 정합성 <span class="delta">+37.7%p</span> (단일 LLM 대비)</p></div>
+    <div class="kpi-big rise"><strong class="num">−<span data-count="74.2" data-dec="1">74.2</span><small>%</small></strong><p data-edit>고난도 전략·운영 의사결정 리드타임 단축 (14일 → <span class="delta">3.6일</span>)</p></div>
+    <div class="kpi-big rise"><strong class="num">−<span data-count="88.5" data-dec="1">88.5</span><small>%</small></strong><p data-edit>추론 검증(PRM+솔버) 결합 시 할루시네이션·규정 위반율 감소</p></div>
+    <div class="cover-mini-arch rise">
+      <div class="arch-t">HYBRID DECISION ARCHITECTURE</div>
+      <div class="arch-nodes"><span>LLM 추론</span><i>+</i><span>인과 그래프</span><i>+</i><span>수리 솔버</span><i>+</i><span>월드모델</span></div>
+    </div>
+  </aside>
+</section>
+
+<!-- ═════════ 02 한 장 요약 ═════════ -->
+<section class="slide" data-chapter="0" data-source="본 브리핑 전체 핵심 내용 요약 (Executive Summary)">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>요약</em>EXECUTIVE SUMMARY</div>
+      <h2 data-edit>챗봇은 답을 말하지만, <mark>판단모델은 대안을 검증하고 결정</mark>한다</h2>
+    </div>
+    <div class="sh-right"><span class="sh-pill">핵심 전환 <b>생성(Generation) → 판단(Decision)</b></span></div>
+  </div>
+  <div class="body summary-wrap"><div class="summary">
+    <div class="sum-col arrow-col rise">
+      <span class="step">01 패러다임 전환</span>
+      <h3 data-edit>사전학습 경쟁에서 ‘추론 시간 스케일링’으로</h3>
+      <ul data-edit>
+        <li>단순 파라미터 확장보다 추론 단계 연산(Test-Time Compute) 투자가 핵심</li>
+        <li>엔터프라이즈 AI 예산의 62%가 생성 보조에서 의사결정 자동화로 이동</li>
+      </ul>
+      <div class="big"><strong class="num">62.0%</strong><span>2026 엔터프라이즈 판단형 AI 투자 비중</span></div>
+    </div>
+    <div class="sum-col arrow-col rise">
+      <span class="step">02 현행 한계</span>
+      <h3 data-edit>확률적 LLM 단독으로는 고위험 결정이 불가능</h3>
+      <ul data-edit>
+        <li>상관관계만 학습해 정책 개입 시 역인과(Spurious) 오류 발생</li>
+        <li>예산·법규·물리 등 다중 제약조건 동시 충족률 61.8%에 불과</li>
+        <li>블랙박스 생성으로 감사·규제(EU AI Act 등) 대응 한계</li>
+      </ul>
+      <div class="big"><strong class="num" style="color:var(--amber)">38.2%</strong><span>단일 LLM의 복합 제약 위반·오류율</span></div>
+    </div>
+    <div class="sum-col arrow-col rise">
+      <span class="step">03 아키텍처 해법</span>
+      <h3 data-edit>추론·인과·솔버·월드모델의 4중 결합</h3>
+      <ul data-edit>
+        <li>추론: MCTS 트리 탐색 + 과정보상모델(PRM) 자기검증</li>
+        <li>최적화: 뉴로심볼릭 수리 솔버(MILP/SMT)로 제약 100% 보장</li>
+        <li>예측: 인과추론 & 월드모델로 반사실(What-if) 시뮬레이션</li>
+        <li>통제: 불확실성 정량화 기반 인간-AI 위임 거버넌스</li>
+      </ul>
+      <div class="big"><strong class="num">4계층</strong><span>온톨로지 → 추론·솔버 → 시뮬레이션 → 감사</span></div>
+    </div>
+    <div class="sum-col rise">
+      <span class="step">04 도입 기대효과</span>
+      <h3 data-edit>빠르고 설명 가능한 고신뢰 의사결정 체계</h3>
+      <ul data-edit>
+        <li>복합 의사결정 정합성 96.1% 달성 (기존 58.4% 대비 도약)</li>
+        <li>전략·공급망·심사 의사결정 소요일 14일 → 3.6일 단축</li>
+        <li>결정 계보(Decision Lineage) 100% 자동 기록으로 규제 준수</li>
+      </ul>
+      <div class="big"><strong class="num" style="color:var(--teal)">3.4x</strong><span>단순 코파일럿 대비 의사결정 AI 도입 ROI</span></div>
+    </div>
+  </div>
+  <div class="keymsg rise"><span class="label">KEY MESSAGE</span><span data-edit>AI 판단모델은 <mark>검증된 대안과 신뢰구간을 계산</mark>하고, 인간은 <mark>가치 판단과 최종 책임</mark>을 진다 — 뉴로심볼릭·추론 결합이 핵심이다</span></div>
+  </div>
+</section>
+
+<!-- ═════════ 03 Ⅰ-1 패러다임 전환·투자 현황 ═════════ -->
+<section class="slide" data-chapter="1" data-source="출처: Gartner Decision Intelligence Market Forecast, Sequoia/Epoch AI Compute Trends 재구성 · 2026년은 전망치">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅰ-1</em>패러다임 전환 · AI 기술 및 투자 무게중심 이동</div>
+      <h2 data-edit>모델 크기 경쟁을 넘어 <mark>추론 컴퓨팅과 판단 모델</mark>이 시장을 주도한다</h2>
+      <p data-edit>연도를 선택하면 AI 연산 자원 배분과 엔터프라이즈 도입 지표가 함께 전환됩니다.</p>
+    </div>
+  </div>
+  <div class="body invest" data-tabgroup="year" data-default="2">
+    <div class="card chart-card accent-blue rise">
+      <div class="head">
+        <div class="seg" role="tablist">
+          <button data-tab="0" role="tab">2024 (생성형 확산)</button>
+          <button data-tab="1" role="tab">2025 (추론형 등장)</button>
+          <button data-tab="2" role="tab">2026 (판단모델 고도화)</button>
+        </div>
+        <div class="legend"><span><i style="background:#c6d3e6"></i>글로벌 엔터프라이즈 AI 지출(십억$)</span><span><i style="background:var(--blue)"></i>추론·판단모델 지출(십억$)</span></div>
+      </div>
+      <div class="chart-host" id="chartBudget"></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <div class="kpi-row">
+        <div class="kpi"><span>엔터프라이즈 AI 총지출</span><strong class="num" id="kTotal">142.0<small>B$</small></strong><em id="kTotalD">전년 대비 +44.9%</em></div>
+        <div class="kpi"><span>추론·판단모델 투자</span><strong class="num" id="kStrat">88.0<small>B$</small></strong><em id="kStratD">전년 대비 +83.3%</em></div>
+        <div class="kpi"><span>추론 연산(TTC) 비중</span><strong class="num" id="kAi">64.0<small>%</small></strong><em id="kAiD">전체 AI 컴퓨팅 중 추론·검증</em></div>
+      </div>
+      <table class="data" id="tblBudget">
+        <thead><tr><th>핵심 지표 구분</th><th data-col="0">2024</th><th data-col="1">2025</th><th data-col="2">2026(전망)</th></tr></thead>
+        <tbody>
+          <tr class="group"><td>글로벌 엔터프라이즈 AI 총지출 (십억 달러)</td><td>64.0</td><td>98.0</td><td>142.0</td></tr>
+          <tr><td>추론·판단모델(Decision AI) 지출 (십억 달러)</td><td>18.5</td><td>48.0</td><td>88.0</td></tr>
+          <tr><td>전체 연산 중 추론·검증(Test-Time Compute) 비중 (%)</td><td>28.0</td><td>47.5</td><td>64.0</td></tr>
+          <tr><td>고난도 의사결정 벤치마크 평균 정합성 (%)</td><td>58.4</td><td>82.0</td><td>96.1</td></tr>
+          <tr><td>뉴로심볼릭·가드레일 결합 도입 기업 비율 (%)</td><td>14.0</td><td>36.0</td><td>68.0</td></tr>
+          <tr><td>고위험 의사결정 감사 로그 자동화율 (%)</td><td>22.0</td><td>54.0</td><td>89.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 04 Ⅰ-2 현행 한계 진단 ═════════ -->
+<section class="slide" data-chapter="1" data-source="출처: Stanford HAI Foundation Model Transparency Report, MIT Sloan Decision AI Research 종합">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅰ-2</em>현행 한계 진단 · 왜 생성형 LLM만으로는 결정할 수 없는가</div>
+      <h2 data-edit>확률적 언어모델의 <mark>4대 구조적 병목</mark>과 판단모델 전환 해법</h2>
+    </div>
+  </div>
+  <div class="body diag">
+    <div class="diag-row head"><span>구조적 병목</span><span>기존 생성형 LLM (As-Is · System 1)</span><span></span><span>인공지능 판단모델 (To-Be · System 2)</span><span style="text-align:right">핵심 성능 변화</span></div>
+    <div class="diag-row rise">
+      <h3 data-edit>논리 도약과 환각<span>Auto-regressive 한계</span></h3>
+      <p data-edit>다음 토큰의 표면적 확률만 최대화하므로 중간 추론 단계가 틀려도 그럴듯한 결론을 생성</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>과정 보상 모델(PRM)과 트리 탐색(MCTS)으로 매 추론 단계의 논리적 타당성을 검증 후 전진</p>
+      <div class="metric-pair"><span class="from num">58.4%</span><span class="to-n num">96.1%</span><small>다단계 추론 정합성</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>상관관계의 함정<span>인과성(Causality) 부재</span></h3>
+      <p data-edit>과거 데이터의 단순 공출현 패턴만 학습해 가격 인상·정책 개입 등 새로운 행동의 결과를 오판</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>구조적 인과모델(SCM)과 반사실(Counterfactual) 추론으로 개입(Intervention) 순수 효과 계산</p>
+      <div class="metric-pair"><span class="from num">55.0%</span><span class="to-n num">89.4%</span><small>개입 효과 예측 정확도</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>복합 제약 미준수<span>수리·규칙 보장 불가</span></h3>
+      <p data-edit>예산 상한, 납기, 안전 법규 등 10개 이상의 경성 제약(Hard Constraints)이 걸리면 일부 조건을 누락</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>LLM이 문제를 수식화하고 뉴로심볼릭 수리 솔버(MILP·SMT)가 제약 충족 최적해를 엄밀하게 도출</p>
+      <div class="metric-pair"><span class="from num">61.8%</span><span class="to-n num">99.2%</span><small>경성 제약조건 준수율</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>블랙박스 무책임<span>불확실성·감사 부재</span></h3>
+      <p data-edit>모르는 문제에도 100% 확신 어조로 답하며, 왜 다른 대안을 기각했는지 역추적(Audit) 불가</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>신뢰구간(Confidence Score) 정량화 및 의사결정 트리 계보(Lineage) 자동 기록으로 설명 책임 확보</p>
+      <div class="metric-pair"><span class="from num">32점</span><span class="to-n num">95점</span><small>규제·감사 추적성 지수</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 05 Ⅱ-1 비전 체계도 ═════════ -->
+<section class="slide" data-chapter="2" data-source="출처: 차세대 엔터프라이즈·공공 의사결정 지능(Decision Intelligence) 참조 프레임워크">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅱ-1</em>비전·체계 · AI 판단모델 전략 체계도</div>
+      <h2 data-edit>1개 비전 · 3대 정량 목표 · <mark>4대 핵심 아키텍처 전략</mark></h2>
+    </div>
+  </div>
+  <div class="body frame">
+    <div class="vision rise"><span class="label">VISION</span><strong data-edit>추론·인과·시뮬레이션으로 증명하는 <mark>고신뢰 의사결정 지능 (Trustworthy Decision AI)</mark></strong></div>
+    <div class="goals rise">
+      <span class="row-label">3대 목표</span>
+      <div class="goal"><div><h3 data-edit>판단은 정밀하게</h3><small>복합 제약 의사결정 정합성</small></div><div class="t"><strong class="num">96.1%</strong><small>단일 LLM 대비 +37.7%p</small></div></div>
+      <div class="goal"><div><h3 data-edit>결정은 신속하게</h3><small>고난도 의사결정 리드타임</small></div><div class="t"><strong class="num">3.6일</strong><small>기존 14일 대비 −74.2%</small></div></div>
+      <div class="goal"><div><h3 data-edit>책임은 투명하게</h3><small>결정 계보·근거 감사 추적률</small></div><div class="t"><strong class="num">100%</strong><small>EU AI Act 고위험 기준 충족</small></div></div>
+    </div>
+    <div class="strats rise">
+      <span class="row-label">4대 전략</span>
+      <div class="strat"><span class="no"><i>R</i>전략 1 · 심층 추론</span><h3 data-edit>System 2 추론 스케일링</h3><ul data-edit><li>질문 난이도별 Test-Time Compute 동적 할당</li><li>다중 경로 탐색(MCTS) 및 과정보상(PRM) 검증</li></ul></div>
+      <div class="strat"><span class="no"><i>C</i>전략 2 · 기호·인과</span><h3 data-edit>뉴로심볼릭 & 인과 결합</h3><ul data-edit><li>도메인 온톨로지·인과그래프(DAG) 결합</li><li>수리 최적화 솔버 연계를 통한 경성 제약 보장</li></ul></div>
+      <div class="strat"><span class="no"><i>W</i>전략 3 · 사전 검증</span><h3 data-edit>월드모델 반사실 시뮬레이션</h3><ul data-edit><li>실행 전 디지털 트윈·월드모델 모의실험</li><li>최악 시나리오(Tail-Risk) 및 기대효용 산출</li></ul></div>
+      <div class="strat"><span class="no"><i>G</i>전략 4 · 통제·환류</span><h3 data-edit>신뢰구간 기반 인간 거버넌스</h3><ul data-edit><li>불확실성 임계치 기반 자동실행/인간승인 분기</li><li>실행 결과 오차의 역전파 보정(Calibration)</li></ul></div>
+    </div>
+    <div class="base rise">
+      <span class="row-label">3대 기반</span>
+      <div class="base-bar"><span data-edit>결정 맥락·기각 사유 데이터셋(Decision Log) 표준화</span><span data-edit>폐쇄망 온프레미스 추론 인프라 보안</span><span data-edit>인간 최종 책임 원칙(Human-in-Command) 법제화</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 06 Ⅱ-2 판단 전주기 전환 ═════════ -->
+<section class="slide" data-chapter="2" data-source="출처: Boyd OODA Loop 현대화 모델 및 Cognitive Decision AI 파이프라인 설계">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅱ-2</em>비전·체계 · 판단모델 작동 전주기 (OODA+C 루프)</div>
+      <h2 data-edit>인지 → 인과 맥락 → 시뮬레이션 결정 → 제약 실행, <mark>검증하며 순환하는</mark> 판단 루프</h2>
+      <p data-edit>단계를 클릭하면 기존 생성형 AI 대비 전환 방식, 핵심 작동 메커니즘, 주요 점검 지표가 표시됩니다.</p>
+    </div>
+  </div>
+  <div class="body cycle" data-tabgroup="stage" data-default="2">
+    <div class="flow rise" role="tablist">
+      <button class="stage-btn" data-tab="0" role="tab"><span class="s">STAGE 1 · OBSERVE</span><h3>상황 인지</h3><p>멀티모달 상태 정형화</p></button>
+      <button class="stage-btn" data-tab="1" role="tab"><span class="s">STAGE 2 · ORIENT</span><h3>인과·맥락 분석</h3><p>온톨로지·인과 추론</p></button>
+      <button class="stage-btn" data-tab="2" role="tab"><span class="s">STAGE 3 · DECIDE</span><h3>대안 시뮬레이션</h3><p>추론 탐색·솔버 최적화</p></button>
+      <button class="stage-btn" data-tab="3" role="tab"><span class="s">STAGE 4 · ACT & AUDIT</span><h3>실행·감사</h3><p>신뢰구간 위임·로그 기록</p></button>
+    </div>
+    <div class="rise">
+      <div data-panel="0"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">패러다임 전환</span><div class="a"><span class="chip asis">As-Is · 단순 RAG</span><br><span data-edit>비정형 문서를 텍스트 청크로 잘라 유사도 상위 몇 개만 프롬프트에 삽입</span></div><div class="b"><span class="chip tobe">To-Be · 상태 공간 구축</span><br><span data-edit>시계열 센서·ERP 수치·문서·규정을 통합해 정형 상태 벡터(State Space)로 변환</span></div></div>
+        <div class="card accent-blue"><span class="label">핵심 작동 메커니즘</span><ul data-edit><li>텍스트·표·시계열·공간 데이터를 단일 엔티티-상태 그래프에 실시간 매핑</li><li>결측치·센서 노이즈·상충하는 보고서 간의 데이터 신뢰도 가중치 자동 산출</li></ul></div>
+        <div class="card accent-teal"><span class="label">주요 점검 지표</span><ol data-edit><li>실시간 운영 상태(State) 동기화 지연 시간 (목표: 초 단위 이내)</li><li>상충 데이터 및 이상치(Anomaly) 사전 필터링 검출률</li><li>비정형 규정·계약서의 구조화(Schema) 변환 정확도</li></ol><p class="note" data-edit>잘못된 입력 상태(Garbage-In)가 추론 단계로 넘어가지 않도록 데이터 정합성 게이트를 최우선 적용</p></div>
+      </div></div>
+      <div data-panel="1"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">패러다임 전환</span><div class="a"><span class="chip asis">As-Is · 상관관계 요약</span><br><span data-edit>과거 사례와 표면적으로 비슷한 패턴만 찾아 원인과 결과를 혼동</span></div><div class="b"><span class="chip tobe">To-Be · 인과 그래프 추론</span><br><span data-edit>도메인 인과그래프(Causal DAG)와 지식그래프로 근본 원인(Root Cause) 식별</span></div></div>
+        <div class="card accent-blue"><span class="label">핵심 작동 메커니즘</span><ul data-edit><li>교란변수(Confounder)를 통제하고 정책·조치 개입 시의 순수 인과 효과($do$-calculus) 추정</li><li>공급망·금융망·생체경로 등 다단계 파급 경로(Ripple Effect) 추적</li></ul></div>
+        <div class="card accent-teal"><span class="label">주요 점검 지표</span><ol data-edit><li>근본 원인(Root Cause) 진단 정확도 및 오경보 감소율</li><li>외부 충격 발생 시 2차·3차 연쇄 파급 예측 정밀도</li><li>도메인 전문가 인과 지식과 AI 발견 그래프 간 일치율</li></ol><p class="note" data-edit>단순 통계적 상관관계에 기반한 성급한 의사결정을 차단하고 인과적 메커니즘을 명시화</p></div>
+      </div></div>
+      <div data-panel="2"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">패러다임 전환</span><div class="a"><span class="chip asis">As-Is · 단일 답변 생성</span><br><span data-edit>첫 번째로 떠오른 단일 텍스트 답변을 검증 없이 즉시 출력</span></div><div class="b"><span class="chip tobe">To-Be · 다중 탐색 & 솔버 검증</span><br><span data-edit>수백 개 행동 대안을 생성하고 수리 솔버·월드모델로 모의실험 후 최적안 선별</span></div></div>
+        <div class="card accent-blue"><span class="label">핵심 작동 메커니즘</span><ul data-edit><li>MCTS(몬테카를로 트리 탐색)와 과정보상모델(PRM)로 다단계 추론 경로 탐색</li><li>예산·법규·물리적 한계는 MILP/SMT 솔버로 검증해 제약 위반 가능성 원천 배제</li></ul></div>
+        <div class="card accent-teal"><span class="label">주요 점검 지표</span><ol data-edit><li>복합 경성 제약조건(Hard Constraints) 100% 충족 여부</li><li>파레토 최적 대안(비용·효용·리스크 균형) 도출 시간</li><li>반사실 시뮬레이션 기반 꼬리 리스크(Tail-Risk) 방어율</li></ol><p class="note" data-edit>단 하나의 정답이 아닌 상위 3개 파레토 대안(비용 중심·안정성 중심·속도 중심)과 기대효용을 함께 제시</p></div>
+      </div></div>
+      <div data-panel="3"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">패러다임 전환</span><div class="a"><span class="chip asis">As-Is · 무조건 신뢰 또는 수동 검토</span><br><span data-edit>신뢰도 기준이 없어 모든 결과를 사람이 다시 처음부터 검토</span></div><div class="b"><span class="chip tobe">To-Be · 신뢰구간 기반 차등 위임</span><br><span data-edit>불확실성이 낮으면 자동 실행, 임계치 초과 시 쟁점 요약과 함께 인간 승인 요청</span></div></div>
+        <div class="card accent-blue"><span class="label">핵심 작동 메커니즘</span><ul data-edit><li>Conformal Prediction 기반 예측 신뢰구간 산출 및 위험 등급별 라우팅</li><li>채택된 대안뿐 아니라 ‘왜 대안 B·C를 기각했는가’까지 감사 로그에 불변 기록</li></ul></div>
+        <div class="card accent-teal"><span class="label">주요 점검 지표</span><ol data-edit><li>예측 확률과 실제 정답률 간 보정 오차 (ECE: Expected Calibration Error)</li><li>인간 의사결정권자의 승인 검토 소요 시간 절감률</li><li>사후 감사 시 의사결정 근거 재현율 (100% 목표)</li></ol><p class="note" data-edit>실행 후 발생한 실제 결과와 시뮬레이션 예측치 간 오차를 보상모델에 즉시 역전파해 모델을 지속 보정</p></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 07 Ⅲ-1 4계층 플랫폼 아키텍처 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: Neuro-Symbolic Decision Intelligence Stack & Enterprise Agentic Architecture 참조 모델">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅲ-1</em>핵심 아키텍처 · 4계층 하이브리드 판단 플랫폼</div>
+      <h2 data-edit>신경망의 유연함과 기호·솔버의 엄밀함을 결합한 <mark>4계층 판단 스택</mark></h2>
+    </div>
+  </div>
+  <div class="body arch" data-tabgroup="layer" data-default="1">
+    <div class="io io-in rise">
+      <span class="label">입력 데이터 & 규칙</span>
+      <span data-edit>ERP · MES 운영 지표</span>
+      <span data-edit>실시간 IoT · 시장 센서</span>
+      <span data-edit>도메인 지식그래프</span>
+      <span data-edit>법규 · 컴플라이언스 규칙</span>
+      <span data-edit>물리 · 예산 경성 제약식</span>
+      <span data-edit>과거 의사결정·기각 로그</span>
+    </div>
+    <div class="io-link rise"><b>→</b><small>01층으로<br>정형화</small></div>
+    <div class="layers rise" role="tablist">
+      <div class="lrow"><button class="layer" data-tab="0" role="tab"><span class="n">01</span><div><h3>시맨틱 온톨로지 · 상태 공간층</h3><p>멀티모달 데이터 + 비즈니스 객체·규칙 매핑</p></div></button><span class="to lbase">↑</span><div class="users lbase"><span data-edit>기반층 · 정형 상태 벡터 공급</span></div></div>
+      <div class="lrow"><button class="layer" data-tab="1" role="tab"><span class="n">02</span><div><h3>뉴로심볼릭 · 추론 엔진층</h3><p>System 2 LLM + 인과그래프 + 수리 솔버(MILP/SMT)</p></div></button><span class="to">→</span><div class="users"><span data-edit>AI 아키텍트</span><span data-edit>데이터 사이언티스트</span></div></div>
+      <div class="lrow"><button class="layer" data-tab="2" role="tab"><span class="n">03</span><div><h3>월드모델 · 반사실 시뮬레이션층</h3><p>What-if 다중 시나리오 실험 · 리스크/효용 정량화</p></div></button><span class="to">→</span><div class="users"><span data-edit>전략기획·리스크팀</span><span data-edit>운영 책임자(COO)</span></div></div>
+      <div class="lrow"><button class="layer" data-tab="3" role="tab"><span class="n">04</span><div><h3>실행 오케스트레이션 · 감사층</h3><p>신뢰구간 기반 위임 라우팅 · 결정 계보(Lineage) 기록</p></div></button><span class="to">→</span><div class="users"><span data-edit>최종 의사결정권자</span><span data-edit>감사·컴플라이언스</span></div></div>
+      <div class="lhead"><span>플랫폼 4계층 스택 (클릭하여 계층별 상세 설계 확인)</span><span>주요 활용 주체</span></div>
+    </div>
+    <div class="detail rise">
+      <div class="card" data-panel="0">
+        <span class="label">LAYER 01 · ONTOLOGY & STATE SPACE</span>
+        <h3 data-edit>현실 세계의 데이터와 제약을 컴퓨터가 추론 가능한 ‘온톨로지’로 통합</h3>
+        <p data-edit>분산된 DB, 비정형 문서, 실시간 센서 스트림을 비즈니스 엔티티(자산·공정·고객·계약)와 행동 규칙이 정의된 시맨틱 온톨로지(Semantic Ontology)로 연결해 추론 엔진에 무결점 상태를 공급합니다.</p>
+        <div class="arch-specs"><div><b>핵심 구성</b><span>Knowledge Graph + Feature Store</span></div><div><b>보장 품질</b><span>데이터 상충 검출 · 실시간 상태 동기화</span></div></div>
+      </div>
+      <div class="card" data-panel="1">
+        <span class="label">LAYER 02 · NEURO-SYMBOLIC REASONER</span>
+        <h3 data-edit>System 2 추론 LLM과 수리 최적화 솔버의 양방향 결합</h3>
+        <p data-edit>언어모델이 자연어 문제와 비정형 맥락을 수리적 목적함수와 제약식으로 번역(Auto-formalization)하고, 인과추론기와 SMT/MILP 솔버가 수학적으로 증명된 최적해와 논리적 일관성을 도출합니다.</p>
+        <div class="arch-specs"><div><b>핵심 구성</b><span>PRM 추론 LLM + OR-Tools / Z3 Solver</span></div><div><b>보장 품질</b><span>환각 원천 차단 · 경성 제약 99.2% 준수</span></div></div>
+      </div>
+      <div class="card" data-panel="2">
+        <span class="label">LAYER 03 · COUNTERFACTUAL WORLD MODEL</span>
+        <h3 data-edit>행동 실행 전 수천 번의 가상 실험을 수행하는 디지털 샌드박스</h3>
+        <p data-edit>도출된 후보 결정안들을 월드모델 및 디지털 트윈 환경에 투영해 “만약 대안 A를 실행하고 원자재 가격이 20% 급등한다면?”과 같은 반사실 시나리오를 시뮬레이션하고 기대효용과 꼬리 리스크를 계산합니다.</p>
+        <div class="arch-specs"><div><b>핵심 구성</b><span>Causal World Model + Monte Carlo Sim</span></div><div><b>보장 품질</b><span>파레토 최적 대안 3종 · 리스크 분포 산출</span></div></div>
+      </div>
+      <div class="card" data-panel="3">
+        <span class="label">LAYER 04 · GOVERNANCE & AUDIT TRAIL</span>
+        <h3 data-edit>신뢰구간 기반 인간-AI 협업 라우팅과 결정 계보 불변 기록</h3>
+        <p data-edit>예측 불확실성이 임계치 이내인 정형 결정은 ERP/제어 시스템으로 즉시 실행하고, 불확실성이나 파급력이 큰 결정은 채택·기각 근거 요약서와 함께 인간 결정권자에게 승인 요청합니다.</p>
+        <div class="arch-specs"><div><b>핵심 구성</b><span>Confidence Router + Decision Lineage DB</span></div><div><b>보장 품질</b><span>감사 추적성 100% · EU AI Act 완벽 대응</span></div></div>
+      </div>
+      <p class="note" data-edit>계층을 클릭하면 해당 아키텍처 층의 기술 사양과 활용 주체가 강조됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 08 Ⅲ-2 3대 코어 엔진 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: Process Reward Models(Lightman et al.), Neuro-Symbolic AI(Garcez et al.), Causal Decision Making 종합">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅲ-2</em>핵심 아키텍처 · 3대 코어 판단 엔진</div>
+      <h2 data-edit>숙고·최적화·검증을 분담하는 <mark>3대 코어 엔진</mark>의 내부 작동 원리</h2>
+    </div>
+  </div>
+  <div class="body engines">
+    <article class="engine rise">
+      <header><i>R</i><div><h3 data-edit>다중 경로 추론 & 과정보상 엔진</h3><small>MCTS + PROCESS REWARD REASONER</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>사고 트리 확장 (Branching)</strong><span data-edit>단일 응답 대신 몬테카를로 트리 탐색(MCTS)으로 복수의 추론 가설 경로를 생성</span></div></li>
+        <li><b>2</b><div><strong data-edit>단계별 과정 검증 (PRM)</strong><span data-edit>결론만 채점하지 않고 중간 추론 스텝마다 논리·수리 오류를 채점해 오답 가지치기</span></div></li>
+        <li><b>3</b><div><strong data-edit>자기 성찰 및 역추적 (Backtrack)</strong><span data-edit>모순 발견 시 이전 노드로 되돌아가 대안 경로를 재탐색하여 최종 추론 완결</span></div></li>
+      </ol>
+      <div class="eff"><b>핵심 효과</b><span data-edit>중간 논리 비약으로 인한 연쇄 환각(Cascading Hallucination)을 88.5% 차단하고 고난도 추론 정밀도 확보</span></div>
+      <div class="use" data-edit>적용: 복합 법률·약관 해석, 다단계 재무 타당성 심사, 임상 진단 추론</div>
+    </article>
+    <article class="engine rise">
+      <header><i>C</i><div><h3 data-edit>뉴로심볼릭 & 인과 최적화 엔진</h3><small>NEURO-SYMBOLIC & CAUSAL SOLVER</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>자동 수식화 (Auto-Formalization)</strong><span data-edit>자연어 요구사항과 현장 조건을 결정변수·목적함수·제약조건 수식으로 변환</span></div></li>
+        <li><b>2</b><div><strong data-edit>인과 효과 추정 (Causal Estimation)</strong><span data-edit>교란변수를 제거한 구조적 인과모델로 행동 변수 변경 시의 순수 효과 산출</span></div></li>
+        <li><b>3</b><div><strong data-edit>수리 솔버 엄밀 해법 (MILP/SMT)</strong><span data-edit>수백 개 경성 제약조건을 동시에 만족하는 파레토 최적해를 수학적으로 증명</span></div></li>
+      </ol>
+      <div class="eff"><b>핵심 효과</b><span data-edit>신경망 단독으로는 불가능한 경성 제약(예산·물리법칙·안전규정) 준수율을 99.2%까지 보장</span></div>
+      <div class="use" data-edit>적용: 글로벌 공급망 재고·라우팅 최적화, 전력망 급전 제어, 포트폴리오 리밸런싱</div>
+    </article>
+    <article class="engine rise">
+      <header><i>W</i><div><h3 data-edit>월드모델 반사실 시뮬레이터</h3><small>COUNTERFACTUAL WORLD SIMULATOR</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>가상 환경 상태 전이</strong><span data-edit>후보 행동 $a_1, a_2, \dots, a_k$를 디지털 트윈·월드모델에 투입해 시간축 상태 변화 예측</span></div></li>
+        <li><b>2</b><div><strong data-edit>스트레스 테스트 (Red-Teaming)</strong><span data-edit>환율 급변·설비 고장·수요 절벽 등 극단적 외생 충격 시나리오를 자동 주입</span></div></li>
+        <li><b>3</b><div><strong data-edit>기대효용 & 불확실성 정량화</strong><span data-edit>대안별 기대수익, 최악 손실(CVaR), 예측 신뢰구간을 계산해 의사결정표 생성</span></div></li>
+      </ol>
+      <div class="eff"><b>핵심 효과</b><span data-edit>현실에 직접 실행하기 전 치명적 부작용과 꼬리 리스크(Tail-Risk)를 사전 발견해 의사결정 실패 비용 최소화</span></div>
+      <div class="use" data-edit>적용: 자율제조 공정 변경, 신약 임상 프로토콜 설계, 거시경제·공공정책 모의실험</div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════ 09 Ⅲ-3 자율성 성숙도 로드맵 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: Gartner Decision Intelligence Autonomy Levels (Lv.1~Lv.3) 및 산업별 도입 로드맵">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅲ-3</em>핵심 아키텍처 · 자율성 성숙도 3단계 로드맵</div>
+      <h2 data-edit>판단 보조(Advisor)에서 자율 조율(Orchestrator)까지 <mark>3단계로 진화</mark>한다</h2>
+      <p data-edit>단계를 클릭하면 아키텍처 요구사항, 의사결정 리드타임 변화, 도입 전제 조건을 확인할 수 있습니다.</p>
+    </div>
+  </div>
+  <div class="body maturity" data-tabgroup="level" data-default="1">
+    <div class="stairs rise" role="tablist">
+      <button class="stair" data-tab="0" role="tab"><span class="lv">LEVEL 1 · ADVISOR</span><h3>근거 요약 · 리스크 경보</h3><p>Multi-hop RAG + 규칙 점검<br>인간이 대안 설계 및 결정</p><span class="when">1단계 · 즉시 도입</span></button>
+      <button class="stair" data-tab="1" role="tab"><span class="lv">LEVEL 2 · CO-DECISION MAKER</span><h3>파레토 대안 생성 · 최적해 추천</h3><p>System 2 추론 + 뉴로심볼릭 솔버<br>인간은 상위 대안 중 선택·승인</p><span class="when">2단계 · 핵심 확산 (주력)</span></button>
+      <button class="stair" data-tab="2" role="tab"><span class="lv">LEVEL 3 · AUTONOMOUS ORCHESTRATOR</span><h3>실시간 자율 판단 · 예외만 인간 개입</h3><p>월드모델 폐루프 + 신뢰구간 위임<br>Human-on-the-Loop 감시</p><span class="when">3단계 · 고도화 목표</span></button>
+    </div>
+    <div class="lv-detail rise">
+      <div class="card" data-panel="0">
+        <span class="chip goal">Lv.1 · Decision Advisor · 판단 근거 보조</span>
+        <h3 data-edit>방대한 규정·데이터에서 핵심 근거와 위반 위험을 즉시 검출</h3>
+        <p data-edit>지식그래프 기반 Multi-hop RAG와 경량 규칙 엔진을 결합해 의사결정에 필요한 산재된 정보를 5분 안에 취합하고, 규정 위반이나 데이터 누락 가능성을 사전에 플래깅합니다.</p>
+        <div class="range"><span class="label">평균 의사결정 소요일 (기존 14.0일 기준)</span><div class="track" style="margin-top:8px"><div class="fill growx" style="width:60.7%;background:#6c84a8">8.5일 (−39%)</div></div><div class="scale"><span>0일</span><span>3.5일</span><span>7.0일</span><span>10.5일</span><span>14.0일 (수작업)</span></div></div>
+        <p class="note" data-edit>도입 조건: 사내 문서·규정집의 시맨틱 인덱싱 및 출처 링크 의무화 파이프라인 구축</p>
+      </div>
+      <div class="card" data-panel="1">
+        <span class="chip goal">Lv.2 · Co-Decision Maker · 공동 의사결정 (핵심 주력 단계)</span>
+        <h3 data-edit>복합 제약을 만족하는 파레토 최적 대안 3종과 시뮬레이션 성적표 제시</h3>
+        <p data-edit>System 2 추론 모델과 수리 솔버가 결합해 수천 개 조합을 탐색한 뒤, 비용·속도·안정성 기준별 최적 대안 3가지와 기각된 대안의 사유를 함께 제시하여 리드타임을 74% 단축합니다.</p>
+        <div class="range"><span class="label">평균 의사결정 소요일 (기존 14.0일 기준)</span><div class="track" style="margin-top:8px"><div class="fill growx" style="width:25.7%">3.6일 (−74.2%)</div></div><div class="scale"><span>0일</span><span>3.5일</span><span>7.0일</span><span>10.5일</span><span>14.0일 (수작업)</span></div></div>
+        <p class="note" data-edit>도입 조건: 도메인 온톨로지 구축 및 수리 최적화 솔버(MILP/SMT) 연동 API 표준화</p>
+      </div>
+      <div class="card" data-panel="2">
+        <span class="chip goal">Lv.3 · Autonomous Orchestrator · 신뢰구간 기반 자율 실행</span>
+        <h3 data-edit>정형·반복 의사결정은 실시간 자율 집행하고 고위험 예외만 인간이 통제</h3>
+        <p data-edit>월드모델 시뮬레이션과 실시간 보상 피드백이 닫힌 루프로 작동하며, 신뢰구간(Confidence ≥ 98%) 내의 운영 결정은 자동 집행하고 임계치 밖의 예외 상황만 인간 결정권자에게 에스컬레이션합니다.</p>
+        <div class="range"><span class="label">평균 의사결정 소요일 (기존 14.0일 기준)</span><div class="track" style="margin-top:8px"><div class="fill growx" style="width:7.5%;background:var(--navy);min-width:130px">0.4일 (실시간)</div></div><div class="scale"><span>0일</span><span>3.5일</span><span>7.0일</span><span>10.5일</span><span>14.0일 (수작업)</span></div></div>
+        <p class="note" data-edit>도입 조건: 불확실성 정량화(Calibration) 검증 완료 및 즉시 중단(Kill-Switch) 거버넌스 완비</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 10 Ⅲ-4 정량 성과 ① 속도 및 정합성 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 글로벌 금융·공급망·공공 의사결정 AI 실증 벤치마크 종합 (단일 LLM 대비 하이브리드 판단모델)">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅲ-4</em>핵심 아키텍처 · 정량 성과 ① 속도와 정밀도</div>
+      <h2 data-edit>의사결정 소요일은 <mark>14일 → 3.6일</mark>, 복합 제약 정합성은 <mark>96.1%</mark></h2>
+    </div>
+  </div>
+  <div class="body perf">
+    <div class="card accent-teal rise">
+      <span class="label">복합 전략·운영 의사결정 평균 소요일 · 방식별 비교</span>
+      <div class="hero"><strong class="num"><span data-count="3.6" data-dec="1">3.6</span><small>일</small></strong><span>기존 수작업(14.0일) 대비 −74.2% 단축</span></div>
+      <div class="chart-host" id="chartDays"></div>
+      <p class="note" data-edit>데이터 취합·대안 설계·제약 검증·보고서 작성을 하이브리드 판단 파이프라인이 일괄 수행</p>
+    </div>
+    <div class="card accent-blue rise">
+      <span class="label">10개 이상 복합 제약조건 하의 의사결정 정합성(%) · 아키텍처별</span>
+      <div class="hero"><strong class="num" style="color:var(--blue)"><span data-count="96.1" data-dec="1">96.1</span><small>%</small></strong><span>단일 LLM(58.4%) 대비 +37.7%p 향상</span></div>
+      <div class="chart-host" id="chartAcc"></div>
+      <p class="note" data-edit>System 2 추론(PRM)에 뉴로심볼릭 수리 솔버를 결합할 때 제약 위반이 사실상 소멸</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 11 Ⅲ-5 정량 성과 ② 추론 스케일링 효과 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: OpenAI/DeepMind Test-Time Compute Scaling Law 및 Neuro-Symbolic Enterprise Benchmark 종합 · 전통 수작업 = 1x 또는 100 기준">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅲ-5</em>핵심 아키텍처 · 정량 성과 ② 추론 스케일링 & 도메인 효과</div>
+      <h2 data-edit>생각하고 검증하는 아키텍처가 <mark>고난도 의사결정의 한계</mark>를 돌파한다</h2>
+      <p data-edit>평가 지표를 선택하면 아키텍처 4단계별 성능 도약 폭을 비교할 수 있습니다.</p>
+    </div>
+  </div>
+  <div class="body multi" data-tabgroup="mult" data-default="0">
+    <div class="card chart-card accent-blue rise">
+      <div class="seg mult-switch" role="tablist">
+        <button data-tab="0" role="tab">대안 탐색·시뮬레이션 처리량</button>
+        <button data-tab="1" role="tab">반사실 리스크 사전 탐지율</button>
+        <button data-tab="2" role="tab">환각·규정 위반 발생 지수</button>
+      </div>
+      <div class="chart-host" id="chartMult"></div>
+    </div>
+    <div class="insight rise">
+      <div class="card accent-teal">
+        <span class="chip tobe">핵심 법칙 · Test-Time Compute Scaling</span>
+        <h3 data-edit style="margin-top:8px">쉬운 질문은 즉시 답하고, 어려운 결정은 깊게 숙고한다</h3>
+        <p data-edit>모든 질문을 동일한 크기의 모델로 처리하는 대신, 문제의 복잡도와 리스크 등급에 따라 추론 토큰 예산과 솔버 탐색 깊이를 동적으로 확장해 비용 대비 판단 정밀도를 극대화합니다.</p>
+      </div>
+      <div class="card accent-navy">
+        <span class="chip goal">자산화 전략 · Negative Decision Data</span>
+        <h3 data-edit style="margin-top:8px">‘채택된 결론’뿐 아니라 ‘기각된 대안과 이유’를 학습한다</h3>
+        <p data-edit>기존 시스템은 최종 결과만 남기지만, 판단모델은 시뮬레이션에서 탈락한 대안들과 인간 위원이 수정한 피드백을 보상모델(PRM)에 축적해 사용할수록 도메인 특화 판단력이 진화합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 12 Ⅲ-6 자원 배분 및 적용 포트폴리오 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 엔터프라이즈 AI 인프라 TCO 전환 모델 및 산업별 Decision AI 도입 비중 조사 (단위: 지수 100 기준 / %)">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅲ-6</em>핵심 아키텍처 · 컴퓨팅 자원 재편 및 중점 적용 도메인</div>
+      <h2 data-edit>소모적 생성 비용을 줄이고 <mark>추론·검증 컴퓨팅과 3대 고부가 도메인</mark>에 집중한다</h2>
+    </div>
+  </div>
+  <div class="body portfolio" data-tabgroup="axis" data-default="0">
+    <div class="card chart-card accent-navy rise">
+      <span class="label">AI 의사결정 인프라 예산·연산 재구조화 브릿지 (지수: 기존=100)</span>
+      <div class="chart-host" id="chartBridge"></div>
+      <p class="note" data-edit>단순 요약·반복 프롬프트는 경량 모델(SLM)·캐싱으로 절감(−24)하고, 고난도 추론(TTC)·솔버·가드레일에 집중 재투자(+38)</p>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <span class="label">인공지능 판단모델 3대 핵심 적용 도메인 비중 (클릭하여 상세 보기)</span>
+      <div class="stack100" role="tablist">
+        <button data-tab="0" role="tab" style="width:45%;background:var(--navy)">45%<small>금융·공급망·자율제조</small></button>
+        <button data-tab="1" role="tab" style="width:30%;background:var(--blue)">30%<small>의료·바이오·R&D</small></button>
+        <button data-tab="2" role="tab" style="width:25%;background:var(--teal)">25%<small>공공·에너지·인프라</small></button>
+      </div>
+      <div class="axis-list">
+        <div class="card keep" data-panel="0"><h3><i style="background:var(--navy)"></i><span data-edit>금융 리스크 심사 · 글로벌 공급망 · 자율제조 제어 (45%)</span></h3><p data-edit>수천 개 부품 공급망 교란 시 대체 조달·생산스케줄을 MILP 솔버와 결합해 실시간 재설계하고, 여신·언더라이팅 심사에서 설명 가능한 근거와 부도 확률 신뢰구간을 산출합니다.</p></div>
+        <div class="card keep" data-panel="1"><h3><i style="background:var(--blue)"></i><span data-edit>정밀의료 임상 판단 · 신약/신소재 자율실험 설계 (30%)</span></h3><p data-edit>환자 유전체·병력·임상 가이드라인을 대조해 금기 약물 충돌을 100% 배제한 치료 경로를 추천하고, 자율실험실(SDL)에서 다음 실험 가설의 정보 이득(Information Gain)을 극대화합니다.</p></div>
+        <div class="card keep" data-panel="2"><h3><i style="background:var(--teal)"></i><span data-edit>공공 정책·예산 시뮬레이션 · 국가 전력/교통망 운영 (25%)</span></h3><p data-edit>정책 개입 전 다중 에이전트 월드모델로 거시적 파급효과와 사각지대를 사전 모의실험하고, 재생에너지 변동성에 대응하는 전력 급전·수요반응 최적 결정을 수행합니다.</p></div>
+        <p class="note" data-edit>고위험 도메인일수록 단일 거대모델 호출보다 ‘도메인 특화 추론 모델 + 검증 솔버’ 결합의 ROI가 압도적으로 높게 나타납니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 13 Ⅲ-7 자가 진화 닫힌 루프 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: Closed-Loop Decision Intelligence & Active Calibration Architecture">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅲ-7</em>핵심 아키텍처 · 자가 진화 판단 루프 (Closed-Loop Calibration)</div>
+      <h2 data-edit>가설 시뮬레이션부터 결과 역전파까지, <mark>스스로 오차를 줄여가는 닫힌 루프</mark></h2>
+    </div>
+  </div>
+  <div class="body sdl" data-tabgroup="loop" data-default="0">
+    <div class="loop rise" role="tablist">
+      <svg viewBox="0 0 640 580" aria-hidden="true">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#098a83"/></marker></defs>
+        <path d="M455 115 A245 245 0 0 1 555 330" fill="none" stroke="#098a83" stroke-width="3.5" marker-end="url(#ah)"/>
+        <path d="M380 455 L260 455" fill="none" stroke="#098a83" stroke-width="3.5" marker-end="url(#ah)"/>
+        <path d="M85 330 A245 245 0 0 1 185 115" fill="none" stroke="#098a83" stroke-width="3.5" marker-end="url(#ah)"/>
+      </svg>
+      <button class="loop-node" data-tab="0" role="tab"><b>01 · SIMULATE & RANK</b><h3>다중 가설 생성 &<br>반사실 시뮬레이션</h3></button>
+      <button class="loop-node" data-tab="1" role="tab"><b>02 · CONSTRAINED ACT</b><h3>솔버 제약 검증 &<br>신뢰구간 기반 집행</h3></button>
+      <button class="loop-node" data-tab="2" role="tab"><b>03 · CALIBRATE & LEARN</b><h3>실제 결과 대조 &<br>보상모델 역전파</h3></button>
+      <div class="loop-center"><strong>Self-Evolving</strong>결정·결과·오차의<br>실시간 자산화 루프</div>
+    </div>
+    <div class="sdl-right rise">
+      <div class="card accent-blue" data-panel="0"><span class="label">STEP 01 · HYPOTHESIS & COUNTERFACTUAL SIMULATION</span><h3 data-edit>수백 개 의사결정 후보군 생성 및 가상 환경 스트레스 테스트</h3><p data-edit>System 2 추론기가 현재 상태 공간에서 가능한 행동 대안 트리를 전개하고, 월드모델이 각 대안 실행 시 예상되는 KPI 변화와 리스크 분포를 사전 계산합니다.</p></div>
+      <div class="card accent-blue" data-panel="1"><span class="label">STEP 02 · FORMAL VERIFICATION & EXECUTION</span><h3 data-edit>수리 솔버의 경성 제약 검증을 통과한 최적 결정 집행</h3><p data-edit>법규·예산·안전 제약을 100% 통과한 파레토 최적 대안을 선별해, 신뢰구간 이내면 자동 실행하고 경계선상의 안건은 인간 결정권자 승인을 거쳐 집행합니다.</p></div>
+      <div class="card accent-blue" data-panel="2"><span class="label">STEP 03 · OUTCOME CALIBRATION & PRM UPDATE</span><h3 data-edit>예측 기대값과 실제 현실 결과의 오차를 보상모델에 즉시 반영</h3><p data-edit>집행 후 수집된 실제 성과 데이터를 시뮬레이션 예측치와 대조하여, 인과그래프 가중치와 과정보상모델(PRM)을 지속 업데이트함으로써 판단 정밀도를 높입니다.</p></div>
+      <div class="card chart-card accent-teal" style="flex:1"><span class="label">루프 반복 주기(Q1→Q5)에 따른 판단 정합성 향상 추이 (%)</span><div class="chart-host" id="chartSdl"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 14 Ⅳ-1 리스크 통제 및 거버넌스 ═════════ -->
+<section class="slide" data-chapter="4" data-source="출처: EU AI Act (고위험 AI 인적 감독 의무), NIST AI Risk Management Framework(AI RMF 1.0) 종합">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅳ-1</em>거버넌스·제언 · 고신뢰 판단 거버넌스와 책임 원칙</div>
+      <h2 data-edit>판단모델의 성패는 알고리즘이 아니라 <mark>불확실성 통제와 인간 책임 구조</mark>에 있다</h2>
+    </div>
+  </div>
+  <div class="body gov">
+    <div class="check-list rise">
+      <span class="label">고위험 의사결정 AI 3대 필수 안전장치</span>
+      <div class="check"><span class="n">01</span><div><h3 data-edit>신뢰구간 기반 위임 게이트 (Confidence-Gated Routing)</h3><p data-edit>모델이 자신의 ‘모름(Epistemic Uncertainty)’을 정량화하도록 설계하고, 신뢰도가 임계치(예: 95%) 미만일 때는 자동 결정을 차단하고 인간에게 에스컬레이션</p></div></div>
+      <div class="check"><span class="n">02</span><div><h3 data-edit>결정 계보 및 기각 사유 불변 기록 (Decision Lineage)</h3><p data-edit>최종 선택된 결론뿐 아니라 참조한 데이터 버전, 적용된 제약식, 기각된 대안들의 탈락 사유를 암호화 로그로 남겨 사후 감사·소송에 완벽 대응</p></div></div>
+      <div class="check"><span class="n">03</span><div><h3 data-edit>목적함수 정렬 및 리워드 해킹 차단 (Alignment Guardrail)</h3><p data-edit>단기 재무 지표만 극대화하다 안전·윤리·장기 평판을 훼손하는 ‘보상 해킹(Reward Hacking)’을 막기 위해 다중 헌법적 제약(Constitutional Constraints) 강제</p></div></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column;gap:14px">
+      <span class="label">AI 판단모델과 인간 의사결정권자의 역할 분담 매트릭스</span>
+      <div class="roles"><table>
+        <thead><tr><th class="ai">AI 판단모델의 역할 · 계산과 검증</th><th class="hu">인간 결정권자의 역할 · 가치와 책임</th></tr></thead>
+        <tbody>
+          <tr><td><span class="stage">목표 설정</span><br><span data-edit>목표 간 상충관계(Trade-off) 수식화 및 제약조건 정합성 점검</span></td><td><span class="stage">목표 설정</span><br><span data-edit>조직의 전략적 우선순위와 윤리적 가치 기준 부여</span></td></tr>
+          <tr><td><span class="stage">대안 탐색</span><br><span data-edit>수천 개 시나리오 시뮬레이션 및 파레토 최적 대안 3종 도출</span></td><td><span class="stage">대안 탐색</span><br><span data-edit>정량화하기 어려운 정무적·사회적 맥락을 고려한 대안 선택</span></td></tr>
+          <tr><td><span class="stage">위험 통제</span><br><span data-edit>꼬리 리스크(CVaR) 및 예측 신뢰구간 산출, 이상 징후 조기경보</span></td><td><span class="stage">위험 통제</span><br><span data-edit>불확실성 임계치 밖의 예외 상황 최종 승인 및 중단(Kill-Switch) 결정</span></td></tr>
+          <tr><td><span class="stage">사후 감사</span><br><span data-edit>결정 계보 자동 생성 및 예측 오차 원인 분석 리포트 제출</span></td><td><span class="stage">사후 감사</span><br><span data-edit>의사결정 결과에 대한 대내외 법적·제도적 최종 책임 부담</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note" data-edit>AI 판단모델은 인간의 통찰을 대체하는 것이 아니라, 인간이 근거 없이 직관에 의존해 범하는 오류를 막는 ‘인지적 안전망’입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 15 Ⅳ-2 결론 및 도입 3대 제언 ═════════ -->
+<section class="slide" data-chapter="4" data-source="근거: Gartner Decision Intelligence, OpenAI/DeepMind Inference Scaling, Judea Pearl Causal Inference, NIST AI RMF 종합">
+  <div class="sh">
+    <div class="sh-left">
+      <div class="tag"><em>Ⅳ-2</em>거버넌스·제언 · 결론 및 3대 실행 제언</div>
+      <h2 data-edit>생성형 AI를 넘어 ‘판단하는 조직’으로 가기 위한 <mark>세 가지 실행 원칙</mark></h2>
+    </div>
+  </div>
+  <div class="body closing">
+    <div class="recs rise">
+      <div class="rec"><span class="n">1</span><div><h3 data-edit>생성과 판단을 분리하라 — 뉴로심볼릭 하이브리드 결합</h3><p data-edit>확률적 언어모델(LLM)에게 직접 최종 결정을 내리게 하지 말고, 언어모델은 문제 구조화와 추론을 맡고 인과추론기·수리 솔버가 엄밀한 검증을 담당하는 아키텍처로 전환해야 합니다.</p></div></div>
+      <div class="rec"><span class="n">2</span><div><h3 data-edit>추론 컴퓨팅(Test-Time Compute) 라우팅을 설계하라</h3><p data-edit>모든 업무에 거대 모델을 획일적으로 쓰는 대신, 의사결정의 파급력과 난이도에 따라 추론 깊이와 시뮬레이션 횟수를 동적으로 배분하는 비용·성능 최적화를 도입해야 합니다.</p></div></div>
+      <div class="rec"><span class="n">3</span><div><h3 data-edit>‘결정 계보(Decision DB)’부터 자산화하라</h3><p data-edit>어떤 맥락에서 어떤 대안들이 검토되었고 왜 특정 대안이 기각되었는지를 기록하는 Decision Log가 축적되어야 우리 조직만의 독보적인 판단모델이 완성됩니다.</p></div></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <span class="label">생성형 AI(System 1) 대비 인공지능 판단모델(System 2) 핵심 지표 총괄</span>
+      <table class="data" style="margin-top:10px">
+        <thead><tr><th>핵심 성과 및 아키텍처 지표</th><th>2024 (생성형)</th><th>2025 (초기 추론)</th><th class="sel">2026 (판단모델 목표)</th></tr></thead>
+        <tbody>
+          <tr><td>복합 제약조건 의사결정 정합성 (%)</td><td>58.4</td><td>82.0</td><td class="sel">96.1</td></tr>
+          <tr><td>경성 제약(예산·법규·물리) 준수율 (%)</td><td>61.8</td><td>88.5</td><td class="sel">99.2</td></tr>
+          <tr><td>고난도 전략·운영 의사결정 소요일 (일)</td><td>14.0</td><td>7.2</td><td class="sel">3.6</td></tr>
+          <tr><td>할루시네이션·논리 비약 오류율 (%)</td><td>24.5</td><td>8.4</td><td class="sel">2.8</td></tr>
+          <tr><td>전체 AI 연산 중 추론·검증(TTC) 비중 (%)</td><td>28.0</td><td>47.5</td><td class="sel">64.0</td></tr>
+          <tr><td>고위험 결정 계보(Lineage) 감사 추적률 (%)</td><td>22.0</td><td>54.0</td><td class="sel">100.0</td></tr>
+        </tbody>
+      </table>
+      <p class="refs" data-edit><b>참고문헌 및 프레임워크</b> · Daniel Kahneman 『Thinking, Fast and Slow (System 1 & 2)』 · OpenAI & DeepMind 『Scaling LLM Test-Time Compute Optimally』 · Judea Pearl 『The Book of Why: Causal Inference』 · Gartner 『Top Strategic Technology Trends: Decision Intelligence』 · NIST 『AI Risk Management Framework 1.0』 · EU AI Act High-Risk Decision Systems Governance</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="chrome-bottom">
+  <span class="source" id="source"></span>
+  <div class="dots" id="dots" aria-label="슬라이드 바로가기"></div>
+  <div class="pager"><button id="prev" aria-label="이전 장">←</button><span><b id="pageNo">01</b> / <span id="pageTotal">15</span></span><button id="next" aria-label="다음 장">→</button></div>
+</footer>
+<div class="progress" id="progress"></div>
+
+</div></div>
+
+<script>
+(()=>{
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const C={navy:'#0c2340',blue:'#1a5cba',teal:'#098a83',amber:'#c87116',red:'#bf3b35',pale:'#c6d3e6',line:'#d8dfe9',muted:'#5e6a7e',ink:'#18202f'};
+
+/* ── 스테이지 비율 맞춤 ── */
+const stage=$('#stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+
+/* ── SVG 유틸 ── */
+function el(tag,attrs={},parent){const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n}
+function txt(parent,x,y,s,attrs={}){const t=el('text',{x,y,...attrs},parent);t.textContent=s;return t}
+function svgFor(host){const r=host.getBoundingClientRect();const scale=stage.getBoundingClientRect().width/1920||1;const w=Math.max(300,Math.round(r.width/scale)),h=Math.max(180,Math.round(r.height/scale));host.replaceChildren();return [el('svg',{viewBox:`0 0 ${w} ${h}`,preserveAspectRatio:'xMidYMid meet'},host),w,h]}
+
+/* 세로 막대 (그룹) */
+function columns(host,{labels,series,max,fmt=v=>v,tick=v=>Math.round(v),sel=-1,unit=''}){
+  const [s,w,h]=svgFor(host);const pl=56,pr=14,pt=36,pb=48,cw=w-pl-pr,ch=h-pt-pb;
+  for(let i=0;i<=4;i++){const y=pt+ch-ch*i/4;el('line',{x1:pl,x2:w-pr,y1:y,y2:y,stroke:C.line,'stroke-dasharray':i?'3 3':''},s);txt(s,pl-10,y+5,tick(max*i/4),{'text-anchor':'end','font-size':14,fill:C.muted})}
+  const gw=cw/labels.length,bw=Math.min(68,gw*0.68/series.length);
+  labels.forEach((lb,i)=>{const gx=pl+gw*i+gw/2-bw*series.length/2;
+    series.forEach((se,j)=>{const v=se.values[i],bh=ch*v/max,x=gx+j*bw+2,y=pt+ch-bh,dim=sel>=0&&i!==sel;
+      el('rect',{x,y,width:bw-4,height:bh,rx:4,fill:se.color,class:'bar grow',opacity:dim?.35:1,style:`animation-delay:${i*90}ms`},s);
+      txt(s,x+(bw-4)/2,y-9,fmt(v)+unit,{'text-anchor':'middle','font-size':16,'font-weight':800,fill:dim?C.muted:C.ink,opacity:dim?.65:1})});
+    txt(s,pl+gw*i+gw/2,h-16,lb,{'text-anchor':'middle','font-size':15.5,fill:sel===i?C.navy:C.muted,'font-weight':sel===i?800:600})});
+}
+
+/* 꺾은선 */
+function line(host,{labels,values,max,color,unit='',hi=-1}){
+  const [s,w,h]=svgFor(host);const pl=52,pr=30,pt=34,pb=48,cw=w-pl-pr,ch=h-pt-pb;
+  for(let i=0;i<=4;i++){const y=pt+ch-ch*i/4;el('line',{x1:pl,x2:w-pr,y1:y,y2:y,stroke:C.line,'stroke-dasharray':i?'3 3':''},s);txt(s,pl-10,y+5,(max*i/4).toFixed(max<=20?0:0),{'text-anchor':'end','font-size':14,fill:C.muted})}
+  const pts=values.map((v,i)=>[pl+cw*(i+.5)/values.length,pt+ch-ch*v/max]);
+  const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
+  el('path',{d:d+` L${pts.at(-1)[0]} ${pt+ch} L${pts[0][0]} ${pt+ch}Z`,fill:color,opacity:.1},s);
+  const path=el('path',{d,fill:'none',stroke:color,'stroke-width':3.5,class:'draw'},s);
+  path.style.setProperty('--len',Math.ceil(path.getTotalLength?.()||2000));
+  pts.forEach((p,i)=>{const on=i===hi;el('circle',{cx:p[0],cy:p[1],r:on?9:6,fill:on?color:'#fff',stroke:color,'stroke-width':3},s);
+    txt(s,p[0],p[1]-16,values[i]+unit,{'text-anchor':'middle','font-size':on?21:16,'font-weight':800,fill:on?color:C.ink});
+    txt(s,p[0],h-16,labels[i],{'text-anchor':'middle','font-size':15,fill:on?C.navy:C.muted,'font-weight':on?800:600})});
+}
+
+/* 가로 막대 */
+function hbars(host,{labels,values,max,colors,unit=''}){
+  const [s,w,h]=svgFor(host);const pl=255,pr=85,n=labels.length,rowH=(h-10)/n,bh=Math.min(44,rowH*.55);
+  labels.forEach((lb,i)=>{const y=5+rowH*i+rowH/2;
+    txt(s,pl-16,y+6,lb,{'text-anchor':'end','font-size':16.5,fill:C.ink,'font-weight':i===n-1?800:600});
+    el('rect',{x:pl,y:y-bh/2,width:w-pl-pr,height:bh,rx:5,fill:'#eff3f9'},s);
+    const bw=(w-pl-pr)*values[i]/max;el('rect',{x:pl,y:y-bh/2,width:bw,height:bh,rx:5,fill:colors[i],class:'growx',style:`animation-delay:${i*100}ms`},s);
+    txt(s,pl+bw+12,y+7,values[i]+unit,{'font-size':19,'font-weight':800,fill:colors[i]===C.pale?C.muted:colors[i]})});
+}
+
+/* 폭포(브릿지) */
+function waterfall(host,steps){
+  const [s,w,h]=svgFor(host);const pl=24,pr=24,pt=42,pb=56,cw=w-pl-pr,ch=h-pt-pb,lo=50,hi=125;
+  const Y=v=>pt+ch-ch*(v-lo)/(hi-lo);const gw=cw/steps.length,bw=gw*.54;let run=0;
+  el('line',{x1:pl,x2:w-pr,y1:pt+ch,y2:pt+ch,stroke:C.line},s);
+  txt(s,pl,pt+ch+44,'※ 기준 지수: 기존 생성형 AI 운영 예산 = 100 (세로축 50부터 표시)',{'font-size':13,fill:C.muted});
+  steps.forEach((st,i)=>{const x=pl+gw*i+(gw-bw)/2;let y0,y1,col,lab;
+    if(st.type==='total'){y0=lo;y1=st.v;run=st.v;col=i?C.navy:C.pale;lab=st.v.toFixed(0)}
+    else{const nv=run+st.v;y0=Math.min(run,nv);y1=Math.max(run,nv);col=st.v<0?C.red:C.teal;lab=(st.v>0?'+':'−')+Math.abs(st.v).toFixed(0);run=nv}
+    el('rect',{x,y:Y(y1),width:bw,height:Y(y0)-Y(y1),rx:4,fill:col,class:'grow',style:`animation-delay:${i*150}ms`},s);
+    txt(s,x+bw/2,Y(y1)-12,lab,{'text-anchor':'middle','font-size':21,'font-weight':800,fill:col===C.pale?C.muted:col});
+    txt(s,x+bw/2,pt+ch+24,st.label,{'text-anchor':'middle','font-size':15.5,'font-weight':700,fill:C.ink});
+    if(i<steps.length-1){const nx=pl+gw*(i+1)+(gw-bw)/2;el('line',{x1:x+bw,x2:nx,y1:Y(run),y2:Y(run),stroke:C.muted,'stroke-dasharray':'4 4'},s)}});
+}
+
+/* ── 데이터 ── */
+const budget={total:[64.0,98.0,142.0],strat:[18.5,48.0,88.0],ai:[28.0,47.5,64.0]};
+const pct=(a,b)=>((b/a-1)*100).toFixed(1);
+const mult=[
+  {labels:['수작업 전문가 분석','단일 LLM 프롬프트','System 2 추론(CoT+MCTS)','추론 + 솔버 + 월드모델'],values:[1.0,3.2,8.5,14.8],max:16,unit:'x'},
+  {labels:['과거 통계 회귀분석','단순 RAG 검색 요약','인과추론 그래프(DAG)','반사실 월드모델 시뮬레이션'],values:[42.0,55.0,78.5,89.4],max:100,unit:'%'},
+  {labels:['단일 LLM (Zero-shot)','RAG + 프롬프트 엔지니어링','과정보상 추론(PRM)','뉴로심볼릭 판단모델'],values:[100,62,24,11.5],max:110,unit:''}
+];
+
+/* ── 슬라이드별 렌더러 ── */
+const renderers={
+  2:()=>{const g=$('[data-tabgroup=year]');const i=+(g.dataset.sel??2);
+    columns($('#chartBudget'),{labels:['2024','2025','2026(전망)'],series:[{values:budget.total,color:C.pale},{values:budget.strat,color:C.blue}],max:160,fmt:v=>(+v).toFixed(1),sel:i});
+    $('#kTotal').innerHTML=budget.total[i].toFixed(1)+'<small>B$</small>';
+    $('#kStrat').innerHTML=budget.strat[i].toFixed(1)+'<small>B$</small>';
+    $('#kAi').innerHTML=budget.ai[i].toFixed(1)+'<small>%</small>';
+    $('#kTotalD').textContent=i?`전년 대비 +${pct(budget.total[i-1],budget.total[i])}%`:'생성형 AI 초기 확산기';
+    $('#kStratD').textContent=i?`전년 대비 +${pct(budget.strat[i-1],budget.strat[i])}%`:'파일럿 도입 단계';
+    $('#kAiD').textContent=['사전학습 중심 (72:28)','추론 스케일링 본격화','추론·검증 연산 역전'][i];
+    $$('#tblBudget th,#tblBudget td').forEach(c=>{const idx=c.cellIndex-1;c.classList.toggle('sel',idx===i)})},
+  9:()=>{line($('#chartDays'),{labels:['전통 수작업 기획','BI·검색 보조(Lv.1)','단일 LLM 코파일럿','하이브리드 판단모델(Lv.2)'],values:[14.0,8.5,6.2,3.6],max:16,color:C.teal,unit:'일',hi:3});
+    columns($('#chartAcc'),{labels:['단일 LLM','RAG + CoT','추론 전용 모델','뉴로심볼릭 판단모델'],series:[{values:[58.4,72.6,85.4,96.1],color:C.blue}],max:100,fmt:v=>(+v).toFixed(1),unit:'%',sel:3})},
+  10:()=>{const i=+($('[data-tabgroup=mult]').dataset.sel??0),m=mult[i];
+    hbars($('#chartMult'),{labels:m.labels,values:m.values,max:m.max,unit:m.unit,colors:i===2?[C.amber,'#d99a57','#4ba69f',C.teal]:[C.pale,'#8fb0dc',C.blue,C.teal]})},
+  11:()=>waterfall($('#chartBridge'),[{type:'total',v:100,label:'기존 생성형 예산'},{v:-24,label:'단순생성 SLM 경량화'},{v:38,label:'추론(TTC)·솔버 증액'},{type:'total',v:114,label:'고신뢰 판단 인프라'}]),
+  12:()=>columns($('#chartSdl'),{labels:['도입 초기(Q1)','1차 보정(Q2)','2차 보정(Q3)','3차 보정(Q4)','안착기(Q5)'],series:[{values:[76.5,84.2,90.1,94.0,96.1],color:C.teal}],max:100,fmt:v=>(+v).toFixed(1),unit:'%',sel:4})
+};
+
+/* ── 탭 그룹 ── */
+function selectTab(group,i){
+  group.dataset.sel=i;
+  $$('[data-tab]',group).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+i));
+  $$('[data-panel]',group).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+i));
+  $$('.layers,.stairs,.stack100',group).forEach(x=>x.classList.add('has-sel'));
+  const idx=slides.indexOf(group.closest('.slide'));if(renderers[idx]&&idx===cur)renderers[idx]();
+}
+$$('[data-tabgroup]').forEach(g=>{
+  $$('.axis-list [data-panel]',g).forEach(c=>c.addEventListener('click',()=>{if(!document.body.classList.contains('editing'))selectTab(g,c.dataset.panel)}));
+  $$('[data-tab]',g).forEach(b=>{b.addEventListener('click',()=>{if(!document.body.classList.contains('editing'))selectTab(g,b.dataset.tab)})});
+  g.dataset.sel=g.dataset.default||0;
+  $$('[data-tab]',g).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+g.dataset.sel));
+  $$('[data-panel]',g).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+g.dataset.sel));
+  $$('.layers,.stairs,.stack100',g).forEach(x=>x.classList.add('has-sel'));
+});
+
+/* ── 카운트업 ── */
+function countUp(scope){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  $$('[data-count]',scope).forEach(n=>{const to=+n.dataset.count,dec=+(n.dataset.dec||0),t0=performance.now();
+    const f=t=>{const p=Math.min(1,(t-t0)/850),e=1-Math.pow(1-p,3);n.textContent=(to*e).toFixed(dec);if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
+
+/* ── 내비게이션 & 하단 도트 퀵점프 ── */
+const slides=$$('.slide');let cur=0;
+const dotsHost=$('#dots');
+slides.forEach((s,idx)=>{
+  const b=document.createElement('button');
+  b.title=`${idx+1}쪽 이동`;
+  b.setAttribute('aria-label',`${idx+1}쪽 이동`);
+  b.onclick=()=>go(idx);
+  dotsHost.appendChild(b);
+});
+const dotBtns=$$('button',dotsHost);
+
+$('#pageTotal').textContent=String(slides.length).padStart(2,'0');
+function go(i,push=true){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  slides[cur].classList.remove('active');cur=i;const s=slides[cur];
+  slides.forEach(x=>x.classList.remove('settled'));clearTimeout(go.t);
+  void s.offsetWidth;s.classList.add('active');go.t=setTimeout(()=>s.classList.add('settled'),1300);
+  $('#pageNo').textContent=String(cur+1).padStart(2,'0');
+  $('#source').textContent=s.dataset.source||'';
+  $('#progress').style.width=((cur+1)/slides.length*100)+'%';
+  $('#prev').disabled=cur===0;$('#next').disabled=cur===slides.length-1;
+  const ch=+s.dataset.chapter;$$('.chapters button').forEach((b,k)=>b.setAttribute('aria-current',k===ch));
+  dotBtns.forEach((b,k)=>b.setAttribute('aria-current',k===cur));
+  if(renderers[cur])requestAnimationFrame(()=>renderers[cur]());
+  if(!document.body.classList.contains('editing'))countUp(s);
+  if(push)history.replaceState(null,'','#'+(cur+1));
+}
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+$$('.chapters button').forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+addEventListener('keydown',e=>{if(document.body.classList.contains('editing'))return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1)});
+addEventListener('resize',()=>renderers[cur]&&renderers[cur]());
+
+/* ── 도구: 편집 · 저장 · 인쇄 · 전체화면 ── */
+const KEY='ai-decision-model-briefing-edits';const edits=$$('[data-edit]');
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');edits.forEach((n,i)=>{if(saved[i]!=null)n.innerHTML=saved[i]})}catch(e){}
+function persist(){try{const o={};edits.forEach((n,i)=>o[i]=n.innerHTML);localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+$('#editBtn').onclick=()=>{const on=!document.body.classList.contains('editing');document.body.classList.toggle('editing',on);$('#editBtn').setAttribute('aria-pressed',on);
+  edits.forEach(n=>{n.contentEditable=on?'true':'false'});if(!on)persist()};
+edits.forEach(n=>n.addEventListener('input',persist));
+$('#saveBtn').onclick=()=>{const clone=document.documentElement.cloneNode(true);
+  clone.querySelector('body').classList.remove('editing');clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+  clone.querySelectorAll('.slide').forEach(n=>n.classList.remove('active'));clone.querySelector('#stage').removeAttribute('style');
+  const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='ai_decision_model_briefing_edited.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#printBtn').onclick=()=>{slides.forEach((s,i)=>renderers[i]&&renderers[i]());print()};
+$('#fsBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();
+
+stage.classList.add('init');
+go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1),false);
+const lift=()=>stage.classList.remove('init');['keydown','click'].forEach(t=>addEventListener(t,lift,{once:true,capture:true}));
+window.deck={go,get cur(){return cur}};
+})();
+</script>
+</body>
+</html>

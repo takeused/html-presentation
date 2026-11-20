@@ -1,0 +1,1737 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>국가 복합·신흥재난 AI 선제대응 기술수준 진단 및 차세대 R&D 전략기획 (15p)</title>
+<meta name="description" content="행정안전부 재난안전 R&D 기획보고서의 정교한 거버넌스 프레임(2단 헤더·리본 탭·4종 실증조사·SWOT·시사점 배너)과 AI 판단모델 브리핑의 인터랙티브 SVG 시각화·탭 시뮬레이션을 결합한 하이브리드 전략기획 브리핑 15쪽.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareR.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareB.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareEB.woff2') format('woff2');font-weight:800;font-display:swap}
+
+/* ───────── 하이브리드 디자인 토큰 : 공공 연구기획 거버넌스 × 인터랙티브 데이터 브리핑 ───────── */
+:root{
+  --gov-navy:#13386c;    /* 행안부 보고서 메인 네이비 헤더 */
+  --navy:#0c2340;        /* 딥 구조·다크 시사점 배너 */
+  --navy-deep:#071527;   /* 표지 다크 배경 */
+  --blue:#1a5cba;        /* 주 데이터·선택 강조 */
+  --sky:#00a8e8;         /* 표지·아키텍처 시안 포인트 */
+  --teal:#098a83;        /* To-Be·성과·선제대응 개선 */
+  --amber:#c87116;       /* As-Is·격차·주의 */
+  --red:#bf3b35;         /* 위험·하락폭·GAP 경보 */
+  --hl:#fff176;          /* 보고서 특유의 형광 옐로우 데이터 하이라이트 */
+  --hl-ink:#111827;
+  --ink:#161f2e;
+  --body:#334155;
+  --muted:#5b687c;
+  --faint:#8996a9;
+  --line:#d5dde8;
+  --line-soft:#e6ecf4;
+  --tint:#edf4fc;
+  --teal-tint:#e3f5f3;
+  --amber-tint:#fdf2e4;
+  --red-tint:#fceceb;
+  --paper:#ffffff;
+  --surface:#f6f8fc;
+  --canvas:#dce3ee;
+  --shadow-sm:0 2px 10px rgba(12,35,64,.05);
+  --shadow-md:0 8px 26px rgba(12,35,64,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--canvas);overflow:hidden}
+body{font-family:NanumSquare,'Pretendard','Malgun Gothic',sans-serif;color:var(--ink);word-break:keep-all;overflow-wrap:normal;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+b,strong{font-weight:800}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.4px}
+
+/* ───────── 1920×1080 고정 스테이지 ───────── */
+#viewport{position:fixed;inset:0;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;background:var(--paper);transform-origin:center center;transform:translate(-50%,-50%);box-shadow:0 18px 65px rgba(7,21,39,.28);overflow:hidden}
+
+/* ───────── 상단 글로벌 내비게이션 바 (Chrome Top) ───────── */
+.chrome-top{position:absolute;left:0;right:0;top:0;height:54px;display:flex;align-items:center;padding:0 48px;background:var(--navy-deep);color:#fff;z-index:20;border-bottom:1px solid rgba(255,255,255,.12)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:16.5px;color:#fff;letter-spacing:-.3px;min-width:460px}
+.brand i{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#e11d48,#1a5cba);display:grid;place-items:center;color:#fff;font-style:normal;font-size:12px;font-weight:800}
+.brand span{font-weight:600;color:#9bb3d6;font-size:13px;border-left:1px solid rgba(255,255,255,.2);padding-left:10px}
+.chapters{display:flex;gap:5px;margin:0 auto;background:rgba(255,255,255,.07);padding:4px;border-radius:999px;border:1px solid rgba(255,255,255,.12)}
+.chapters button{font-size:14px;padding:5px 15px;border-radius:999px;color:#b8cbe4;transition:all .18s;font-weight:700}
+.chapters button:hover{background:rgba(255,255,255,.12);color:#fff}
+.chapters button[aria-current=true]{background:var(--sky);color:var(--navy-deep);font-weight:800;box-shadow:0 2px 8px rgba(0,168,232,.35)}
+.tools{display:flex;gap:6px;min-width:460px;justify-content:flex-end}
+.tools button{font-size:12.5px;font-weight:700;color:#d0def0;border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:5px 11px;background:rgba(255,255,255,.05);transition:all .18s}
+.tools button:hover{color:#fff;border-color:var(--sky);background:rgba(0,168,232,.18)}
+.tools button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#fff}
+
+/* ───────── 하단 글로벌 푸터 바 (Chrome Bottom : PDF 기관 로고 + 인터랙티브 도트/페이저) ───────── */
+.chrome-bottom{position:absolute;left:0;right:0;bottom:0;height:50px;display:flex;align-items:center;padding:0 48px;gap:20px;border-top:1px solid var(--line);z-index:20;background:var(--paper)}
+.org-mark{display:flex;align-items:center;gap:14px;font-size:13.5px;font-weight:800;color:var(--navy);white-space:nowrap}
+.org-mark .badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);padding:3px 10px;border-radius:5px;font-size:12.5px;color:var(--gov-navy)}
+.org-mark .badge i{width:9px;height:9px;border-radius:50%;background:var(--blue);display:inline-block}
+.source{flex:1;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dots{display:flex;gap:5px;align-items:center}
+.dots button{width:18px;height:7px;border-radius:4px;background:var(--line);transition:all .22s}
+.dots button:hover{background:var(--blue);opacity:.7}
+.dots button[aria-current=true]{width:32px;background:var(--gov-navy)}
+.pager{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--muted)}
+.pager b{color:var(--gov-navy);font-size:17px}
+.pager button{width:32px;height:32px;border:1px solid var(--line);border-radius:50%;font-size:15px;color:var(--navy);transition:all .18s;display:grid;place-items:center}
+.pager button:hover:not(:disabled){background:var(--gov-navy);border-color:var(--gov-navy);color:#fff}
+.pager button:disabled{opacity:.3;cursor:default}
+.progress{position:absolute;left:0;bottom:0;height:3.5px;background:linear-gradient(90deg,var(--gov-navy),var(--sky),var(--teal));transition:width .35s ease;z-index:21}
+
+/* ───────── NEW 하이브리드 스타일 핵심 1 : PDF식 2단 거버넌스 헤더 배너 ───────── */
+.slide{position:absolute;left:0;right:0;top:54px;bottom:50px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .32s ease,visibility 0s .32s;background:var(--surface)}
+.slide.active{opacity:1;visibility:visible;transition:opacity .32s ease}
+
+.gov-header{flex-shrink:0;background:var(--paper)}
+.gov-top{height:56px;background:linear-gradient(90deg,#102f5e 0%,#174282 78%,#1c529e 100%);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 0 0 48px;position:relative;overflow:hidden}
+.gov-top h2{font-size:29px;font-weight:800;letter-spacing:-.7px;display:flex;align-items:center;gap:12px}
+.gov-top h2 .sec-no{color:#7dd3fc;font-weight:800}
+.gov-top h2 small{font-size:17px;font-weight:600;color:#cbd5e1;margin-left:6px}
+.gov-Corner{height:100%;background:linear-gradient(135deg,#1e64b8 0%,#0f356b 100%);padding:0 36px 0 44px;display:flex;align-items:center;gap:12px;clip-path:polygon(24px 0,100% 0,100% 100%,0 100%);border-left:3px solid #fff;font-size:15px;font-weight:800;color:#e0f2fe}
+.gov-Corner b{font-size:19px;color:#fff;background:rgba(255,255,255,.16);padding:2px 9px;border-radius:4px}
+
+.gov-sub{min-height:58px;border-bottom:2.5px solid var(--gov-navy);background:var(--paper);display:flex;align-items:center;justify-content:space-between;padding:8px 48px;gap:24px;box-shadow:0 3px 10px rgba(12,35,64,.04)}
+.gov-sub .headline{font-size:27px;font-weight:800;color:var(--ink);letter-spacing:-.8px;line-height:1.25}
+.gov-sub .headline mark{background:linear-gradient(transparent 58%,#bae6fd 58%);color:var(--gov-navy);padding:0 4px}
+.gov-sub .sub-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+
+/* 형광 하이라이트 배지 (PDF 특유의 노란색 데이터 강조) */
+.hl-tag{background:var(--hl);color:var(--hl-ink);font-weight:800;padding:3px 10px;border-radius:4px;font-size:15.5px;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.hl-inline{background:linear-gradient(transparent 35%,var(--hl) 35%);color:var(--ink);font-weight:800;padding:0 4px}
+
+/* 슬라이드 본문 캔버스 */
+.canvas-body{flex:1;min-height:0;padding:20px 48px 18px;display:flex;flex-direction:column;gap:16px}
+.grid-body{flex:1;min-height:0;display:grid;gap:20px}
+
+/* ───────── NEW 하이브리드 스타일 핵심 2 : 사선 리본 컨테이너 (PDF p.3~4, p.11, p.13) ───────── */
+.ribbon-box{border:1.5px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;position:relative;padding-top:46px;overflow:visible}
+.ribbon-head{position:absolute;top:-1px;left:18px;height:42px;background:linear-gradient(90deg,var(--gov-navy) 0%,#1d58a8 100%);color:#fff;padding:0 34px 0 14px;border-radius:8px 22px 0 0;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 100%,0 100%);display:flex;align-items:center;gap:10px;font-size:18.5px;font-weight:800;box-shadow:0 3px 10px rgba(19,56,108,.18)}
+.ribbon-head.teal{background:linear-gradient(90deg,#086f6a 0%,var(--teal) 100%)}
+.ribbon-head .r-no{width:28px;height:28px;border-radius:50%;background:#fff;color:var(--gov-navy);font-size:14.5px;font-weight:800;display:grid;place-items:center}
+.ribbon-head.teal .r-no{color:var(--teal)}
+.ribbon-inner{flex:1;min-height:0;padding:16px 22px 18px;display:flex;flex-direction:column;gap:12px}
+
+/* 과업 배지 (PDF '과업 1' 사선 태그) */
+.task-bar{display:flex;align-items:center;gap:12px;background:#dce7f7;border:1px solid #b8cdec;border-radius:8px;padding:8px 14px;font-size:17.5px;font-weight:800;color:var(--navy)}
+.task-badge{background:var(--gov-navy);color:#fff;font-size:13.5px;font-weight:800;padding:5px 11px;border-radius:5px;transform:skewX(-10deg);display:inline-block;flex-shrink:0}
+.task-badge span{display:inline-block;transform:skewX(10deg)}
+
+/* ───────── NEW 하이브리드 스타일 핵심 3 : 하단 다크 네이비 시사점 요약 배너 (PDF p.6~13, p.17~24) ───────── */
+.insight-banner{flex-shrink:0;background:linear-gradient(90deg,#0d254c 0%,#15376b 100%);color:#fff;border-radius:12px;padding:14px 26px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;box-shadow:var(--shadow-md)}
+.insight-banner.single{grid-template-columns:auto 1fr;gap:22px}
+.insight-col{display:flex;flex-direction:column;gap:4px}
+.insight-col:not(:first-child){border-left:1px solid rgba(255,255,255,.18);padding-left:26px}
+.insight-col .i-title{font-size:15.5px;font-weight:800;color:#7dd3fc;letter-spacing:.2px;display:flex;align-items:center;gap:8px}
+.insight-col p{font-size:17.5px;font-weight:700;color:#f8fafc;line-height:1.42}
+.insight-col p mark{background:none;color:var(--hl);font-weight:800}
+
+/* ───────── 공통 카드·배지·탭·테이블 ───────── */
+.card{border:1px solid var(--line);border-radius:12px;padding:18px 22px;background:var(--paper);box-shadow:var(--shadow-sm);position:relative;display:flex;flex-direction:column}
+.card.accent-navy{border-top:4px solid var(--gov-navy)}
+.card.accent-blue{border-top:4px solid var(--blue)}
+.card.accent-teal{border-top:4px solid var(--teal)}
+.card.accent-amber{border-top:4px solid var(--amber)}
+.card.accent-red{border-top:4px solid var(--red)}
+.card h3{font-size:21px;font-weight:800;color:var(--navy);margin-bottom:6px;letter-spacing:-.4px}
+.card p{font-size:16.5px;line-height:1.52;color:var(--body)}
+.label{font-size:13px;font-weight:800;letter-spacing:.9px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px}
+.note{font-size:14.5px;line-height:1.48;color:var(--muted);border-left:3px solid var(--amber);background:var(--surface);border-radius:0 6px 6px 0;padding:7px 12px}
+.chip{width:max-content;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;border-radius:6px;padding:4px 10px;margin-bottom:5px}
+.chip.asis{background:var(--amber-tint);color:var(--amber)}
+.chip.tobe{background:var(--teal-tint);color:var(--teal)}
+.chip.goal{background:var(--tint);color:var(--blue)}
+
+/* 탭 버튼 (인터랙션) */
+.seg{display:inline-flex;gap:5px;background:var(--surface);padding:4px;border-radius:9px;border:1px solid var(--line)}
+.seg button{border-radius:6px;padding:6px 14px;font-size:15px;font-weight:700;color:var(--muted);transition:all .18s}
+.seg button:hover{color:var(--blue)}
+.seg button[aria-selected=true]{background:var(--gov-navy);color:#fff;font-weight:800;box-shadow:0 2px 6px rgba(19,56,108,.22)}
+[data-panel]:not(.on):not(.keep){display:none!important}
+[data-panel].on{display:flex;flex-direction:column;animation:fade .28s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* 진입 & SVG 애니메이션 */
+.slide .rise{opacity:0;transform:translateY(12px)}
+.slide.active .rise{animation:rise .45s cubic-bezier(.2,.7,.2,1) forwards}
+.slide.active .rise:nth-child(2){animation-delay:.06s}.slide.active .rise:nth-child(3){animation-delay:.12s}
+.slide.active .rise:nth-child(4){animation-delay:.18s}.slide.active .rise:nth-child(5){animation-delay:.24s}
+@keyframes rise{to{opacity:1;transform:none}}
+.slide.active.settled .rise,#stage.init .rise{opacity:1;transform:none;animation:none}
+#stage.init .slide{transition:none}
+.slide.active.settled .grow,.slide.active.settled .growx{transform:none;animation:none}
+svg text{font-family:NanumSquare,'Pretendard',sans-serif}
+.bar{transition:opacity .28s,fill .28s}
+.grow{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
+.slide.active .grow{animation:growY .7s cubic-bezier(.2,.7,.2,1) forwards}
+.growx{transform-box:fill-box;transform-origin:left;transform:scaleX(0)}
+.slide.active .growx{animation:growX .7s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes growY{to{transform:scaleY(1)}}@keyframes growX{to{transform:scaleX(1)}}
+.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.slide.active .draw{animation:draw 1s ease forwards .12s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.chart-host{flex:1;min-height:0;width:100%}
+.chart-host svg{width:100%;height:100%;display:block}
+
+/* 데이터 테이블 */
+table.data{width:100%;border-collapse:collapse;font-size:15.5px;background:var(--paper);border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+table.data th{font-size:14px;color:#fff;font-weight:800;text-align:center;padding:9px 12px;background:var(--gov-navy);border-right:1px solid rgba(255,255,255,.15)}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data td{padding:9px 12px;border-bottom:1px solid var(--line-soft);border-right:1px solid var(--line-soft);text-align:center;color:var(--body);font-weight:600}
+table.data td.sel,table.data th.sel{background:var(--tint);color:var(--gov-navy);font-weight:800}
+table.data th.sel{background:var(--sky);color:var(--navy-deep)}
+table.data tr.hl-row td{background:#fefce8;border-top:2px solid var(--red);border-bottom:2px solid var(--red);font-weight:800;color:var(--navy)}
+
+/* ───────── 01 표지 (PDF 일러스트 감성 다크 네이비 + HTML 브리핑 우측 실시간 KPI 독) ───────── */
+.cover{background:linear-gradient(135deg,#091e3a 0%,#12376b 58%,#0d2b56 100%);color:#fff;flex-direction:row;padding:0;position:relative;overflow:hidden}
+.cover:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+.cover-left{flex:1;padding:52px 64px 42px;display:flex;flex-direction:column;position:relative;z-index:2}
+.cover-top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.ndmi-badge{display:inline-flex;align-items:center;gap:12px;background:#fff;color:var(--navy);padding:9px 18px;border-radius:8px;font-weight:800;font-size:16px;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.ndmi-badge i{width:24px;height:24px;border-radius:50%;background:conic-gradient(from 180deg,#e11d48 0 50%,#1d4ed8 50% 100%);display:inline-block}
+.ndmi-badge small{font-size:12px;color:var(--blue);background:var(--tint);padding:2px 7px;border-radius:4px}
+.report-tag{border:1.5px solid #7dd3fc;color:#7dd3fc;padding:6px 18px;border-radius:6px;font-weight:800;font-size:15px;letter-spacing:1px;background:rgba(0,168,232,.12)}
+.cover h1{font-size:58px;line-height:1.22;font-weight:800;letter-spacing:-1.8px;margin-bottom:18px;color:#fff}
+.cover h1 mark{background:none;color:#38bdf8;text-shadow:0 0 28px rgba(56,189,248,.35)}
+.cover-sub{font-size:20.5px;line-height:1.58;color:#cbd5e1;max-width:1020px;margin-bottom:26px}
+.cover-shift{display:grid;grid-template-columns:1fr 52px 1.15fr;gap:14px;align-items:center;margin-bottom:24px}
+.c-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:16px 20px}
+.c-box.to{background:rgba(0,168,232,.14);border:2px solid #38bdf8;box-shadow:0 8px 28px rgba(0,168,232,.2)}
+.c-box span{font-size:12.5px;font-weight:800;letter-spacing:1px;color:#93c5fd;display:block;margin-bottom:4px}
+.c-box.to span{color:var(--hl)}
+.c-box strong{font-size:20px;color:#fff;display:block;margin-bottom:5px}
+.c-box p{font-size:15px;color:#dbeafe;line-height:1.45}
+.c-arr{width:42px;height:42px;border-radius:50%;background:#38bdf8;color:var(--navy-deep);display:grid;place-items:center;font-weight:800;font-size:20px;margin:0 auto}
+.cover-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:auto;margin-bottom:22px}
+.c-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 16px;display:flex;align-items:baseline;justify-content:space-between}
+.c-chip b{font-size:28px;color:#fff}
+.c-chip span{font-size:13.5px;font-weight:800;background:var(--hl);color:var(--hl-ink);padding:2px 8px;border-radius:4px}
+.cover-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;border-top:1px solid rgba(255,255,255,.16);padding-top:16px;font-size:14px;color:#94a3b8}
+.cover-meta b{display:block;color:#fff;font-size:16.5px;margin-top:3px}
+
+.cover-right{width:560px;background:rgba(7,21,39,.72);border-left:1px solid rgba(255,255,255,.14);padding:52px 44px 42px;display:flex;flex-direction:column;gap:20px;position:relative;z-index:2;backdrop-filter:blur(10px)}
+.cover-right .r-kicker{font-size:13px;font-weight:800;letter-spacing:1.2px;color:#38bdf8}
+.cover-kpi{border-top:1px solid rgba(255,255,255,.14);padding-top:16px}
+.cover-kpi strong{font-size:50px;font-weight:800;color:#fff;letter-spacing:-1.8px;line-height:1;display:block}
+.cover-kpi strong small{font-size:21px;color:#7dd3fc;margin-left:4px}
+.cover-kpi p{font-size:16px;color:#cbd5e1;margin-top:7px;line-height:1.45}
+.cover-kpi .delta{color:var(--hl);font-weight:800}
+.cover-arch-card{margin-top:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:15px 18px}
+.cover-arch-card .t{font-size:12.5px;font-weight:800;color:var(--hl);letter-spacing:1px;margin-bottom:8px}
+.cover-arch-card .nodes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:13.5px;font-weight:700}
+.cover-arch-card .nodes span{background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);padding:7px 4px;border-radius:6px;color:#fff}
+
+/* ───────── 02 연구·기획 총괄 요약 (PDF p.3~4 리본 박스 + 빅넘버 배너 결합) ───────── */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;flex-shrink:0}
+.stat-pill{background:var(--paper);border:1.5px solid var(--line);border-left:5px solid var(--gov-navy);border-radius:10px;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.stat-pill strong{font-size:34px;color:var(--gov-navy);font-weight:800;letter-spacing:-1px}
+.stat-pill .hl-tag{font-size:15px;padding:4px 12px}
+.ribbons-2col{flex:1;min-height:0;display:grid;grid-template-columns:1.05fr 1fr;gap:22px}
+.sub-proj{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface);display:flex;flex-direction:column;gap:6px}
+.sub-proj .sp-head{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:var(--navy)}
+.sub-proj .sp-head i{width:26px;height:26px;border-radius:5px;background:var(--gov-navy);color:#fff;font-style:normal;font-size:14px;display:grid;place-items:center}
+.sub-proj p{font-size:15.5px;color:var(--body);line-height:1.45}
+.sub-proj .sp-meta{font-size:15px;font-weight:800;color:var(--blue);margin-top:2px}
+.mini-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mini-kpi{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface);text-align:center}
+.mini-kpi span{font-size:13.5px;font-weight:800;background:var(--hl);color:var(--hl-ink);padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:5px}
+.mini-kpi strong{display:block;font-size:27px;color:var(--gov-navy);font-weight:800}
+
+/* ───────── 03 환경분석 & 4종 실증조사 대시보드 (PDF p.6~7, p.16 + 인터랙티브 탭) ───────── */
+.env-grid{grid-template-columns:1.1fr 1fr}
+.survey-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;flex:1}
+.sv-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
+.sv-card header{background:var(--gov-navy);color:#fff;padding:9px 14px;font-size:16.5px;font-weight:800;display:flex;align-items:center;justify-content:space-between}
+.sv-card:nth-child(2) header{background:var(--blue)}
+.sv-card:nth-child(3) header{background:var(--teal)}
+.sv-card:nth-child(4) header{background:#2563eb}
+.sv-meta{padding:10px 14px;font-size:14px;color:var(--body);display:grid;grid-template-columns:68px 1fr;row-gap:4px;column-gap:8px;border-bottom:1px solid var(--line-soft)}
+.sv-meta b{color:var(--gov-navy);background:var(--tint);border-radius:4px;text-align:center;padding:1px 4px;font-size:12.5px}
+.sv-score{margin-top:auto;padding:10px 14px;background:var(--surface);display:flex;align-items:baseline;justify-content:space-between}
+.sv-score strong{font-size:32px;color:var(--gov-navy);font-weight:800}
+.sv-score span{font-size:13.5px;color:var(--muted);font-weight:700}
+
+/* ───────── 04 완료과제 성과 단절 & 4대 병목 진단 (PDF p.8 + HTML p.4 결합) ───────── */
+.gap-top{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;flex-shrink:0}
+.out-box{background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;text-align:center;box-shadow:var(--shadow-sm)}
+.out-box.low{border-color:var(--amber);background:var(--amber-tint)}
+.out-box span{font-size:14px;font-weight:800;color:var(--muted);display:block}
+.out-box strong{font-size:30px;color:var(--gov-navy);font-weight:800;display:block;margin:2px 0}
+.out-box.low strong{color:var(--amber)}
+.out-box small{font-size:13px;font-weight:700;color:var(--body)}
+.diag-table{flex:1;min-height:0;display:grid;grid-template-rows:auto repeat(4,1fr);border:1.5px solid var(--line);border-top:3px solid var(--gov-navy);border-radius:10px;background:var(--paper);overflow:hidden}
+.d-row{display:grid;grid-template-columns:250px 1fr 52px 1.08fr 230px;align-items:center;padding:0 20px;border-bottom:1px solid var(--line-soft)}
+.d-row:last-child{border-bottom:0}
+.d-row.head{background:var(--surface);font-size:14px;font-weight:800;color:var(--muted);padding:10px 20px;border-bottom:1px solid var(--line)}
+.d-row h3{font-size:20px;font-weight:800;color:var(--navy)}
+.d-row h3 span{display:inline-block;font-size:12.5px;background:var(--amber-tint);color:var(--amber);padding:2px 8px;border-radius:4px;margin-top:4px}
+.d-row p{font-size:16.5px;line-height:1.45;color:var(--body);padding-right:12px}
+.d-row p.to{color:var(--ink);font-weight:700}
+.d-arr{width:34px;height:34px;border-radius:50%;background:var(--teal-tint);color:var(--teal);display:grid;place-items:center;font-weight:800;font-size:18px;margin:0 auto}
+.m-pair{text-align:right}
+.m-pair .fr{font-size:17px;font-weight:700;color:var(--muted)}
+.m-pair .fr:after{content:' → ';color:var(--teal);font-weight:800}
+.m-pair .to-v{font-size:29px;font-weight:800;color:var(--teal)}
+.m-pair small{display:block;font-size:13px;color:var(--faint);font-weight:700}
+
+/* ───────── 05 SWOT 및 전략 + 비전 체계도 (PDF p.10 + HTML p.5 결합) ───────── */
+.swot-frame{grid-template-columns:1fr 1.08fr}
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;flex:1}
+.swot-card{border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--paper);display:flex;flex-direction:column;gap:6px}
+.swot-card.s{border-top:4px solid var(--blue)}.swot-card.w{border-top:4px solid var(--amber)}.swot-card.o{border-top:4px solid var(--teal)}.swot-card.t{border-top:4px solid var(--red)}
+.swot-card h4{font-size:17.5px;font-weight:800;color:var(--navy);display:flex;align-items:center;justify-content:space-between}
+.swot-card ul li{font-size:14.8px;line-height:1.46;color:var(--body);padding-left:13px;position:relative;margin-bottom:4px}
+.swot-card ul li:before{content:'•';position:absolute;left:0;color:var(--blue);font-weight:800}
+.v-stack{display:flex;flex-direction:column;gap:12px;flex:1}
+.v-banner{background:linear-gradient(90deg,var(--gov-navy),#1e56a0);color:#fff;border-radius:10px;padding:14px 20px;font-size:21px;font-weight:800;display:flex;align-items:center;gap:16px}
+.v-banner span{font-size:12.5px;color:#7dd3fc;letter-spacing:1px;border-right:1px solid rgba(255,255,255,.25);padding-right:14px}
+.v-goals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.v-goal{border:2px solid var(--blue);border-radius:10px;padding:12px 14px;background:var(--paper);display:flex;justify-content:space-between;align-items:center}
+.v-goal h4{font-size:17px;color:var(--navy);font-weight:800}
+.v-goal h4 small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.v-goal b{font-size:28px;color:var(--blue);font-weight:800}
+.v-strats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;flex:1}
+.v-strat{background:var(--tint);border:1px solid #c7dbf4;border-left:4px solid var(--gov-navy);border-radius:9px;padding:12px 14px}
+.v-strat strong{font-size:16.5px;color:var(--gov-navy);display:block;margin-bottom:4px}
+.v-strat p{font-size:14.5px;color:var(--body);line-height:1.42}
+
+/* ───────── 06 전주기 프로세스 (OODA+C 재난대응 루프) ───────── */
+.cycle-wrap{display:flex;flex-direction:column;gap:18px;flex:1;min-height:0}
+.stage-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.st-btn{border:2px solid var(--line);border-radius:12px;padding:16px 20px;background:var(--paper);text-align:left;position:relative;transition:all .2s;box-shadow:var(--shadow-sm)}
+.st-btn:not(:last-child):after{content:'→';position:absolute;right:-16px;top:50%;transform:translateY(-50%);font-size:20px;font-weight:800;color:var(--blue)}
+.st-btn .s-no{font-size:12.5px;font-weight:800;color:var(--muted);letter-spacing:.8px}
+.st-btn h3{font-size:23px;font-weight:800;color:var(--navy);margin:4px 0 2px}
+.st-btn p{font-size:15px;color:var(--muted);font-weight:700}
+.st-btn[aria-selected=true]{border-color:var(--gov-navy);background:var(--tint);box-shadow:var(--shadow-md)}
+.st-btn[aria-selected=true] .s-no{color:var(--blue)}
+.st-panels{flex:1;min-height:0}
+.st-panels [data-panel].on{height:100%;display:grid;grid-template-columns:1fr 1.05fr 1.05fr;gap:18px}
+.st-panels .card{padding:20px 22px;gap:10px}
+.st-panels ul li,.st-panels ol li{font-size:16.5px;line-height:1.5;color:var(--body);padding-left:24px;position:relative;margin-bottom:10px}
+.st-panels ul li:before{content:'✓';position:absolute;left:0;color:var(--teal);font-weight:800}
+.st-panels ol{counter-reset:sc}
+.st-panels ol li:before{counter-increment:sc;content:counter(sc);position:absolute;left:0;top:2px;width:19px;height:19px;border-radius:50%;background:var(--gov-navy);color:#fff;font-size:12px;display:grid;place-items:center;font-weight:800}
+
+/* ───────── 07·08 기획1 & 기획2 사업 포트폴리오 (PDF p.11, p.13 + 인터랙티브 탭) ───────── */
+.proj-top3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex-shrink:0}
+.p-metric{border:1.5px solid var(--line);border-left:5px solid var(--gov-navy);border-radius:10px;padding:12px 18px;background:var(--paper);display:flex;justify-content:space-between;align-items:center}
+.p-metric:nth-child(2){border-left-color:var(--blue)}.p-metric:nth-child(3){border-left-color:var(--teal)}
+.p-metric div span{font-size:13.5px;font-weight:800;color:var(--muted);display:block}
+.p-metric div strong{font-size:32px;font-weight:800;color:var(--gov-navy);letter-spacing:-1px}
+.p-metric small{font-size:14px;font-weight:700;color:var(--body);text-align:right}
+.proj-split{flex:1;min-height:0;display:grid;grid-template-columns:1.12fr 1fr;gap:20px}
+.track-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1}
+.track-btn{border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;text-align:left;background:var(--paper);display:flex;flex-direction:column;gap:6px;transition:all .2s}
+.track-btn .t-head{display:flex;align-items:center;justify-content:space-between;font-size:18px;font-weight:800;color:var(--gov-navy)}
+.track-btn .t-head span{background:var(--gov-navy);color:#fff;padding:2px 9px;border-radius:5px;font-size:13.5px}
+.track-btn p{font-size:15px;color:var(--body);line-height:1.42}
+.track-btn[aria-selected=true]{border:2px solid var(--blue);background:var(--tint);box-shadow:var(--shadow-sm)}
+.cand-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:auto}
+.cand-pill{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 10px;font-size:14px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:7px}
+.cand-pill b{width:22px;height:22px;border-radius:4px;background:var(--gov-navy);color:#fff;display:grid;place-items:center;font-size:12.5px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<!-- 상단 글로벌 크롬 바 -->
+<header class="chrome-top">
+  <div class="brand"><i>행안부</i>국가 재난안전 AI·전략사업 기획 브리핑 <span>공공 기획보고서 거버넌스 × 인터랙티브 판단모델 덱</span></div>
+  <nav class="chapters" aria-label="장 이동">
+    <button data-goto="0">표지·총괄요약</button>
+    <button data-goto="2">Ⅰ 환경·성과진단</button>
+    <button data-goto="4">Ⅱ 비전·전략체계</button>
+    <button data-goto="6">Ⅲ 전략사업·AI아키텍처</button>
+    <button data-goto="9">Ⅳ 실증조사·거버넌스</button>
+  </nav>
+  <div class="tools">
+    <button id="editBtn" aria-pressed="false" title="문구를 클릭해 직접 수정">글자 편집</button>
+    <button id="saveBtn" title="수정본을 HTML로 저장">HTML 저장</button>
+    <button id="printBtn" title="한 장씩 PDF로 저장">PDF 인쇄</button>
+    <button id="fsBtn" title="전체화면">전체화면</button>
+  </div>
+</header>
+<div class="toast" id="toast">편집 모드 · 화면의 텍스트를 클릭해 직접 수정하세요 (브라우저 자동 저장)</div>
+
+<main id="slides">
+
+<!-- ═══════════════════ 01 표지 ═══════════════════ -->
+<section class="slide cover" data-chapter="0" data-source="근거: 행정안전부·국립재난안전연구원 「고유임무 전략사업 발굴 및 기술수준 등 조사분석 기획연구(2026.11)」 및 AI Decision Intelligence 아키텍처 통합 재구성">
+  <div class="cover-left">
+    <div class="cover-top-bar rise">
+      <div class="ndmi-badge"><i></i><span>행정안전부 국립재난안전연구원</span><small>책임운영기관</small></div>
+      <span class="report-tag">HYBRID STRATEGY BRIEFING · 2026. 11</span>
+    </div>
+    <h1 class="rise" data-edit>행정안전부 고유임무 전략사업 발굴 및<br><mark>AI 재난판단 기술수준</mark> 조사·기획 연구</h1>
+    <p class="cover-sub rise" data-edit>단일 지역·사후 복구 중심의 재난안전 R&D(System 1)를 넘어, <b>초광역 성과확산</b>과 <b>인과·시뮬레이션 기반 잠재·복합재난 선제대응(System 2)</b>으로 전환하는 1,059.2억 원 규모 국가 전략기획 브리핑</p>
+    <div class="cover-shift rise">
+      <div class="c-box">
+        <span>AS-IS · 기존 1·2단계 재난안전 R&D (System 1)</span>
+        <strong data-edit>개별 지자체 단위 개발 · 산출과 현장전환의 단절</strong>
+        <p data-edit>특허(90%)·사업화(97%) 산출은 우수하나 정책활용(7%)·대국민 인지도(15.7%) 저조, 법정재난 편입 전 복합위험 대응 공백</p>
+      </div>
+      <div class="c-arr">→</div>
+      <div class="c-box to">
+        <span>TO-BE · 3단계 광역확산 + 잠재·복합재난 AI 판단모델 (System 2)</span>
+        <strong data-edit>초광역 공동실증 · 연쇄영향 예측 · 수리솔버 자원배분</strong>
+        <p data-edit>「지역맞춤형 3단계(609.2억)」로 검증기술을 전국 확산하고, 「잠재·복합재난 R&D(450억)」로 신흥위험 조기탐지·선제 차단</p>
+      </div>
+    </div>
+    <div class="cover-chips rise">
+      <div class="c-chip"><b class="num">2종</b><span>신규사업 기획보고서</span></div>
+      <div class="c-chip"><b class="num">37개</b><span>신규·후보과제 발굴</span></div>
+      <div class="c-chip"><b class="num">4영역</b><span>특허·논문 계량분석</span></div>
+      <div class="c-chip"><b class="num">1,315명</b><span>전문가·대국민 실증조사</span></div>
+    </div>
+    <div class="cover-meta rise">
+      <div>주관·발주기관<b data-edit>행정안전부 · 국립재난안전연구원</b></div>
+      <div>수행 컨소시엄<b data-edit>지오매직(주) · 한국갤럽(Gallup)</b></div>
+      <div>신규기획 총규모<b data-edit>1,059.2억 원 (29+8개 과제)</b></div>
+      <div>브리핑 구성<b data-edit>4개 장 · 15쪽 완결 (인터랙티브)</b></div>
+    </div>
+  </div>
+  <aside class="cover-right">
+    <span class="r-kicker">KEY STRATEGIC INDICATORS (실증조사 & 기획 목표)</span>
+    <div class="cover-kpi rise">
+      <strong class="num"><span data-count="1059.2" data-dec="1">1059.2</span><small>억 원</small></strong>
+      <p data-edit>신규 전략사업 2종 총 기획규모 · <span class="delta">지역맞춤 609.2억 + 복합재난 450억</span></p>
+    </div>
+    <div class="cover-kpi rise">
+      <strong class="num"><span data-count="81.8" data-dec="1">81.8</span><small>% → 90%+</small></strong>
+      <p data-edit>최고기술국(미국) 대비 재난안전 기술수준 · 격차 <span class="delta">4.2년 → 2.5년 단축 목표</span></p>
+    </div>
+    <div class="cover-kpi rise">
+      <strong class="num"><span data-count="87.3" data-dec="1">87.3</span><small>점 / 68.2점</small></strong>
+      <p data-edit>전문가 정책노력도 <span class="delta">87.3점</span> · 기술만족도 <span class="delta">68.2점(+3.0p 상승)</span></p>
+    </div>
+    <div class="cover-arch-card rise">
+      <div class="t">DUAL-ENGINE R&D GOVERNANCE</div>
+      <div class="nodes"><span>신흥위험 탐지</span><span>연쇄영향 시뮬</span><span>AI 대응판단</span><span>초광역 확산</span></div>
+    </div>
+  </aside>
+</section>
+
+<!-- ═══════════════════ 02 총괄 요약 : 과업 범위 및 핵심 성과물 ═══════════════════ -->
+<section class="slide" data-chapter="0" data-source="출처: 기획연구 최종보고서 Ⅰ. 연구 개요 (p.3~4) — 고유임무 전략기획 2종 및 제4차 종합계획 성과지표 4종 조사 100% 달성">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">01.</span>연구 총괄 요약 및 핵심 성과물 <small>Executive Summary & Deliverables</small></h2>
+      <div class="gov-Corner"><b>총괄</b><span>Ⅰ. 연구 개요 · 100% 과업 달성</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>전략사업 신규기획 <mark>2종(1,059.2억)</mark>과 기술수준·만족도 실증조사 <mark>4종(1,315명)</mark> 100% 완수</div>
+      <div class="sub-right"><span class="hl-tag">비예타 신규기획 2건</span><span class="hl-tag">제4차 종합계획 성과지표 연동</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="stat-strip rise">
+      <div class="stat-pill"><strong class="num">2종</strong><span class="hl-tag">신규사업 기획보고서</span></div>
+      <div class="stat-pill"><strong class="num">37개</strong><span class="hl-tag">신규사업 과제·후보과제</span></div>
+      <div class="stat-pill"><strong class="num">4영역</strong><span class="hl-tag">특허·논문 동향 조사대상</span></div>
+      <div class="stat-pill"><strong class="num">1,315명</strong><span class="hl-tag">전문가·대국민 조사 합계</span></div>
+    </div>
+    <div class="ribbons-2col rise">
+      <div class="ribbon-box">
+        <div class="ribbon-head"><span class="r-no">01</span><span>고유임무 전략사업 발굴 및 기획보고서 작성 (2종)</span></div>
+        <div class="ribbon-inner">
+          <div class="sub-proj">
+            <div class="sp-head"><i>1</i><span data-edit>지역맞춤형 재난안전 문제해결 기술개발 지원 (3단계)</span></div>
+            <p data-edit><b>목적:</b> 지역수요 기반 기술개발 성과의 현장 적용·확산을 강화하고, 5극3특 초광역 공동현안 및 미래·복합위험 대응역량 확보</p>
+            <div class="sp-meta" data-edit>▶ 4개 내역사업 · 29개 과제 · 총 609.2억 원 (2028~2032, 5년)</div>
+          </div>
+          <div class="sub-proj">
+            <div class="sp-head"><i>2</i><span data-edit>잠재·복합재난 선제대응을 위한 재난안전 R&D 기획연구</span></div>
+            <p data-edit><b>목적:</b> 기후·AI·신에너지 등 잠재·복합재난 위험징후를 선제 탐지·평가하고, 사회기반시설 연쇄 파급영향 분석 및 AI 현장 대응판단 기술 확보</p>
+            <div class="sp-meta" data-edit>▶ 3개 추진유형 · 8개 후보과제 · 총 450.0억 원 (5년)</div>
+          </div>
+          <div class="task-bar"><span class="task-badge"><span>특허·계량</span></span><span style="font-size:15.5px">국가과학기술기본계획·중기사업 연계성 및 4대 영역 특허·논문 심층 검증 완료</span></div>
+        </div>
+      </div>
+      <div class="ribbon-box">
+        <div class="ribbon-head teal"><span class="r-no">02</span><span>재난안전분야 기술수준 및 만족도 조사 4종 수행</span></div>
+        <div class="ribbon-inner">
+          <div class="mini-kpis">
+            <div class="mini-kpi"><span>기술수준</span><strong class="num">81.8%</strong></div>
+            <div class="mini-kpi"><span>기술만족도</span><strong class="num">68.2점</strong></div>
+            <div class="mini-kpi"><span>정책노력도</span><strong class="num">87.3점</strong></div>
+            <div class="mini-kpi"><span>R&D 인지도</span><strong class="num">15.7%</strong></div>
+          </div>
+          <table class="data" style="margin-top:4px">
+            <thead><tr><th>제4차 종합계획 성과지표 연계</th><th>조사·분석 구분</th><th>'23</th><th>'24</th><th>'25</th><th class="sel">'26(실적)</th></tr></thead>
+            <tbody>
+              <tr><td><b>[전략3]</b> 선진국 대비 재난안전 기술수준</td><td>전문가 델파이(124명)+논문·특허</td><td>80.3%</td><td>81.8%</td><td>82.6%</td><td class="sel">81.8%</td></tr>
+              <tr><td><b>[전략2]</b> 최종수혜자 재난안전기술 만족도</td><td>전문가 기술만족도 조사(120명)</td><td>64.4점</td><td>65.6점</td><td>65.3점</td><td class="sel">68.2점</td></tr>
+              <tr><td><b>[혁신과제]</b> R&D 추진체계 혁신 정책노력도</td><td>산학연 전문가 정책노력도(40명)</td><td>85.6점</td><td>86.7점</td><td>87.4점</td><td class="sel">87.3점</td></tr>
+              <tr><td><b>[대국민]</b> 재난안전 R&D 인지도·활용도</td><td>전국 대표표본 인식조사(1,031명)</td><td>-</td><td>-</td><td>16.9%</td><td class="sel">15.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 총괄 핵심 시사점</span></div>
+      <div class="insight-col"><p data-edit>기술수준(81.8%)·사업화(97%) 등 <mark>개별 산출 역량은 축적</mark>되었으나, <mark>현장 전환(기술료 28%)·신흥 복합위험 선제대응·대국민 체감(인지도 15.7%)</mark>을 연결하는 2대 신규 전략사업 투입이 시급</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 03 Ⅰ-1 정책 환경분석 및 지역·투자 편중 진단 ═══════════════════ -->
+<section class="slide" data-chapter="1" data-source="출처: 기획연구 최종보고서 Ⅱ-1. 환경분석 및 1·2단계 사업 선정 기반 분석 (p.6~7, p.9)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅰ-1.</span>대내외 정책 환경분석 및 1·2단계 지역 투자 진단 <small>Policy Context & Regional Analysis</small></h2>
+      <div class="gov-Corner"><b>Ⅰ</b><span>환경·성과 진단</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>초광역 협력·인구취약성·산업집적 3대 흐름 속 <mark>기존 단일 지자체 중심 투자 편중</mark> 한계 노출</div>
+      <div class="sub-right"><span class="hl-tag">5극3특 국가균형성장</span><span class="hl-tag">인구감소관심 18개 시군구</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body env-grid" data-tabgroup="env" data-default="0">
+      <div class="card accent-navy rise">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span class="label" style="margin:0">1·2단계 47개 과제 연도별·지역별 선정 분포 (탭 전환)</span>
+          <div class="seg" role="tablist">
+            <button data-tab="0" role="tab">연도별 과제·예산 추이</button>
+            <button data-tab="1" role="tab">권역별 선정 편중도(47건)</button>
+          </div>
+        </div>
+        <div class="chart-host" id="chartEnv"></div>
+        <p class="note" data-edit style="margin-top:8px">경북(6회)·전남(5회)·전북(5회) 등 재해다발지역에 집중된 반면, 세종(0회)·대전(1회, '20년 도심침수 이후 부재) 등 연구·행정 거점의 공백 발생</p>
+      </div>
+      <div class="rise" style="display:flex;flex-direction:column;gap:12px">
+        <div class="card accent-blue" style="flex:1">
+          <h3><span class="hl-inline">흐름 1</span> 5극3특 국가균형성장 전략과 초광역 공간 재편</h3>
+          <p data-edit>지역정책 단위가 개별 시·도에서 초광역 경제·생활권(3대 분야 11개 전략과제 144개 세부과제, 비수도권 GRDP 50%+ 목표)으로 확대. 유역·해역·산단 등 <b>행정경계를 넘는 공동재난 실증체계</b> 필수.</p>
+        </div>
+        <div class="card accent-amber" style="flex:1">
+          <h3><span class="hl-inline">흐름 2</span> 인구감소(89개)+관심지역(18개) 대응역량 저하</h3>
+          <p data-edit>고령화·1인가구·분산거주 심화로 재난취약인구가 급증하나 지자체 대응인력·R&D 수행기반 격차로 동일 사업방식 일률 적용 한계. <b>취약지역 사전 컨설팅 및 맞춤형 기술 보급</b> 요구.</p>
+        </div>
+        <div class="card accent-teal" style="flex:1">
+          <h3><span class="hl-inline">흐름 3</span> 지역 주력·신산업 집적과 복합 위험요인의 결합</h3>
+          <p data-edit>이차전지·수소·데이터센터 등 미래산업 육성에 따라 <b>신종 산업재난과 도시 복합재난이 결합</b>. 지역 기업·대학·연구기관의 현장 실증 자원을 연계한 선제적 R&D 기획 필요.</p>
+        </div>
+      </div>
+    </div>
+    <div class="insight-banner rise">
+      <div class="insight-col">
+        <span class="i-title">■ 공백 및 불일치 진단</span>
+        <p data-edit>기업 보유기술 중심 제안으로 <mark>지자체 제출 수요와 실제 재난통계(호우·태풍·대설 반복)가 불일치</mark>하며 지역 간 최대 8배 격차 발생</p>
+      </div>
+      <div class="insight-col">
+        <span class="i-title">■ 신규기획 설계 반영축</span>
+        <p data-edit>"단일 지역 대응"을 넘어 <mark>①초광역 협력 ②취약·공백지역 사전 컨설팅 ③산업단지 연계 실증</mark>을 3단계 핵심 설계축으로 반영</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 04 Ⅰ-2 완료과제 성과 단절 및 4대 구조적 병목 진단 ═══════════════════ -->
+<section class="slide" data-chapter="1" data-source="출처: 기획연구 최종보고서 Ⅱ-2. 완료 과제(2020~2023년 29개) 성과 분석 및 기존 R&D 공백 진단 (p.8, p.12)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅰ-2.</span>완료과제 성과 전환 단절 및 4대 구조적 병목 진단 <small>Output-to-Outcome Gap & Bottlenecks</small></h2>
+      <div class="gov-Corner"><b>Ⅰ</b><span>환경·성과 진단</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>특허(90%)·사업화(97%) 산출은 최상위권이나, <mark>기술료(28%)·정책활용(7%) 전환 단절</mark> 극복이 핵심</div>
+      <div class="sub-right"><span class="hl-tag">2020~2023 종료 29개 과제 전수분석</span><span class="hl-tag">예산효율 10억당 7.8건(2위)</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="gap-top rise">
+      <div class="out-box"><span>논문 성과</span><strong class="num">45편</strong><small>보유 과제 59%</small></div>
+      <div class="out-box"><span>특허 출원·등록</span><strong class="num">150건</strong><small>보유 과제 90.0%</small></div>
+      <div class="out-box"><span>사업화 성과</span><strong class="num">82건</strong><small>보유 과제 97.0%</small></div>
+      <div class="out-box"><span>현장적용 실적</span><strong class="num">40건</strong><small>보유 과제 33.0%</small></div>
+      <div class="out-box low"><span>기술료 징수</span><strong class="num">15건</strong><small>보유 과제 28.0% (단절)</small></div>
+      <div class="out-box low"><span>정책·제도 활용</span><strong class="num">4건</strong><small>보유 과제 7.0% (최저)</small></div>
+    </div>
+    <div class="diag-table rise">
+      <div class="d-row head"><span>4대 구조적 병목</span><span>현행 재난안전 R&D 한계 (As-Is · System 1)</span><span></span><span>차세대 전략기획 해법 (To-Be · System 2)</span><span style="text-align:right">핵심 전환 지표</span></div>
+      <div class="d-row">
+        <h3 data-edit>산출-전환의 단절<span>특허 150건 vs 기술료 15건</span></h3>
+        <p data-edit>개발 종료 후 타 지자체 확산·현지화 트랙이 없어 우수 기술(광주 광기술, 전남 원격응급, 서울 IoT제설 등)이 단일 지역에 머묾</p>
+        <div class="d-arr">→</div>
+        <p class="to" data-edit>「성과이어달리기(3유형)」 신설 및 RFP 내 기술이전·표준·조달·정책반영 산출물 의무화로 전국 확산</p>
+        <div class="m-pair"><span class="fr num">28.0%</span><span class="to-v num">55.0%+</span><small>기술이전·실용화 전환율</small></div>
+      </div>
+      <div class="d-row">
+        <h3 data-edit>행정경계 분절 대응<span>개별 시·도 단독 기획</span></h3>
+        <p data-edit>유역 침수·산불·해양오염·산단 유해물질 등 복수 지자체를 관통하는 광역 재난에 대해 공동 예경보·실증 체계 부재</p>
+        <div class="d-arr">→</div>
+        <p class="to" data-edit>「광역 공동현안 대응(2유형, 152.9억)」 신설로 복수 지자체 데이터 연동 및 초광역 합동 현장실증 수행</p>
+        <div class="m-pair"><span class="fr num">단독형</span><span class="to-v num">25.1%</span><small>초광역 협력과제 예산 비중</small></div>
+      </div>
+      <div class="d-row">
+        <h3 data-edit>법정재난 편입 전 공백<span>신흥·복합위험 사각지대</span></h3>
+        <p data-edit>지하 전기차 열폭주·AI/UAM·전력/통신 상호의존 마비 등 법정 재난 이전 단계 위험은 소관부처가 불명확해 선제 투자 전무</p>
+        <div class="d-arr">→</div>
+        <p class="to" data-edit>「잠재·복합재난 선제대응 R&D(450억)」 신설로 상시 징후탐지, 다중시설 연쇄피해 시뮬레이션, AI 자원배분 구축</p>
+        <div class="m-pair"><span class="fr num">사후대응</span><span class="to-v num">8대 과제</span><small>신흥·연쇄위험 선제 기술화</small></div>
+      </div>
+      <div class="d-row">
+        <h3 data-edit>체감도 및 연구환경 저조<span>인지도 15.7% · 환경 58.1점</span></h3>
+        <p data-edit>과학기술 중요성 인식(82.7%) 대비 국민 R&D 인지도(15.7%)가 낮고, 연구자 기술개발 환경 만족도(58.1점)가 3개 영역 중 최저</p>
+        <div class="d-arr">→</div>
+        <p class="to" data-edit>생활밀착형 대피·정보전달 사각지대 해소 기술 보급 및 실증 테스트베드·데이터 공유 지원서비스 확충</p>
+        <div class="m-pair"><span class="fr num">15.7%</span><span class="to-v num">35.0%+</span><small>대국민 재난안전 R&D 인지도</small></div>
+      </div>
+    </div>
+    <div class="insight-banner rise">
+      <div class="insight-col">
+        <span class="i-title">■ 성과 비교 우위 (예산 방어 논리)</span>
+        <p data-edit>공공문제해결형 사업임에도 <mark>사업화 보유율 97%, 예산 10억당 성과 7.8건(행안부 15개 사업 중 2위)</mark>으로 기업지원형 수준의 산출 입증</p>
+      </div>
+      <div class="insight-col">
+        <span class="i-title">■ 3단계 전환 핵심 방향</span>
+        <p data-edit>검증된 산출 역량을 바탕으로 <mark>‘현장 운영·정책 제도화 전환’</mark>과 <mark>‘복합재난 AI 예측·판단’</mark>의 양대 축으로 고도화</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 05 Ⅱ-1 SWOT 교차전략 및 비전 체계도 ═══════════════════ -->
+<section class="slide" data-chapter="2" data-source="출처: 기획연구 최종보고서 Ⅱ-2. SWOT 분석 및 전략 (p.10) & 차세대 재난안전 AI R&D 비전 체계 종합">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅱ-1.</span>SWOT 교차분석 및 국가 재난안전 R&D 비전·전략 체계도 <small>SWOT Matrix & Strategic Framework</small></h2>
+      <div class="gov-Corner"><b>Ⅱ</b><span>비전·전략 체계</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>높은 투자효율(강점)과 AI·초광역 정책(기회)을 결합해 <mark>산출-전환 단절과 복합위험 공백</mark>을 돌파</div>
+      <div class="sub-right"><span class="hl-tag">무성과 과제 0개</span><span class="hl-tag">SO·WO·ST·WT 4대 전략</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body swot-frame rise">
+      <div class="swot-grid">
+        <div class="swot-card s">
+          <h4><span>강점 (Strength)</span><span class="chip goal" style="margin:0">내부 역량</span></h4>
+          <ul data-edit>
+            <li><b>무성과 과제 0개</b>, 사업화 보유율 97%, 특허 90% 달성</li>
+            <li>예산효율 10억 원당 7.8건 (부처 15개 사업 중 2위)</li>
+            <li>예산투입-성과 간 뚜렷한 정(+)의 상관관계 입증</li>
+            <li>광주·전남·서울 등 현장확산·정책반영 대표 사례 확보</li>
+          </ul>
+        </div>
+        <div class="swot-card w">
+          <h4><span>약점 (Weakness)</span><span class="chip asis" style="margin:0">내부 한계</span></h4>
+          <ul data-edit>
+            <li>산출-전환 단절 (특허 150건 대비 기술료 15건, 전환율 10%)</li>
+            <li>지역 간 투자·성과 격차 <b>최대 8배</b> 편중 (세종 0건 등)</li>
+            <li>종료 과제의 타 지자체 전환·확산 사후관리체계 미비</li>
+            <li>광역 공동활용 및 중앙부처 국가정책·제도 연계 부족</li>
+          </ul>
+        </div>
+        <div class="swot-card o">
+          <h4><span>기회 (Opportunity)</span><span class="chip tobe" style="margin:0">외부 환경</span></h4>
+          <ul data-edit>
+            <li>기후위기·신에너지·밀폐공간 등 복합재난 신규수요 급증</li>
+            <li><b>AI 판단모델·디지털트윈·XAI</b> 등 첨단 기술 기반 성숙</li>
+            <li>성과확산·실용화 중심의 국가 R&D 평가 정책 강화</li>
+            <li>5극3특 국가균형성장 및 초광역 협력 정책 본격화</li>
+          </ul>
+        </div>
+        <div class="swot-card t">
+          <h4><span>위협 (Threat)</span><span class="chip asis" style="margin:0;background:var(--red-tint);color:var(--red)">외부 리스크</span></h4>
+          <ul data-edit>
+            <li>정부 R&D 예산 경쟁 심화 및 투자효율성 증명 요구 증대</li>
+            <li>재난의 광역화·초연결화로 단일 지자체 대응 한계 봉착</li>
+            <li>타 부처 유사 재난·안전 R&D 사업과의 차별성 입증 압박</li>
+            <li>저성과·공백 지역 반복 시 사업 고유 정체성 훼손 우려</li>
+          </ul>
+        </div>
+      </div>
+      <div class="v-stack">
+        <div class="v-banner"><span>VISION</span><div data-edit>확산과 연계로 완성하는 <mark style="background:none;color:var(--hl)">선제적·초광역 AI 재난안전 국가 R&D</mark></div></div>
+        <div class="v-goals">
+          <div class="v-goal"><div><h4 data-edit>성과확산 고도화<small>검증기술 타지역·정책 전환</small></h4></div><b class="num">55%+</b></div>
+          <div class="v-goal"><div><h4 data-edit>선제대응 기술력<small>최고기술국 대비 기술수준</small></h4></div><b class="num">86%+</b></div>
+          <div class="v-goal"><div><h4 data-edit>국민 안전 체감<small>기술 활용도·인지도 제고</small></h4></div><b class="num">60%+</b></div>
+        </div>
+        <div class="v-strats">
+          <div class="v-strat">
+            <strong data-edit>SO 공격전략 · 검증기술 전국 확산 트랙 신설</strong>
+            <p data-edit>1·2단계 우수과제의 타 지자체 현지화를 지원하는 <b>「성과이어달리기(3유형)」</b> 및 광역 공동활용 실증 확대</p>
+          </div>
+          <div class="v-strat">
+            <strong data-edit>WO 보완전략 · 전환성과 RFP 산출물 의무화</strong>
+            <p data-edit>기획 단계부터 기술이전·표준화·정책반영 목표를 RFP에 명시하고 종료 후 실용화 전환지원 트랙 연동</p>
+          </div>
+          <div class="v-strat">
+            <strong data-edit>ST 방어전략 · 공공문제해결형 고유정체성 명문화</strong>
+            <p data-edit>투자효율 2위(10억당 7.8건) 실증 근거로 예산을 방어하고, 법정재난 전 단계의 공공재적 선제투자 가치 부각</p>
+          </div>
+          <div class="v-strat">
+            <strong data-edit>WT 회피전략 · 초광역 협력 확대 & 공백지역 컨설팅</strong>
+            <p data-edit>복수 지자체 공통현안 과제를 신설하고, 세종·대전 등 저빈도·공백지역 사전 의제발굴 컨설팅 의무화</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 전략 도출 결론</span></div>
+      <div class="insight-col"><p data-edit>SWOT 4대 전략을 구체화하여 <mark>①지역맞춤형 3단계(광역협력·성과이어달리기)</mark>와 <mark>②잠재·복합재난 R&D(사전탐지·연쇄시뮬·대응판단)</mark> 2대 기획사업으로 구조화</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 06 Ⅱ-2 재난안전 R&D 및 AI 대응판단 전주기 루프 ═══════════════════ -->
+<section class="slide" data-chapter="2" data-source="출처: 기획연구 최종보고서 내역 연계구조(p.11, p.13) 및 AI 판단모델 OODA+C 전주기 아키텍처 결합">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅱ-2.</span>잠재위험 탐색부터 초광역 확산까지, 4단계 순환 전주기 <small>End-to-End R&D & AI Decision Loop</small></h2>
+      <div class="gov-Corner"><b>Ⅱ</b><span>비전·전략 체계</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>위험징후 탐색 → 연쇄영향 예측 → AI 자원배분·현장실증 → <mark>전국 확산·제도화 환류</mark></div>
+      <div class="sub-right"><span class="hl-tag">단계를 클릭하면 As-Is/To-Be 전환 상세 표시</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="cycle-wrap" data-tabgroup="cycle" data-default="1">
+      <div class="stage-tabs rise" role="tablist">
+        <button class="st-btn" data-tab="0" role="tab"><span class="s-no">STAGE 01 · EXPLORE & DETECT</span><h3>잠재·신흥위험 탐색</h3><p>법정재난 편입 전 징후 포착</p></button>
+        <button class="st-btn" data-tab="1" role="tab"><span class="s-no">STAGE 02 · SIMULATE & PREDICT</span><h3>복합·연쇄영향 시뮬레이션</h3><p>다중시설 상호의존성·피해 예측</p></button>
+        <button class="st-btn" data-tab="2" role="tab"><span class="s-no">STAGE 03 · DECIDE & VERIFY</span><h3>AI 대응판단 · 현장실증</h3><p>자원배분 최적화 · 고위험 공간 실증</p></button>
+        <button class="st-btn" data-tab="3" role="tab"><span class="s-no">STAGE 04 · DIFFUSE & INSTITUTIONALIZE</span><h3>초광역 확산 · 정책제도화</h3><p>성과이어달리기 · 기준·지침 반영</p></button>
+      </div>
+      <div class="st-panels rise">
+        <div data-panel="0">
+          <div class="card accent-amber"><span class="label">패러다임 전환 (STAGE 01)</span><span class="chip asis">As-Is · 과거 통계·사례 의존</span><p data-edit>이미 발생한 법정 재난 위주로 과제를 기획하여 AI·신에너지·극한기후 등 신흥위험은 사례 축적 전까지 R&D 사각지대로 방치</p><div style="margin:10px 0;border-top:1px dashed var(--line)"></div><span class="chip tobe">To-Be · 상시 징후탐지·영향평가</span><p data-edit>다중 센서·해외 사고·특허/논문 시그널을 AI로 상시 스캐닝하여 제도화 이전 단계의 잠재위험을 조기 식별·등급화</p></div>
+          <div class="card accent-blue"><span class="label">핵심 추진 메커니즘</span><ul data-edit><li>신기술(배터리·수소·UAM)·사회변화(초고령·고립) 결합 위험 시나리오 도출</li><li>지역별 반복 재난통계와 지자체 R&D 수요 간 불일치 자동 진단</li><li>공백지역(세종·대전 등) 사전 기획 컨설팅 및 미래위험 의제 발굴(6과제, 87.5억)</li></ul></div>
+          <div class="card accent-teal"><span class="label">단계 점검 및 성과 지표</span><ol data-edit><li>법정재난 편입 전 신흥위험 선제 발굴 건수 (연 10건 이상)</li><li>지자체 재난통계-제출수요 정합성 지수 (90% 이상)</li><li>잠재위험 평가결과의 후속 본과제 연계율 (70% 이상)</li></ol><p class="note" data-edit>연계 내역: 기획1 ④미래·복합위험 발굴(87.5억) + 기획2 ④탐색형 잠재위험 평가(60억)</p></div>
+        </div>
+        <div data-panel="1">
+          <div class="card accent-amber"><span class="label">패러다임 전환 (STAGE 02)</span><span class="chip asis">As-Is · 단일 시설·개별 재난 분석</span><p data-edit>호우·화재 등 개별 재난유형만 독립 분석하여, 전력→통신→교통→의료로 전파되는 도시 기능 마비와 연쇄피해 예측 불가</p><div style="margin:10px 0;border-top:1px dashed var(--line)"></div><span class="chip tobe">To-Be · 인과그래프·월드모델 시뮬레이션</span><p data-edit>복수 기반시설 간 상호의존성(Interdependency)을 인과그래프와 디지털트윈으로 모델링하여 2차·3차 연쇄 확산 경로를 사전 모의실험</p></div>
+          <div class="card accent-blue"><span class="label">핵심 추진 메커니즘</span><ul data-edit><li>전력·통신·교통·산단 유해물질 간 다중 도미노 파급경로(Ripple Effect) 정량화</li><li>극한호우·폭염 등 기후 시나리오별 취약계층·취약공간 피해 분포 예측</li><li>단일 행정구역을 넘는 유역·해역·산단 벨트 광역 공동 예측 모델 가동</li></ul></div>
+          <div class="card accent-teal"><span class="label">단계 점검 및 성과 지표</span><ol data-edit><li>복합재난 2차·3차 연쇄피해 예측 정합성 (89.4% 목표)</li><li>현장 상황 및 재난취약대상(고령·1인가구) 실시간 파악 정확도</li><li>광역 지자체 간 위험정보 실시간 공동연계 표준 준수율</li></ol><p class="note" data-edit>연계 내역: 기획2 ①공통기반형 예측·파악(2과제, 135억) + 기획1 ②광역 공동현안(152.9억)</p></div>
+        </div>
+        <div data-panel="2">
+          <div class="card accent-amber"><span class="label">패러다임 전환 (STAGE 03)</span><span class="chip asis">As-Is · 직관·매뉴얼 기반 수동 배분</span><p data-edit>동시다발 복합재난 시 현장 지휘관의 경험에 의존해 소방·의료·복구 자원을 배분함으로써 골든타임 지연 및 정보 사각지대 발생</p><div style="margin:10px 0;border-top:1px dashed var(--line)"></div><span class="chip tobe">To-Be · 뉴로심볼릭 AI 대응판단 & 고위험 실증</span><p data-edit>수리 최적화 솔버(MILP)가 대응자원 배분·복구 우선순위를 실시간 산출하고, 지하 대심도·배터리 열폭주 현장에서 기술을 실증</p></div>
+          <div class="card accent-blue"><span class="label">핵심 추진 메커니즘</span><ul data-edit><li>동시다발 재난 시 가용 장비·인력·구호품 최적 배분 및 복구 우선순위 결정 AI</li><li>밀폐·지하공간 전기차 배터리 열폭주 조기감지·확산차단 및 대심도 대피 유도</li><li>노후 산단 유해물질 누출 확산 차단 및 정보전달 사각지대 맞춤형 경보</li></ul></div>
+          <div class="card accent-teal"><span class="label">단계 점검 및 성과 지표</span><ol data-edit><li>복합 제약조건 하 대응자원 배분 의사결정 리드타임 단축 (−74%)</li><li>지하·밀폐·산단 3대 고위험 공간 현장실증 성공률 (100%)</li><li>재난정보 전달 사각지대(고령층·지하공간) 도달률 향상폭</li></ol><p class="note" data-edit>연계 내역: 기획2 ②대응판단(105억) + ③현장실증(150억) + 기획1 ①지역단독 지정공모(281.3억)</p></div>
+        </div>
+        <div data-panel="3">
+          <div class="card accent-amber"><span class="label">패러다임 전환 (STAGE 04)</span><span class="chip asis">As-Is · 연구 종료 후 사장 (정책활용 7%)</span><p data-edit>특허·시제품 개발로 과제가 종료되어 타 지자체 확산이나 국가 재난관리 기준·지침 개정으로 이어지지 못하고 단절</p><div style="margin:10px 0;border-top:1px dashed var(--line)"></div><span class="chip tobe">To-Be · 성과이어달리기 & 법정 기준·지침 의무 연계</span><p data-edit>검증된 우수기술을 타 지자체에 교차 보급(성과이어달리기)하고, 실증 결과를 행안부 재난안전 기준·매뉴얼·조달로 직결</p></div>
+          <div class="card accent-blue"><span class="label">핵심 추진 메커니즘</span><ul data-edit><li>1·2단계 검증 완료 기술의 타 시·도 현지화 및 공동활용 확산(7과제, 62.5억)</li><li>지자체 현업부서(도로·방재·소방) 상시 운영 시스템 탑재 및 기술료 전환</li><li>잠재·복합재난 실증 데이터 기반 신종재난 관리기준·법정 지침 제·개정</li></ul></div>
+          <div class="card accent-teal"><span class="label">단계 점검 및 성과 지표</span><ol data-edit><li>종료 과제의 기술료·실용화 전환율 (기존 28% → 55% 이상)</li><li>정책·제도·매뉴얼 반영 건수 (기존 7% → 30% 이상)</li><li>대국민 재난안전 R&D 기술 실제 활용도 (43.1% → 65% 이상)</li></ol><p class="note" data-edit>연계 내역: 기획1 ③성과이어달리기(62.5억) + 전 과제 RFP 전환성과 산출물 의무화</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 전주기 환류(Calibration) 원칙</span></div>
+      <div class="insight-col"><p data-edit>「지역수요·잠재위험 발굴 → 예측·판단 공통기술 개발 → 고위험 현장실증 → 타 지역 확산 및 기준·지침 제도화」가 <mark>단절 없이 하나로 맞물리는 닫힌 루프(Closed-Loop) R&D</mark> 구현</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 07 Ⅲ-1 신규기획 1 : 지역맞춤형 재난안전 문제해결 3단계 ═══════════════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 기획연구 최종보고서 Ⅱ-3. 기획 1 사업 개요 — 지역맞춤형 재난안전 문제해결 기술개발 지원 3단계 (p.11)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅲ-1.</span>[신규기획 1] 지역맞춤형 재난안전 문제해결 기술개발 (3단계) <small>Regional Customized Disaster R&D Phase 3</small></h2>
+      <div class="gov-Corner"><b>Ⅲ</b><span>전략사업 · AI 아키텍처</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>지역 재난현안 해결부터 <mark>광역 공동대응·검증기술 전국 확산</mark>까지 연결하는 609.2억 원 규모 3단계 R&D</div>
+      <div class="sub-right"><span class="hl-tag">2028~2032년 (5년)</span><span class="hl-tag">4개 내역사업 · 29개 과제</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="proj-top3 rise">
+      <div class="p-metric"><div><span>기존 1·2단계 추진기반</span><strong class="num">47개 과제</strong></div><small>16개 시·도 참여<br>완료 29개 과제 검증</small></div>
+      <div class="p-metric"><div><span>완료과제 주요 산출성과</span><strong class="num">특허 150건</strong></div><small>사업화 82건(97%)<br>현장적용 40건(33%)</small></div>
+      <div class="p-metric"><div><span>3단계 신규기획 사업규모</span><strong class="num">609.2억 원</strong></div><small>4개 내역 · 29개 과제 · 5년<br>(기획·실증 지원사업 25억 포함)</small></div>
+    </div>
+    <div class="proj-split rise" data-tabgroup="p1" data-default="0">
+      <div class="ribbon-box">
+        <div class="ribbon-head"><span class="r-no">A</span><span>4개 내역사업 구성 및 역할 (클릭 시 우측 예산·과제 연동)</span></div>
+        <div class="ribbon-inner">
+          <div class="track-grid" role="tablist">
+            <button class="track-btn" data-tab="0" role="tab">
+              <div class="t-head"><span>① 지역단독 지정공모</span><b>281.3억</b></div>
+              <p data-edit><b>[12과제 · 46.2%]</b> 시·도별 반복·집중 재난현안을 대상으로 지자체 수요부서 참여형 기술개발 및 현장실증</p>
+            </button>
+            <button class="track-btn" data-tab="1" role="tab">
+              <div class="t-head"><span>② 광역 공동현안 대응</span><b style="color:var(--blue)">152.9억</b></div>
+              <p data-edit><b>[4과제 · 25.1%]</b> 유역·해역·산단 등 복수 지자체가 공유하는 재난위험 공동 예측·정보연계·합동실증</p>
+            </button>
+            <button class="track-btn" data-tab="2" role="tab">
+              <div class="t-head"><span>③ 성과이어달리기</span><b style="color:var(--teal)">62.5억</b></div>
+              <p data-edit><b>[7과제 · 10.3%]</b> 1·2단계 개발·검증 우수기술의 타 지자체 교차 적용, 현지화 개량 및 조달·정책 확산</p>
+            </button>
+            <button class="track-btn" data-tab="3" role="tab">
+              <div class="t-head"><span>④ 미래·복합위험 발굴</span><b style="color:var(--amber)">87.5억</b></div>
+              <p data-edit><b>[6과제 · 14.4%]</b> 인구감소·산업전환·기후변화에 따른 지역 신규 위험 탐색 및 공백지역 의제 구체화</p>
+            </button>
+          </div>
+          <div class="cand-grid">
+            <div class="cand-pill"><b>1</b><span>지역맞춤: 현안 실증</span></div>
+            <div class="cand-pill"><b>2</b><span>광역협력: 공동대응</span></div>
+            <div class="cand-pill"><b>3</b><span>성과확산: 타지역 이식</span></div>
+            <div class="cand-pill"><b>4</b><span>미래대응: 신위험 발굴</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card accent-blue" style="display:flex;flex-direction:column">
+        <span class="label">3단계 내역사업별 예산 배분(억 원) 및 과제 설계 상세</span>
+        <div class="chart-host" id="chartP1"></div>
+        <div id="p1Detail" class="note" style="margin-top:8px" data-edit>① 지역단독 지정공모(12과제, 281.3억): 호우·태풍·대설 등 지역별 10년 반복 재난통계와 지자체 현업부서 수요를 매칭하여 즉시 작동하는 현장 솔루션 개발</div>
+      </div>
+    </div>
+    <div class="insight-banner rise">
+      <div class="insight-col">
+        <span class="i-title">■ 국가투자 필요성</span>
+        <p data-edit>지역 간 재난대응 역량격차(최대 8배) 완화, 행정경계를 넘는 <mark>초광역 공동위험 대응 및 검증된 공공 R&D 성과의 전국 확산</mark></p>
+      </div>
+      <div class="insight-col">
+        <span class="i-title">■ 내역 간 연계구조</span>
+        <p data-edit><mark>지역수요·미래위험 발굴(④) → 지역·광역 개발 및 실증(①·②) → 타 지역 확산(③) → 현장 운영·정책 활용</mark>으로 완결</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 08 Ⅲ-2 신규기획 2 : 잠재·복합재난 선제대응 R&D ═══════════════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 기획연구 최종보고서 Ⅱ-4~5. 기획 2 사업 배경 및 개요 — 잠재·복합재난 선제대응을 위한 재난안전 R&D (p.12~13)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅲ-2.</span>[신규기획 2] 잠재·복합재난 선제대응을 위한 재난안전 R&D <small>Emerging & Compound Disaster Proactive R&D</small></h2>
+      <div class="gov-Corner"><b>Ⅲ</b><span>전략사업 · AI 아키텍처</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>법정재난 편입 전 <mark>신흥위험을 먼저 포착</mark>하고, 사회기반시설 <mark>연쇄피해를 차단</mark>하는 450억 원 국가 R&D</div>
+      <div class="sub-right"><span class="hl-tag">3대 공백 영역 돌파</span><span class="hl-tag">3개 추진유형 · 8대 후보과제</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="proj-top3 rise">
+      <div class="p-metric"><div><span>기존 대응체계 주요 공백</span><strong class="num">3대 영역</strong></div><small>신흥위험 사전탐지 · 복수시설 연쇄영향<br>동시다발 현장 대응판단</small></div>
+      <div class="p-metric"><div><span>신규 R&D 추진구조</span><strong class="num">8개 후보과제</strong></div><small>공통기반(예측·판단) 4개<br>고위험 현장실증 3개 · 탐색 1개</small></div>
+      <div class="p-metric"><div><span>신규사업 기획 총규모</span><strong class="num">450.0억 원</strong></div><small>3개 추진유형 · 8개 과제 · 5년<br>비예타 전략사업 기획 완료</small></div>
+    </div>
+    <div class="proj-split rise" data-tabgroup="p2" data-default="0">
+      <div class="ribbon-box">
+        <div class="ribbon-head teal"><span class="r-no">B</span><span>4대 세부 트랙 및 8대 핵심 후보과제 (클릭하여 비교)</span></div>
+        <div class="ribbon-inner">
+          <div class="track-grid" role="tablist">
+            <button class="track-btn" data-tab="0" role="tab">
+              <div class="t-head"><span>① 공통기반 | 예측·파악</span><b>135억 (2개)</b></div>
+              <p data-edit>다중 시설·사회기능 간 연쇄영향·피해 시뮬레이션 및 현장 상황·취약대상 실시간 파악 공통기반</p>
+            </button>
+            <button class="track-btn" data-tab="1" role="tab">
+              <div class="t-head"><span>② 공통기반 | 대응판단</span><b style="color:var(--blue)">105억 (2개)</b></div>
+              <p data-edit>동시다발 복합재난 시 대응자원 배분·복구 우선순위 AI 결정 및 재난정보 전달 사각지대 해소</p>
+            </button>
+            <button class="track-btn" data-tab="2" role="tab">
+              <div class="t-head"><span>③ 현장적용 | 현장실증</span><b style="color:var(--teal)">150억 (3개)</b></div>
+              <p data-edit>지하 배터리 열폭주 차단, 대심도 지하공간 대피·구조, 산단 유해물질 확산 차단·대피 현장검증</p>
+            </button>
+            <button class="track-btn" data-tab="3" role="tab">
+              <div class="t-head"><span>④ 탐색형 | 잠재위험 평가</span><b style="color:var(--amber)">60억 (1개)</b></div>
+              <p data-edit>법정 재난 제도화 이전 단계의 신흥 위험징후 상시 탐색·영향평가 및 후속 R&D 의제 연계</p>
+            </button>
+          </div>
+          <div class="cand-grid">
+            <div class="cand-pill"><b>1</b><span>연쇄영향 예측 시뮬</span></div>
+            <div class="cand-pill"><b>2</b><span>취약대상 실시간 파악</span></div>
+            <div class="cand-pill"><b>3</b><span>자원배분·복구 우선순위</span></div>
+            <div class="cand-pill"><b>4</b><span>정보 사각지대 해소</span></div>
+            <div class="cand-pill"><b>5</b><span>지하 배터리 열폭주 차단</span></div>
+            <div class="cand-pill"><b>6</b><span>대심도 지하 대피·구조</span></div>
+            <div class="cand-pill"><b>7</b><span>산단 유해물질 확산 대피</span></div>
+            <div class="cand-pill"><b>8</b><span>잠재위험 징후 탐지·평가</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card accent-teal" style="display:flex;flex-direction:column">
+        <span class="label">잠재·복합재난 R&D 유형별 예산 비중 및 과제당 평균 투입 규모</span>
+        <div class="chart-host" id="chartP2"></div>
+        <div id="p2Detail" class="note" style="margin-top:8px" data-edit>① 공통기반 예측·파악(2과제, 135억): 전력·통신·교통·의료 상호의존성 그래프 기반 연쇄피해 시뮬레이터 및 취약계층 위치·위험도 실시간 매핑</div>
+      </div>
+    </div>
+    <div class="insight-banner rise">
+      <div class="insight-col">
+        <span class="i-title">■ 왜 국가예산 선제 투입이 필요한가?</span>
+        <p data-edit>법정 재난 편입 전 위험은 소관부처가 불분명해 민간·개별 부처 투자유인이 없음 → <mark>행안부 고유임무 R&D가 상시 탐지·연쇄차단 공백을 선제 보완</mark></p>
+      </div>
+      <div class="insight-col">
+        <span class="i-title">■ 투자 경제성 및 파급효과</span>
+        <p data-edit>위험이 대형 복합재난으로 전이되기 전 조기 차단함으로써 <mark>사후 대규모 복구·피해보상 비용 대비 압도적 투자 효율</mark> 달성</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ───────── 09 4계층 AI 재난판단 플랫폼 아키텍처 (HTML 브리핑 4계층 스택 × 복합재난 8대 과제 결합) ───────── */
+.arch-grid{grid-template-columns:230px 44px 1fr 480px;gap:14px;align-items:stretch}
+.arch-io{display:flex;flex-direction:column;justify-content:space-between;gap:7px}
+.arch-io span{font-size:14.8px;font-weight:700;border:1px solid var(--line);border-left:4px solid var(--gov-navy);border-radius:7px;padding:9px 12px;background:var(--paper);color:var(--body);box-shadow:var(--shadow-sm)}
+.arch-arrow{display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--amber);font-weight:800;font-size:26px}
+.arch-arrow small{font-size:12px;text-align:center;color:var(--muted);line-height:1.25}
+.stack-4{display:flex;flex-direction:column-reverse;gap:10px;justify-content:space-between}
+.l-row{display:grid;grid-template-columns:1fr 28px 210px;gap:8px;align-items:center}
+.l-btn{display:grid;grid-template-columns:56px 1fr;align-items:center;text-align:left;border-radius:10px;padding:15px 18px;color:#fff;transition:all .22s}
+.l-btn .ln{font-size:29px;font-weight:800;opacity:.75}
+.l-btn h3{font-size:20px;font-weight:800;letter-spacing:-.3px}
+.l-btn p{font-size:14.5px;opacity:.9;margin-top:3px}
+.l-btn[data-tab="0"]{background:#273b59}.l-btn[data-tab="1"]{background:#194a8d}.l-btn[data-tab="2"]{background:#1664c0}.l-btn[data-tab="3"]{background:#098a83}
+.stack-4.has-sel .l-btn{opacity:.46}
+.stack-4.has-sel .l-btn[aria-selected=true]{opacity:1;transform:translateX(6px);box-shadow:-5px 0 0 var(--hl),var(--shadow-md)}
+.l-to{font-size:20px;font-weight:800;color:var(--teal);text-align:center}
+.l-user{display:flex;flex-wrap:wrap;gap:5px}
+.l-user span{font-size:13.5px;font-weight:800;color:var(--gov-navy);border:1.5px solid var(--blue);border-radius:6px;padding:5px 9px;background:var(--paper)}
+.arch-detail{display:flex;flex-direction:column;gap:10px}
+.arch-detail .card{flex:1;border-top:4px solid var(--gov-navy);padding:20px 22px}
+.arch-detail h3{font-size:23px;line-height:1.35;margin:6px 0 10px}
+.arch-detail p{font-size:16.5px;line-height:1.55}
+.arch-specs{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:12px}
+.arch-specs div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.arch-specs b{display:block;font-size:12.5px;color:var(--blue);margin-bottom:2px}
+.arch-specs span{font-size:14.5px;font-weight:800;color:var(--navy)}
+
+/* ───────── 10~13 4종 실증조사 프로파일 + 데이터 분석 레이아웃 (PDF p.16~28 완벽 계승 + 동적 차트) ───────── */
+.survey-layout{grid-template-columns:360px 1fr;gap:20px}
+.sv-profile{border:1.5px solid var(--line);border-radius:12px;background:var(--paper);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)}
+.sv-profile-head{background:var(--gov-navy);color:#fff;padding:14px 18px;font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px}
+.sv-profile-head i{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-style:normal;font-size:15px}
+.sv-profile-list{padding:14px 18px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line)}
+.sv-item{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center;font-size:15px;font-weight:700;color:var(--ink)}
+.sv-item b{background:var(--tint);color:var(--gov-navy);padding:4px 8px;border-radius:5px;text-align:center;font-size:13px;font-weight:800}
+.sv-design{padding:12px 18px;font-size:14px;color:var(--body);line-height:1.48;background:var(--surface);flex:1}
+.sv-design strong{display:block;color:var(--navy);font-size:14.5px;margin-bottom:5px}
+.sv-design li{padding-left:11px;position:relative;margin-bottom:4px}
+.sv-design li:before{content:'•';position:absolute;left:0;color:var(--blue);font-weight:800}
+.sv-dark-kpis{padding:12px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--paper);border-top:1px solid var(--line)}
+.dk-box{background:var(--navy);color:#fff;border-radius:8px;padding:10px 10px;text-align:center}
+.dk-box strong{font-size:24px;color:var(--amber);font-weight:800;display:block;line-height:1.1}
+.dk-box.teal strong{color:#5eead4}
+.dk-box small{font-size:11.5px;color:#cbd5e1;display:block;margin-top:4px;line-height:1.2}
+.sv-main{display:flex;flex-direction:column;gap:14px;min-width:0}
+
+/* 13쪽 2x2 사분면 버블 맵 + GAP 차트 */
+.deep-grid{grid-template-columns:1.05fr 1fr;gap:20px}
+.quad-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0}
+
+/* ───────── 14 거버넌스 & AI-인간 책임 매트릭스 ───────── */
+.gov-split{grid-template-columns:1fr 1.08fr;gap:22px}
+.safe-list{display:flex;flex-direction:column;gap:11px;flex:1}
+.safe-item{flex:1;display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;border:1.5px solid var(--line);border-left:5px solid var(--gov-navy);border-radius:10px;padding:14px 18px;background:var(--paper);box-shadow:var(--shadow-sm)}
+.safe-item:nth-child(2){border-left-color:var(--blue)}.safe-item:nth-child(3){border-left-color:var(--teal)}
+.safe-item .sn{font-size:32px;font-weight:800;color:var(--gov-navy)}
+.safe-item:nth-child(2) .sn{color:var(--blue)}.safe-item:nth-child(3) .sn{color:var(--teal)}
+.safe-item h3{font-size:19.5px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.safe-item p{font-size:15.5px;color:var(--body);line-height:1.45}
+.role-box{border:1.5px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);flex:1;display:flex}
+.role-box table{width:100%;height:100%;border-collapse:collapse}
+.role-box th{font-size:16.5px;padding:12px 18px;text-align:left;color:#fff;font-weight:800}
+.role-box th.ai{background:var(--teal)}.role-box th.hu{background:var(--gov-navy)}
+.role-box td{padding:11px 18px;border-bottom:1px solid var(--line-soft);font-size:15.5px;line-height:1.45;color:var(--body);width:50%;vertical-align:top}
+.role-box td:first-child{border-right:1px solid var(--line-soft)}
+.role-box .r-tag{display:inline-block;font-size:12px;font-weight:800;color:var(--blue);background:var(--tint);padding:2px 7px;border-radius:4px;margin-bottom:3px}
+
+/* ───────── 15 최종 결론 (PDF p.29 다크 클로징 + HTML p.15 종합 지표표 결합) ───────── */
+.closing-dark{background:linear-gradient(155deg,#081933 0%,#0f2952 60%,#0a1e3c 100%);color:#fff}
+.closing-dark .gov-top{background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.14)}
+.closing-dark .gov-sub{background:rgba(12,35,64,.65);border-bottom:2px solid #38bdf8}
+.closing-dark .gov-sub .headline{color:#fff}
+.closing-dark .gov-sub .headline mark{background:none;color:var(--hl)}
+.close-grid{grid-template-columns:1.05fr 1fr;gap:24px;flex:1;min-height:0}
+.dir-cards{display:flex;flex-direction:column;gap:14px;justify-content:space-between}
+.dir-card{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-left:5px solid #38bdf8;border-radius:12px;padding:18px 22px;display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center}
+.dir-card:nth-child(2){border-left-color:#2dd4bf}.dir-card:nth-child(3){border-left-color:var(--hl)}
+.dir-card .dn{width:44px;height:44px;border-radius:10px;background:#2563eb;color:#fff;font-size:24px;font-weight:800;display:grid;place-items:center}
+.dir-card:nth-child(2) .dn{background:var(--teal)}.dir-card:nth-child(3) .dn{background:var(--amber)}
+.dir-card h3{font-size:21px;font-weight:800;color:#fff;margin-bottom:6px}
+.dir-card p{font-size:16.5px;color:#dbeafe;line-height:1.48}
+.dir-card p b{color:#7dd3fc}
+.close-right{display:flex;flex-direction:column;gap:12px}
+.close-right table.data{background:rgba(255,255,255,.97)}
+
+/* 편집 모드 & 인쇄 */
+body.editing [data-edit]{outline:1.5px dashed rgba(200,113,22,.75);outline-offset:2px;cursor:text}
+body.editing [data-edit]:focus{outline:2px solid var(--amber);background:rgba(255,241,118,.25)}
+.toast{position:absolute;left:50%;top:64px;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:14.5px;font-weight:800;padding:8px 20px;border-radius:999px;z-index:30;display:none;box-shadow:var(--shadow-md)}
+body.editing .toast{display:block}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;height:auto;background:#fff}
+  #viewport{position:static;display:block}
+  #stage{position:static;transform:none!important;box-shadow:none;height:auto;overflow:visible}
+  .chrome-top,.chrome-bottom,.progress,.toast{display:none}
+  .slide{position:relative;top:auto;bottom:auto;height:1080px;opacity:1;visibility:visible;page-break-after:always;break-after:page}
+  .slide .rise,.grow,.growx{opacity:1!important;transform:none!important;animation:none!important}
+  .draw{stroke-dashoffset:0!important;animation:none!important}
+  [data-panel]{display:none}[data-panel].on{display:flex}
+}
+</style>
+
+<!-- ═══════════════════ 09 Ⅲ-3 AI 재난판단 4계층 플랫폼 아키텍처 ═══════════════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 기획2 공통기반형(예측·파악/대응판단) 기술 사양 및 Neuro-Symbolic AI 판단모델 4계층 아키텍처 결합">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅲ-3.</span>잠재·복합재난 선제대응을 위한 4계층 AI 판단 아키텍처 <small>4-Layer Disaster Decision AI Stack</small></h2>
+      <div class="gov-Corner"><b>Ⅲ</b><span>전략사업 · AI 아키텍처</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>신흥위험 시그널 수집부터 <mark>인과 연쇄예측·수리솔버 자원배분·현장실증</mark>까지 4계층 하이브리드 스택</div>
+      <div class="sub-right"><span class="hl-tag">계층 클릭 시 세부 기술·연계 후보과제 표시</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body arch-grid" data-tabgroup="arch" data-default="1">
+      <div class="arch-io rise">
+        <span class="label">다중 입력 데이터 & 제약</span>
+        <span data-edit>기상·지진·해양 실시간 센서망</span>
+        <span data-edit>전력·통신·교통·산단 시설 DB</span>
+        <span data-edit>고령·1인가구 등 취약인구 공간망</span>
+        <span data-edit>지하공간·배터리 열폭주 IoT 감지</span>
+        <span data-edit>지자체별 가용 소방·방재 자원량</span>
+        <span data-edit>법정 재난관리 기준·대피 매뉴얼</span>
+      </div>
+      <div class="arch-arrow rise"><b>→</b><small>상태공간<br>정형화</small></div>
+      <div class="stack-4 rise" role="tablist">
+        <div class="l-row"><button class="l-btn" data-tab="0" role="tab"><span class="ln">01</span><div><h3>시맨틱 재난 온톨로지 · 징후탐지층</h3><p>신흥위험 시그널 포착 + 취약대상·기반시설 상태공간 매핑</p></div></button><span class="l-to">↑</span><div class="l-user"><span>국립재난안전연구원</span></div></div>
+        <div class="l-row"><button class="l-btn" data-tab="1" role="tab"><span class="ln">02</span><div><h3>복합·연쇄영향 월드모델 시뮬레이션층</h3><p>기반시설 상호의존성 인과그래프(DAG) + 다중 도미노 피해 예측</p></div></button><span class="l-to">→</span><div class="l-user"><span>중앙재난안전대책본부</span></div></div>
+        <div class="l-row"><button class="l-btn" data-tab="2" role="tab"><span class="ln">03</span><div><h3>뉴로심볼릭 AI 대응판단 · 자원배분층</h3><p>System 2 추론 + 수리 솔버(MILP) 기반 자원배분·복구 우선순위</p></div></button><span class="l-to">→</span><div class="l-user"><span>지자체·소방 현장지휘관</span></div></div>
+        <div class="l-row"><button class="l-btn" data-tab="3" role="tab"><span class="ln">04</span><div><h3>사각지대 경보 · 고위험 현장실증·제도화층</h3><p>맞춤형 대피 유도 · 지하/산단 현장차단 · 결정 계보(Lineage) 감사</p></div></button><span class="l-to">→</span><div class="l-user"><span>대국민 · 산업단지 · 지자체</span></div></div>
+      </div>
+      <div class="arch-detail rise">
+        <div class="card" data-panel="0">
+          <span class="chip goal">LAYER 01 · EMERGING RISK DETECTION & ONTOLOGY</span>
+          <h3 data-edit>법정재난 편입 전 잠재위험 징후 포착 및 취약대상 실시간 파악</h3>
+          <p data-edit>기후·신기술(배터리·수소·UAM)·인구구조(고령·고립) 변화를 상시 모니터링하고, 재난 발생 시 현장 주변의 취약시설·취약계층 분포를 지식그래프 상태공간으로 즉시 통합합니다.</p>
+          <div class="arch-specs"><div><b>연계 기획과제</b><span>후보과제 #2 · #8 (탐색·파악)</span></div><div><b>핵심 기술</b><span>멀티모달 이상탐지 + 공간 온톨로지</span></div></div>
+        </div>
+        <div class="card" data-panel="1">
+          <span class="chip goal">LAYER 02 · CASCADING IMPACT WORLD MODEL</span>
+          <h3 data-edit>단일 사고가 도시 전체 마비로 번지는 연쇄 확산 경로 사전 시뮬레이션</h3>
+          <p data-edit>전력·통신·교통·의료·산단 시설 간 상호의존성(Interdependency)을 인과그래프와 디지털트윈 월드모델로 구축하여, 복합재난 시 시간대별 2차·3차 피해 확산 범위를 모의실험합니다.</p>
+          <div class="arch-specs"><div><b>연계 기획과제</b><span>후보과제 #1 (연쇄영향 시뮬레이션)</span></div><div><b>핵심 기술</b><span>Causal DAG + 디지털트윈 시뮬레이터</span></div></div>
+        </div>
+        <div class="card" data-panel="2">
+          <span class="chip goal">LAYER 03 · NEURO-SYMBOLIC RESOURCE OPTIMIZER</span>
+          <h3 data-edit>동시다발 복합재난 시 대응자원 배분 및 복구 우선순위 최적 결정</h3>
+          <p data-edit>확률적 언어모델(LLM)의 환각을 배제하기 위해 수리 최적화 솔버(MILP/SMT)를 결합하여, 가용 인력·장비·대피소 제약 하에서 인명·사회기능 피해를 최소화하는 파레토 최적 배분안을 도출합니다.</p>
+          <div class="arch-specs"><div><b>연계 기획과제</b><span>후보과제 #3 (자원배분·복구 우선순위)</span></div><div><b>핵심 기술</b><span>System 2 추론 + MILP 수리 솔버</span></div></div>
+        </div>
+        <div class="card" data-panel="3">
+          <span class="chip goal">LAYER 04 · HIGH-RISK FIELD VERIFICATION & ALERT</span>
+          <h3 data-edit>밀폐·지하공간·산단 현장실증 및 재난정보 전달 사각지대 해소</h3>
+          <p data-edit>지하 전기차 배터리 열폭주 차단, 대심도 지하공간 대피·구조, 산단 유해물질 확산 차단을 현장에서 직접 실증하고, 통신 두절·고령층 등 정보 사각지대에 다중채널 맞춤형 경보를 전달합니다.</p>
+          <div class="arch-specs"><div><b>연계 기획과제</b><span>후보과제 #4 · #5 · #6 · #7 (실증)</span></div><div><b>핵심 기술</b><span>엣지 AI 제어 + 다중경보 + 감사로그</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 아키텍처 차별성</span></div>
+      <div class="insight-col"><p data-edit>단순 모니터링 대시보드에 그치던 기존 R&D를 넘어, <mark>‘인과기반 연쇄예측(Layer 2) + 수리솔버 대응판단(Layer 3) + 고위험 공간 실증(Layer 4)’</mark>을 결합한 실행형 판단 아키텍처 확립</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 10 Ⅳ-1 실증조사 ① 기술수준 조사 (81.8%, 4.2년 격차) ═══════════════════ -->
+<section class="slide" data-chapter="4" data-source="출처: 기획연구 최종보고서 Ⅲ-3. 기술수준조사 주요 분석 결과 (p.17~20) — 24대 핵심역량, 5개국 논문·특허 및 델파이 2라운드(124명)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅳ-1.</span>[실증조사 ①] 재난안전 기술수준 조사 — 5개국 비교 및 24대 역량 <small>Technology Level Assessment</small></h2>
+      <div class="gov-Corner"><b>Ⅳ</b><span>실증조사 · 거버넌스</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>한국 기술수준은 최고기술국(미국) 대비 <mark>81.8%(기술격차 4.2년)</mark>, 24개 중 <mark>16개 역량 하락</mark> 경보</div>
+      <div class="sub-right"><span class="hl-tag">최고: 긴급대피·수송 86.3%</span><span class="hl-tag">최저: 기반시설 물리적 보호 78.3%</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body survey-layout rise" data-tabgroup="tech" data-default="0">
+      <aside class="sv-profile">
+        <div class="sv-profile-head"><i>①</i><span>기술수준 조사 프로파일</span></div>
+        <div class="sv-profile-list">
+          <div class="sv-item"><b>조사대상</b><span>산·학·연 전문가 (전수 834명 풀)</span></div>
+          <div class="sv-item"><b>조사규모</b><span>최종 124명 완료 (471건 응답)</span></div>
+          <div class="sv-item"><b>조사방법</b><span>델파이 2회 + 논문·특허 계량분석</span></div>
+          <div class="sv-item"><b>조사목적</b><span>24대 핵심역량 기술수준·격차 진단</span></div>
+        </div>
+        <div class="sv-design" data-edit>
+          <strong>조사 설계 — 2단계 교차검증 (KISTEP 방법론)</strong>
+          <ul>
+            <li>5개국(미·일·EU·한·중) 10년 논문·특허 계량분석</li>
+            <li>1차(8.26~10.02)·2차(10.08~10.14) 439개 항목 평가</li>
+            <li>사분위범위(Q3−Q1) 합의도 0.75 이상 신뢰도 검증</li>
+          </ul>
+        </div>
+        <div class="sv-dark-kpis">
+          <div class="dk-box"><strong class="num">81.8%</strong><small>한국 기술수준<br>(전년比 −0.8%p)</small></div>
+          <div class="dk-box"><strong class="num">4.2년</strong><small>최고국(미국) 대비<br>기술격차 (−0.2년)</small></div>
+          <div class="dk-box"><strong class="num">16/24</strong><small>전년 대비 하락한<br>핵심역량 수</small></div>
+        </div>
+      </aside>
+      <div class="sv-main">
+        <div class="card accent-navy" style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="label" style="margin:0">5개국 기술수준 비교 및 24대 핵심역량 상·하위/변동폭 분석</span>
+            <div class="seg" role="tablist">
+              <button data-tab="0" role="tab">주요 5개국 기술수준·격차('20~'26)</button>
+              <button data-tab="1" role="tab">24대 핵심역량 상위 vs 하위/급락 역량</button>
+            </div>
+          </div>
+          <div class="chart-host" id="chartTech"></div>
+        </div>
+        <table class="data">
+          <thead><tr><th>연도 구분</th><th>미국 (최고기술국)</th><th>일본 (2위)</th><th>EU (3위)</th><th class="sel">한국 (4위)</th><th>중국 (5위 · 급상승)</th></tr></thead>
+          <tbody>
+            <tr><td><b>2024년</b> 수준 / 격차</td><td>100.0% (0.0년)</td><td>92.0% (1.9년)</td><td>91.4% (2.2년)</td><td class="sel">81.8% (4.3년)</td><td>68.5% (6.9년)</td></tr>
+            <tr><td><b>2025년</b> 수준 / 격차</td><td>100.0% (0.0년)</td><td>92.8% (2.0년)</td><td>91.0% (2.4년)</td><td class="sel">82.6% (4.4년)</td><td>70.8% (6.8년)</td></tr>
+            <tr class="hl-row"><td><b>2026년</b> 수준 / 격차</td><td>100.0% (0.0년)</td><td>92.1% (2.0년)</td><td>89.7% (2.4년)</td><td>81.8% (4.2년)</td><td>71.5% (7.1년)</td></tr>
+            <tr><td><b>전년 대비 증감</b> ('26−'25)</td><td>0.0%p (0.0년)</td><td>−0.8%p (0.0년)</td><td>−1.3%p (+0.1년)</td><td class="sel" style="color:var(--red)">−0.8%p (−0.2년)</td><td style="color:var(--teal);font-weight:800">+0.7%p (+0.2년)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 기술수준 진단 시사점</span></div>
+      <div class="insight-col"><p data-edit>긴급대피·수송(86.3%, +4.8%p)은 약진했으나, <mark>국가기반시설 물리적 보호(78.3% 최저)·현장관리(−6.2%p)·비상 정보전달(−5.3%p)</mark>이 급락 → 「잠재·복합재난 R&D」로 취약 역량 집중 보강</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 11 Ⅳ-2 실증조사 ②·③ 기술만족도(68.2점) & 정책노력도(87.3점) ═══════════════════ -->
+<section class="slide" data-chapter="4" data-source="출처: 기획연구 최종보고서 Ⅲ-4. 기술만족도조사(p.21~22, n=120) 및 Ⅲ-5. 정책노력도조사(p.23, n=40)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅳ-2.</span>[실증조사 ②·③] 전문가 기술만족도(68.2점) 및 정책노력도(87.3점) <small>Expert Satisfaction & Policy Effort</small></h2>
+      <div class="gov-Corner"><b>Ⅳ</b><span>실증조사 · 거버넌스</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>기술만족도는 <mark>68.2점(+3.0p 상승)</mark>, 정책노력도는 <mark>87.3점 고수준 유지</mark> — 단, 연구환경(58.1점) 개선 시급</div>
+      <div class="sub-right"><span class="hl-tag">연구품질 +4.5점 최대 상승</span><span class="hl-tag">임무중심형 R&D 보완 필요(−1.3점)</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body survey-layout rise" data-tabgroup="sat" data-default="0">
+      <aside class="sv-profile">
+        <div class="sv-profile-head" style="background:var(--blue)"><i>②·③</i><span>전문가 만족도·노력도 조사</span></div>
+        <div class="sv-profile-list">
+          <div class="sv-item"><b>조사 ②</b><span>기술만족도 · 전문가 120명 (12문항)</span></div>
+          <div class="sv-item"><b>조사 ③</b><span>정책노력도 · 전문가 40명 (30문항)</span></div>
+          <div class="sv-item"><b>조사방법</b><span>리스트 554명 전수 대상 웹 설문</span></div>
+          <div class="sv-item"><b>평가구조</b><span>만족도 3대 영역 / 혁신과제 3대 틀</span></div>
+        </div>
+        <div class="sv-design" data-edit>
+          <strong>핵심 발견사항 (시계열 교차진단)</strong>
+          <ul>
+            <li><b>기술만족도(68.2점):</b> 연구품질(+4.5)·개발환경(+3.4)·사회경제성과(+1.7) 3개 영역 모두 상승했으나, <b>지원서비스(57.5점)·연구환경(58.8점)</b>은 여전히 50점대 최저</li>
+            <li><b>정책노력도(87.3점):</b> 협업체계(87.3)·현장보급(86.6)은 상승, <b>임무중심형 고도화(86.8, −1.3p)</b>는 소폭 하락</li>
+          </ul>
+        </div>
+        <div class="sv-dark-kpis">
+          <div class="dk-box teal"><strong class="num">68.2점</strong><small>종합 기술만족도<br>(전년比 +3.0점)</small></div>
+          <div class="dk-box"><strong class="num">58.1점</strong><small>기술개발 환경<br>(3개 영역 최저)</small></div>
+          <div class="dk-box teal"><strong class="num">87.3점</strong><small>종합 정책노력도<br>(혁신과제 88.4점)</small></div>
+        </div>
+      </aside>
+      <div class="sv-main">
+        <div class="card accent-blue" style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="label" style="margin:0">기술만족도 5개년 추이 및 정책노력도 영역별 비교 (탭 전환)</span>
+            <div class="seg" role="tablist">
+              <button data-tab="0" role="tab">② 기술만족도 연도별·영역별 점수</button>
+              <button data-tab="1" role="tab">③ 정책노력도 3대 혁신과제 평가</button>
+            </div>
+          </div>
+          <div class="chart-host" id="chartSat"></div>
+        </div>
+        <table class="data">
+          <thead><tr><th>조사 구분</th><th>세부 평가 영역 (핵심 측정 문항)</th><th>2023년</th><th>2024년</th><th>2025년</th><th class="sel">2026년</th><th>전년 대비 증감</th></tr></thead>
+          <tbody>
+            <tr><td><b>② 기술만족도</b></td><td>사회경제적 성과 (안전사회 구축 66.7 · 역량강화 80.2)</td><td>73.2점</td><td>72.2점</td><td>70.9점</td><td class="sel">72.6점</td><td style="color:var(--teal);font-weight:800">+1.7점 ↑</td></tr>
+            <tr><td><b>② 기술만족도</b></td><td>연구품질 및 전문성 (기획·관리 69.2 · 실생활 필요성 67.7)</td><td>67.4점</td><td>63.5점</td><td>62.2점</td><td class="sel">66.7점</td><td style="color:var(--teal);font-weight:800">+4.5점 ↑ (최대)</td></tr>
+            <tr class="hl-row"><td><b>② 기술만족도</b></td><td>기술개발 환경 (연구환경 58.8 · 각종 지원서비스 57.5)</td><td>52.5점</td><td>53.4점</td><td>54.7점</td><td>58.1점</td><td style="color:var(--amber)">+3.4점 (여전히 최저)</td></tr>
+            <tr><td><b>③ 정책노력도</b></td><td>R&D 협업체계 강화 / 현장 즉시보급·신속개발 체계</td><td>-</td><td>-</td><td>86.9 / 86.1</td><td class="sel">87.3 / 86.6</td><td style="color:var(--teal);font-weight:800">+0.4점 / +0.5점 ↑</td></tr>
+            <tr><td><b>③ 정책노력도</b></td><td>참여·공유기반 임무중심형 R&D 고도화 (보완 필요)</td><td>-</td><td>-</td><td>88.1점</td><td class="sel">86.8점</td><td style="color:var(--red);font-weight:800">−1.3점 ↓</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 제도 개선 반영사항</span></div>
+      <div class="insight-col"><p data-edit>최저점인 <mark>지원서비스(57.5점)·연구환경(58.8점)</mark> 및 하락한 <mark>역량강화(80.2, −2.5p)·산업육성 기여도(79.4, −1.0p)</mark>를 개선하기 위해 3단계 사업 내 연구지원·실증인프라 예산(25억) 별도 편성</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 12 Ⅳ-3 실증조사 ④ 대국민 인식조사 (인지도 15.7%, 격차 32.5%p) ═══════════════════ -->
+<section class="slide" data-chapter="4" data-source="출처: 기획연구 최종보고서 Ⅲ-6. 대국민 인식조사 및 2개년 비교 (p.24~26, 전국 만 19~69세 유효표본 1,031명, ±3.06%p)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅳ-3.</span>[실증조사 ④] 대국민 인식조사 — 인지도(15.7%) 및 활용격차(32.5%p) <small>Public Awareness & Utilization Gap</small></h2>
+      <div class="gov-Corner"><b>Ⅳ</b><span>실증조사 · 거버넌스</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>과학기술 중요성은 <mark>82% 이상 인정</mark>하나 R&D 인지도는 <mark>15.7%</mark>에 그치며 사용의사(75.6%)−활용도(43.1%) 격차 상존</div>
+      <div class="sub-right"><span class="hl-tag">전국 대표표본 1,031명</span><span class="hl-tag">위험 1순위: 범죄(11.9%)·감염병(11.0%)</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body survey-layout rise" data-tabgroup="pub" data-default="0">
+      <aside class="sv-profile">
+        <div class="sv-profile-head" style="background:var(--teal)"><i>④</i><span>대국민 인식조사 프로파일</span></div>
+        <div class="sv-profile-list">
+          <div class="sv-item"><b>조사대상</b><span>전국 만 19~69세 일반국민 (3,681만명)</span></div>
+          <div class="sv-item"><b>조사규모</b><span>유효표본 1,031명 (±3.06%p, 95% 신뢰)</span></div>
+          <div class="sv-item"><b>표본설계</b><span>시·도별/성별/연령별 층화 제곱근 비례배분</span></div>
+          <div class="sv-item"><b>조사기간</b><span>2026. 7. 23 ~ 8. 13 (31개 문항)</span></div>
+        </div>
+        <div class="sv-design" data-edit>
+          <strong>2개년('25 vs '26) 인식 변화 핵심 포인트</strong>
+          <ul>
+            <li><b>중요성 vs 효과성:</b> 3대 목적(당면문제·안전기반·삶의질) 모두 중요성은 82~84%로 높으나 효과성은 66~67% 수준</li>
+            <li><b>활용도는 상승(+7.6%p):</b> 실제 기술·서비스 활용도는 35.5% → <b>43.1%</b>로 상승했으나 사용의사(75.6%)와 <b>32.5%p 격차</b></li>
+            <li><b>위험 1순위:</b> 범죄(11.9%, +2.1%p) > 감염병(11.0%) > 폭염(10.6%) > 태풍(10.4%) > 산불(6.7%)</li>
+          </ul>
+        </div>
+        <div class="sv-dark-kpis">
+          <div class="dk-box"><strong class="num">15.7%</strong><small>재난안전 R&D<br>인지도 (−1.2%p)</small></div>
+          <div class="dk-box teal"><strong class="num">43.1%</strong><small>실제 기술 활용도<br>(전년比 +7.6%p ↑)</small></div>
+          <div class="dk-box"><strong class="num">32.5%p</strong><small>사용의사(75.6%) 대비<br>실제 활용 격차</small></div>
+        </div>
+      </aside>
+      <div class="sv-main">
+        <div class="card accent-teal" style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="label" style="margin:0">대국민 인식도 2개년 비교 및 재난유형별 위험·기술기여 기대 TOP 5</span>
+            <div class="seg" role="tablist">
+              <button data-tab="0" role="tab">재난안전 인식·활용 2개년('25 vs '26)</button>
+              <button data-tab="1" role="tab">위험 인식 TOP 5 vs 과학기술 기여 기대 TOP 5</button>
+            </div>
+          </div>
+          <div class="chart-host" id="chartPub"></div>
+        </div>
+        <table class="data">
+          <thead><tr><th>구분 (1순위 응답 비율, %)</th><th>1위</th><th>2위</th><th>3위</th><th>4위</th><th>5위</th></tr></thead>
+          <tbody>
+            <tr><td><b>가장 위험하다고 느끼는 재난·사고</b> ('26년)</td><td class="sel">범죄 (11.9%, <span style="color:var(--red)">+2.1%p</span>)</td><td>감염병 (11.0%, −2.4%p)</td><td>폭염 (10.6%, −0.9%p)</td><td>태풍 (10.4%, +0.1%p)</td><td>산불 (6.7%, <span style="color:var(--red)">+2.5%p</span>)</td></tr>
+            <tr><td><b>과학기술이 가장 기여할 재난유형</b> ('26년)</td><td class="sel">감염병 (15.3%, −1.6%p)</td><td>태풍 (8.5%, <span style="color:var(--teal)">+2.1%p</span>)</td><td>금융전산사고 (5.1%, +1.0%p)</td><td>도로교통 재난 (4.9%, +1.4%p)</td><td>폭염 (4.6%, +0.4%p)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 대국민 소통·보급 시사점</span></div>
+      <div class="insight-col"><p data-edit>국민은 <mark>범죄·산불·금융전산마비·도로교통</mark> 등 일상·사회재난 위험을 민감하게 체감 → R&D 성과의 <mark>생활밀착형 보급(앱·재난문자·대피안내) 및 대국민 인지도 홍보</mark> 병행 필수</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 13 Ⅳ-4 심층 교차분석 : 집단 유형화(2×2) 및 기술해결 GAP 분석 ═══════════════════ -->
+<section class="slide" data-chapter="4" data-source="출처: 기획연구 최종보고서 Ⅲ-6. 대국민 인식조사 심층분석 (3) 인식 일관성 4집단 유형화 및 (4) 기술 해결 기대 GAP 분석 (p.27~28)">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅳ-4.</span>[심층 교차분석] 국민 인식 4집단 유형화 및 재난유형별 기술해결 GAP <small>Cluster Matrix & Expectation Gap</small></h2>
+      <div class="gov-Corner"><b>Ⅳ</b><span>실증조사 · 거버넌스</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>고관심·고심각은 <mark>60대 중·고령층</mark>, 저관심·저심각은 <mark>40대 이하 남성</mark> 집중 — 기술해결 GAP 1위는 <mark>산불(+0.56점)</mark></div>
+      <div class="sub-right"><span class="hl-tag">GAP = 심각성 인식 − 기술해결 가능성</span><span class="hl-tag">산불·홍수·범죄·지진 순</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body deep-grid rise">
+      <div class="card accent-navy" style="display:flex;flex-direction:column;gap:10px">
+        <span class="label">(1) 재난 관심도 × 심각성 인식 4대 집단 유형화 매트릭스 (n=1,031)</span>
+        <div class="quad-wrap">
+          <div class="chart-host" id="chartQuad"></div>
+          <table class="data" style="font-size:14px">
+            <thead><tr><th>집단 유형 (표본수)</th><th>인구통계 핵심 특성</th></tr></thead>
+            <tbody>
+              <tr class="hl-row"><td><b>고관심·고심각</b><br>(n=640, 62.1%)</td><td style="text-align:left">• 50대 이상 51.1% (전체 45.0%)<br>• <b>60대 26.4%</b> (중·고령층 집중)</td></tr>
+              <tr><td><b>고관심·저심각</b><br>(n=157, 15.2%)</td><td style="text-align:left">• <b>20대 이하 25.2%</b> (전체 16.3%)<br>• 40대 24.3% 상대적 고비중</td></tr>
+              <tr><td><b>저관심·고심각</b><br>(n=95, 9.2%)</td><td style="text-align:left">• <b>고졸 이하 28.4%</b> (전체 13.9%)<br>• 30대 25.4% 상대적 고비중</td></tr>
+              <tr><td><b>저관심·저심각</b><br>(n=139, 13.5%)</td><td style="text-align:left">• <b>남성 64.7% · 40대 이하 72.5%</b><br>• 특히 30대(26.1%) 젊은 남성 중심</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" data-edit>고령층은 체감 위험이 높으나 디지털 기술 접근성이 낮고, 3040 남성은 안전 불감증이 높아 맞춤형 경보·소통 전략 차별화 필요</p>
+      </div>
+      <div class="card accent-red" style="display:flex;flex-direction:column;gap:10px">
+        <span class="label">(2) 우리 생활에 가장 큰 위험이 되는 9대 재난 ‘기술해결 기대 GAP’ 분석 (단위: 5점 척도 차이)</span>
+        <div class="chart-host" id="chartGap"></div>
+        <p class="note" data-edit><b>GAP(심각성−기술해결가능성):</b> 산불(0.56) > 홍수(0.47) > 범죄(0.45) > 지진(0.41) > 화재(0.39) > 호우(0.38) 순으로 높으나 모두 1점 미만으로 기술해결 기대감 유효</p>
+      </div>
+    </div>
+    <div class="insight-banner rise">
+      <div class="insight-col">
+        <span class="i-title">■ 인구집단별 R&D 전달체계 시사점</span>
+        <p data-edit>고위험 인식 집단인 <mark>60대 이상 고령층(62.1% 다수)</mark>을 위해 무자각·자동형 대피 안내(과제 #4 사각지대 해소)를 최우선 보급</p>
+      </div>
+      <div class="insight-col">
+        <span class="i-title">■ GAP 상위 재난 R&D 우선순위</span>
+        <p data-edit>심각성 대비 기술해결 갈증이 가장 큰 <mark>산불(0.56)·홍수(0.47)·지진(0.41)</mark>을 광역 공동대응 및 예측 시뮬레이션 핵심 타깃으로 설정</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 14 Ⅳ-5 이행 거버넌스 및 AI-현장지휘관 책임 분담 ═══════════════════ -->
+<section class="slide" data-chapter="4" data-source="출처: 기획연구 최종보고서 정책노력도·전환관리 방안 및 고위험 재난안전 AI 거버넌스(Human-in-Command) 종합">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅳ-5.</span>R&D 성과전환 이행 거버넌스 및 AI-인간 의사결정 책임 체계 <small>Execution Governance & Responsibility Matrix</small></h2>
+      <div class="gov-Corner"><b>Ⅳ</b><span>실증조사 · 거버넌스</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>산출-전환 단절을 끊는 <mark>3대 제도적 의무장치</mark>와 복합재난 시 <mark>AI 판단모델 × 현장지휘관 협업 원칙</mark></div>
+      <div class="sub-right"><span class="hl-tag">RFP 전환산출물 의무화</span><span class="hl-tag">신뢰구간 기반 위임 거버넌스</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="grid-body gov-split rise">
+      <div class="safe-list">
+        <span class="label">공공 R&D 성과전환 & 고신뢰 재난판단 3대 필수 거버넌스</span>
+        <div class="safe-item">
+          <span class="sn">01</span>
+          <div>
+            <h3 data-edit>RFP 전환성과 의무화 및 ‘성과이어달리기’ 연동 게이트</h3>
+            <p data-edit>과제 기획(RFP) 단계부터 조달 등록·지자체 현업 탑재·재난관리 지침 개정 목표를 명시하고, 종료 후 우수과제는 3유형(성과이어달리기)으로 자동 연계해 사장을 방지합니다.</p>
+          </div>
+        </div>
+        <div class="safe-item">
+          <span class="sn">02</span>
+          <div>
+            <h3 data-edit>공백·취약지역 사전 기획 컨설팅 및 재난통계 정합성 검증</h3>
+            <p data-edit>기업 보유기술 위주의 상향식 제안을 지양하고, 10년 반복 재난통계 및 취약인구 데이터와 지자체 수요가 일치하는지 사전 컨설팅(세종·대전·인구감소지역 우선)으로 검증합니다.</p>
+          </div>
+        </div>
+        <div class="safe-item">
+          <span class="sn">03</span>
+          <div>
+            <h3 data-edit>재난 대응판단 AI의 신뢰구간 게이트 & 결정 계보(Lineage) 기록</h3>
+            <p data-edit>복합재난 시 AI가 산출한 자원배분·대피 시나리오는 예측 신뢰구간과 기각 대안 사유를 함께 제시하며, 사후 감사·법적 책임 추적이 가능하도록 결정 로그를 100% 보존합니다.</p>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span class="label">잠재·복합재난 대응 시 AI 판단모델과 인간 지휘관의 역할 분담</span>
+        <div class="role-box">
+          <table>
+            <thead><tr><th class="ai">AI 재난판단 시스템 · 계산·예측·최적화</th><th class="hu">인간 지휘관(중대본·지자체) · 가치·통제·책임</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="r-tag">1단계 · 징후탐지</span><br><span data-edit>다중 센서·기상·시설 데이터에서 신흥 이상징후 포착 및 취약계층 분포 실시간 매핑</span></td>
+                <td><span class="r-tag">1단계 · 징후탐지</span><br><span data-edit>예비특보 발령 및 유관 부처·인접 지자체 간 선제적 상황판단회의 소집</span></td>
+              </tr>
+              <tr>
+                <td><span class="r-tag">2단계 · 연쇄예측</span><br><span data-edit>전력·통신·교통 상호의존성 시뮬레이션으로 2차·3차 연쇄피해 경로 및 확률 산출</span></td>
+                <td><span class="r-tag">2단계 · 연쇄예측</span><br><span data-edit>핵심 국가기반시설 방호 우선순위 설정 및 광역 지자체 간 공동대응 협약 가동</span></td>
+              </tr>
+              <tr>
+                <td><span class="r-tag">3단계 · 자원배분</span><br><span data-edit>수리 솔버(MILP)로 소방·구호·의료 자원 최적 배분 대안 3종 및 기대효용 제시</span></td>
+                <td><span class="r-tag">3단계 · 자원배분</span><br><span data-edit>현장 정무적·윤리적 맥락을 고려해 최종 대안 승인 및 강제 대피명령 발동</span></td>
+              </tr>
+              <tr>
+                <td><span class="r-tag">4단계 · 환류·제도</span><br><span data-edit>실제 피해와 예측치 간 오차 역전파 학습 및 재난관리 기준·지침 개정 근거 생성</span></td>
+                <td><span class="r-tag">4단계 · 환류·제도</span><br><span data-edit>법정 재난 편입 여부 결정, 국가 안전기준 개정 고시 및 대국민 소통 총괄</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" data-edit>원칙: AI는 복합재난의 ‘연쇄경로와 최적 자원배분 해’를 초단위로 계산하고, 인간 지휘관은 ‘생명 최우선 가치 판단과 법적 책임’을 수행</p>
+      </div>
+    </div>
+    <div class="insight-banner single rise">
+      <div class="insight-col"><span class="i-title">■ 거버넌스 핵심 결론</span></div>
+      <div class="insight-col"><p data-edit>기술개발(R&D) → 현장실증 → 타 지역 확산 → 법정 기준·지침 개정이 <mark>하나의 거버넌스 파이프라인으로 작동</mark>할 때 정책노력도(87.3점)가 실제 국민 체감으로 전환됨</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 15 Ⅳ-6 최종 결론 및 3대 전략적 실행 제언 ═══════════════════ -->
+<section class="slide closing-dark" data-chapter="4" data-source="출처: 기획연구 최종보고서 결론(p.29) — 조사와 심층분석이 가리키는 방향은 하나: '확산'과 '연계'">
+  <div class="gov-header">
+    <div class="gov-top">
+      <h2 data-edit><span class="sec-no">Ⅳ-6.</span>최종 결론 및 국가 재난안전 R&D 3대 실행 방향 <small>Conclusion & Strategic Recommendations</small></h2>
+      <div class="gov-Corner"><b>결론</b><span>확산(Diffusion)과 연계(Linkage)</span></div>
+    </div>
+    <div class="gov-sub">
+      <div class="headline" data-edit>조사와 심층분석이 가리키는 방향은 하나 — <mark>‘확산(Diffusion)’과 ‘연계(Linkage)’</mark></div>
+      <div class="sub-right"><span class="hl-tag">신규기획 1,059.2억 원</span><span class="hl-tag">37개 핵심과제 즉시 추진</span></div>
+    </div>
+  </div>
+  <div class="canvas-body">
+    <div class="close-grid rise">
+      <div class="dir-cards">
+        <div class="dir-card">
+          <div class="dn">1</div>
+          <div>
+            <h3 data-edit>기술수준(81.8%)·사업화(97%)는 우수하나 확산·전환(28%)은 미흡</h3>
+            <p data-edit>➔ <b>「지역맞춤형 재난안전 문제해결 3단계 (609.2억 원, 29개 과제)」</b> 신설을 통해 1·2단계 검증기술의 타 지자체 ‘성과이어달리기’와 5극3특 ‘초광역 공동현안 대응’ 체계를 즉시 구축한다.</p>
+          </div>
+        </div>
+        <div class="dir-card">
+          <div class="dn">2</div>
+          <div>
+            <h3 data-edit>기후위기·AI·신에너지 확산으로 기존 체계가 못 담는 잠재·복합위험 급증</h3>
+            <p data-edit>➔ <b>「잠재·복합재난 선제대응 R&D (450.0억 원, 8개 후보과제)」</b> 추진으로 법정 재난 편입 전 위험징후 상시 탐지, 다중 기반시설 연쇄영향 시뮬레이션, AI 대응자원 배분 및 지하·산단 고위험 현장실증을 완수한다.</p>
+          </div>
+        </div>
+        <div class="dir-card">
+          <div class="dn">3</div>
+          <div>
+            <h3 data-edit>대국민 인지도(15.7%)는 낮고 사용의사(75.6%)−실제 활용도(43.1%) 격차 큼</h3>
+            <p data-edit>➔ 재난정보 사각지대 해소, 고령층·취약계층 생활밀착형 안전기술 현장 보급 및 대국민 체감 홍보를 강화하고, 연구자 <b>기술개발 환경(58.1점) 지원서비스</b>를 대폭 확충한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="close-right">
+        <span class="label" style="color:#93c5fd">행정안전부 고유임무 전략기획 & 실증조사 핵심 지표 종합 총괄표</span>
+        <table class="data">
+          <thead><tr><th>핵심 진단 및 전략기획 지표</th><th>현행 진단 ('25~'26 실적)</th><th>핵심 병목·공백 요인</th><th class="sel">차세대 추진 목표 ('28~'32)</th></tr></thead>
+          <tbody>
+            <tr><td><b>지역맞춤형 R&D 기획규모</b></td><td>1·2단계 47개 과제 (완료 29)</td><td>기술료 28%·정책활용 7% 단절</td><td class="sel">3단계 609.2억 (29개 과제)</td></tr>
+            <tr><td><b>잠재·복합재난 R&D 기획규모</b></td><td>개별 재난·단일 시설 중심</td><td>법정재난 전 단계·연쇄피해 공백</td><td class="sel">신규 450.0억 (8대 후보과제)</td></tr>
+            <tr><td><b>최고기술국 대비 기술수준</b></td><td>81.8% (격차 4.2년, 미 100%)</td><td>24개 중 16개 역량 하락 경보</td><td class="sel">86.0%+ (격차 2.8년 이내)</td></tr>
+            <tr><td><b>전문가 기술만족도 종합</b></td><td>68.2점 (전년比 +3.0점 상승)</td><td>기술개발 환경 58.1점 최저</td><td class="sel">75.0점+ (지원인프라 확충)</td></tr>
+            <tr><td><b>전문가 정책노력도 종합</b></td><td>87.3점 (혁신과제 88.4점)</td><td>임무중심형 고도화 −1.3점 하락</td><td class="sel">90.0점+ (초광역·실용화 강화)</td></tr>
+            <tr><td><b>대국민 인지도 / 실제 활용도</b></td><td>인지도 15.7% / 활용도 43.1%</td><td>사용의사(75.6%)와 32.5%p 격차</td><td class="sel">인지도 30%+ / 활용도 60%+</td></tr>
+          </tbody>
+        </table>
+        <div class="note" style="background:rgba(255,255,255,.08);color:#e2e8f0;border-left-color:var(--hl)" data-edit>
+          <b style="color:var(--hl)">최종 보고 컨소시엄 및 자료 근거</b> · 주관: 행정안전부 국립재난안전연구원 · 수행: 지오매직(주) & 한국갤럽(Gallup Korea) · 본 자료는 최종보고서(29p)의 실증 데이터와 인터랙티브 AI 판단 브리핑 문법을 통합한 15쪽 전략 브리핑입니다.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 하단 글로벌 크롬 푸터 -->
+<footer class="chrome-bottom">
+  <div class="org-mark">
+    <span class="badge"><i></i>국립재난안전연구원</span>
+    <span>Geomagic 지오매직(주) · Gallup 한국갤럽</span>
+  </div>
+  <span class="source" id="source"></span>
+  <div class="dots" id="dots" aria-label="슬라이드 바로가기"></div>
+  <div class="pager">
+    <button id="prev" aria-label="이전 장">←</button>
+    <span><b id="pageNo">01</b> / <span id="pageTotal">15</span></span>
+    <button id="next" aria-label="다음 장">→</button>
+  </div>
+</footer>
+<div class="progress" id="progress"></div>
+
+</div></div>
+
+<script>
+(()=>{
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const C={gov:'#13386c',navy:'#0c2340',blue:'#1a5cba',sky:'#00a8e8',teal:'#098a83',amber:'#c87116',red:'#bf3b35',pale:'#c5d2e6',line:'#d5dde8',muted:'#5b687c',ink:'#161f2e'};
+
+/* 1920x1080 반응형 스케일링 */
+const stage=$('#stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+
+/* SVG 기본 유틸 */
+function el(tag,attrs={},parent){const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n}
+function txt(parent,x,y,s,attrs={}){const t=el('text',{x,y,...attrs},parent);t.textContent=s;return t}
+function svgFor(host){
+  if(!host)return [null,0,0];
+  const r=host.getBoundingClientRect();
+  const scale=stage.getBoundingClientRect().width/1920||1;
+  const w=Math.max(280,Math.round(r.width/scale)),h=Math.max(150,Math.round(r.height/scale));
+  host.replaceChildren();
+  return [el('svg',{viewBox:`0 0 ${w} ${h}`,preserveAspectRatio:'xMidYMid meet'},host),w,h];
+}
+
+/* 세로 그룹 막대 */
+function columns(host,{labels,series,max,fmt=v=>v,tick=v=>Math.round(v),sel=-1,unit=''}){
+  const [s,w,h]=svgFor(host);if(!s)return;
+  const pl=48,pr=14,pt=32,pb=42,cw=w-pl-pr,ch=h-pt-pb;
+  for(let i=0;i<=4;i++){const y=pt+ch-ch*i/4;el('line',{x1:pl,x2:w-pr,y1:y,y2:y,stroke:C.line,'stroke-dasharray':i?'3 3':''},s);txt(s,pl-8,y+5,tick(max*i/4),{'text-anchor':'end','font-size':13,fill:C.muted})}
+  const gw=cw/labels.length,bw=Math.min(58,gw*0.68/series.length);
+  labels.forEach((lb,i)=>{
+    const gx=pl+gw*i+gw/2-bw*series.length/2;
+    series.forEach((se,j)=>{
+      const v=se.values[i],bh=ch*v/max,x=gx+j*bw+2,y=pt+ch-bh,dim=sel>=0&&i!==sel;
+      el('rect',{x,y,width:bw-4,height:bh,rx:4,fill:se.colors?se.colors[i]:se.color,class:'bar grow',opacity:dim?.38:1,style:`animation-delay:${i*70}ms`},s);
+      txt(s,x+(bw-4)/2,y-8,fmt(v)+unit,{'text-anchor':'middle','font-size':14.5,'font-weight':800,fill:dim?C.muted:C.ink});
+    });
+    txt(s,pl+gw*i+gw/2,h-13,lb,{'text-anchor':'middle','font-size':14,fill:sel===i?C.gov:C.muted,'font-weight':sel===i?800:600});
+  });
+}
+
+/* 가로 막대 */
+function hbars(host,{labels,values,max,colors,unit='',subLabels=[]}){
+  const [s,w,h]=svgFor(host);if(!s)return;
+  const pl=210,pr=95,n=labels.length,rowH=(h-8)/n,bh=Math.min(34,rowH*.58);
+  labels.forEach((lb,i)=>{
+    const y=4+rowH*i+rowH/2;
+    txt(s,pl-12,y+5,lb,{'text-anchor':'end','font-size':14.5,fill:C.ink,'font-weight':700});
+    el('rect',{x:pl,y:y-bh/2,width:w-pl-pr,height:bh,rx:5,fill:'#edf2f9'},s);
+    const bw=Math.max(6,(w-pl-pr)*values[i]/max);
+    el('rect',{x:pl,y:y-bh/2,width:bw,height:bh,rx:5,fill:colors[i%colors.length],class:'growx',style:`animation-delay:${i*80}ms`},s);
+    const valStr=values[i]+unit+(subLabels[i]?` (${subLabels[i]})`:'');
+    txt(s,pl+bw+10,y+5,valStr,{'font-size':14.5,'font-weight':800,fill:colors[i%colors.length]});
+  });
+}
+
+/* 13쪽 2x2 사분면 버블 맵 */
+function quadMap(host){
+  const [s,w,h]=svgFor(host);if(!s)return;
+  const pad=34,cw=w-pad*2,ch=h-pad*2,mx=pad+cw/2,my=pad+ch/2;
+  el('rect',{x:pad,y:pad,width:cw/2,height:ch/2,fill:'#eff6ff'},s);
+  el('rect',{x:mx,y:pad,width:cw/2,height:ch/2,fill:'#fef2f2'},s);
+  el('rect',{x:pad,y:my,width:cw/2,height:ch/2,fill:'#f8fafc'},s);
+  el('rect',{x:mx,y:my,width:cw/2,height:ch/2,fill:'#ecfdf5'},s);
+  el('line',{x1:pad,x2:pad+cw,y1:my,y2:my,stroke:C.muted,'stroke-dasharray':'4 4'},s);
+  el('line',{x1:mx,x2:mx,y1:pad,y2:pad+ch,stroke:C.muted,'stroke-dasharray':'4 4'},s);
+  txt(s,pad+8,pad+18,'고관심·저심각 (n=157)',{'font-size':12.5,'font-weight':800,fill:C.blue});
+  txt(s,pad+cw-8,pad+18,'고관심·고심각 (n=640, 62%)',{'text-anchor':'end','font-size':12.5,'font-weight':800,fill:C.red});
+  txt(s,pad+8,pad+ch-8,'저관심·저심각 (n=139)',{'font-size':12.5,'font-weight':800,fill:C.muted});
+  txt(s,pad+cw-8,pad+ch-8,'저관심·고심각 (n=95)',{'text-anchor':'end','font-size':12.5,'font-weight':800,fill:C.teal});
+  const bubbles=[
+    {x:pad+cw*.27,y:pad+ch*.28,r:24,c:'#0284c7',t:'20대 이하(25%)'},
+    {x:pad+cw*.76,y:pad+ch*.26,r:42,c:'#dc2626',t:'60대+(26.4%)'},
+    {x:pad+cw*.64,y:pad+ch*.36,r:30,c:'#ea580c',t:'50대+(51.1%)'},
+    {x:pad+cw*.26,y:pad+ch*.72,r:32,c:'#64748b',t:'3040 남성(72%)'},
+    {x:pad+cw*.74,y:pad+ch*.72,r:25,c:'#0d9488',t:'고졸이하(28%)'}
+  ];
+  bubbles.forEach(b=>{
+    el('circle',{cx:b.x,cy:b.y,r:b.r,fill:b.c,opacity:.82,class:'grow'},s);
+    txt(s,b.x,b.y+4,b.t,{'text-anchor':'middle','font-size':11.5,'font-weight':800,fill:'#fff'});
+  });
+}
+
+/* 슬라이드별 차트 렌더러 */
+const p1Notes=[
+  '① 지역단독 지정공모(12과제, 281.3억 · 46.2%): 시·도별 10년 반복 재난현안(호우·태풍·대설 등)을 대상으로 수요기관 참여형 기술개발 및 현장실증 수행',
+  '② 광역 공동현안 대응(4과제, 152.9억 · 25.1%): 유역·해역·산단 등 복수 지자체가 공유하는 재난위험 공동 예측, 정보연계 및 초광역 합동실증',
+  '③ 성과이어달리기(7과제, 62.5억 · 10.3%): 1·2단계에서 개발·검증한 우수기술(특허 150건·사업화 82건 기반)의 타 지역 이식·현지화 및 정책 전환',
+  '④ 미래·복합위험 발굴(6과제, 87.5억 · 14.4%): 인구감소·산업구조 변화에 따른 지역 신규 위험 탐색 및 세종·대전 등 공백지역 기획 컨설팅'
+];
+const p2Notes=[
+  '① 공통기반 예측·파악(2과제, 135억): 전력·통신·교통·의료 상호의존성 기반 연쇄피해 시뮬레이션(#1) 및 현장 상황·취약대상 실시간 파악(#2)',
+  '② 공통기반 대응판단(2과제, 105억): 동시다발 재난 대응자원 배분·복구 우선순위 AI 결정(#3) 및 재난정보 전달 사각지대 해소(#4)',
+  '③ 현장적용 현장실증(3과제, 150억): 지하 배터리 열폭주 감지·차단(#5), 대심도 지하공간 대피·구조(#6), 산단 유해물질 확산 차단·주민 대피(#7)',
+  '④ 탐색형 잠재위험 평가(1과제, 60억): 법정 재난 편입 이전 단계의 신흥 위험징후 상시 탐색·영향평가(#8) 및 후속 R&D 의제 직결'
+];
+
+const renderers={
+  2:()=>{
+    const mode=+($('[data-tabgroup=env]')?.dataset.sel??0);
+    if(mode===0){
+      columns($('#chartEnv'),{
+        labels:['2020(10건)','2021(5건)','2022(8건)','2023(6건)','2024(6건)','2025(6건)','2026(6건)'],
+        series:[{values:[1465,1634,1180,848,1487,1397,1600],color:C.blue}],
+        max:1800,unit:'백만',sel:6
+      });
+    }else{
+      hbars($('#chartEnv'),{
+        labels:['상위(4회+) 경북·전남·전북','중위(3회) 경기·경남·서울·부산','하위(2회) 울산·충남·인천·제주','최저(1회) 대전 (20년 침수 후 0)','전무(0회) 세종 (선정 실적 없음)'],
+        values:[16,18,12,1,0.2],max:20,
+        colors:[C.gov,C.blue,C.teal,C.amber,C.red],
+        unit:'건',subLabels:['재해다발 집중','광역거점 혼재','산업·항만·내륙','후속 제안 단절','완전 공백지역']
+      });
+    }
+  },
+  6:()=>{
+    const sel=+($('[data-tabgroup=p1]')?.dataset.sel??0);
+    columns($('#chartP1'),{
+      labels:['①지역단독(12건)','②광역공동(4건)','③성과이어달리기(7건)','④미래위험발굴(6건)','지원사업(기획·실증)'],
+      series:[{values:[281.3,152.9,62.5,87.5,25.0],colors:[C.gov,C.blue,C.teal,C.amber,C.muted]}],
+      max:320,fmt:v=>(+v).toFixed(1),unit:'억',sel
+    });
+    const d=$('#p1Detail');if(d)d.textContent=p1Notes[sel]||p1Notes[0];
+  },
+  7:()=>{
+    const sel=+($('[data-tabgroup=p2]')?.dataset.sel??0);
+    columns($('#chartP2'),{
+      labels:['①예측·파악(2건)','②대응판단(2건)','③현장실증(3건)','④잠재탐색(1건)'],
+      series:[{values:[135.0,105.0,150.0,60.0],colors:[C.gov,C.blue,C.teal,C.amber]}],
+      max:180,fmt:v=>(+v).toFixed(0),unit:'억',sel
+    });
+    const d=$('#p2Detail');if(d)d.textContent=p2Notes[sel]||p2Notes[0];
+  },
+  9:()=>{
+    const mode=+($('[data-tabgroup=tech]')?.dataset.sel??0);
+    if(mode===0){
+      columns($('#chartTech'),{
+        labels:['미국(최고국)','일본(격차 2.0년)','EU(격차 2.4년)','한국(격차 4.2년)','중국(격차 7.1년)'],
+        series:[
+          {values:[100.0,92.8,91.0,82.6,70.8],color:C.pale},
+          {values:[100.0,92.1,89.7,81.8,71.5],colors:[C.gov,C.blue,C.blue,C.teal,C.amber]}
+        ],
+        max:110,fmt:v=>(+v).toFixed(1),unit:'%',sel:3
+      });
+    }else{
+      hbars($('#chartTech'),{
+        labels:['[상위1] 긴급 대피·수송','[상위2] 피해자 관리 서비스','[상위3] 인명 수색·구조 / 구호시설','[급락1] 현장관리 및 보호','[급락2] 비상 정보전달','[최저] 기반시설 물리적 보호대책'],
+        values:[86.3,84.8,84.4,81.6,80.7,78.3],max:100,
+        colors:[C.teal,C.teal,C.blue,C.amber,C.amber,C.red],
+        unit:'%',subLabels:['+4.8%p ↑','-0.9%p','+2.5%p ↑','-6.2%p 급락','-5.3%p 급락','24개 중 최저']
+      });
+    }
+  },
+  10:()=>{
+    const mode=+($('[data-tabgroup=sat]')?.dataset.sel??0);
+    if(mode===0){
+      columns($('#chartSat'),{
+        labels:['2022년','2023년','2024년','2025년','2026년(+3.0p↑)'],
+        series:[{values:[69.3,64.4,65.6,65.3,68.2],colors:[C.pale,C.pale,C.pale,C.blue,C.teal]}],
+        max:85,fmt:v=>(+v).toFixed(1),unit:'점',sel:4
+      });
+    }else{
+      hbars($('#chartSat'),{
+        labels:['R&D 혁신과제 종합 최고점','종합 정책노력도 (30개 문항)','① R&D 협업체계 강화','③ 참여·공유 임무중심형 고도화','② 현장 즉시보급·신속개발 체계'],
+        values:[88.4,87.3,87.3,86.8,86.6],max:100,
+        colors:[C.gov,C.blue,C.teal,C.amber,C.teal],
+        unit:'점',subLabels:['최고점','전년 87.4','+0.4p 상승','-1.3p 하락(보완)','+0.5p 상승']
+      });
+    }
+  },
+  11:()=>{
+    const mode=+($('[data-tabgroup=pub]')?.dataset.sel??0);
+    if(mode===0){
+      columns($('#chartPub'),{
+        labels:['재난문제 관심도','재난문제 심각도','R&D 인지도(저조)','R&D 문제해결 기대','기술 실제 활용도','기술 사용 의사'],
+        series:[
+          {values:[80.7,79.7,16.9,47.4,35.5,87.7],color:C.pale},
+          {values:[77.3,71.3,15.7,48.1,43.1,75.6],colors:[C.blue,C.blue,C.red,C.teal,C.teal,C.gov]}
+        ],
+        max:100,fmt:v=>(+v).toFixed(1),unit:'%'
+      });
+    }else{
+      hbars($('#chartPub'),{
+        labels:['[위험1위] 범죄 (일상안전)','[위험2위] 감염병 / [기여1위] 15.3%','[위험3위] 폭염 (기후위기)','[위험4위] 태풍 / [기여2위] 8.5%','[기여3위] 금융전산사고(전산마비)','[위험5위] 산불 (+2.5%p 급증)'],
+        values:[11.9,15.3,10.6,10.4,5.1,6.7],max:18,
+        colors:[C.red,C.teal,C.amber,C.blue,C.gov,C.red],
+        unit:'%',subLabels:['전년比 +2.1%p','기술기여 1위','위험 3위','기술기여 +2.1%p','복합재난 타깃','위험인식 급증']
+      });
+    }
+  },
+  12:()=>{
+    quadMap($('#chartQuad'));
+    columns($('#chartGap'),{
+      labels:['산불(n=69)','홍수(n=33)','범죄(n=123)','지진(n=45)','화재(n=39)','호우(n=50)','감염병(114)','폭염(110)','태풍(107)'],
+      series:[{values:[0.56,0.47,0.45,0.41,0.39,0.38,0.36,0.30,0.25],colors:[C.red,C.red,C.amber,C.amber,C.blue,C.blue,C.blue,C.teal,C.teal]}],
+      max:0.7,fmt:v=>(+v).toFixed(2),tick:v=>v.toFixed(1),unit:'점',sel:0
+    });
+  }
+};
+
+/* 탭 그룹 인터랙션 */
+function selectTab(group,i){
+  group.dataset.sel=i;
+  $$('[data-tab]',group).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+i));
+  $$('[data-panel]',group).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+i));
+  $$('.stack-4',group).forEach(x=>x.classList.add('has-sel'));
+  const idx=slides.indexOf(group.closest('.slide'));
+  if(renderers[idx]&&idx===cur)renderers[idx]();
+}
+$$('[data-tabgroup]').forEach(g=>{
+  $$('[data-tab]',g).forEach(b=>b.addEventListener('click',()=>{if(!document.body.classList.contains('editing'))selectTab(g,b.dataset.tab)}));
+  g.dataset.sel=g.dataset.default||0;
+  $$('[data-tab]',g).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+g.dataset.sel));
+  $$('[data-panel]',g).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+g.dataset.sel));
+  $$('.stack-4',g).forEach(x=>x.classList.add('has-sel'));
+});
+
+/* 숫자 카운트업 */
+function countUp(scope){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  $$('[data-count]',scope).forEach(n=>{
+    const to=+n.dataset.count,dec=+(n.dataset.dec||0),t0=performance.now();
+    const f=t=>{const p=Math.min(1,(t-t0)/800),e=1-Math.pow(1-p,3);n.textContent=(to*e).toFixed(dec);if(p<1)requestAnimationFrame(f)};
+    requestAnimationFrame(f);
+  });
+}
+
+/* 슬라이드 내비게이션 & 도트 생성 */
+const slides=$$('.slide');let cur=0;
+const dotsHost=$('#dots');
+slides.forEach((s,idx)=>{
+  const b=document.createElement('button');
+  b.title=`${idx+1}쪽 이동`;
+  b.setAttribute('aria-label',`${idx+1}쪽 이동`);
+  b.onclick=()=>go(idx);
+  dotsHost.appendChild(b);
+});
+const dotBtns=$$('button',dotsHost);
+$('#pageTotal').textContent=String(slides.length).padStart(2,'0');
+
+function go(i,push=true){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  slides[cur].classList.remove('active');cur=i;const s=slides[cur];
+  slides.forEach(x=>x.classList.remove('settled'));clearTimeout(go.t);
+  void s.offsetWidth;s.classList.add('active');go.t=setTimeout(()=>s.classList.add('settled'),1200);
+  $('#pageNo').textContent=String(cur+1).padStart(2,'0');
+  $('#source').textContent=s.dataset.source||'';
+  $('#progress').style.width=((cur+1)/slides.length*100)+'%';
+  $('#prev').disabled=cur===0;$('#next').disabled=cur===slides.length-1;
+  const ch=+s.dataset.chapter;$$('.chapters button').forEach((b,k)=>b.setAttribute('aria-current',k===ch));
+  dotBtns.forEach((b,k)=>b.setAttribute('aria-current',k===cur));
+  if(renderers[cur])requestAnimationFrame(()=>renderers[cur]());
+  if(!document.body.classList.contains('editing'))countUp(s);
+  if(push)history.replaceState(null,'','#'+(cur+1));
+}
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+$$('.chapters button').forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+addEventListener('keydown',e=>{
+  if(document.body.classList.contains('editing'))return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+});
+addEventListener('resize',()=>renderers[cur]&&renderers[cur]());
+
+/* 편집 · HTML 저장 · PDF 인쇄 · 전체화면 */
+const KEY='ndmi-ai-hybrid-briefing-edits';const edits=$$('[data-edit]');
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');edits.forEach((n,i)=>{if(saved[i]!=null)n.innerHTML=saved[i]})}catch(e){}
+function persist(){try{const o={};edits.forEach((n,i)=>o[i]=n.innerHTML);localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+$('#editBtn').onclick=()=>{
+  const on=!document.body.classList.contains('editing');
+  document.body.classList.toggle('editing',on);
+  $('#editBtn').setAttribute('aria-pressed',on);
+  edits.forEach(n=>{n.contentEditable=on?'true':'false'});
+  if(!on)persist();
+};
+edits.forEach(n=>n.addEventListener('input',persist));
+$('#saveBtn').onclick=()=>{
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelector('body').classList.remove('editing');
+  clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+  clone.querySelectorAll('.slide').forEach(n=>n.classList.remove('active'));
+  clone.querySelector('#stage').removeAttribute('style');
+  const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='national_disaster_ai_rnd_strategy_briefing_edited.html';
+  a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+$('#printBtn').onclick=()=>{slides.forEach((s,i)=>renderers[i]&&renderers[i]());print()};
+$('#fsBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();
+
+stage.classList.add('init');
+go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1),false);
+const lift=()=>stage.classList.remove('init');['keydown','click'].forEach(t=>addEventListener(t,lift,{once:true,capture:true}));
+window.deck={go,get cur(){return cur}};
+})();
+</script>
+</body>
+</html>
