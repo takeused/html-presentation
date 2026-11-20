@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#e81768"><meta name="description" content="AI를 활용한 국가연구개발(R&D) 정책 혁신 및 지능형 R&D 기획·예타·평가 체계를 살펴보는 15장 인터랙티브 발표자료.">
+<title>국가 R&D · AI 기반 연구개발 정책 및 기획 브리핑 (15장)</title>
+<link rel="icon" href="data:,">
+<style>
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareR.woff2') format('woff2');font-weight:400;font-display:swap}@font-face{font-family:NanumSquare;src:url('assets/NanumSquareB.woff2') format('woff2');font-weight:700;font-display:swap}@font-face{font-family:NanumSquare;src:url('assets/NanumSquareEB.woff2') format('woff2');font-weight:800;font-display:swap}
+:root{--pink:#e81768;--wine:#920951;--ink:#292a33;--muted:#787983;--line:#e9e8ed;--pale:#fbedf3}*{box-sizing:border-box}body{margin:0;font-family:NanumSquare,sans-serif;color:var(--ink);background:#eeeef0;word-break:keep-all;overflow-wrap:normal}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}a{color:inherit}h1,h2,h3,h4,p,figure{margin:0}em{font-style:normal;color:var(--pink)}button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--wine);outline-offset:5px}button:disabled{opacity:.25;cursor:default}[hidden]{display:none!important}.presentation{position:relative;min-height:100svh;max-width:1920px;margin:auto;background:white;overflow:hidden}.topbar{height:72px;margin:0 4%;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.brand{font-size:31px;letter-spacing:6px;text-decoration:none;font-weight:800;display:flex;align-items:center;gap:25px}.brand span{font-size:12px;letter-spacing:1.7px;font-weight:400;border-left:1px solid var(--line);padding-left:24px;color:var(--muted)}.actions{display:flex;align-items:center;gap:20px}.edition{font-size:14px;color:var(--muted)}.text-button{font-size:15px;padding:6px 0;border-bottom:1px solid #c6c5cc}.icon-button{border:1px solid var(--line);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;font-size:28px;transition:transform .25s,background .25s}.icon-button:hover{background:var(--pale);transform:translateY(-2px)}.rail{position:absolute;left:0;top:50%;transform:translateY(-50%);width:7%;display:flex;flex-direction:column;gap:14px;z-index:2}.rail button{font-size:15px;color:#aaa8b1;padding:8px 0;position:relative}.rail button:before{content:'';position:absolute;left:0;top:50%;height:2px;width:0;background:var(--pink);transition:width .3s}.rail button[aria-current=true]{color:var(--pink);font-weight:800}.rail button[aria-current=true]:before{width:26%}#slides{margin:0 5% 0 10%}.slide{min-height:calc(100svh - 138px);padding:34px 0 25px;display:flex;flex-direction:column;justify-content:center;position:relative}.slide.active{animation:enter .6s cubic-bezier(.2,.8,.2,1) both}@keyframes enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.slide-heading{margin-bottom:30px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:15px}.eyebrow i{width:9px;height:9px;border-radius:50%;background:var(--pink)}h1{font-size:clamp(52px,5.405vw,94px);line-height:1.22;letter-spacing:-2.8px;font-weight:800}h2{font-size:clamp(34px,3.45vw,61px);line-height:1.3;letter-spacing:-1.6px;font-weight:800}.subtitle{font-size:20px;color:var(--muted);line-height:1.65;margin-top:14px}.mobile-br{display:none}.lead{font-size:25px;line-height:1.8;margin-top:24px;color:#61616e}.source-line{font-size:12px;line-height:1.8;color:#8b8893;margin-top:24px}.source-line a{text-decoration:none;border-bottom:1px solid #d7d4de}.bottom-bar{height:66px;margin:0 4%;border-top:1px solid var(--line);display:flex;align-items:center;gap:18px}.page-counter{font-size:16px;display:flex;gap:8px}.page-counter strong{color:var(--pink)}.page-counter span{color:#a7a5ad}#currentTitle{font-size:15px}.footer-hint{margin-left:auto;font-size:12px;color:#9997a2}.footer-hint span{margin-left:20px}.bottom-actions{display:flex;gap:10px}.progress-track{position:absolute;bottom:0;left:0;right:0;height:3px;background:#f4f1f4}#progress{height:100%;background:linear-gradient(90deg,var(--wine),var(--pink));width:14.285%;transition:width .45s}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.cover{display:grid;grid-template-columns:43% 57%;align-content:center;align-items:center}.cover-copy{position:relative;z-index:1;padding-bottom:45px}.start{background:var(--pink);color:white;padding:16px 22px;display:inline-flex;gap:40px;align-items:center;font-size:18px;margin-top:32px;transition:transform .3s,box-shadow .3s}.start span{font-size:29px}.start:hover{transform:translateY(-4px);box-shadow:0 10px 25px #e8176828}.cover-date{font-size:12px;margin-top:18px;color:#99949f}.hero-visual{position:relative;aspect-ratio:1.05;display:flex;align-items:center}.hero-visual>img{position:relative;z-index:1;width:111%;max-width:none;margin-left:-5%;mix-blend-mode:multiply;transition:transform .8s}.visual-word{position:absolute;top:3%;left:6%;font-size:clamp(69px,10.35vw,172px);font-weight:800;letter-spacing:5px;color:#f7f3f6}.orbit{position:absolute;border:1px solid #f1e6ed;border-radius:50%;transition:transform 1s}.orbit-a{width:90%;aspect-ratio:1;left:7%;top:0}.orbit-b{width:72%;aspect-ratio:1;left:17%;top:9%;border-style:dashed}.hero-visual:hover .orbit-a{transform:rotate(24deg) scale(1.04)}.hero-visual:hover .orbit-b{transform:rotate(-30deg)}.hero-visual:hover>img,.hero-visual:focus-visible>img{transform:translateY(-10px) scale(1.025)}.stamp{position:absolute;right:0;top:5%;z-index:2;background:var(--wine);border:7px solid white;outline:1px solid #ebdce5;width:104px;height:104px;border-radius:50%;color:white;text-align:center;display:flex;flex-direction:column;justify-content:center;font-size:15px;line-height:1.45;letter-spacing:.6px;transform:rotate(9deg);transition:transform .6s}.hero-visual:hover .stamp{transform:rotate(-7deg)}.hero-visual figcaption{position:absolute;bottom:0;right:0;font-size:11px;color:#a8a0ad}.cover-flow{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:27px 0 5px;border-top:1px solid var(--line);font-size:16px;letter-spacing:.3px}.cover-flow i{display:block;width:12%;height:2px;background:linear-gradient(90deg,var(--pink),#e8d9e2);position:relative}.cover-flow i:after{content:'';position:absolute;right:0;width:6px;height:6px;background:var(--pink);border-radius:50%;top:-2px}.finance-layout{display:grid;grid-template-columns:59% 35%;gap:6%;align-items:center}.chart-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.chart-top h3{font-size:22px}.chart-top>span{font-size:12px;color:var(--muted)}.chart-box{height:280px;position:relative}.chart-switch{display:flex;gap:18px;border-top:1px solid var(--line);margin-top:16px;padding-top:15px}.chart-switch button{font-size:15px;padding:7px 0;color:var(--muted);border-bottom:2px solid transparent}.chart-switch .selected{color:var(--pink);border-color:var(--pink);font-weight:800}.small-label{font-size:14px;letter-spacing:.4px;color:var(--muted)}.big-stat{font-size:clamp(63px,6.44vw,103px);font-weight:800;letter-spacing:-3px;margin-top:7px;line-height:1.1}.big-stat small{font-size:44px;margin-left:4px;color:var(--pink)}.growth{font-size:18px;color:var(--pink);margin-top:10px}.metric-rule{height:1px;background:var(--line);margin:24px 0}.finance-copy h3{font-size:28px;line-height:1.4}.finance-copy>p:not(.small-label):not(.growth){font-size:18px;line-height:1.8;color:#73717f;margin-top:12px}.caution{border-left:3px solid var(--pink);padding-left:15px;margin-top:22px}.caution strong{font-size:18px}.caution p{font-size:15px;color:var(--muted);line-height:1.8;margin-top:6px}.operations-layout{display:grid;grid-template-columns:1fr 1fr;gap:6%}.operation+.operation{border-left:1px solid var(--line);padding-left:10%}.op-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.op-head strong{font-size:clamp(39px,4.14vw,69px);letter-spacing:-2px;display:block;margin-top:10px}.op-head strong small{font-size:22px;margin-left:8px;font-weight:400;letter-spacing:0}.delta{font-size:14px;color:var(--pink);white-space:nowrap}.operation h3{font-size:16px;margin-top:27px;font-weight:400;display:flex;justify-content:space-between}.operation h3 small{color:var(--muted);font-size:12px}.op-chart{height:235px;margin-top:13px}.op-note{font-size:15px;color:var(--muted);line-height:1.8;margin-top:17px}.roadmap{position:relative;display:flex;justify-content:space-between;padding:8px 25px 30px}.road-line{position:absolute;left:8%;right:8%;top:66px;height:12px;background:linear-gradient(90deg,#292a33,var(--wine),var(--pink));border-radius:20px}.road-node{position:relative;z-index:1;text-align:center;display:flex;align-items:center;flex-direction:column;width:21%;transition:transform .4s}.round{width:114px;height:114px;border:9px solid white;outline:2px solid #eee9ed;border-radius:50%;background:var(--ink);display:grid;place-items:center;box-shadow:0 7px 0 #e8e4e9;transition:background .4s,transform .4s,outline-color .4s}.round b{font-size:42px;font-weight:800;color:white}.road-node:nth-of-type(2) .round{background:var(--wine)}.road-node:nth-of-type(3) .round{background:#bb0d5e}.road-node:nth-of-type(4) .round{background:var(--pink)}.road-node.selected .round{outline-color:var(--pink);transform:translateY(-8px);box-shadow:0 12px 26px #e8176824}.road-node strong{font-size:24px;margin-top:23px}.road-node small{font-size:15px;color:var(--muted);margin-top:8px}.road-detail{display:grid;grid-template-columns:70px 1fr 28%;gap:28px;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:25px 0;min-height:175px}.road-index{font-size:80px;font-weight:800;color:var(--pink)}.road-detail h3{font-size:30px;margin:10px 0;line-height:1.4}.road-detail p:not(.small-label){font-size:18px;line-height:1.8;color:#74717d}.next-step{border-left:1px solid var(--line);padding-left:26px}.next-step span{font-size:14px;color:var(--pink)}.next-step p{margin-top:10px}.road-caveat{font-size:14px;color:var(--muted);line-height:1.8;margin-top:18px}.roadster-layout{display:grid;grid-template-columns:56% 38%;gap:6%;align-items:center}.official-photo{height:365px;overflow:hidden;position:relative;background:#121316}.official-photo img{width:100%;height:100%;object-fit:cover;transition:transform 1s}.reactive:hover img,.reactive:focus-visible img{transform:scale(1.045)}.official-photo figcaption{position:absolute;left:20px;bottom:18px;color:#fff9;font-size:10px;letter-spacing:1px}.official-photo figcaption span{display:block;font-size:11px;margin-top:5px;letter-spacing:0}.trim-tabs{display:flex;gap:16px;border-bottom:1px solid var(--line);margin-bottom:24px}.trim-tabs button{font-size:16px;color:var(--muted);padding:12px 0;border-bottom:3px solid transparent}.trim-tabs .selected{color:var(--pink);border-color:var(--pink);font-weight:800}.trim-copy h3{font-size:34px;line-height:1.4;margin:10px 0 14px;letter-spacing:-.6px}.trim-copy>p:not(.small-label){font-size:19px;line-height:1.8;color:#73717e}.trim-note{font-size:14px;line-height:1.8;color:var(--wine);border-left:2px solid var(--pink);padding-left:13px;margin-top:22px}.range-label{font-size:12px;color:var(--muted);margin-top:18px}.range-chart{height:68px;margin-top:8px}.range-note{font-size:11px;color:var(--muted);line-height:1.6}.technology-layout{display:grid;grid-template-columns:57% 38%;gap:5%;align-items:center}.tech-visual{position:relative}.tech-visual img{width:100%;display:block;transition:transform .8s;mix-blend-mode:multiply}.tech-visual figcaption{font-size:11px;color:#97909e;text-align:center;margin-top:8px}.tech-option{display:flex;align-items:center;width:100%;gap:16px;text-align:left;padding:16px 0;border-bottom:1px solid var(--line);transition:transform .3s}.tech-option>span{width:43px;height:43px;border:2px solid var(--pink);border-radius:50%;display:grid;place-items:center;color:var(--pink);font-weight:800;transition:background .3s,color .3s;flex-shrink:0}.tech-option h3{font-size:26px;line-height:1.5}.tech-option small{display:block;margin-top:3px;letter-spacing:.8px;font-size:10px;color:var(--muted)}.tech-option.selected{transform:translateX(6px)}.tech-option.selected>span{background:var(--pink);color:white}.tech-explain{padding-top:22px;min-height:120px}.tech-explain h4{font-size:19px;line-height:1.6;color:var(--wine)}.tech-explain p{font-size:16px;line-height:1.8;margin-top:9px;color:var(--muted)}.closing{display:grid;grid-template-columns:47% 46%;gap:7%;align-content:center;align-items:center}.closing h2{font-size:clamp(34px,3.68vw,62px);line-height:1.4}.closing .lead{font-size:21px;line-height:1.8;margin-top:18px}.closing-photo{height:200px;overflow:hidden;margin-top:25px;position:relative;background:#101012}.closing-photo img{height:100%;width:100%;object-fit:cover;object-position:70% 55%;transition:transform 1s}.closing-photo figcaption{position:absolute;bottom:12px;left:15px;font-size:10px;color:#fff9}.watch-list article{display:flex;gap:23px;align-items:flex-start;padding:23px 0;border-bottom:1px solid var(--line);transition:transform .35s}.watch-list article:hover,.watch-list article:focus-visible{transform:translateX(7px)}.watch-list article>span{display:grid;place-items:center;width:43px;height:43px;border:2px solid var(--pink);border-radius:50%;font-size:15px;color:var(--pink);flex-shrink:0;transition:background .35s,color .35s}.watch-list article:hover>span{background:var(--pink);color:white}.watch-list article h3{font-size:29px}.watch-list article p{font-size:16px;line-height:1.8;color:var(--muted);margin-top:9px}.source-cta{font-size:16px;color:var(--pink);display:flex;justify-content:space-between;align-items:center;width:100%;padding:22px 0}.source-cta span{font-size:30px}.closing-note{font-size:11px;color:#a09aa7}.closing>.source-line{grid-column:1/-1;margin-top:5px}dialog{border:1px solid var(--line);padding:0;width:min(780px,92vw);max-height:85svh;color:var(--ink);box-shadow:0 30px 120px #292a3340}dialog::backdrop{background:#292a3355;backdrop-filter:none;-webkit-backdrop-filter:none}.dialog-top{display:flex;justify-content:space-between;align-items:center;padding:22px 28px;border-bottom:1px solid var(--line)}.dialog-top h2{font-size:30px}.dialog-content{padding:25px 30px;font-size:18px;line-height:1.8}.dialog-content>p{margin-bottom:20px}.dialog-content ol{padding-left:22px}.dialog-content li{margin:18px 0}.dialog-content li p{font-size:15px;color:var(--muted);margin-top:5px}.dialog-content a{color:var(--wine)}.dialog-content h3{margin:25px 0 15px;font-size:24px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:15px}th,td{padding:10px 8px;text-align:right;border-bottom:1px solid var(--line)}th:first-child{text-align:left}thead{background:var(--pale)}.pulse{animation:enter .4s both}
+@media(min-width:1600px){.chart-box{height:340px}.op-chart{height:290px}.official-photo{height:430px}.tech-visual{max-height:450px}.tech-visual img{max-height:420px;object-fit:contain}.closing-photo{height:230px}.roadmap{padding-bottom:48px}.road-detail{padding:35px 0}.road-node strong{font-size:28px}.subtitle{font-size:22px}}
+@media(max-width:1100px){.brand span{display:none}.edition{display:none}.finance-layout{grid-template-columns:57% 38%;gap:5%}.chart-box{height:260px}.finance-copy h3{font-size:25px}.finance-copy>p:not(.small-label):not(.growth){font-size:16px}.official-photo{height:320px}.trim-tabs{gap:12px}.trim-tabs button{font-size:14px}.trim-copy h3{font-size:29px}.trim-copy>p:not(.small-label){font-size:16px}.tech-option h3{font-size:22px}.lead{font-size:22px}.road-detail{grid-template-columns:55px 1fr 28%;gap:20px}.road-detail h3{font-size:26px}.watch-list article h3{font-size:25px}.watch-list article p{font-size:15px}.footer-hint{display:none}.bottom-actions{margin-left:auto}}
+@media(max-width:760px){.presentation{min-height:100svh}.topbar{height:62px;margin:0 6%}.brand{font-size:28px;letter-spacing:5px}.actions{gap:15px}.rail{position:relative;top:auto;left:auto;transform:none;width:auto;flex-direction:row;justify-content:space-between;margin:0 6%;gap:0;height:50px;align-items:center}.rail button{font-size:14px;width:29px;padding:10px 0}.rail button:before{top:auto;bottom:0;left:25%;height:2px}.rail button[aria-current=true]:before{width:50%}#slides{margin:0 7%}.slide{min-height:calc(100svh - 182px);padding:26px 0 24px;justify-content:flex-start}.slide-heading{margin-bottom:26px}.eyebrow{font-size:10px;letter-spacing:1.5px;margin-bottom:13px}h1{font-size:54px;letter-spacing:-2px}h2{font-size:36px;line-height:1.4;letter-spacing:-1px}.mobile-br{display:block}.subtitle{font-size:16px;line-height:1.8;margin-top:12px}.lead{font-size:20px;line-height:1.8;margin-top:20px}.source-line{font-size:10px;margin-top:22px;line-height:1.9}.cover{display:flex;gap:0}.cover-copy{padding-bottom:0}.start{font-size:15px;padding:12px 17px;gap:35px;margin-top:22px}.cover-date{font-size:10px;margin-top:14px}.hero-visual{width:100%;min-height:295px;aspect-ratio:1.13;margin-top:24px}.hero-visual>img{width:108%;margin-left:-4%}.visual-word{font-size:90px}.stamp{width:78px;height:78px;font-size:10px;border-width:5px;right:0}.hero-visual figcaption{font-size:10px}.cover-flow{font-size:10px;padding:23px 0 4px;width:100%;margin-top:19px}.cover-flow i{width:6%}.finance-layout{display:flex;flex-direction:column;gap:28px;align-items:stretch}.finance-copy{border-top:1px solid var(--line);padding-top:24px}.big-stat{font-size:72px;letter-spacing:-2px}.big-stat small{font-size:35px}.growth{font-size:15px}.chart-box{height:240px}.chart-top h3{font-size:20px}.chart-top>span{font-size:10px}.chart-switch{gap:18px}.chart-switch button{font-size:12px}.finance-copy h3{font-size:26px}.finance-copy>p:not(.small-label):not(.growth){font-size:16px}.caution p{font-size:14px}.operations-layout{grid-template-columns:1fr;gap:30px}.operation+.operation{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:28px}.op-head strong{font-size:52px}.op-head strong small{font-size:19px}.op-head .small-label{font-size:12px}.delta{font-size:12px}.op-chart{height:210px}.operation h3{margin-top:23px;font-size:14px}.op-note{font-size:14px}.roadmap{padding:10px 0 27px;flex-wrap:wrap;gap:23px 10px}.road-node{width:46%}.road-line{display:none}.round{height:86px;width:86px;border-width:7px}.round b{font-size:35px}.road-node strong{font-size:20px;margin-top:15px}.road-node small{font-size:12px;margin-top:6px}.road-detail{grid-template-columns:38px 1fr;gap:15px;align-items:start;padding:22px 0;min-height:260px}.road-index{font-size:54px}.road-detail h3{font-size:26px;margin-top:9px}.road-detail p:not(.small-label){font-size:15px}.road-detail .small-label{font-size:11px}.next-step{grid-column:2;border-left:0;padding-left:0}.next-step p{margin-top:5px}.road-caveat{font-size:12px}.roadster-layout{grid-template-columns:1fr;gap:25px}.official-photo{height:235px}.official-photo figcaption{left:13px;bottom:12px;font-size:10px}.official-photo figcaption span{font-size:10px}.trim-tabs{gap:22px;margin-bottom:19px}.trim-tabs button{font-size:15px}.trim-copy h3{font-size:30px}.trim-copy>p:not(.small-label){font-size:16px}.trim-note{font-size:12px}.technology-layout{grid-template-columns:1fr;gap:20px}.tech-visual img{width:110%;margin-left:-5%}.tech-visual figcaption{font-size:10px;margin-top:12px}.tech-option{padding:14px 0}.tech-option h3{font-size:24px}.tech-option>span{width:37px;height:37px}.tech-option small{font-size:10px}.tech-explain h4{font-size:18px}.tech-explain p{font-size:15px}.closing{display:flex;gap:24px}.closing h2{font-size:38px}.closing .lead{font-size:18px}.closing-photo{height:180px;margin-top:23px}.watch-list article{padding:20px 0;gap:17px}.watch-list article h3{font-size:25px}.watch-list article p{font-size:15px}.watch-list article>span{width:35px;height:35px;font-size:12px}.source-cta{font-size:15px}.closing-note{font-size:10px}.bottom-bar{height:70px;margin:0 6%;gap:11px}.page-counter{font-size:14px;gap:5px}#currentTitle{font-size:12px;max-width:120px;line-height:1.6}.bottom-actions{gap:8px}.icon-button{width:33px;height:33px;font-size:24px}.text-button{font-size:14px}.dialog-top{padding:18px 20px}.dialog-top h2{font-size:28px}.dialog-content{padding:20px;font-size:15px}.dialog-content li p{font-size:12px}table{font-size:12px}th,td{padding:8px 5px}}
+.annual-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6%}.annual-chart-area{min-width:0}.annual-chart-area+.annual-chart-area{border-left:1px solid var(--line);padding-left:10%}.annual-chart{height:240px;position:relative;min-width:0}.annual-detail{display:grid;grid-template-columns:24% 1fr 1fr;gap:6%;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;margin-top:25px}.annual-years{display:flex;gap:16px;align-items:center}.annual-years button{font-size:16px;color:var(--muted);padding:10px 0;border-bottom:2px solid transparent;transition:color .25s,border-color .25s,transform .25s}.annual-years button.selected{color:var(--pink);font-weight:800;border-color:var(--pink);transform:translateY(-2px)}.annual-metric strong{font-size:39px;letter-spacing:-1px;display:block;margin-top:8px;font-weight:800}.annual-metric strong small{font-weight:400;font-size:16px;margin-left:7px;letter-spacing:0}.annual-metric>p:last-child{font-size:14px;margin-top:9px;color:var(--pink)}.annual-note{font-size:15px;color:var(--muted);line-height:1.8;margin-top:16px}
+@media(min-width:761px) and (max-height:800px){.annual-chart{height:185px}.annual-detail{padding:16px 0;margin-top:17px}.annual-note{font-size:12px;margin-top:13px}.annual-metric strong{font-size:35px}.annual-slide .source-line{font-size:11px;margin-top:13px}}
+@media(max-width:760px){.annual-layout{grid-template-columns:1fr;gap:28px}.annual-chart-area+.annual-chart-area{border-left:0;border-top:1px solid var(--line);padding:25px 0 0}.annual-chart{height:215px}.annual-chart-area .chart-top>span{font-size:10px}.annual-detail{grid-template-columns:1fr 1fr;gap:20px 12px;margin-top:25px;padding:18px 0}.annual-years{grid-column:1/-1;gap:28px}.annual-years button{font-size:16px}.annual-metric strong{font-size:31px}.annual-metric strong small{font-size:12px;margin-left:4px}.annual-metric .small-label{font-size:11px}.annual-metric>p:last-child{font-size:11px}.annual-note{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Keep the presentation controls visible on typical laptop screens. */
+@media(min-width:761px){.hero-visual{height:min(43vw,calc(100svh - 265px));aspect-ratio:auto}.hero-visual>img{height:100%;object-fit:contain}.cover-copy{padding-bottom:20px}}
+@media(min-width:761px) and (max-height:800px){.slide{padding:22px 0 19px}.slide-heading{margin-bottom:21px}.slide-heading h2{font-size:44px}.slide-heading .eyebrow{margin-bottom:11px}.subtitle{font-size:18px;margin-top:11px}.chart-box{height:205px}.chart-top{margin-bottom:12px}.big-stat{font-size:79px}.metric-rule{margin:17px 0}.caution{margin-top:16px}.finance-copy h3{font-size:25px}.finance-copy>p:not(.small-label):not(.growth){font-size:15px;line-height:1.75}.op-chart{height:185px}.op-head strong{font-size:55px}.operation h3{margin-top:19px}.source-line{margin-top:18px}.round{width:95px;height:95px}.road-line{top:57px}.road-node strong{margin-top:15px}.roadmap{padding-bottom:23px}.road-detail{padding:20px 0;min-height:145px}.road-detail h3{font-size:28px}.road-detail p:not(.small-label){font-size:15px}.road-caveat{margin-top:14px}.official-photo{height:300px}.trim-tabs{margin-bottom:16px}.trim-copy h3{font-size:30px;margin-bottom:10px}.trim-copy>p:not(.small-label){font-size:16px}.trim-note{margin-top:15px;font-size:12px}.tech-visual img{max-height:325px;object-fit:contain}.tech-option{padding:12px 0}.tech-option h3{font-size:24px}.tech-explain{padding-top:17px;min-height:100px}.tech-explain p{font-size:15px}.closing-photo{height:150px;margin-top:20px}.closing h2{font-size:48px}.closing .lead{font-size:20px}.watch-list article{padding:18px 0}.watch-list article p{font-size:15px}.watch-list article h3{font-size:26px}.source-cta{padding:17px 0}.cover .lead{font-size:22px}.cover .start{margin-top:24px}.cover .cover-date{margin-top:15px}}
+
+/* Larger presentation type and a prominent year selector above the charts. */
+.annual-selector{display:flex;align-items:center;gap:24px;margin:0 0 24px}.annual-selector>.small-label{font-size:16px;color:var(--ink);font-weight:700;white-space:nowrap}.annual-years{display:flex;gap:12px;flex:0 1 460px}.annual-years button{flex:1;min-width:110px;min-height:56px;padding:12px 18px;border:1px solid var(--line);border-bottom:4px solid var(--line);font-size:28px;font-weight:800;line-height:1.2;color:#77717f;background:#faf8fa;transition:background .25s,color .25s,border-color .25s,transform .25s}.annual-years button.selected{background:var(--pale);color:var(--pink);border-color:var(--pink);transform:translateY(-2px)}.annual-detail{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6%}.annual-chart-area .chart-top{gap:12px;align-items:flex-start}.annual-chart-area .chart-top h3{white-space:nowrap}.annual-chart-area .chart-top>span{text-align:right;line-height:1.5;max-width:50%}.annual-chart{height:220px}.annual-metric strong{font-size:36px}.annual-metric>p:last-child{font-size:14px}.finance-layout>* , .operations-layout>* , .roadster-layout>* , .technology-layout>* , .closing>*{min-width:0}.chart-switch{flex-wrap:wrap;gap:8px 18px}.trim-tabs{flex-wrap:wrap;gap:6px 20px}.tech-explain{min-height:150px}.footer-hint{display:none}.bottom-actions{margin-left:auto}.annual-slide .slide-heading{margin-bottom:22px}
+@media(min-width:761px) and (max-height:800px){.annual-selector{margin-bottom:18px}.annual-years button{min-height:52px;font-size:26px;padding:10px 16px}.annual-chart{height:165px}.annual-detail{margin-top:16px;padding:15px 0}.annual-metric strong{font-size:33px}.annual-slide .source-line{font-size:11px}.annual-note{font-size:13px}.slide-heading{margin-bottom:18px}.hero-visual{height:min(40vw,calc(100svh - 280px))}.cover-copy{padding-bottom:0}.road-detail{grid-template-columns:50px minmax(0,1fr) 28%}.road-detail h3{font-size:26px}.road-detail p:not(.small-label){font-size:15px}.next-step{padding-left:18px}.tech-explain{min-height:145px}.official-photo{height:320px}}
+@media(max-width:1100px) and (min-width:761px){.annual-detail{gap:25px}.annual-chart-area .chart-top{display:block;min-height:54px}.annual-chart-area .chart-top>span{display:block;text-align:left;max-width:none;margin-top:7px}.annual-metric strong{font-size:30px}.annual-metric strong small{font-size:14px}.road-detail{grid-template-columns:38px minmax(0,1fr) 28%;gap:16px}.op-head{align-items:flex-start;flex-direction:column;gap:10px}}
+@media(max-width:760px){.annual-selector{display:block;margin:0 0 24px}.annual-selector>.small-label{display:block;font-size:14px;margin-bottom:12px}.annual-years{gap:9px;max-width:none}.annual-years button{min-width:0;min-height:56px;font-size:25px;padding:13px 8px}.annual-chart{height:235px}.annual-chart-area .chart-top h3{font-size:20px}.annual-chart-area .chart-top>span{font-size:11px}.annual-detail{grid-template-columns:1fr;gap:23px}.annual-metric strong{font-size:34px}.annual-metric strong small{font-size:16px}.annual-metric .small-label{font-size:13px}.annual-metric>p:last-child{font-size:13px}.annual-note{font-size:13px}.annual-slide .source-line{font-size:11px}.cover-copy{width:100%}.cover-flow{flex-wrap:wrap;gap:12px}.cover-flow i{width:4%}.op-head{flex-wrap:wrap;row-gap:10px}.trim-tabs{gap:5px 20px}.trim-tabs button{font-size:16px}.chart-switch button{font-size:14px}.chart-top>span{font-size:11px}.range-chart{height:82px}.range-note{font-size:12px}.watch-list article{gap:14px}.watch-list article h3{font-size:24px}.tech-explain{min-height:160px}.tech-option h3{font-size:22px}.tech-option small{font-size:10px}.source-line{color:#77717f}.annual-detail .annual-metric:nth-child(2){padding-top:20px;border-top:1px solid var(--line)}}
+.replay-number{font-variant-numeric:tabular-nums;cursor:pointer}.replay-chart{cursor:pointer;border-radius:3px}.replay-number:focus-visible,.replay-chart:focus-visible{outline:3px solid var(--pink);outline-offset:5px}
+/* Roadster trim selector: image, vertical lever, linked details. */
+.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.2fr) 175px minmax(0,1fr);gap:28px;align-items:center}.roadster-slide .official-photo{height:390px;align-self:center}.trim-lever{align-self:center;padding:12px 0;min-width:0}.trim-lever>.small-label{font-size:15px;color:var(--ink);font-weight:700;margin:0 0 18px 5px}.lever-control{height:266px;display:grid;grid-template-columns:46px minmax(0,1fr);gap:7px;align-items:stretch}.lever-control input{--lever-fill:0%;writing-mode:vertical-lr;direction:ltr;appearance:none;-webkit-appearance:none;width:46px;height:266px;margin:0;cursor:ns-resize;background:transparent;touch-action:none;accent-color:var(--pink)}.lever-control input::-webkit-slider-runnable-track{width:8px;height:100%;border-radius:8px;background:linear-gradient(to bottom,var(--pink) var(--lever-fill),#e5dee5 var(--lever-fill));box-shadow:0 0 0 1px #ddd4dc}.lever-control input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:36px;height:32px;border:3px solid white;border-radius:8px;background:linear-gradient(0deg,transparent 35%,#fff9 35%,#fff9 41%,transparent 41%,transparent 59%,#fff9 59%,#fff9 65%,transparent 65%),var(--pink);box-shadow:0 3px 9px #92095135,0 0 0 1px var(--pink)}.lever-control input::-moz-range-track{width:8px;height:100%;border-radius:8px;background:#e5dee5}.lever-control input::-moz-range-progress{background:var(--pink);width:8px}.lever-control input::-moz-range-thumb{width:30px;height:26px;border:3px solid white;border-radius:8px;background:var(--pink);box-shadow:0 0 0 1px var(--pink)}.lever-stops{display:flex;flex-direction:column;justify-content:space-between;min-width:0}.lever-stops button{position:relative;display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;min-height:38px;padding:8px 0;text-align:left;white-space:nowrap;color:var(--muted);transition:color .25s,transform .25s}.lever-stops button i{width:6px;height:6px;flex-shrink:0;background:#c9c0ca;border-radius:50%;transition:background .25s,box-shadow .25s}.lever-stops button.selected{color:var(--pink);transform:translateX(2px)}.lever-stops button.selected i{background:var(--pink);box-shadow:0 0 0 4px var(--pale)}.lever-hint{font-size:11px;color:var(--muted);line-height:1.6;margin:16px 0 0 5px}.roadster-slide .trim-copy{min-height:410px;border-left:1px solid var(--line);padding-left:25px;display:flex;flex-direction:column;justify-content:center}.trim-copy>p.trim-current{font-size:29px;font-weight:800;line-height:1.25;color:var(--wine);letter-spacing:-.5px;margin:0 0 12px}.roadster-slide .trim-copy h3{font-size:clamp(26px,2.4vw,33px);line-height:1.4}.roadster-slide .trim-copy>p:not(.small-label):not(.trim-current){font-size:17px;line-height:1.8}.roadster-slide .trim-note{font-size:13px;line-height:1.8}.roadster-slide .range-note{font-size:11px;line-height:1.7}.roadster-slide .range-chart{height:78px}.roadster-slide .range-label{font-size:12px}
+@media(min-width:761px) and (max-height:800px){.roadster-slide .official-photo{height:350px}.roadster-slide .trim-copy{min-height:390px}.roadster-slide .trim-copy h3{font-size:28px}.roadster-slide .trim-copy>p:not(.small-label):not(.trim-current){font-size:16px}.roadster-slide .trim-note{font-size:12px}}
+@media(min-width:761px) and (max-width:1100px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.1fr) 151px minmax(0,1fr);gap:18px}.lever-control{grid-template-columns:36px minmax(0,1fr);gap:5px}.lever-control input{width:36px}.lever-stops button{font-size:15px;gap:6px}.roadster-slide .trim-copy{padding-left:18px}.trim-copy>p.trim-current{font-size:26px}}
+@media(max-width:760px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1fr) 132px;gap:25px 14px;align-items:center}.roadster-slide .official-photo{height:278px}.trim-lever{padding:0}.trim-lever>.small-label{font-size:12px;margin:0 0 13px 3px}.lever-control{height:222px;grid-template-columns:30px minmax(0,1fr);gap:6px}.lever-control input{width:30px;height:222px}.lever-control input::-webkit-slider-thumb{width:29px;height:29px;border-width:3px}.lever-stops button{font-size:13px;gap:5px;min-height:32px;padding:6px 0}.lever-stops button i{width:5px;height:5px}.lever-hint{font-size:9px;margin:11px 0 0 3px}.roadster-slide .trim-copy{grid-column:1/-1;min-height:0;border-left:0;border-top:1px solid var(--line);padding:23px 0 0;display:block}.trim-copy>p.trim-current{font-size:29px}.roadster-slide .trim-copy h3{font-size:29px}.roadster-slide .trim-copy>p:not(.small-label):not(.trim-current){font-size:16px}.roadster-slide .trim-note{font-size:13px}.roadster-slide .range-chart{height:82px}}
+.lever-control input::-webkit-slider-thumb{margin-left:-14px}@media(max-width:760px){.lever-control input::-webkit-slider-thumb{margin-left:-10.5px}}
+
+/* Linked annual financial view; fixed scales are preserved across years. */
+.annual-slide .annual-layout{grid-template-columns:minmax(0,.88fr) minmax(0,.92fr) minmax(0,1.5fr);gap:27px}.annual-slide .annual-chart-area+.annual-chart-area{padding-left:25px}.annual-financial-area{min-width:0;padding-left:25px;border-left:1px solid var(--line)}.annual-slide .annual-chart-area .chart-top{display:flex;min-height:28px;gap:8px;align-items:baseline}.annual-slide .chart-top h3{font-size:22px;white-space:normal}.annual-slide .chart-top>span{font-size:12px;white-space:nowrap;max-width:none;margin:0}.annual-slide .annual-chart{height:208px}.annual-slide .annual-metric{border-top:1px solid var(--line);padding-top:17px;margin-top:10px}.annual-slide .annual-metric .small-label{font-size:13px}.annual-slide .annual-metric strong{font-size:33px}.annual-slide .annual-metric strong small{font-size:14px}.annual-slide .annual-metric>p:last-child{font-size:14px}.annual-linked{font-size:14px;color:var(--wine);margin-left:auto}.annual-finance-switch{display:flex;gap:8px;margin:0 0 6px}.annual-finance-switch button{padding:9px 15px;border:1px solid var(--line);font-size:16px;line-height:1.2;color:var(--muted);font-weight:700;min-height:40px}.annual-finance-switch button.selected{color:var(--wine);background:var(--pale);border-color:var(--pink)}.annual-financial-chart{height:181px;position:relative;min-width:0}.annual-financial-summary{border-top:1px solid var(--line);padding-top:15px;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:15px}.annual-financial-summary>span{font-size:14px;line-height:1.6;max-width:56%}.annual-financial-summary strong{font-size:31px;white-space:nowrap;letter-spacing:-.6px;color:var(--wine)}.annual-financial-summary small{font-size:13px;font-weight:400;margin-left:5px}.annual-financial-note{font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px;min-height:44px}.annual-slide .annual-note{font-size:14px;border-top:1px solid var(--line);padding-top:14px;margin-top:20px}
+@media(min-width:761px) and (max-height:800px){.annual-slide .annual-selector{margin-bottom:17px}.annual-slide .annual-chart{height:172px}.annual-financial-chart{height:145px}.annual-slide .annual-metric strong{font-size:30px}.annual-financial-summary strong{font-size:29px}.annual-financial-note{font-size:12px;min-height:40px}.annual-slide .annual-note{margin-top:13px;padding-top:11px;font-size:13px}.annual-slide .source-line{margin-top:11px}}
+@media(min-width:761px) and (max-width:1100px){.annual-slide .annual-layout{grid-template-columns:1fr 1fr;gap:25px}.annual-financial-area{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);padding:22px 0 0}.annual-financial-chart{height:180px}.annual-financial-summary{justify-content:flex-start;gap:25px}.annual-financial-note{min-height:0}.annual-linked{display:none}}
+@media(max-width:760px){.annual-slide .annual-layout{grid-template-columns:1fr;gap:28px}.annual-slide .annual-chart-area+.annual-chart-area{padding:25px 0 0}.annual-financial-area{border-left:0;border-top:1px solid var(--line);padding:25px 0 0}.annual-slide .annual-chart{height:235px}.annual-slide .annual-metric strong{font-size:35px}.annual-slide .annual-metric .small-label{font-size:14px}.annual-linked{margin:13px 0 0;font-size:13px}.annual-financial-chart{height:215px}.annual-slide .chart-top h3{font-size:24px}.annual-finance-switch{margin-bottom:12px}.annual-finance-switch button{min-height:44px;font-size:17px;flex:1}.annual-financial-summary strong{font-size:32px}.annual-financial-summary small{font-size:12px}.annual-financial-note{min-height:0;font-size:13px}.annual-slide .annual-note{font-size:13px;margin-top:22px}.annual-slide .annual-selector{margin-bottom:27px}}
+
+/* Clickable growth headings and an accessible bottom detail sheet. */
+.road-title-button{font:inherit;font-weight:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:15px;width:100%;line-height:1.4}.road-title-button>span:first-child{flex:1}.road-open-icon{display:grid;place-items:center;width:36px;height:36px;flex:none;border:1px solid var(--pink);color:var(--pink);border-radius:50%;font-size:24px;transition:transform .25s,background .25s,color .25s}.road-title-button:hover,.road-title-button:focus-visible{color:var(--wine)}.road-title-button:hover .road-open-icon{transform:translate(2px,-2px);background:var(--pink);color:white}.road-detail-hint{display:block;font-size:12px;line-height:1.6;color:var(--wine);margin:-3px 0 9px}.road-sheet-open{overflow:hidden}.road-sheet{position:fixed;inset:auto 0 0;margin:0 auto;padding:0;width:min(1100px,calc(100% - 40px));max-width:none;max-height:84svh;border:0;border-top:5px solid var(--pink);border-radius:22px 22px 0 0;background:white;box-shadow:0 -20px 90px #292a333b;overflow:hidden;color:var(--ink);overscroll-behavior:contain}.road-sheet[open]{display:flex;flex-direction:column;animation:road-sheet-in .42s cubic-bezier(.22,1,.36,1) both}.road-sheet.is-closing{animation:road-sheet-out .24s ease-in both}.road-sheet::backdrop{background:#19101d85;backdrop-filter:none;-webkit-backdrop-filter:none}.road-sheet-header{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:23px 35px 18px;border-bottom:1px solid var(--line);flex:none}.road-sheet-header .eyebrow{font-size:11px;margin:0 0 8px;letter-spacing:2px}.road-sheet-caption{font-size:14px;color:var(--muted)}.road-sheet-close{display:flex;align-items:center;gap:12px;min-height:44px;padding:3px 10px 3px 15px;font-size:15px;border:1px solid var(--line);border-radius:24px;flex:none;color:var(--ink)}.road-sheet-close b{font-size:28px;font-weight:400;line-height:1}.road-sheet-close:hover{background:var(--pale);border-color:var(--pink)}.road-sheet-scroll{overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:22px 35px 28px}.road-sheet-tabs{display:flex;gap:10px;margin-bottom:25px}.road-sheet-tabs button{min-height:43px;padding:9px 19px;border:1px solid var(--line);font-size:16px;font-weight:700;line-height:1.3;color:var(--muted)}.road-sheet-tabs button.selected{background:var(--pale);border-color:var(--pink);color:var(--wine)}.road-sheet-heading{display:flex;align-items:center;gap:22px}.road-sheet-heading>span{width:65px;height:65px;display:grid;place-items:center;flex:none;background:var(--wine);border-radius:50%;color:white;font-size:33px;font-weight:800}.road-sheet-heading .small-label{font-size:13px;color:var(--wine);margin-bottom:8px}.road-sheet-heading h2{font-size:31px;line-height:1.4;letter-spacing:-.7px}.road-sheet-intro{font-size:18px;line-height:1.8;color:var(--muted);margin:20px 0 25px}.road-sheet-columns{display:grid;grid-template-columns:1.08fr 1fr;gap:40px}.road-sheet-columns section+section{border-left:1px solid var(--line);padding-left:32px}.road-sheet-columns h3{font-size:21px;line-height:1.5;margin:0 0 13px}.road-sheet-columns ul,.road-sheet-columns ol{padding:0 0 0 23px;margin:0;font-size:17px;line-height:1.85}.road-sheet-columns li{margin-bottom:10px;padding-left:3px}.road-sheet-columns li::marker{color:var(--pink);font-weight:800}.road-sheet-context{font-size:12px;color:var(--muted);line-height:1.6;margin:-5px 0 13px}.road-sheet-note{font-size:14px;line-height:1.8;color:var(--wine);background:#fcf4f8;border-left:3px solid var(--pink);padding:13px 18px;margin-top:21px}.road-sheet-source{border-top:1px solid var(--line);padding-top:16px;margin-top:22px;font-size:11px;line-height:1.8;color:var(--muted)}.road-sheet-source a{color:var(--wine);text-decoration:underline;text-underline-offset:3px}@keyframes road-sheet-in{from{transform:translateY(100%);opacity:.5}to{transform:translateY(0);opacity:1}}@keyframes road-sheet-out{from{transform:translateY(0);opacity:1}to{transform:translateY(100%);opacity:.5}}
+@media(max-width:760px){.road-open-icon{width:31px;height:31px;font-size:21px}.road-title-button{gap:9px}.road-detail-hint{font-size:11px}.road-sheet{width:100%;max-height:88svh;border-radius:19px 19px 0 0}.road-sheet-header{padding:18px 21px 15px;gap:12px}.road-sheet-header .eyebrow{font-size:9px;letter-spacing:1px}.road-sheet-caption{font-size:12px}.road-sheet-close{font-size:13px;gap:8px;padding:2px 9px 2px 13px}.road-sheet-scroll{padding:18px 22px 25px}.road-sheet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}.road-sheet-tabs button{font-size:15px;padding:10px 8px;min-height:44px}.road-sheet-heading{gap:14px;align-items:flex-start}.road-sheet-heading>span{width:45px;height:45px;font-size:25px}.road-sheet-heading .small-label{font-size:11px;margin-bottom:7px}.road-sheet-heading h2{font-size:25px;letter-spacing:-.5px}.road-sheet-intro{font-size:16px;margin:18px 0 21px}.road-sheet-columns{grid-template-columns:1fr;gap:21px}.road-sheet-columns section+section{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.road-sheet-columns h3{font-size:20px}.road-sheet-columns ul,.road-sheet-columns ol{font-size:16px;line-height:1.85;padding-left:22px}.road-sheet-note{font-size:13px;padding:12px 14px}.road-sheet-source{font-size:10px}.road-sheet-context{font-size:11px}}
+
+/* Higher trims at the top; the linked official visual sits to the lever's right. */
+.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.2fr) 175px minmax(0,1fr)}.lever-control input{direction:rtl}.lever-control input::-webkit-slider-runnable-track{background:linear-gradient(to top,var(--pink) var(--lever-fill),#e5dee5 var(--lever-fill))}.trim-visual{position:relative;background:#060607}.roadster-slide .trim-visual img{height:100%;width:100%;object-fit:contain;object-position:center;display:block}.roadster-slide .trim-visual img[hidden]{display:none}.roadster-slide .trim-visual img:not([hidden]){animation:trim-visual-in .35s ease-out both}.roadster-slide .trim-visual figcaption{left:0;bottom:0;right:0;padding:38px 16px 14px;background:linear-gradient(transparent,#000d);pointer-events:none}.trim-visual figcaption b{display:block;font-weight:700;font-size:14px;line-height:1.6;color:white}.trim-visual figcaption span{display:block;font-size:10px;line-height:1.6;margin-top:3px;color:#ddd}.trim-visual-tag{position:absolute;top:15px;left:15px;z-index:1;background:#ffffffed;color:var(--wine);font-size:17px;font-weight:800;padding:8px 12px;border-left:3px solid var(--pink);line-height:1.2}.roadster-slide .trim-visual:hover img{transform:none}.roadster-slide .subtitle{max-width:100%}@keyframes trim-visual-in{from{opacity:.4;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
+@media(min-width:761px) and (max-width:1100px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.1fr) 151px minmax(0,1fr)}}
+@media(max-width:760px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1fr) 132px}.trim-visual-tag{top:11px;left:10px;font-size:13px;padding:6px 8px}.trim-visual figcaption b{font-size:11px}.trim-visual figcaption span{font-size:9px}.roadster-slide .trim-visual figcaption{padding:28px 10px 11px}.roadster-slide .trim-visual{height:278px}}
+
+/* Centered, keyboard-accessible technology details. */
+.tech-popup-hint{font-size:12px;line-height:1.6;color:var(--wine);margin:12px 0 0}.tech-option{position:relative;padding-right:30px}.tech-option:after{content:'↗';position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--pink)}.tech-modal-open{overflow:hidden}.tech-modal{position:fixed;inset:0;margin:auto;padding:0;width:min(900px,calc(100% - 40px));max-width:none;height:fit-content;max-height:86svh;border:0;border-top:5px solid var(--pink);border-radius:18px;background:#fff;box-shadow:0 25px 120px #292a3355;color:var(--ink);overflow:hidden}.tech-modal[open]{display:flex;flex-direction:column;animation:tech-modal-in .3s cubic-bezier(.22,1,.36,1) both}.tech-modal.is-closing{animation:tech-modal-out .18s ease-in both}.tech-modal::backdrop{background:#19101d88;backdrop-filter:none;-webkit-backdrop-filter:none}.tech-modal-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 30px 17px;border-bottom:1px solid var(--line);flex:none}.tech-modal-header .eyebrow{font-size:10px;margin:0 0 7px;letter-spacing:2px}.tech-modal-header>div>p:last-child{font-size:14px;color:var(--muted)}.tech-modal-close{display:flex;align-items:center;gap:12px;min-height:44px;padding:3px 10px 3px 15px;border:1px solid var(--line);border-radius:24px;font-size:15px;flex:none}.tech-modal-close b{font-size:28px;line-height:1;font-weight:400}.tech-modal-close:hover{background:var(--pale);border-color:var(--pink)}.tech-modal-scroll{padding:20px 30px 25px;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}.tech-modal-tabs{display:flex;gap:9px;margin-bottom:24px}.tech-modal-tabs button{flex:1;min-height:43px;font-size:15px;font-weight:700;border:1px solid var(--line);color:var(--muted);padding:9px 10px;line-height:1.4}.tech-modal-tabs button.selected{border-color:var(--pink);background:var(--pale);color:var(--wine)}.tech-modal-heading{display:flex;align-items:center;gap:18px}.tech-modal-heading>span{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--wine);color:white;font-size:31px;font-weight:800;flex:none}.tech-modal-heading .small-label{font-size:11px;letter-spacing:1px;color:var(--wine);margin-bottom:7px}.tech-modal-heading h2{font-size:31px;line-height:1.3;letter-spacing:-.5px}.tech-modal-intro{font-size:18px;line-height:1.8;color:var(--muted);margin:18px 0 24px}.tech-flow-title{font-size:19px;margin:0 0 13px;line-height:1.5}.tech-modal-flow{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 25px;padding:0;counter-reset:tech-step}.tech-modal-flow li{position:relative;counter-increment:tech-step;padding:17px 16px 16px;border-top:2px solid var(--pink);background:#faf7fa;min-width:0}.tech-modal-flow li:before{content:counter(tech-step,decimal-leading-zero);display:block;color:var(--wine);font-size:12px;letter-spacing:1px;margin-bottom:10px}.tech-modal-flow strong{display:block;font-size:17px;line-height:1.5}.tech-modal-flow p{font-size:14px;line-height:1.75;color:var(--muted);margin-top:9px}.tech-modal-details{display:grid;grid-template-columns:1fr 1fr;gap:28px}.tech-modal-details section+section{border-left:1px solid var(--line);padding-left:27px}.tech-modal-details h3{font-size:19px;line-height:1.5;margin:0 0 10px}.tech-modal-details p{font-size:16px;line-height:1.85;color:var(--muted)}.tech-modal-note{font-size:13px;line-height:1.8;border-left:3px solid var(--pink);padding:11px 15px;background:#fcf4f8;color:var(--wine);margin-top:22px}.tech-modal-source{font-size:11px;line-height:1.8;color:var(--muted);border-top:1px solid var(--line);padding-top:15px;margin-top:20px}.tech-modal-source a{color:var(--wine);text-decoration:underline;text-underline-offset:3px}@keyframes tech-modal-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes tech-modal-out{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.97)}}
+@media(max-width:760px){.tech-popup-hint{font-size:11px}.tech-modal{width:calc(100% - 24px);max-height:88svh;border-radius:15px}.tech-modal-header{padding:17px 20px 14px;gap:12px}.tech-modal-header .eyebrow{font-size:9px;letter-spacing:1px}.tech-modal-header>div>p:last-child{font-size:12px}.tech-modal-close{font-size:13px;gap:8px;min-height:42px;padding:2px 9px 2px 12px}.tech-modal-scroll{padding:18px 20px 23px}.tech-modal-tabs{display:grid;grid-template-columns:1fr;gap:7px;margin-bottom:22px}.tech-modal-tabs button{min-height:43px;font-size:15px}.tech-modal-heading{gap:12px;align-items:flex-start}.tech-modal-heading>span{width:42px;height:42px;font-size:25px}.tech-modal-heading h2{font-size:25px;line-height:1.4}.tech-modal-heading .small-label{font-size:9px;letter-spacing:.5px;line-height:1.5}.tech-modal-intro{font-size:16px;line-height:1.8;margin:17px 0 21px}.tech-modal-flow{grid-template-columns:1fr;gap:10px;margin-bottom:22px}.tech-modal-flow li{padding:13px 15px}.tech-modal-flow li:before{margin-bottom:5px}.tech-modal-flow strong{font-size:17px}.tech-modal-flow p{font-size:14px;margin-top:6px}.tech-modal-details{grid-template-columns:1fr;gap:20px}.tech-modal-details section+section{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}.tech-modal-details p{font-size:15px}.tech-modal-note{font-size:12px}.tech-modal-source{font-size:10px}}
+
+/* Revenue drilldowns and a three-stop horizontal finance lever. */
+.finance-revenue-trigger{cursor:pointer;border-radius:12px;margin:-8px -12px 0;padding:8px 12px;transition:background .2s,box-shadow .2s}.finance-revenue-trigger:hover{background:var(--pale);box-shadow:0 0 0 1px #e8176826}.finance-revenue-trigger:focus-visible{outline:3px solid var(--pink);outline-offset:3px}.finance-copy .finance-revenue-hint{font-size:13px;color:var(--wine);line-height:1.5;margin:1px 0 8px}.finance-revenue-hint span{margin-left:8px}.finance-slide .chart-box canvas{cursor:pointer}.finance-business-labels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:1px}.finance-business-labels button{font-size:17px;font-weight:800;padding:10px 3px;border-bottom:1px solid var(--line);white-space:nowrap;transition:color .2s,background .2s}.finance-business-labels button:hover{background:var(--pale);color:var(--wine)}.finance-business-labels span{font-size:13px;color:var(--pink);margin-left:4px}.finance-chart-hint{font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 0}.finance-metric-open{font-size:13px;line-height:1.5;color:var(--wine);padding:7px 0;border-bottom:1px solid var(--line);margin-top:5px}.finance-lever{margin-top:18px;padding:0 3px}.finance-lever input{display:block;-webkit-appearance:none;appearance:none;width:calc(66.666667% + 30px);margin:0 calc(16.666667% - 15px);height:7px;border-radius:9px;border:0;background:linear-gradient(to right,var(--pink) 0,var(--pink) var(--finance-fill,0%),#e7e0e7 var(--finance-fill,0%),#e7e0e7 100%);cursor:ew-resize;touch-action:pan-y;accent-color:var(--pink)}.finance-lever input::-webkit-slider-thumb{-webkit-appearance:none;box-sizing:border-box;width:30px;height:32px;border-radius:8px;background:repeating-linear-gradient(to bottom,var(--pink) 0 10px,#ffd9e9 10px 12px,var(--pink) 12px 19px,#ffd9e9 19px 21px,var(--pink) 21px 32px);border:3px solid white;box-shadow:0 0 0 1px #e8176880,0 3px 8px #92095125}.finance-lever input::-moz-range-thumb{box-sizing:border-box;width:30px;height:32px;border-radius:8px;background:var(--pink);border:3px solid white;box-shadow:0 0 0 1px var(--pink)}.finance-lever input:focus-visible{outline:2px solid var(--wine);outline-offset:12px}.finance-lever-labels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:14px}.finance-lever-labels button{font-size:16px;font-weight:700;color:var(--muted);min-height:43px;padding:7px 2px;line-height:1.45}.finance-lever-labels button.selected{color:var(--pink)}
+.finance-detail-open{overflow:hidden}.fin-overlay{position:fixed;padding:0;border:0;color:var(--ink);background:#fff;overflow:hidden;box-shadow:0 25px 100px #292a3340}.fin-overlay[open]{display:flex;flex-direction:column}.fin-overlay::backdrop{background:#22172377;backdrop-filter:none;-webkit-backdrop-filter:none}.fin-header{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:23px 28px;border-bottom:1px solid var(--line);flex:none;background:#fff}.fin-header .eyebrow{font-size:10px;letter-spacing:1.6px;margin:0 0 8px}.fin-header h2{font-size:29px;line-height:1.35;letter-spacing:-.7px}.fin-header>button{flex:none;display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:25px;padding:6px 13px;font-size:14px;min-height:43px}.fin-header>button:hover{background:var(--pale);border-color:var(--pink)}.fin-header b{font-size:25px;font-weight:400;line-height:1}.fin-scroll{overflow:auto;overscroll-behavior:contain;padding:24px 28px 28px;scrollbar-gutter:stable;min-height:0}.fin-scroll>p,.fin-sector-layout p{font-size:16px;line-height:1.8;color:var(--muted)}.fin-scroll .fin-period{font-size:12px;color:var(--wine);line-height:1.6;margin:0 0 19px}.fin-scroll h3{font-size:21px;line-height:1.5;margin:22px 0 11px}.fin-stat strong{display:block;font-size:26px;line-height:1.4;font-weight:800;letter-spacing:-.5px;color:var(--ink)}.fin-stat p{font-size:12px;line-height:1.65;color:var(--muted);margin-bottom:6px}.fin-ytd-hero strong{font-size:43px;color:var(--pink);letter-spacing:-1.5px}.fin-ytd-hero p{font-size:14px;margin-top:8px}.fin-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:17px 0;border-block:1px solid var(--line)}.fin-stat-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.fin-stat-grid .fin-stat+.fin-stat{border-left:1px solid var(--line);padding-left:16px}.fin-chart-wrap{position:relative;min-width:0}.fin-ytd-chart{height:240px;margin:19px 0}.fin-breakdown{margin:0}.fin-breakdown>div{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding:12px 0;font-size:16px}.fin-breakdown dt{color:var(--muted)}.fin-breakdown dd{margin:0;font-weight:800}.fin-scroll .fin-note{font-size:13px;line-height:1.8;border-left:3px solid var(--pink);padding:12px 15px;background:#fcf3f7;color:var(--wine);margin:22px 0 0}.fin-scroll .fin-source{font-size:11px;line-height:1.8;border-top:1px solid var(--line);padding-top:15px;margin-top:23px;color:#827988}.fin-source a{text-decoration:underline;text-underline-offset:3px;color:var(--wine)}.fin-drawer{inset:0 0 0 auto;margin:0;width:min(550px,100vw);height:100svh;max-width:none;max-height:100svh;border-left:4px solid var(--pink)}.fin-drawer[open]{animation:fin-drawer-in .32s ease-out both}.fin-drawer.is-closing{animation:fin-drawer-out .2s ease-in both}.fin-sheet{inset:auto 0 0;margin:0 auto;width:min(1180px,calc(100vw - 36px));max-width:none;max-height:88svh;border-top:4px solid var(--pink);border-radius:20px 20px 0 0}.fin-sheet[open]{animation:fin-sheet-in .32s cubic-bezier(.22,1,.36,1) both}.fin-sheet.is-closing{animation:fin-sheet-out .2s ease-in both}.fin-tabs{display:flex;gap:9px;margin-bottom:18px}.fin-tabs button{flex:1;min-height:43px;border:1px solid var(--line);padding:9px 12px;font-size:16px;color:var(--muted);font-weight:700}.fin-tabs button.selected{color:var(--wine);border-color:var(--pink);background:var(--pale)}.fin-sector-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:30px}.fin-sector-layout>div{min-width:0}.fin-sector-layout .fin-stat strong{font-size:23px}.fin-sector-layout .fin-growth{font-size:18px;font-weight:800;color:var(--pink);margin:15px 0 10px}.fin-business-chart{height:260px}.fin-modal{inset:0;margin:auto;width:min(880px,calc(100vw - 40px));max-width:none;max-height:90svh;border-radius:18px;border-top:4px solid var(--pink)}.fin-modal[open]{animation:fin-modal-in .28s ease-out both}.fin-modal.is-closing{animation:fin-modal-out .18s ease-in both}.fin-metric-hero{margin:22px 0;padding:18px 22px;background:#faf5f8;border-left:3px solid var(--pink)}.fin-metric-hero strong{color:var(--pink);font-size:38px}.fin-metric-hero p:last-child{font-size:14px;margin-top:8px}.fin-bridge-chart{height:245px}.fin-scroll .fin-formula{color:var(--wine);font-size:17px;font-weight:800;line-height:1.8;margin:17px 0}.fin-modal .fin-scroll>p:not(.fin-period):not(.fin-note):not(.fin-source):not(.fin-formula){font-size:17px}
+@keyframes fin-drawer-in{from{transform:translateX(100%)}to{transform:translateX(0)}}@keyframes fin-drawer-out{to{transform:translateX(100%)}}@keyframes fin-sheet-in{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes fin-sheet-out{to{transform:translateY(100%)}}@keyframes fin-modal-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes fin-modal-out{to{opacity:0;transform:scale(.97)}}
+@media(max-width:760px){.finance-business-labels button{font-size:15px}.finance-business-labels span{font-size:11px;margin-left:1px}.finance-lever-labels button{font-size:14px}.finance-lever{margin-top:22px}.finance-copy .finance-revenue-hint{font-size:14px}.fin-header{padding:18px 20px;gap:10px}.fin-header h2{font-size:24px}.fin-header>button{gap:6px;font-size:12px;padding:5px 10px}.fin-scroll{padding:20px 20px 25px}.fin-ytd-hero strong{font-size:36px}.fin-stat strong{font-size:22px}.fin-stat-grid{gap:10px}.fin-stat-grid .fin-stat+.fin-stat{padding-left:10px}.fin-sheet{width:calc(100vw - 16px);max-height:90svh}.fin-sector-layout{grid-template-columns:1fr;gap:20px}.fin-sector-layout .fin-stat-grid{grid-template-columns:1fr 1fr}.fin-sector-layout .fin-stat-grid .fin-stat:last-child{grid-column:1/-1;border-left:0;padding:12px 0 0;border-top:1px solid var(--line)}.fin-modal{width:calc(100vw - 20px);max-height:91svh}.fin-metric-hero{padding:16px}.fin-metric-hero strong{font-size:33px}.fin-bridge-chart{height:235px}.fin-scroll .fin-formula{font-size:15px}.fin-ytd-chart{height:215px}.fin-business-chart{height:225px}.fin-scroll .fin-source{overflow-wrap:anywhere}}
+
+/* Cover guidance. */
+.start-hint{font-size:13px;line-height:1.7;color:var(--wine);margin-top:13px;max-width:390px}
+@media(max-width:760px){.start-hint{font-size:12px;max-width:300px}}
+
+/* Slide-sized motion film; fullscreen remains an explicit control. */
+.video-slide{padding:24px 0;animation:none!important}.video-stage{position:relative;width:min(100%,calc((100svh - 186px)*16/9));max-width:100%;aspect-ratio:16/9;align-self:center;background:#080808;color:#fff;isolation:isolate;display:grid;place-items:center;outline:none!important;border-radius:12px;overflow:hidden}.video-stage:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:0}.video-stage video{width:100%;height:100%;object-fit:contain;background:#080808;display:block;cursor:pointer}.video-top{position:absolute;z-index:2;top:0;left:0;right:0;padding:22px 30px 50px;display:flex;align-items:center;justify-content:space-between;gap:18px;pointer-events:none;background:linear-gradient(#0008,transparent)}.video-brand{font-size:25px;font-weight:800;letter-spacing:5px;text-shadow:0 1px 8px #0008}.video-brand small{font-size:10px;letter-spacing:1.6px;font-weight:400;margin-left:18px}.video-top>div{display:flex;align-items:center;gap:16px}.video-page{font-size:13px;letter-spacing:1px}.video-stage button{color:white;min-height:44px;border:1px solid #ffffff40;border-radius:8px;background:#18181f72;padding:9px 14px;font-size:14px;backdrop-filter:blur(10px);white-space:nowrap;pointer-events:auto;transition:background .2s}.video-stage button:hover{background:#e81768c9}.video-stage button:focus-visible,.video-stage input:focus-visible{outline:3px solid #ff8bbb;outline-offset:4px}.video-top button{display:flex;gap:10px;align-items:center}.video-top button b{font-size:22px;font-weight:400}.video-bottom{position:absolute;z-index:2;bottom:0;left:0;right:0;padding:65px 30px 24px;background:linear-gradient(transparent,#000a);pointer-events:none}.video-controls{display:flex;align-items:center;gap:12px;max-width:1320px;margin:auto;pointer-events:auto}.video-controls #videoToggle{background:#e81768ba;border-color:#ff6ea555;min-width:115px;font-weight:700}.video-time{font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums;margin:0 3px;color:#ffffffe0}.video-seek{flex:1;min-width:70px}.video-seek input{width:100%;accent-color:#f43d84;cursor:pointer;min-height:34px}.video-page-actions{display:flex;gap:8px}.video-controls .video-page-actions button:last-child{background:#ffffffeb;color:#292a33;font-weight:800;border-color:transparent}.video-stage .video-play-fallback{position:absolute;z-index:3;font-size:20px;font-weight:800;padding:19px 27px;background:#e81768dc;border-color:#ffffff55;border-radius:14px;box-shadow:0 15px 60px #0004}
+@media(max-width:760px){.video-top{padding:16px 16px 46px;gap:10px}.video-brand{font-size:20px;letter-spacing:3px}.video-brand small{display:block;font-size:8px;letter-spacing:1px;margin:5px 0 0}.video-top>div{gap:9px}.video-page{font-size:11px}.video-stage button{font-size:12px;min-height:44px;padding:9px 11px}.video-top button b{font-size:19px}.video-bottom{padding:58px 16px 18px;padding-bottom:max(18px,env(safe-area-inset-bottom))}.video-controls{display:grid;grid-template-columns:auto auto 1fr;gap:8px}.video-controls #videoToggle{min-width:0}.video-time{font-size:11px;justify-self:end}.video-seek{grid-column:1/-1;grid-row:2}.video-page-actions{grid-row:3;grid-column:1/-1;justify-content:space-between}.video-page-actions button{min-width:110px}.video-stage .video-play-fallback{font-size:17px;padding:15px 22px}}
+@media(max-height:480px) and (orientation:landscape){.video-top{padding:10px 16px 30px}.video-brand{font-size:18px}.video-brand small{display:none}.video-bottom{padding:35px 16px 10px}.video-controls{display:flex;gap:8px}.video-time{font-size:10px}.video-stage button{font-size:11px;min-height:36px;padding:6px 9px}.video-controls #videoToggle{min-width:88px}.video-page-actions button{min-width:0}.video-seek{min-width:65px}}
+
+/* Closing brand film: a visible title and a player that stops on leaving the slide. */
+.brand-film-slide{align-items:center;padding-top:24px;padding-bottom:22px;justify-content:center}.brand-film-slide .slide-heading{width:100%;margin-bottom:18px}.brand-film-slide .eyebrow{margin-bottom:10px}.brand-film-slide h2{font-size:clamp(32px,3.5vw,58px);line-height:1.3}.brand-film-player{width:min(100%,1100px,calc((100svh - 346px)*16/9));border:1px solid var(--line);border-radius:12px;overflow:hidden;background:white;box-shadow:0 12px 38px #9209510b}.brand-film-screen{position:relative;width:100%;aspect-ratio:16/9;background:var(--pale)}.brand-film-screen video{width:100%;height:100%;display:block;object-fit:contain;cursor:pointer}.brand-film-controls{min-height:56px;display:flex;align-items:center;gap:10px;padding:9px 13px;background:white;color:var(--ink);border-top:1px solid var(--line)}.brand-film-controls button{font-size:14px;min-height:36px;padding:7px 12px;border:1px solid var(--line);border-radius:7px;white-space:nowrap}.brand-film-controls button:hover{border-color:var(--pink);background:var(--pale);color:var(--wine)}#brandFilmToggle{background:var(--pink);border-color:var(--pink);color:white;min-width:99px}.brand-film-time{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}.brand-film-seek{flex:1;min-width:50px;display:flex;align-items:center}.brand-film-seek input{width:100%;min-width:0;accent-color:var(--pink);cursor:pointer}.brand-film-fallback{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);padding:17px 28px;border-radius:40px;background:var(--pink);color:white;box-shadow:0 8px 30px #92095133;font-size:19px;font-weight:700}.brand-film-player:fullscreen{width:100vw;height:100vh;max-width:none;border:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;background:var(--ink);padding:14px}.brand-film-player:fullscreen .brand-film-screen{height:calc(100vh - 86px);aspect-ratio:auto;min-height:0}.brand-film-player:fullscreen .brand-film-controls{flex-shrink:0;border-radius:0 0 8px 8px}.brand-film-screen video:focus-visible{outline-offset:-4px}
+@media(max-width:760px){.brand-film-slide{padding-top:30px;justify-content:flex-start;min-height:calc(100svh - 160px)}.brand-film-slide .slide-heading{margin-bottom:24px}.brand-film-slide h2{font-size:34px;letter-spacing:-1px}.brand-film-player{width:100%;border-radius:9px}.brand-film-controls{flex-wrap:wrap;gap:8px;padding:10px}.brand-film-controls button{font-size:12px;padding:7px 9px;min-height:40px}#brandFilmToggle{min-width:91px}.brand-film-time{margin-left:auto;font-size:11px}.brand-film-seek{order:4;flex-basis:calc(100% - 110px);min-height:30px}.brand-film-controls #brandFilmFullscreen{order:5;margin-left:auto}.brand-film-player:fullscreen{padding:8px}.brand-film-player:fullscreen .brand-film-screen{height:calc(100vh - 130px)}.brand-film-slide .eyebrow{font-size:11px}}
+@media(min-width:761px) and (max-height:650px){.brand-film-slide{padding-top:16px;padding-bottom:14px}.brand-film-slide h2{font-size:36px}.brand-film-slide .eyebrow{display:none}.brand-film-slide .slide-heading{margin-bottom:12px}.brand-film-player{width:min(100%,calc((100svh - 286px)*16/9))}}
+
+/* Direct text editing is opt-in and keeps the presentation layout intact. */
+.editor-toggle{border:1px solid var(--pink);border-radius:8px;padding:8px 13px;min-height:38px;font-size:14px;font-weight:700;color:var(--wine);background:var(--pale);white-space:nowrap}.editor-toggle[aria-pressed="true"]{background:var(--pink);color:white}.text-edit-mode .presentation{padding-bottom:122px}.text-edit-mode [data-text-edit]{outline:1px dashed #e8176870;outline-offset:4px;cursor:text;min-height:1em;caret-color:var(--pink);white-space:pre-wrap}.text-edit-mode [data-text-edit]:hover{outline-color:var(--pink);background:#e8176807}.text-edit-mode [data-text-edit]:focus{outline:2px solid var(--pink)!important;outline-offset:5px;background:#fff7fa}.text-edit-mode [data-text-edit]:empty:before{content:'텍스트 입력';color:var(--muted);font-size:14px}.text-edit-mode .slide.active,.text-edit-mode .pulse{animation:none}.text-edit-mode .replay-number:before{display:none}.text-edit-mode .reactive:hover img{transform:none}.text-edit-mode .brand-film-slide{min-height:calc(100svh - 250px)}.text-edit-mode .brand-film-player{width:min(100%,1000px,calc((100svh - 430px)*16/9))}.text-editor-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;width:calc(100% - 32px);max-width:1050px;background:#292a33;color:white;padding:16px 20px;display:flex;align-items:center;gap:20px;border:1px solid #ffffff28;box-shadow:0 10px 35px #292a3328;border-radius:13px}.text-editor-help{flex:1;min-width:0}.text-editor-help strong{display:block;font-size:17px;line-height:1.5}.text-editor-help>span{display:block;font-size:12px;color:#ded5df;line-height:1.6;margin-top:4px}.text-editor-actions{display:flex;gap:9px;align-items:center}.text-editor-actions button{font-size:14px;color:white;border:1px solid #ffffff55;border-radius:8px;min-height:44px;padding:10px 13px;white-space:nowrap}.text-editor-actions button:disabled{opacity:.4;cursor:default}.text-editor-actions #editorDownload{background:var(--pink);border-color:var(--pink);font-weight:800}.text-editor-actions #editorDone{background:white;color:var(--ink);font-weight:800}.text-editor-actions button:focus-visible{outline:3px solid #ff8bbb;outline-offset:3px}
+@media(max-width:760px){.topbar .actions{gap:8px}.topbar .editor-toggle{font-size:12px;padding:7px 8px;min-height:36px}.topbar .text-button{font-size:12px}.text-edit-mode .presentation{padding-bottom:176px}.text-edit-mode .brand-film-slide{min-height:calc(100svh - 210px)}.text-edit-mode .brand-film-player{width:100%}.text-editor-bar{bottom:10px;width:calc(100% - 20px);padding:13px 14px;display:block;border-radius:12px}.text-editor-help strong{font-size:15px}.text-editor-help>span{font-size:11px}.text-editor-actions{margin-top:12px;gap:7px}.text-editor-actions button{flex:1;font-size:12px;min-height:42px;padding:9px 7px}.text-edit-mode [data-text-edit]{outline-offset:2px}}
+
+/* Keep the requested three-line cover and a usable film at mobile widths. */
+.cover h1{font-size:clamp(26px,3.7vw,71px);line-height:1.28;letter-spacing:-.04em}.cover h1>span,.cover h1>em{display:block;white-space:nowrap}
+@media(max-width:760px){.cover h1{font-size:clamp(26px,7.7vw,54px)}.video-slide{padding:16px 0}.video-stage:not(:fullscreen){width:100%;aspect-ratio:auto;display:flex;flex-direction:column}.video-stage:not(:fullscreen) .video-top{position:relative;order:-1;width:100%;padding:12px;background:#080808}.video-stage:not(:fullscreen) video{height:auto;aspect-ratio:16/9}.video-stage:not(:fullscreen) .video-bottom{position:relative;width:100%;padding:12px;background:#080808}}
+@media(max-height:480px) and (orientation:landscape){.video-controls{flex-wrap:wrap;justify-content:center}}
+
+/* Channel credit and education closing slide. */
+.topbar{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:20px}.topbar .brand{justify-self:start}.topbar .actions{justify-self:end}.creator-credit{display:flex;align-items:center;justify-self:center;gap:9px;white-space:nowrap;font-size:15px;font-weight:700;line-height:1.4}.creator-credit img{width:44px;height:44px;object-fit:contain;flex:none}.creator-slide{align-items:center;text-align:center}.creator-panel{width:min(100%,1000px);padding:22px 0 30px}.creator-logo{display:block;width:140px;height:140px;object-fit:contain;margin:0 auto 15px}.creator-panel .eyebrow{display:flex;justify-content:center;margin-bottom:18px}.creator-panel h2{font-size:clamp(28px,3.15vw,52px);line-height:1.5;letter-spacing:-1.1px}.creator-disclaimer{font-size:clamp(17px,1.65vw,25px);line-height:1.85;color:var(--muted);margin:22px auto 31px;max-width:950px}.creator-guide{display:inline-flex;align-items:center;justify-content:center;gap:32px;min-height:64px;padding:17px 28px;text-decoration:none;background:var(--pink);color:white;border-radius:9px;font-size:22px;font-weight:800;transition:transform .25s,background .25s,box-shadow .25s}.creator-guide:hover,.creator-guide:focus-visible{background:var(--wine);transform:translateY(-3px);box-shadow:0 9px 22px #92095120}.creator-guide>span{font-size:29px;line-height:1}.creator-signature{font-size:20px;font-weight:700;margin-top:28px;line-height:1.7}
+@media(max-width:1100px){.topbar .brand span{display:none}.creator-credit{font-size:14px}}
+@media(max-width:760px){.topbar{height:96px;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:56px 40px;column-gap:12px}.topbar .brand{grid-column:1;grid-row:1}.topbar .actions{grid-column:2;grid-row:1}.creator-credit{grid-column:1/-1;grid-row:2;gap:6px;font-size:13px;padding-bottom:6px}.creator-credit img{width:32px;height:32px}.slide{min-height:calc(100svh - 216px)}.creator-panel{padding:16px 0 28px}.creator-logo{width:116px;height:116px;margin-bottom:10px}.creator-panel h2{font-size:25px;line-height:1.65;letter-spacing:-.7px}.creator-disclaimer{font-size:16px;line-height:1.9;margin:20px 0 26px}.creator-guide{font-size:18px;min-height:58px;padding:15px 20px;gap:19px}.creator-signature{font-size:17px;margin-top:24px}}
+@media(prefers-reduced-motion:reduce){.creator-guide{transition:none}.creator-guide:hover,.creator-guide:focus-visible{transform:none}}
+
+.rail { gap: 8px; }
+.rail button { font-size: 13px; padding: 5px 0; }
+@media(max-width:760px){
+  .rail { overflow-x: auto; gap: 4px; padding: 0 4px; }
+  .rail button { font-size: 12px; width: 24px; flex: none; }
+}
+.interactive-split { display: grid; grid-template-columns: 56% 38%; gap: 6%; align-items: center; }
+.pill-switch { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.pill-switch button { flex: 1; min-width: 130px; min-height: 44px; padding: 9px 14px; border: 1px solid var(--line); border-bottom: 3px solid var(--line); background: #faf8fa; font-size: 15px; font-weight: 700; color: var(--muted); transition: all .25s; }
+.pill-switch button.selected { background: var(--pale); color: var(--wine); border-color: var(--pink); transform: translateY(-2px); }
+.layer-cards { display: flex; flex-direction: column; gap: 10px; }
+.layer-btn { display: flex; align-items: center; gap: 16px; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid var(--line); border-left: 4px solid var(--line); background: #fff; transition: all .25s; }
+.layer-btn > span { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--pink); display: grid; place-items: center; font-weight: 800; color: var(--pink); flex-shrink: 0; font-size: 14px; }
+.layer-btn strong { display: block; font-size: 20px; line-height: 1.35; }
+.layer-btn small { display: block; font-size: 13px; color: var(--muted); margin-top: 3px; }
+.layer-btn.selected { border-color: var(--pink); background: var(--pale); transform: translateX(6px); }
+.layer-btn.selected > span { background: var(--pink); color: #fff; }
+.layer-detail-box { margin-top: 16px; padding: 16px 18px; border-left: 3px solid var(--pink); background: #fcf4f8; min-height: 108px; }
+.layer-detail-box h4 { font-size: 18px; color: var(--wine); line-height: 1.45; }
+.layer-detail-box p { font-size: 15px; color: var(--ink); line-height: 1.75; margin-top: 6px; }
+@media(max-width:760px){ .interactive-split { grid-template-columns: 1fr; gap: 24px; } }
+
+</style>
+</head>
+<body>
+<div class="presentation">
+<header class="topbar">
+  <a class="brand" href="#1" aria-label="첫 장으로">KOREA R&amp;D<span>AI POLICY &amp; R&amp;D PLANNING</span></a>
+  <div class="creator-credit" aria-label="국가연구개발 AI 브리핑"><img src="assets/rnd-logo-badge.png" alt="브리핑 로고" width="40" height="40"><span>AI 기반 국가 R&amp;D 정책 · 15 SLIDES</span></div>
+  <div class="actions"><span class="edition">2026 정부 R&amp;D 기준</span><button id="editorToggle" class="editor-toggle" aria-pressed="false">글자 편집</button><button id="fullscreen" class="icon-button" aria-label="전체 화면">⛶</button></div>
+</header>
+
+<nav class="rail" aria-label="슬라이드 선택">
+  <button data-go="0" aria-label="1장 국가연구개발이 AI 시대에 데이터로 기획하는 이유">01</button>
+  <button data-go="1" aria-label="2장 국가 R&D AI 혁신 모션그래픽">02</button>
+  <button data-go="2" aria-label="3장 국가 R&D 예산과 AI·전략기술 투자 구조">03</button>
+  <button data-go="3" aria-label="4장 최근 3년 R&D 투자와 핵심 지표">04</button>
+  <button data-go="4" aria-label="5장 AI 기반 기획·평가 운영 혁신 실적">05</button>
+  <button data-go="5" aria-label="6장 지능형 R&D 정책 4계층 플랫폼">06</button>
+  <button data-go="6" aria-label="7장 국가 R&D 전주기 AI 전환 로드맵">07</button>
+  <button data-go="7" aria-label="8장 AI R&D 기획 시스템 3단계 진화 스펙">08</button>
+  <button data-go="8" aria-label="9장 지능형 R&D 기획 3대 핵심 엔진">09</button>
+  <button data-go="9" aria-label="10장 AI for Science와 R&D 생산성 도약">10</button>
+  <button data-go="10" aria-label="11장 임무지향형 R&D 포트폴리오 재편">11</button>
+  <button data-go="11" aria-label="12장 자율실험실(SDL)과 3단계 연구 파이프라인">12</button>
+  <button data-go="12" aria-label="13장 앞으로 확인할 핵심 정책 지표">13</button>
+  <button data-go="13" aria-label="14장 KOREA R&D 데이터와 AI로 미래를 설계하다">14</button>
+  <button data-go="14" aria-label="15장 제작 안내 및 브리핑 크레딧">15</button>
+</nav>
+
+<main id="slides">
+<!-- SLIDE 01 -->
+<section class="slide cover" data-title="국가연구개발이 AI 시대에 데이터로 기획하는 이유">
+ <div class="cover-copy">
+  <p class="eyebrow"><i></i> NATIONAL R&amp;D POLICY &amp; AI PLANNING</p>
+  <h1 data-text-revision="rnd-cover-v1"><span><em>국가 R&amp;D</em>가 AI 시대에</span><span><em>직관이 아닌</em> 데이터로</span><span><em>기획하는</em> 이유</span></h1>
+  <p class="lead">기술호라이즌 스캐닝, AI 예비타당성·RFP 설계, 자율실험실(SDL)까지<br>국가연구개발 전주기 지능화 전략을 15장으로 살펴봅니다.</p>
+  <button class="start" id="startPresentation" aria-describedby="startHint">발표 시작하기 <span>↗</span></button>
+  <p class="start-hint" id="startHint">2페이지에서 장표 크기로 15초 모션그래픽 영상 자동 재생 · 다음 장은 직접 이동</p>
+  <p class="cover-date">국가연구개발 중장기 투자전략 · 범부처 IRIS + AI 지능화 기준</p>
+ </div>
+ <figure class="hero-visual reactive" tabindex="0">
+  <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+  <span class="visual-word" aria-hidden="true">R&amp;D AI</span>
+  <img src="assets/rnd-ecosystem.png" alt="호라이즌 스캐닝, AI 예타·기획, 자율실험실, 스마트 동료평가가 연결된 국가 R&D AI 생태계 개념도">
+  <span class="stamp">POLICY<br>PLANNING<br>AI LAB</span>
+  <figcaption>AI 기반 국가연구개발 전주기 연결 구조를 표현한 개념 이미지</figcaption>
+ </figure>
+ <div class="cover-flow"><span>글로벌 호라이즌 스캐닝</span><i></i><span>AI 기반 공백기술 기획</span><i></i><span>자율실험실(SDL)</span><i></i><span>스마트 평가·환류</span></div>
+</section>
+
+<!-- SLIDE 02 -->
+<section class="slide video-slide" data-title="국가 R&D AI 혁신 모션그래픽" hidden>
+ <div id="videoStage" class="video-stage" tabindex="-1" aria-label="장표 안에서 재생되는 국가 R&D AI 홍보 모션그래픽">
+  <video id="promoVideo" muted playsinline preload="metadata" poster="assets/rnd-poster.jpg" src="assets/rnd-promo.mp4" aria-label="국가 R&D 정책 및 기획 AI 혁신 모션그래픽, 15초 무음 영상"></video>
+  <div class="video-top"><span class="video-brand">KOREA R&amp;D <small>MOTION FILM · 15 SEC</small></span><div><span class="video-page">02 / 15</span><button id="videoFullscreen" aria-label="영상 전체화면">전체화면 <b aria-hidden="true">⛶</b></button></div></div>
+  <button id="videoPlayFallback" class="video-play-fallback" hidden>▶ 영상 재생</button>
+  <div class="video-bottom"><div class="video-controls"><button id="videoToggle" aria-label="영상 일시정지">Ⅱ 일시정지</button><button id="videoRestart" aria-label="영상을 처음부터 재생">↻ 처음부터</button><span id="videoTime" class="video-time">0:00 / 0:15</span><label class="video-seek"><span class="sr-only">영상 재생 위치</span><input id="videoSeek" type="range" min="0" max="15" step="0.05" value="0" aria-label="영상 재생 위치"></label><div class="video-page-actions"><button data-go="0" aria-label="영상 이전 장표로 이동">← 이전 장</button><button data-go="2" aria-label="영상 다음 장표로 이동">다음 장 →</button></div></div></div>
+ </div>
+</section>
+
+<!-- SLIDE 03 -->
+<section class="slide finance-slide" data-title="국가 R&D 예산과 AI·전략기술 투자 구조" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> NATIONAL R&amp;D INVESTMENT</p><h2>전략기술 투자는 늘리고,<br class="mobile-br"><em> 기획·배분의 정밀도는 높였다</em></h2><p class="subtitle">단순 나눠주기식 과제 대신 12대 국가전략기술·AI-반도체·첨단바이오와 기초원천 연구에 예산을 집중합니다.</p></div>
+ <div class="finance-layout">
+  <div class="chart-area">
+   <div class="chart-top"><h3 id="financeChartTitle">3대 핵심 부문별 R&amp;D 투자</h3><span id="financeUnit">조 원 (KRW Trillion)</span></div>
+   <div class="chart-box"><canvas id="financeChart" role="img" aria-label="2025년과 2026년 핵심 부문별 정부 R&D 투자 비교"></canvas></div>
+   <div class="finance-business-labels" id="financeBusinessLabels" role="group" aria-label="부문별 투자 자세히 보기">
+    <button data-fin-business-open="0" aria-haspopup="dialog" aria-controls="financeSectorSheet">12대 전략기술 <span>↗</span></button>
+    <button data-fin-business-open="1" aria-haspopup="dialog" aria-controls="financeSectorSheet">기초·인재양성 <span>↗</span></button>
+    <button data-fin-business-open="2" aria-haspopup="dialog" aria-controls="financeSectorSheet">AI·디지털 R&amp;D <span>↗</span></button>
+   </div>
+   <p class="finance-chart-hint" id="financeChartHint">부문 이름이나 막대를 눌러 세부 투자 내역을 확인하세요.</p>
+   <button id="financeMetricOpen" class="finance-metric-open" aria-haspopup="dialog" aria-controls="financeMetricModal" hidden>그래프 상세보기 ↗</button>
+   <div class="finance-lever">
+    <label class="sr-only" for="financeLever">R&amp;D 투자 차트 가로 레버</label>
+    <input id="financeLever" type="range" min="0" max="2" step="1" value="0" aria-valuetext="3대 핵심 부문별 투자" aria-controls="financeChart financeInsight">
+    <div class="finance-lever-labels" role="group" aria-label="R&D 차트 항목">
+     <button class="selected" data-finance="segments" aria-pressed="true">핵심 부문별 투자</button>
+     <button data-finance="profit" aria-pressed="false">혁신도전형 R&amp;D</button>
+     <button data-finance="cash" aria-pressed="false">글로벌·AI 기획효율</button>
+    </div>
+   </div>
+  </div>
+  <div class="finance-copy">
+   <div class="finance-revenue-trigger" id="financeRevenueTrigger" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="financeRevenueDrawer" aria-expanded="false">
+    <p class="small-label">2026년 정부 R&amp;D 총예산</p>
+    <div class="big-stat"><span data-count="29.60" data-decimals="2">29.60</span><small>조원</small></div>
+    <p id="financeRevenueHint" class="finance-revenue-hint">부처·분야별 예산 구성 보기 <span aria-hidden="true">↗</span></p>
+   </div>
+   <p class="growth">전년(26.5조) 대비 +11.7% 확대</p>
+   <div class="metric-rule"></div>
+   <h3 id="financeInsightTitle">12대 국가전략기술 + AI 집중 투자</h3>
+   <p id="financeInsight">AI-반도체, 첨단바이오, 양자 등 3대 게임체인저와 12대 전략기술에 7.8조 원을 투입하며, 기획 단계부터 AI 데이터 분석을 의무화하고 있습니다.</p>
+   <div class="caution"><strong>예비타당성조사 개편 &amp; 신속 기획</strong><p>급변하는 AI·첨단기술 속도에 맞춰 기존 2~3년 걸리던 예타 제도를 혁신하고 AI 기반 상시 기획·검증 체계를 도입합니다.</p></div>
+  </div>
+ </div>
+ <p class="source-line">출처: 과학기술정보통신부 국가연구개발 예산 배분·조정안 및 중장기 투자전략 기준 · 조 원 단위 요약</p>
+</section>
+
+<!-- SLIDE 04 -->
+<section class="slide annual-slide" data-title="최근 3년 R&D 투자와 핵심 지표" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> THREE-YEAR R&amp;D TRAJECTORY</p><h2>연도로 살펴보는<br class="mobile-br"><em> 국가 R&amp;D 구조 전환과 AI 투자</em></h2><p class="subtitle">2024~2026년 추이 · 연도를 누르면 정부 총 R&amp;D 예산, 전략기술·AI 투자액, 기획 지능화 지표가 함께 바뀝니다.</p></div>
+ <div class="annual-selector"><span class="small-label">연도 선택</span><div class="annual-years" role="group" aria-label="연도 선택"><button data-year="0" aria-pressed="false">2024</button><button data-year="1" aria-pressed="false">2025</button><button data-year="2" class="selected" aria-pressed="true">2026</button></div><p class="annual-linked" id="annualLinkedYear" aria-live="polite">2026년 지표 선택</p></div>
+ <div class="annual-layout">
+  <div class="annual-chart-area"><div class="chart-top"><h3>정부 R&amp;D 총예산</h3><span>조 원</span></div><div class="annual-chart"><canvas id="annualRevenueChart" role="img" aria-label="정부 R&D 예산: 2024년 26.5조, 2025년 27.9조, 2026년 29.6조 원"></canvas></div><div class="annual-metric"><p class="small-label" id="annualYearLabel">2026년 정부 R&amp;D</p><strong id="annualRevenueValue">29.60<small>조 원</small></strong><p id="annualRevenueChange">전년 대비 +6.1%</p></div></div>
+  <div class="annual-chart-area"><div class="chart-top"><h3>전략기술·AI R&amp;D</h3><span>조 원</span></div><div class="annual-chart"><canvas id="annualProductionChart" role="img" aria-label="전략기술 및 AI R&D 투자: 2024년 5.0조, 2025년 6.4조, 2026년 7.8조 원"></canvas></div><div class="annual-metric"><p class="small-label" id="annualProductionLabel">2026년 전략기술·AI</p><strong id="annualProductionValue">7.80<small>조 원</small></strong><p id="annualProductionChange">전년 대비 +21.9%</p></div></div>
+  <div class="annual-financial-area"><div class="chart-top"><h3 id="annualFinancialTitle">2026년 3대 중점 투자</h3><span>조 원</span></div><div class="annual-finance-switch" role="group" aria-label="연간 중점 지표"><button class="selected" data-annual-finance="profit" aria-pressed="true">중점 분야</button><button data-annual-finance="cash" aria-pressed="false">글로벌·혁신</button></div><div class="annual-financial-chart"><canvas id="annualFinancialChart" role="img" aria-label="중점 분야별 예산 현황"></canvas></div><div class="annual-financial-summary"><span id="annualFinancialSummaryLabel">AI 기획·평가 적용 과제율</span><strong id="annualFinancialSummaryValue">65.0<small>%</small></strong></div><p class="annual-financial-note" id="annualFinancialNote">범부처 통합연구지원시스템(IRIS)에 AI 분석 모듈이 단계적으로 확대 적용됩니다.</p></div>
+ </div>
+ <p class="annual-note" id="annualYearNote">2026년은 전략기술·AI 투자가 7.8조 원으로 확대되고, AI 기반 공백기술 발굴과 상시 기획 체계가 본격 가동되는 해입니다.</p>
+ <p class="source-line">출처: 국가과학기술자문회의 심의자료 및 정부 R&amp;D 예산안 재구성 · AI 기획 적용률은 범부처 IRIS 지능화 목표치 포함</p>
+</section>
+
+<!-- SLIDE 05 -->
+<section class="slide" data-title="AI 기반 기획·평가 운영 혁신 실적" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> OPERATIONAL INNOVATION</p><h2>기획 기간은 단축하고,<br class="mobile-br"><em> 평가 매칭의 공정성은 높인다</em></h2><p class="subtitle">수작업 문헌조사와 위원 섭외에 걸리던 시간을 AI 지식그래프가 혁신적으로 줄여줍니다.</p></div>
+ <div class="operations-layout">
+  <div class="operation">
+   <div class="op-head"><div><p class="small-label">AI 도입 후 평균 R&amp;D 기획 소요일</p><strong><span data-count="38">38</span><small>일</small></strong></div><span class="delta">기존(180일) 대비 −78.9%</span></div>
+   <h3>단계별 신규 사업 기획 소요일수 추이 <small>일(Days)</small></h3>
+   <div class="op-chart"><canvas id="deliveryChart" role="img" aria-label="전통 방식 180일에서 AI 에이전트 도입 후 38일로 단축"></canvas></div>
+   <p class="op-note">글로벌 논문·특허·시장 동향 조사와 기술수요서(RFP) 초안 작성을 AI 코파일럿이 실시간 지원합니다.</p>
+  </div>
+  <div class="operation">
+   <div class="op-head"><div><p class="small-label">AI 기반 유사·중복 검증 및 위원 매칭 정밀도</p><strong><span data-count="94.2" data-decimals="1">94.2</span><small>%</small></strong></div><span class="delta">전년 대비 +18.4%p</span></div>
+   <h3>단계별 AI 평가·검증 정확도 향상 <small>정확도(%)</small></h3>
+   <div class="op-chart"><canvas id="storageChart" role="img" aria-label="단순 키워드 매칭 대비 시맨틱 임베딩 매칭 정확도 비교"></canvas></div>
+   <p class="op-note">단순 단어 일치가 아닌 문맥·방법론 임베딩 분석으로 실질적 중복 과제를 가려내고 최적 전문가를 추천합니다.</p>
+  </div>
+ </div>
+ <p class="source-line">출처: KISTEP·KISTI 지능형 R&amp;D 기획·평가 시범사업 및 글로벌 AI 정책 분석 리포트 종합</p>
+</section>
+
+<!-- SLIDE 06 -->
+<section class="slide stack-slide" data-title="지능형 R&D 정책 4계층 플랫폼" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> 4-LAYER POLICY INTELLIGENCE</p><h2>데이터 통합부터 현장 실험까지<br class="mobile-br"><em> 4계층으로 완성하는 R&amp;D 지능화</em></h2><p class="subtitle">오른쪽 4계층 플랫폼 버튼을 누르면 계층별 정책 성숙도 지표와 핵심 기능이 함께 바뀝니다.</p></div>
+ <div class="interactive-split">
+  <div class="chart-area">
+   <div class="chart-top"><h3 id="stackChartTitle">계층별 정책 파급력 및 구현 중요도</h3><span>100점 기준 핵심도</span></div>
+   <div class="chart-box"><canvas id="stackChart" role="img" aria-label="국가 R&D AI 4계층 중요도 차트"></canvas></div>
+   <p class="finance-chart-hint">오른쪽 계층 항목을 선택하면 그래프에서 해당 계층이 강조됩니다.</p>
+  </div>
+  <div>
+   <div class="layer-cards" role="group" aria-label="4계층 선택">
+    <button class="layer-btn selected" data-stack="0" aria-pressed="true"><span>01</span><div><strong>데이터 통합층 · IRIS + NTIS + 글로벌 DB</strong><small>국내 과제·성과와 전 세계 1.2억 건 논문·특허 연동</small></div></button>
+    <button class="layer-btn" data-stack="1" aria-pressed="false"><span>02</span><div><strong>과학기술 특화 LLM &amp; 지식그래프층</strong><small>연구자·기관·기술·공급망 관계를 연결한 GraphRAG</small></div></button>
+    <button class="layer-btn" data-stack="2" aria-pressed="false"><span>03</span><div><strong>AI 정책·기획 시뮬레이션층</strong><small>공백기술 발굴, RFP 자동 설계, 예타 파급효과 모의실험</small></div></button>
+    <button class="layer-btn" data-stack="3" aria-pressed="false"><span>04</span><div><strong>연구현장 실행층 · 스마트 평가 &amp; 자율실험실</strong><small>AI 동료평가 보조 및 Self-Driving Lab 실시간 환류</small></div></button>
+   </div>
+   <div class="layer-detail-box" id="stackDetailBox" aria-live="polite">
+    <h4 id="stackDetailTitle">부처별 칸막이를 넘는 국가 연구데이터 레이크하우스</h4>
+    <p id="stackDetailText">범부처 IRIS 과제 정보, NTIS 성과 데이터, 해외 논문(OpenAlex·PubMed)·특허(USPTO·KIPRIS)를 실시간 파이프라인으로 단일 지식베이스에 통합합니다.</p>
+   </div>
+  </div>
+ </div>
+ <p class="source-line">출처: 국가연구개발 데이터 통합 및 AI 지능화 아키텍처 참조 모델</p>
+</section>
+
+<!-- SLIDE 07 -->
+<section class="slide" data-title="국가 R&D 전주기 AI 전환 로드맵" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> FULL-CYCLE R&amp;D ROADMAP</p><h2>탐색·기획·수행·평가 전주기에<br class="mobile-br"><em> AI 에이전트를 심는 4대 로드맵</em></h2><p class="subtitle">단계별 아이콘이나 소제목을 누르면 아래에서 상세 실행 계획 시트가 올라옵니다.</p></div>
+ <div class="roadmap">
+  <div class="road-line" aria-hidden="true"></div>
+  <button class="road-node selected" data-road="0" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="true"><span class="round"><b>S</b></span><strong>Horizon Scan</strong><small>기술 조기경보</small></button>
+  <button class="road-node" data-road="1" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="false"><span class="round"><b>D</b></span><strong>AI Policy Design</strong><small>지능형 RFP·예타</small></button>
+  <button class="road-node" data-road="2" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="false"><span class="round"><b>L</b></span><strong>Autonomous Lab</strong><small>AI+로봇 자율실험</small></button>
+  <button class="road-node" data-road="3" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="false"><span class="round"><b>E</b></span><strong>Smart Evaluation</strong><small>공정 평가·보안</small></button>
+ </div>
+ <div class="road-detail" aria-live="polite">
+  <div class="road-index" aria-hidden="true">S</div>
+  <div>
+   <p class="small-label" id="roadStatus">전주기 1단계 · 전략 탐색</p>
+   <h3><button id="roadDetailOpen" class="road-title-button" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false"><span id="roadTitle">글로벌 기술호라이즌 스캐닝과 유망 공백기술 조기 포착</span><span class="road-open-icon" aria-hidden="true">↗</span></button></h3>
+   <span class="road-detail-hint">소제목을 눌러 자세히 보기</span>
+   <p id="roadText">전 세계 프리프린트(arXiv·bioRxiv), 특허 출원, 글로벌 VC 투자 흐름을 AI로 실시간 추적해 급부상하는 태동기 기술을 선제 포착합니다.</p>
+  </div>
+  <div class="next-step"><span>다음 확인 지점</span><p id="roadNext">12대 국가전략기술 분야별 조기경보 대시보드와 기술수준 평가 자동화</p></div>
+ </div>
+ <p class="road-caveat">AI 분석 결과는 전문가 위원회(PD·PM)의 전략적 의사결정을 돕는 객관적 증거 자료로 활용되며, 최종 정책 결정 책임은 사람에게 있습니다.</p>
+ <p class="source-line">출처: OECD STI Outlook &amp; 범부처 국가연구개발 혁신방안 기반 전주기 AI 로드맵</p>
+</section>
+
+<!-- SLIDE 08 -->
+<section class="slide roadster-slide" data-title="AI R&D 기획 시스템 3단계 진화 스펙" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> AI R&amp;D PLANNING SPECS</p><h2>문헌 검색 보조에서<br class="mobile-br"><em> 자율 가설 설계까지 3단계 스펙</em></h2><p class="subtitle">아래의 Assistant에서 위의 Agentic Architect까지 · 세로 레버를 움직이면 아키텍처와 사양이 바뀝니다.</p></div>
+ <div class="roadster-layout">
+  <figure class="official-photo reactive trim-visual" id="trimVisual" data-active-trim="0" tabindex="0" aria-label="Level 1 AI Assistant 이미지">
+   <img data-trim-image="0" src="assets/rnd-level1.jpg" alt="1단계 문헌·특허 탐색 보조 AI Assistant 아키텍처 이미지">
+   <img data-trim-image="1" src="assets/rnd-level2.jpg" alt="2단계 공백기술 발굴 및 예타 시뮬레이션 AI Co-Pilot 이미지" hidden>
+   <img data-trim-image="2" src="assets/rnd-level3.png" alt="3단계 자율 가설 생성 및 자율실험실 연계 Agentic Architect 이미지" hidden>
+   <span class="trim-visual-tag" id="trimVisualTag">Level 1 · Assistant</span>
+   <figcaption><b id="trimVisualCaption">문헌·특허 RAG · 유사중복 자동 검증</b><span id="trimVisualSource">AI R&amp;D PLANNING ARCHITECTURE · 단계별 스펙 비주얼</span></figcaption>
+  </figure>
+  <div class="trim-lever">
+   <p class="small-label">진화 단계 선택</p>
+   <div class="lever-control">
+    <input id="trimLever" type="range" min="0" max="2" step="1" value="0" orient="vertical" aria-label="AI 기획 진화 세로 레버" aria-valuetext="Level 1 Assistant" aria-controls="trimDetails trimVisual">
+    <div class="lever-stops" role="group" aria-label="진화 단계 선택">
+     <button data-trim="2" aria-pressed="false" aria-controls="trimDetails trimVisual"><i aria-hidden="true"></i>Lv.3 Agentic</button>
+     <button data-trim="1" aria-pressed="false" aria-controls="trimDetails trimVisual"><i aria-hidden="true"></i>Lv.2 Co-Pilot</button>
+     <button class="selected" data-trim="0" aria-pressed="true" aria-controls="trimDetails trimVisual"><i aria-hidden="true"></i>Lv.1 Assistant</button>
+    </div>
+   </div>
+   <p class="lever-hint">위로 올릴수록 고도화된 자율 기획</p>
+  </div>
+  <div class="trim-copy" id="trimDetails" aria-live="polite" aria-atomic="true">
+   <p class="trim-current" id="trimName">Level 1 · AI Assistant (탐색·요약 보조)</p>
+   <p class="small-label" id="trimLabel">현재 즉시 도입 단계 · RAG 기반</p>
+   <h3 id="trimTitle">수백만 건의 논문·특허·과제 즉시 요약 및 중복성 검증</h3>
+   <p id="trimText">국내외 R&amp;D 데이터베이스를 시맨틱 검색(RAG)으로 연결해 선행기술 조사 시간을 90% 줄이고 기존 과제와의 유사·중복 여부를 10분 안에 판별합니다.</p>
+   <div id="trimChartArea" hidden>
+    <p class="range-label">R&amp;D 기획 소요일수 단축 효과 · Level 2 Co-Pilot</p>
+    <div class="range-chart"><canvas id="accelerationChart" role="img" aria-label="평균 180일 걸리던 기획 기간을 38일 이내로 단축"></canvas></div>
+    <p class="range-note">공백기술 도출부터 RFP 초안·예타 시뮬레이션까지 기획 주기를 78% 단축합니다.</p>
+   </div>
+   <div class="trim-note" id="trimNote">보안이 요구되는 미공개 국가전략기술 기획서는 폐쇄망 온프레미스(On-Premise) LLM 환경에서 안전하게 처리해야 합니다.</div>
+  </div>
+ </div>
+ <p class="source-line">출처: 범부처 R&amp;D 기획 지능화 성숙도 모델(Lv.1~Lv.3) 및 US DOE AI for Science 기획 체계 비교</p>
+</section>
+
+<!-- SLIDE 09 -->
+<section class="slide" data-title="지능형 R&D 기획 3대 핵심 엔진" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> CORE AI ENGINES</p><h2>탐색과 모의실험, 공정 평가를 이끄는<br class="mobile-br"><em> 3대 핵심 기술 엔진</em></h2><p class="subtitle">오른쪽 엔진 이름을 누르면 화면 가운데에서 3단계 작동 원리와 정책적 효과를 볼 수 있습니다.</p></div>
+ <div class="technology-layout">
+  <figure class="tech-visual reactive" tabindex="0">
+   <img src="assets/rnd-tech-concept.png" alt="기술호라이즌 지식그래프, 다중 에이전트 시뮬레이터, AI 동료평가 엔진 개념도">
+   <figcaption>국가 R&amp;D 전주기 3대 AI 엔진 작동 개념도</figcaption>
+  </figure>
+  <div class="tech-list">
+   <button class="tech-option" data-tech="0" aria-haspopup="dialog" aria-controls="techModal" aria-expanded="false" aria-pressed="false"><span>G</span><div><h3>기술호라이즌 지식그래프</h3><small>GLOBAL TECH KNOWLEDGE GRAPH</small></div></button>
+   <button class="tech-option selected" data-tech="1" aria-haspopup="dialog" aria-controls="techModal" aria-expanded="false" aria-pressed="true"><span>S</span><div><h3>다중 에이전트 기획 시뮬레이터</h3><small>MULTI-AGENT R&amp;D SIMULATOR</small></div></button>
+   <button class="tech-option" data-tech="2" aria-haspopup="dialog" aria-controls="techModal" aria-expanded="false" aria-pressed="false"><span>E</span><div><h3>AI 동료평가 &amp; 연구보안 엔진</h3><small>SMART PEER-REVIEW &amp; SECURITY</small></div></button>
+   <p class="tech-popup-hint">엔진 항목 클릭 → 3단계 작동 원리 팝업</p>
+   <div class="tech-explain" aria-live="polite">
+    <h4 id="techTitle">기술·경제·정책 에이전트가 가상 토론으로 RFP와 예타를 사전 검증</h4>
+    <p id="techText">서로 다른 역할(기술성·시장성·규제·예산)을 부여받은 AI 에이전트들이 기획안의 허점을 교차 검증하고 최적의 포트폴리오 대안을 도출합니다.</p>
+   </div>
+  </div>
+ </div>
+ <p class="source-line">출처: GraphRAG 기반 기술기획 방법론 및 다중 에이전트 정책 시뮬레이션 아키텍처</p>
+</section>
+
+<!-- SLIDE 10 -->
+<section class="slide inference-slide" data-title="AI for Science와 R&D 생산성 도약" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> R&amp;D PRODUCTIVITY LEAP</p><h2>AI for Science 도입으로<br class="mobile-br"><em> 연구 탐색 속도와 투자 효율의 도약</em></h2><p class="subtitle">과학기술 파운데이션 모델(AlphaFold·MatterGen 등)과 정책 AI의 결합이 국가 R&amp;D의 투입 대비 산출 공식을 바꾸고 있습니다.</p></div>
+ <div class="interactive-split">
+  <div class="chart-area">
+   <div class="chart-top"><h3 id="infChartTitle">연구개발 단계별 AI 도입 전후 생산성 배수</h3><span>전통 R&amp;D 방식 = 1x 기준</span></div>
+   <div class="chart-box"><canvas id="inferenceChart" role="img" aria-label="전통 방식 대비 AI 도입 시 R&D 생산성 향상 비교"></canvas></div>
+   <div class="pill-switch" role="group" aria-label="생산성 지표 선택">
+    <button class="selected" data-inf="throughput" aria-pressed="true">후보물질·소재 탐색 속도</button>
+    <button data-inf="energy" aria-pressed="false">융합·공백과제 발굴 정밀도</button>
+    <button data-inf="cost" aria-pressed="false">연구자 행정소요 지수</button>
+   </div>
+  </div>
+  <div class="finance-copy">
+   <p class="small-label" id="infStatLabel">AI + 자율실험실 탐색 가속</p>
+   <div class="big-stat"><span id="infStatNumber" data-count="12" data-decimals="0">12</span><small id="infStatUnit">x</small></div>
+   <p class="growth" id="infStatSub">신소재·신약·촉매 후보 발굴 속도 향상 배수</p>
+   <div class="metric-rule"></div>
+   <h3 id="infInsightTitle">추격형(Fast-Follower)에서 선도형(First-Mover) 기획으로</h3>
+   <p id="infInsightText">선진국이 이미 발표한 로드맵을 뒤따라가던 기획 방식에서 벗어나, AI가 아직 논문으로 출판되지 않은 구조적 공백 영역을 먼저 찾아내 선점 투자를 가능케 합니다.</p>
+   <div class="caution"><strong>실패 용인 + 데이터 자산화 원칙</strong><p>도전적 R&amp;D에서 실험이 실패하더라도 AI 학습용 고품질 실패 데이터(Negative Data)로 국가 DB에 축적하면 다음 과제의 성공률을 높이는 자산이 됩니다.</p></div>
+  </div>
+ </div>
+ <p class="source-line">출처: OECD Artificial Intelligence in Science 리포트 및 주요국 AI for Science 실증 사례 종합</p>
+</section>
+
+<!-- SLIDE 11 -->
+<section class="slide sovereign-slide" data-title="임무지향형 R&D 포트폴리오 재편" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> MISSION-ORIENTED PORTFOLIO</p><h2>파편화된 소액 과제를 넘어<br class="mobile-br"><em> 3대 국가 임무 중심 포트폴리오로</em></h2><p class="subtitle">오른쪽 3대 투자 축을 선택하면 AI 정책 시뮬레이터가 권고하는 전략적 재원 배분 구조와 실행 방향을 볼 수 있습니다.</p></div>
+ <div class="interactive-split">
+  <div class="chart-area">
+   <div class="chart-top"><h3>국가 R&amp;D 전략 포트폴리오 목표 비중</h3><span>전략 부문별 비중(%)</span></div>
+   <div class="chart-box"><canvas id="sovereignChart" role="img" aria-label="12대 전략기술 초격차, 혁신도전형 R&D, 글로벌·기초 생태계 비중"></canvas></div>
+   <p class="finance-chart-hint">오른쪽 포트폴리오 축을 눌러 세부 정책 방향을 확인하세요.</p>
+  </div>
+  <div>
+   <div class="layer-cards" role="group" aria-label="포트폴리오 축 선택">
+    <button class="layer-btn selected" data-sov="0" aria-pressed="true"><span>48%</span><div><strong>12대 국가전략기술 &amp; 3대 게임체인저</strong><small>AI-반도체·첨단바이오·양자 기술주권 확보</small></div></button>
+    <button class="layer-btn" data-sov="1" aria-pressed="false"><span>28%</span><div><strong>혁신도전형 (ARPA-H · 한계도전 R&amp;D)</strong><small>실패를 두려워하지 않는 고위험·고수익 임무형 기획</small></div></button>
+    <button class="layer-btn" data-sov="2" aria-pressed="false"><span>24%</span><div><strong>글로벌 공동연구 &amp; 국가 AI 연구인프라</strong><small>해외 선도 연구소 협력 및 국가 고성능 GPU·데이터 허브</small></div></button>
+   </div>
+   <div class="layer-detail-box" id="sovDetailBox" aria-live="polite">
+    <h4 id="sovDetailTitle">12대 국가전략기술 초격차 확보 (전략 투자 비중 48%)</h4>
+    <p id="sovDetailText">글로벌 기술패권 경쟁과 공급망 블록화에 대응하기 위해 AI 공급망 분석으로 핵심 병목 기술을 식별하고 범부처 대형 플래그십 프로젝트로 집중 지원합니다.</p>
+   </div>
+  </div>
+ </div>
+ <p class="source-line">출처: 국가전략기술 육성 기본계획 및 혁신도전형 R&amp;D 추진전략 기준</p>
+</section>
+
+<!-- SLIDE 12 -->
+<section class="slide physical-slide" data-title="자율실험실(SDL)과 3단계 연구 파이프라인" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> SELF-DRIVING LABS &amp; AI LOOP</p><h2>AI가 가설을 세우고 로봇이 실험하는<br class="mobile-br"><em> 자율실험실(SDL) 3단계 루프</em></h2><p class="subtitle">기획된 R&amp;D 과제가 실제 연구현장에서 AI 파운데이션 모델과 로봇 자동화로 고속 수행되는 닫힌 루프(Closed-Loop) 구조입니다.</p></div>
+ <div class="interactive-split">
+  <div>
+   <div class="layer-cards" role="group" aria-label="자율실험실 3단계 선택">
+    <button class="layer-btn selected" data-phys="0" aria-pressed="true"><span>01</span><div><strong>AI 가설 생성 &amp; 분자·소재 설계</strong><small>초거대 과학 모델이 유망 후보 구조와 실험 조건 도출</small></div></button>
+    <button class="layer-btn" data-phys="1" aria-pressed="false"><span>02</span><div><strong>로봇 자동화 고속 합성 &amp; 정밀 측정</strong><small>24시간 무인 로봇 팔과 센서로 수천 건 실험 병렬 수행</small></div></button>
+    <button class="layer-btn" data-phys="2" aria-pressed="false"><span>03</span><div><strong>능동학습(Active Learning) &amp; 정책 환류</strong><small>실험 결과를 즉시 재학습하고 차기 R&amp;D 예산·과제에 반영</small></div></button>
+   </div>
+   <div class="layer-detail-box" id="physDetailBox" aria-live="polite">
+    <h4 id="physDetailTitle">1단계: 과학기술 파운데이션 모델의 인실리코(In-Silico) 가설 생성</h4>
+    <p id="physDetailText">수억 개의 화합물·단백질·결정 구조를 사전 학습한 AI가 목표 물성을 만족하는 최적 후보군을 몇 시간 안에 스크리닝하여 실험 범위를 좁힙니다.</p>
+   </div>
+  </div>
+  <div class="chart-area">
+   <div class="chart-top"><h3>AI 자율실험실(SDL) 연계 국가 R&amp;D 사업 확대 추이</h3><span>핵심 사업·거점 수(개)</span></div>
+   <div class="chart-box"><canvas id="physicalChart" role="img" aria-label="2022년부터 2026년까지 AI 자율실험실 및 디지털 연구거점 확대 추이"></canvas></div>
+   <p class="finance-chart-hint">소재·바이오·이차전지·반도체 분야에서 AI 자율실험실 인프라 구축이 급증하고 있습니다.</p>
+  </div>
+ </div>
+ <p class="source-line">출처: 첨단소재·바이오 디지털 연구혁신 추진전략 및 글로벌 Self-Driving Lab 확산 동향</p>
+</section>
+
+<!-- SLIDE 13 -->
+<section class="slide closing" data-title="앞으로 확인할 핵심 정책 지표" hidden>
+ <div class="closing-copy">
+  <p class="eyebrow"><i></i> POLICY GOVERNANCE WATCH</p>
+  <h2>AI 기반 R&amp;D 정책의 성패는<br><em>데이터 개방과 제도 안착에서</em></h2>
+  <p class="lead">화려한 AI 시스템 구축을 넘어<br>실제 연구현장 수용성과 평가 제도 혁신이 함께 가야 합니다.</p>
+  <figure class="closing-photo reactive" tabindex="0">
+   <img src="assets/rnd-closing.jpg" alt="국가 AI R&D 인텔리전스 플랫폼 개념 이미지">
+   <figcaption>국가 AI R&amp;D 인텔리전스 센터 개념도</figcaption>
+  </figure>
+ </div>
+ <div class="watch-list">
+  <article tabindex="0"><span>01</span><div><h3>국가 연구데이터의 AI-Ready 표준화</h3><p>출연연·대학에서 생산되는 연구데이터가 사장되지 않고 AI가 즉시 학습 가능한 표준 포맷으로 공유·자산화되는지 확인합니다.</p></div></article>
+  <article tabindex="0"><span>02</span><div><h3>AI 기획·평가의 설명가능성과 책임성</h3><p>알고리즘 편향이나 블랙박스 의사결정을 방지하고, 전문위원(PD·평가위원)과 AI 간의 명확한 역할 분담 가이드라인을 점검합니다.</p></div></article>
+  <article tabindex="0"><span>03</span><div><h3>예타 폐지·개편 이후의 신속 재정 규율</h3><p>기획 기간 단축이 부실 검증으로 이어지지 않도록 AI 기반 사전 타당성 시뮬레이션과 사후 마일스톤 관리가 작동하는지 봅니다.</p></div></article>
+  <button class="source-cta" id="closingSources">정책 참고문헌과 상세 지표 테이블 보기 <span>↗</span></button>
+  <p class="closing-note">발표자의 정책 제언 포인트 · 증거 기반(Evidence-Based) 국가연구개발 혁신</p>
+ </div>
+ <p class="source-line">근거: 국가과학기술자문회의·과기정통부·KISTEP·OECD AI in Science 정책 보고서 종합</p>
+</section>
+
+<!-- SLIDE 14 -->
+<section class="slide brand-film-slide" data-title="KOREA R&D 데이터와 AI로 미래를 설계하다" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> NATIONAL R&amp;D VISION FILM</p><h2>KOREA R&amp;D <em>데이터와 AI로 미래를 설계하다</em></h2></div>
+ <div class="brand-film-player" id="brandFilmPlayer">
+  <div class="brand-film-screen"><video id="brandFilmVideo" muted playsinline preload="metadata" poster="assets/rnd-brand-poster.jpg" src="assets/rnd-brand-film.mp4" aria-label="KOREA R&D 데이터와 AI로 미래를 설계하다, 15초 비전 영상" tabindex="0"></video><button id="brandFilmFallback" class="brand-film-fallback" hidden>▶ 영상 재생</button></div>
+  <div class="brand-film-controls"><button id="brandFilmToggle" aria-label="브랜드 영상 재생">▶ 재생</button><button id="brandFilmRestart" aria-label="브랜드 영상 처음부터 다시 보기">↻ 다시 보기</button><span id="brandFilmTime" class="brand-film-time">0:00 / 0:15</span><label class="brand-film-seek"><span class="sr-only">브랜드 영상 재생 위치</span><input id="brandFilmSeek" type="range" min="0" max="15" step="0.05" value="0" aria-label="브랜드 영상 재생 위치"></label><button id="brandFilmFullscreen" aria-label="브랜드 영상 전체화면">전체화면 ⛶</button></div>
+ </div>
+</section>
+
+<!-- SLIDE 15 -->
+<section class="slide creator-slide" data-title="제작 안내 · 인터랙티브 모션 브리핑" hidden>
+ <div class="creator-panel">
+  <img class="creator-logo" src="assets/rnd-logo-badge.png" alt="브리핑 로고" width="130" height="130">
+  <p class="eyebrow" id="creatorEyebrow"><i></i> NATIONAL R&amp;D POLICY BRIEFING</p>
+  <h2 id="creatorTitle">이 15장 HTML 슬라이드는<br><em>에이커(테슬라 브리핑) 스타일 스킬</em>로 제작되었으며</h2>
+  <p class="creator-disclaimer" id="creatorNotice">상단 '글자 편집' 버튼을 눌러 브라우저에서 직접 정책 수치나 문구를 수정하고,<br class="mobile-br"> 모션그래픽 영상까지 포함된 단일 HTML 파일로 즉시 저장할 수 있습니다.</p>
+  <button class="creator-guide" id="creatorBackToStart" data-go="0">1페이지 표지로 돌아가기 <span aria-hidden="true">↺</span></button>
+  <p class="creator-signature" id="creatorAttribution">AI를 활용한 국가연구개발 정책 및 R&amp;D 기획 · 15 SLIDES</p>
+ </div>
+</section>
+</main>
+
+<footer class="bottom-bar">
+ <div class="page-counter"><strong id="currentPage">01</strong><span>/ 15</span></div>
+ <span id="currentTitle">국가연구개발이 AI 시대에 데이터로 기획하는 이유</span>
+ <span class="footer-hint">마우스 · 키보드 방향키로 탐색 <span>← → 이동</span></span>
+ <div class="bottom-actions"><button class="icon-button" id="prev" aria-label="이전 슬라이드">←</button><button class="icon-button" id="next" aria-label="다음 슬라이드">→</button></div>
+</footer>
+<div class="progress-track"><div id="progress"></div></div>
+</div>
+
+<div id="textEditorBar" class="text-editor-bar" hidden>
+ <div class="text-editor-help">
+  <strong>글자 편집 모드 · 원하는 문구를 클릭해 바로 수정하세요</strong>
+  <span id="editorSaveStatus">이 브라우저에 자동 저장 · 0개 문구</span>
+ </div>
+ <div class="text-editor-actions">
+  <button id="editorRestore" disabled>선택 문구 원래대로</button>
+  <button id="editorDownload">HTML 다운로드</button>
+  <button id="editorDone">편집 완료</button>
+ </div>
+</div>
+
+<script id="savedTextEdits" type="application/json">{"version":1,"records":{}}</script>
+<div class="sr-only" id="live" aria-live="polite"></div>
+
+<!-- DIALOGS -->
+<dialog id="sources">
+ <div class="dialog-top"><h2>정책 참고자료 및 핵심 지표 요약</h2><button class="icon-button" id="sourceClose" aria-label="출처 창 닫기">×</button></div>
+ <div class="dialog-content">
+  <p>작성 기준: 정부 국가연구개발(R&amp;D) 예산안 및 중장기 투자전략, 범부처 통합연구지원시스템(IRIS) AI 지능화 계획, OECD 『Artificial Intelligence in Science』 정책 보고서 기준.</p>
+  <ol>
+   <li><a href="https://www.msit.go.kr/" target="_blank" rel="noopener">과학기술정보통신부 · 정부 R&amp;D 예산 배분·조정안</a><p>3대 게임체인저(AI-반도체, 첨단바이오, 양자), 12대 국가전략기술, 혁신도전형 R&amp;D 및 기초연구 투자 규모.</p></li>
+   <li><a href="https://www.kistep.re.kr/" target="_blank" rel="noopener">KISTEP · KISTI 데이터·AI 기반 R&amp;D 기획·평가 혁신 연구</a><p>지식그래프 기반 유망기술 탐색, 거대언어모델(LLM) 활용 RFP 설계 및 유사·중복 검증 시범 성과.</p></li>
+  </ol>
+  <h3>최근 3개년 국가 R&amp;D 및 AI 혁신 핵심 지표</h3>
+  <div class="table-scroll">
+   <table>
+    <thead><tr><th>항목</th><th>2024</th><th>2025</th><th>2026(안/목표)</th></tr></thead>
+    <tbody>
+     <tr><th>정부 R&amp;D 총예산 (조 원)</th><td>26.50</td><td>27.90</td><td>29.60</td></tr>
+     <tr><th>12대 전략기술 &amp; AI R&amp;D (조 원)</th><td>5.00</td><td>6.40</td><td>7.80</td></tr>
+     <tr><th>기초연구 및 인재양성 (조 원)</th><td>2.95</td><td>3.30</td><td>3.65</td></tr>
+     <tr><th>AI·디지털 R&amp;D 혁신 직접투자 (조 원)</th><td>1.20</td><td>1.80</td><td>2.45</td></tr>
+     <tr><th>혁신도전형(APRO) R&amp;D (조 원)</th><td>0.85</td><td>1.05</td><td>1.35</td></tr>
+     <tr><th>글로벌 공동 R&amp;D (조 원)</th><td>1.80</td><td>2.15</td><td>2.40</td></tr>
+     <tr><th>신규 사업 평균 기획 소요일 (일)</th><td>180</td><td>95</td><td>38</td></tr>
+     <tr><th>IRIS AI 기획·평가 보조 적용률 (%)</th><td>15.0%</td><td>38.0%</td><td>65.0%</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+</dialog>
+
+<dialog id="roadSheet" class="road-sheet" aria-labelledby="roadSheetTitle" aria-describedby="roadSheetIntro">
+ <div class="road-sheet-header"><div><p class="eyebrow"><i></i> FULL-CYCLE R&amp;D AI ROADMAP</p><p class="road-sheet-caption">전주기 AI 전환 로드맵 자세히 보기</p></div><button class="road-sheet-close" id="roadSheetClose" aria-label="상세 패널 닫기" autofocus><span>닫기</span><b aria-hidden="true">×</b></button></div>
+ <div class="road-sheet-scroll">
+  <div class="road-sheet-tabs" role="group" aria-label="로드맵 단계 선택">
+   <button data-sheet-road="0" class="selected" aria-pressed="true">Horizon Scan</button>
+   <button data-sheet-road="1" aria-pressed="false">AI Policy Design</button>
+   <button data-sheet-road="2" aria-pressed="false">Autonomous Lab</button>
+   <button data-sheet-road="3" aria-pressed="false">Smart Evaluation</button>
+  </div>
+  <div class="road-sheet-content" id="roadSheetContent" aria-live="polite" aria-atomic="true">
+   <div class="road-sheet-heading"><span id="roadSheetLetter" aria-hidden="true">S</span><div><p class="small-label" id="roadSheetStatus">전주기 1단계 · 전략 탐색</p><h2 id="roadSheetTitle">글로벌 기술호라이즌 스캐닝과 유망 공백기술 조기 포착</h2></div></div>
+   <p class="road-sheet-intro" id="roadSheetIntro">글로벌 논문·특허·투자 빅데이터에서 미래 전략기술 신호를 포착하는 과정입니다.</p>
+   <div class="road-sheet-columns">
+    <section><h3>주요 정책 추진 내용</h3><ul id="roadSheetFacts"></ul></section>
+    <section><h3>점검해야 할 핵심 지표</h3><p class="road-sheet-context">정책 입안자가 후속 단계에서 확인할 지점</p><ol id="roadSheetChecks"></ol></section>
+   </div>
+   <p class="road-sheet-note" id="roadSheetNote"></p>
+  </div>
+  <p class="road-sheet-source">근거: <a href="https://www.msit.go.kr/" id="roadSheetSource" target="_blank" rel="noopener">국가연구개발 혁신방안 및 AI 지능화 전략</a> · <span id="roadSheetPages">전주기 R&amp;D 로드맵</span></p>
+ </div>
+</dialog>
+
+<dialog id="techModal" class="tech-modal" aria-labelledby="techModalTitle" aria-describedby="techModalIntro">
+ <div class="tech-modal-header"><div><p class="eyebrow"><i></i> CORE AI ENGINES</p><p>핵심 엔진 상세 설명</p></div><button id="techModalClose" class="tech-modal-close" aria-label="팝업 닫기" autofocus><span>닫기</span><b aria-hidden="true">×</b></button></div>
+ <div class="tech-modal-scroll">
+  <div class="tech-modal-tabs" role="group" aria-label="팝업 기술 선택">
+   <button data-modal-tech="0" aria-pressed="false">기술호라이즌 지식그래프</button>
+   <button data-modal-tech="1" class="selected" aria-pressed="true">다중 에이전트 기획 시뮬레이터</button>
+   <button data-modal-tech="2" aria-pressed="false">AI 동료평가 &amp; 연구보안 엔진</button>
+  </div>
+  <div class="tech-modal-content" aria-live="polite" aria-atomic="true">
+   <div class="tech-modal-heading"><span id="techModalLetter" aria-hidden="true">S</span><div><p class="small-label" id="techModalEnglish">MULTI-AGENT R&amp;D SIMULATOR</p><h2 id="techModalTitle">다중 에이전트 기획 시뮬레이터</h2></div></div>
+   <p class="tech-modal-intro" id="techModalIntro"></p>
+   <h3 class="tech-flow-title">작동 원리 (3단계)</h3>
+   <ol class="tech-modal-flow" id="techModalFlow"></ol>
+   <div class="tech-modal-details">
+    <section><h3>R&amp;D 정책·기획에 주는 효과</h3><p id="techModalEffect"></p></section>
+    <section><h3>적용 범위와 인간 전문가 역할</h3><p id="techModalApplication"></p></section>
+   </div>
+   <p class="tech-modal-note" id="techModalNote"></p>
+  </div>
+  <p class="tech-modal-source">출처: <a href="https://www.kistep.re.kr/" id="techModalSource" target="_blank" rel="noopener">AI 기반 국가연구개발 기획·평가 방법론</a></p>
+ </div>
+</dialog>
+
+<dialog id="financeRevenueDrawer" class="fin-overlay fin-drawer" aria-labelledby="finRevenueTitle" aria-describedby="finRevenuePeriod">
+ <header class="fin-header"><div><p id="finRevenueEyebrow" class="eyebrow">R&amp;D BUDGET STRUCTURE</p><h2 id="finRevenueTitle">정부 R&amp;D 예산 중점 배분</h2></div><button data-fin-close aria-label="패널 닫기" autofocus>닫기 <b>×</b></button></header>
+ <div class="fin-scroll">
+  <p id="finRevenuePeriod" class="fin-period">2025년 vs 2026년 정부 R&amp;D 예산 구성 비교</p>
+  <div class="fin-ytd-hero fin-stat"><strong id="finRevenueTotal">29.60조 원</strong><p id="finRevenueGrowth">전년 대비 +1.7조 원 증액 · 전략기술·기초연구 중심 재편</p></div>
+  <div class="fin-chart-wrap fin-ytd-chart"><canvas id="financeYtdChart" role="img" aria-label="2025년과 2026년 전략기술·기초연구 vs 일반 R&D 예산 누적 막대그래프"></canvas></div>
+  <div class="fin-stat-grid two"><div class="fin-stat"><p id="finRevenueQ1Label">중점 전략·기초·AI 합계</p><strong id="finRevenueQ1">13.90조 원</strong></div><div class="fin-stat"><p id="finRevenueQ2Label">출연연·국방·기타 R&amp;D</p><strong id="finRevenueQ2">15.70조 원</strong></div></div>
+  <h3 id="finRevenueBreakdownTitle">3대 중점 투자 영역 구성</h3>
+  <dl class="fin-breakdown"><div><dt>12대 국가전략기술 (3대 게임체인저 포함)</dt><dd>7.80조 원</dd></div><div><dt>기초연구 및 미래 인재양성</dt><dd>3.65조 원</dd></div><div><dt>AI·디지털 R&amp;D 혁신 직접투자</dt><dd>2.45조 원</dd></div></dl>
+  <p id="finRevenueCutoff" class="fin-note">기획 단계부터 AI 데이터 분석을 통해 유사·중복이나 관행적 계속사업을 정비하고, 확보된 재원을 초격차 전략기술에 집중 투입합니다.</p>
+  <p id="finRevenueSource" class="fin-source">출처: <a data-fin-source href="https://www.msit.go.kr/" target="_blank" rel="noopener">정부 연구개발 예산안 및 중장기 투자전략</a></p>
+ </div>
+</dialog>
+
+<dialog id="financeSectorSheet" class="fin-overlay fin-sheet" data-business="0" aria-labelledby="finSectorTitle" aria-describedby="finSectorPeriod">
+ <header class="fin-header"><div><p id="finSectorEyebrow" class="eyebrow">INVESTMENT PILLAR DETAILS</p><h2 id="finSectorTitle">12대 전략기술 투자 자세히 보기</h2></div><button data-fin-close aria-label="패널 닫기" autofocus>닫기 <b>×</b></button></header>
+ <div class="fin-scroll">
+  <div class="fin-tabs" role="group" aria-label="세부 투자 영역 선택">
+   <button data-fin-business="0" class="selected" aria-pressed="true">12대 전략기술</button>
+   <button data-fin-business="1" aria-pressed="false">기초·인재양성</button>
+   <button data-fin-business="2" aria-pressed="false">AI·디지털 R&amp;D</button>
+  </div>
+  <p id="finSectorPeriod" class="fin-period">연간 비교: 2025년 vs 2026년 · 단위: 조 원</p>
+  <div class="fin-sector-layout">
+   <div>
+    <div class="fin-stat-grid">
+     <div class="fin-stat"><p id="finSectorRevenueLabel">2026년 투자액</p><strong id="finSectorRevenue">7.80조 원</strong></div>
+     <div class="fin-stat"><p id="finSectorYtdLabel">2025년 투자액</p><strong id="finSectorYtd">6.40조 원</strong></div>
+     <div class="fin-stat"><p id="finSectorShareLabel">전체 R&amp;D 대비 비중</p><strong id="finSectorShare">26.4%</strong></div>
+    </div>
+    <h3 id="finSectorScopeTitle">포함되는 핵심 기술 영역</h3>
+    <p id="finSectorScope">반도체·디스플레이, 이차전지, 첨단모빌리티, 차세대원자력, 첨단바이오, 우주항공·해양, 수소, 사이버보안, 인공지능, 차세대통신, 첨단로봇·제조, 양자 등 12대 분야입니다.</p>
+    <h3 id="finSectorChangeTitle">AI 기획 접목 포인트</h3>
+    <p id="finSectorChange">글로벌 특허·논문 지식그래프로 공급망 핵심 병목 기술을 식별하고, 부처 간 분절된 과제를 임무 중심 대형 프로젝트로 통합 기획합니다.</p>
+    <p id="finSectorComposition" class="fin-note">3대 게임체인저(AI-반도체·첨단바이오·양자)에 약 3.5조 원 집중 배정</p>
+   </div>
+   <div>
+    <p id="finSectorGrowth" class="fin-growth">전년 대비 +21.9%</p>
+    <div class="fin-chart-wrap fin-business-chart"><canvas id="financeBusinessChart" role="img" aria-label="부문별 전년 대비 예산 비교"></canvas></div>
+   </div>
+  </div>
+  <p id="finSectorSource" class="fin-source">출처: <a data-fin-source href="https://www.msit.go.kr/" target="_blank" rel="noopener">국가전략기술 육성 기본계획 및 정부 R&amp;D 예산안</a></p>
+ </div>
+</dialog>
+
+<dialog id="financeMetricModal" class="fin-overlay fin-modal" data-metric="profit" aria-labelledby="finMetricTitle" aria-describedby="finMetricLead">
+ <header class="fin-header"><div><p id="finMetricEyebrow" class="eyebrow">R&amp;D PORTFOLIO BRIDGE</p><h2 id="finMetricTitle">혁신도전형 R&amp;D 자세히 보기</h2></div><button data-fin-close aria-label="팝업 닫기" autofocus>닫기 <b>×</b></button></header>
+ <div class="fin-scroll">
+  <p id="finMetricPeriod" class="fin-period">2026년 정부 R&amp;D 구조 개편 브릿지 · 단위: 조 원</p>
+  <p id="finMetricLead">관행적·저효율 사업을 구조조정하고 전략기술·혁신도전형 과제로 재원을 재배분한 과정입니다.</p>
+  <div class="fin-metric-hero fin-stat"><p id="finMetricValueLabel">2026년 혁신도전형(APRO) R&amp;D</p><strong id="finMetricValue">1.35조 원</strong><p id="finMetricCompare">전년 1.05조 원 대비 +28.6% · PM에게 전권을 부여하는 DARPA형 기획 확대</p></div>
+  <h3 id="finMetricChartTitle">예산 지출 효율화에서 전략 재투자까지</h3>
+  <div class="fin-chart-wrap fin-bridge-chart"><canvas id="financeBridgeChart" role="img" aria-label="R&D 예산 재배분 연결 그래프"></canvas></div>
+  <p id="finMetricFormula" class="fin-formula">기존 기저 27.9조 − 유사중복 정비 1.2조 + 신규 전략증액 2.9조 = 29.6조 원</p>
+  <p id="finMetricDetail">AI 기반 유사·중복성 검증과 성과 분석을 통해 한계 사업을 정비하고, 절감된 재원 이상을 초격차 전략기술과 도전적 연구에 재투입했습니다.</p>
+  <p id="finMetricNote" class="fin-note">혁신도전형 R&amp;D는 성실수행 인정 제도와 AI 마일스톤 점검을 결합해 도전성을 보장합니다.</p>
+  <p id="finMetricSource" class="fin-source">출처: <a data-fin-source href="https://www.msit.go.kr/" target="_blank" rel="noopener">혁신도전형 R&amp;D 추진전략</a></p>
+ </div>
+</dialog>
+
+<script src="assets/chart.umd.min.js"></script>
+<script>
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const slides=$$('.slide'),rail=$$('.rail button'),reduce=matchMedia('(prefers-reduced-motion: reduce)');let current=-1;
+Chart.defaults.font.family='NanumSquare, sans-serif';Chart.defaults.color='#88828f';Chart.defaults.font.size=14;Chart.defaults.animation.duration=reduce.matches?0:850;
+const pink='#e81768',wine='#920951',ink='#292a33',pale='#dcd8e0';
+const charts={};
+const base={responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:ink,padding:12,titleFont:{family:'NanumSquare'},bodyFont:{family:'NanumSquare'}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{font:{size:12}}},y:{beginAtZero:true,grid:{color:'#f0edf2'},border:{display:false},ticks:{font:{size:12}}}}};
+
+function makeFinance(mode='segments'){
+ const configs={
+  segments:{labels:['12대 전략기술','기초·인재양성','AI·디지털 R&D'],datasets:[{label:'2025년',data:[6.40,3.30,1.80],backgroundColor:pale,borderRadius:3},{label:'2026년',data:[7.80,3.65,2.45],backgroundColor:[ink,wine,pink],borderRadius:3}]},
+  profit:{labels:['혁신도전형(APRO) R&D'],datasets:[{label:'2025년',data:[1.05],backgroundColor:pale,borderRadius:3},{label:'2026년',data:[1.35],backgroundColor:pink,borderRadius:3}]},
+  cash:{labels:['글로벌 공동 R&D','AI 기획·데이터 인프라'],datasets:[{label:'2025년',data:[2.15,0.65],backgroundColor:pale,borderRadius:3},{label:'2026년',data:[2.40,1.10],backgroundColor:pink,borderRadius:3}]}
+ };
+ const options=structuredClone(base);options.plugins.legend={display:true,position:'bottom',align:'start',labels:{boxWidth:9,boxHeight:9,padding:20,font:{size:12}}};options.plugins.tooltip.callbacks={label:ctx=>`${ctx.dataset.label}: ${ctx.raw.toFixed(2)}조 원`};options.scales.y.ticks.callback=v=>v+'조';options.datasets={bar:{maxBarThickness:46}};options.scales.x.ticks.display=mode!=='segments';options.onClick=(event,elements,chart)=>window.financeDetails?.chartClick(event,elements,chart);
+ if(charts.finance){charts.finance.data=configs[mode];charts.finance.options=options;charts.finance.update('none');replayChart(charts.finance,true)}else charts.finance=new Chart($('#financeChart'),{type:'bar',data:configs[mode],options});
+}
+
+const stackData=[
+ {title:'부처별 칸막이를 넘는 국가 연구데이터 레이크하우스',text:'범부처 IRIS 과제 정보, NTIS 성과 데이터, 해외 논문(OpenAlex·PubMed)·특허(USPTO·KIPRIS)를 실시간 파이프라인으로 단일 지식베이스에 통합합니다.',scores:[98,85,84,80]},
+ {title:'과학기술 특화 초거대 언어모델(LLM)과 지식그래프 결합',text:'단순 키워드 검색의 환각(Hallucination)을 막기 위해 연구자·기술·특허·공급망의 인과관계를 구조화한 GraphRAG 아키텍처를 적용합니다.',scores:[86,99,88,82]},
+ {title:'AI 정책 코파일럿 기반 공백기술 도출 및 예타 모의실험',text:'글로벌 선도그룹 대비 국내 기술격차와 미개척 융합 영역을 자동 식별하고, 예산 투입 시나리오별 파급효과를 사전 시뮬레이션합니다.',scores:[82,88,98,86]},
+ {title:'스마트 동료평가(Peer-Review) 보조 및 자율실험실(SDL) 환류',text:'이해충돌 없는 최적 평가위원 매칭과 제안서 핵심 요약으로 평가 공정성을 높이고, 자율실험실의 실험 데이터를 다시 차기 기획에 반영합니다.',scores:[80,83,87,97]}
+];
+let selectedStack=0;
+function makeStack(){
+ const o=structuredClone(base);o.indexAxis='y';o.scales.x.max=100;o.plugins.tooltip.callbacks={label:c=>`정책 구현 핵심도: ${c.raw}점`};
+ charts.stack=new Chart($('#stackChart'),{type:'bar',data:{labels:['01 데이터 통합층','02 지식그래프·LLM','03 기획 시뮬레이션','04 현장평가·SDL'],datasets:[{data:stackData[selectedStack].scores,backgroundColor:[0,1,2,3].map(i=>i===selectedStack?pink:pale),borderRadius:4,barThickness:28}]},options:o});
+}
+function selectStack(i){
+ selectedStack=i;selectWithin('[data-stack]',$(`[data-stack="${i}"]`));
+ const d=stackData[i];$('#stackDetailTitle').textContent=d.title;$('#stackDetailText').textContent=d.text;
+ if(charts.stack){charts.stack.data.datasets[0].data=d.scores;charts.stack.data.datasets[0].backgroundColor=[0,1,2,3].map(j=>j===i?pink:pale);replayChart(charts.stack,true)}
+ $('#stackDetailBox').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('#stackDetailBox').classList.add('pulse'));
+}
+$$('[data-stack]').forEach(b=>{b.addEventListener('click',()=>selectStack(+b.dataset.stack));b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')selectStack(+b.dataset.stack)})});
+
+const infModes={
+ throughput:{chartTitle:'연구개발 단계별 후보물질·신소재 탐색 속도 배수 (전통 방식 = 1x)',data:[1,2.5,6.5,12],labels:['전통 문헌·수작업','일반 DB 검색','AI 기획 코파일럿','AI + 자율실험실(SDL)'],statLabel:'AI + 자율실험실 탐색 가속',statNum:12,unit:'x',sub:'신소재·신약·촉매 후보 발굴 속도 향상 배수',title:'추격형(Fast-Follower)에서 선도형(First-Mover) 기획으로',text:'선진국이 이미 발표한 로드맵을 뒤따라가던 기획 방식에서 벗어나, AI가 아직 논문으로 출판되지 않은 구조적 공백 영역을 먼저 찾아내 선점 투자를 가능케 합니다.'},
+ energy:{chartTitle:'학제간 융합·공백과제 발굴 적중률 배수 (기존 분과위원회 = 1x)',data:[1,1.4,2.2,2.8],labels:['단일 분과 기획','다부처 합동 기획','지식그래프 클러스터링','다중 에이전트 융합기획'],statLabel:'융합 공백기술 발굴 정밀도',statNum:2.8,unit:'x',sub:'기존 학문 분과 경계를 넘는 고파급력 과제 도출',title:'전문가 위원회의 인지적 한계와 분과 장벽 돌파',text:'소수 위원의 전공 분야에 치우치기 쉬운 전통 기획과 달리, AI 지식그래프는 이종 기술 간 숨겨진 인용·특허 결합 가능성을 전수 탐색합니다.'},
+ cost:{chartTitle:'연구자 및 기획위원의 행정·문서작업 소요 지수 (기존 = 100)',data:[100,78,48,28],labels:['수작업 동향·보고서','전자행정(IRIS 1.0)','AI 초안·요약 보조','에이전틱 R&D 행정'],statLabel:'연구·기획 행정부담 경감률',statNum:72,unit:'%',sub:'동향조사·중복검토·결과보고서 작성 시간 절감폭',title:'행정 서류에서 해방되어 본연의 창의적 기획에 집중',text:'국내외 동향 요약, 유사과제 대조표 작성, 규격화된 보고서 초안을 AI가 자동 생성하여 연구자와 정책담당자의 몰입도를 높입니다.'}
+};
+let selectedInf='throughput';
+function makeInference(){
+ const d=infModes[selectedInf],o=structuredClone(base);
+ o.plugins.tooltip.callbacks={label:c=>`${c.label}: ${c.raw}${selectedInf==='cost'?' (상대지수)':'x'}`};
+ charts.inference=new Chart($('#inferenceChart'),{type:'bar',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:[pale,pale,pink,wine],borderRadius:4,maxBarThickness:54}]},options:o});
+}
+function selectInf(mode){
+ if(!infModes[mode])return;selectedInf=mode;
+ selectWithin('[data-inf]',$(`[data-inf="${mode}"]`));
+ const d=infModes[mode];
+ $('#infChartTitle').textContent=d.chartTitle;$('#infStatLabel').textContent=d.statLabel;
+ $('#infStatNumber').dataset.count=String(d.statNum);$('#infStatNumber').textContent=String(d.statNum);$('#infStatUnit').textContent=d.unit;
+ $('#infStatSub').textContent=d.sub;$('#infInsightTitle').textContent=d.title;$('#infInsightText').textContent=d.text;
+ count($('#infStatNumber'),true);
+ if(charts.inference){charts.inference.data.datasets[0].data=d.data;replayChart(charts.inference,true)}
+}
+$$('[data-inf]').forEach(b=>b.addEventListener('click',()=>selectInf(b.dataset.inf)));
+
+const sovDetails=[
+ {title:'12대 국가전략기술 초격차 확보 (전략 투자 비중 48%)',text:'글로벌 기술패권 경쟁과 공급망 블록화에 대응하기 위해 AI 공급망 분석으로 핵심 병목 기술을 식별하고 범부처 대형 플래그십 프로젝트로 집중 지원합니다.'},
+ {title:'혁신도전형 ARPA-H 및 한계도전 R&D (전략 투자 비중 28%)',text:'성공률이 낮더라도 국가 난제를 해결할 파괴적 기술을 AI 시뮬레이션으로 선별하고, PM에게 예산·과제 변경의 높은 자율성을 부여합니다.'},
+ {title:'글로벌 공동연구 및 국가 AI 연구인프라 (전략 투자 비중 24%)',text:'AI 인용 네트워크 분석으로 세계 최고 연구그룹과의 실질적 매칭을 지원하고, 국내 연구계가 공용 활용하는 고성능 GPU·과학 파운데이션 모델을 구축합니다.'}
+];
+let selectedSov=0;
+function makeSovereign(){
+ const o=structuredClone(base);o.scales.y.max=60;o.scales.y.ticks.callback=v=>v+'%';
+ o.plugins.tooltip.callbacks={label:c=>`포트폴리오 비중: ${c.raw}%`};
+ charts.sovereign=new Chart($('#sovereignChart'),{type:'bar',data:{labels:['12대 전략기술 초격차','혁신도전형(APRO)','글로벌·AI 연구인프라'],datasets:[{data:[48,28,24],backgroundColor:[0,1,2].map(i=>i===selectedSov?pink:pale),borderRadius:4,maxBarThickness:64}]},options:o});
+}
+function selectSov(i){
+ selectedSov=i;selectWithin('[data-sov]',$(`[data-sov="${i}"]`));
+ $('#sovDetailTitle').textContent=sovDetails[i].title;$('#sovDetailText').textContent=sovDetails[i].text;
+ if(charts.sovereign){charts.sovereign.data.datasets[0].backgroundColor=[0,1,2].map(j=>j===i?pink:pale);replayChart(charts.sovereign,true)}
+ $('#sovDetailBox').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('#sovDetailBox').classList.add('pulse'));
+}
+$$('[data-sov]').forEach(b=>{b.addEventListener('click',()=>selectSov(+b.dataset.sov));b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')selectSov(+b.dataset.sov)})});
+
+const physDetails=[
+ {title:'1단계: 과학기술 파운데이션 모델의 인실리코(In-Silico) 가설 생성',text:'수억 개의 화합물·단백질·결정 구조를 사전 학습한 AI가 목표 물성을 만족하는 최적 후보군을 몇 시간 안에 스크리닝하여 실험 범위를 좁힙니다.'},
+ {title:'2단계: 로봇 자동화 기반 24시간 무인 고속 합성 및 정밀 측정',text:'AI가 설계한 실험 프로토콜에 따라 로봇 팔과 자동 분석 장비가 수천 건의 합성·배양·물성 측정을 오차 없이 수행하고 표준 데이터를 기록합니다.'},
+ {title:'3단계: 능동학습(Active Learning) 피드백 및 국가 R&D 정책 환류',text:'측정된 실험 결과(실패 데이터 포함)를 AI가 즉시 재학습해 다음 실험을 지시하며, 누적된 성과 지표는 국가 R&D 마일스톤 점검에 실시간 연동됩니다.'}
+];
+let selectedPhys=0;
+function makePhysical(){
+ const o=structuredClone(base);o.scales.y.max=50;o.scales.y.ticks.callback=v=>v+'개';
+ o.plugins.tooltip.callbacks={label:c=>`자율실험실·AI 연구거점: ${c.raw}개`};
+ charts.physical=new Chart($('#physicalChart'),{type:'line',data:{labels:['2022','2023','2024','2025','2026'],datasets:[{label:'SDL 연구거점',data:[4,9,18,31,45],borderColor:pink,backgroundColor:'#e8176815',fill:true,tension:.28,pointBackgroundColor:['#fff','#fff','#fff','#fff',pink],pointBorderColor:pink,pointRadius:5,borderWidth:2.5}]},options:o});
+}
+function selectPhys(i){
+ selectedPhys=i;selectWithin('[data-phys]',$(`[data-phys="${i}"]`));
+ $('#physDetailTitle').textContent=physDetails[i].title;$('#physDetailText').textContent=physDetails[i].text;
+ if(charts.physical)replayChart(charts.physical,true);
+ $('#physDetailBox').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('#physDetailBox').classList.add('pulse'));
+}
+$$('[data-phys]').forEach(b=>{b.addEventListener('click',()=>selectPhys(+b.dataset.phys));b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')selectPhys(+b.dataset.phys)})});
+
+function ensureCharts(n){
+ if(n===2&&!charts.finance)makeFinance();
+ if(n===3&&!charts.annualRevenue)makeAnnual();
+ if(n===4&&!charts.delivery){
+  let o=structuredClone(base);o.scales.y.suggestedMax=200;o.scales.y.ticks.callback=v=>v+'일';o.plugins.tooltip.callbacks={label:ctx=>`평균 기획 소요일: ${ctx.raw}일`};
+  charts.delivery=new Chart($('#deliveryChart'),{type:'line',data:{labels:['전통 수작업','DB 검색 보조','AI 코파일럿(Lv.2)','에이전틱 기획(Lv.3)'],datasets:[{label:'기획 소요일',data:[180,120,65,38],borderColor:pink,backgroundColor:'#e8176810',fill:true,tension:.25,pointBackgroundColor:['#fff','#fff','#fff',pink],pointBorderColor:pink,pointRadius:5,pointHoverRadius:8,borderWidth:2.5}]},options:o});
+  let e=structuredClone(base);e.scales.y.suggestedMax=100;e.scales.y.ticks.callback=v=>v+'%';e.plugins.tooltip.callbacks={label:ctx=>`검증·매칭 정확도: ${ctx.raw}%`};
+  charts.storage=new Chart($('#storageChart'),{type:'bar',data:{labels:['단순 키워드','분류코드 매칭','초기 텍스트마이닝','GraphRAG + LLM'],datasets:[{label:'정확도',data:[58.5,68.0,75.8,94.2],backgroundColor:[pale,pale,wine,pink],borderRadius:3,maxBarThickness:55}]},options:e});
+ }
+ if(n===5&&!charts.stack)makeStack();
+ if(n===9&&!charts.inference)makeInference();
+ if(n===10&&!charts.sovereign)makeSovereign();
+ if(n===11&&!charts.physical)makePhysical();
+}
+
+const numberFrames=new WeakMap();
+function countText(el,value){const decimals=+(el.dataset.decimals||0);return (el.dataset.countSign||'')+value.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals})}
+function finishCount(el){const frame=numberFrames.get(el);if(frame)cancelAnimationFrame(frame);numberFrames.delete(el);el.textContent=countText(el,+el.dataset.count);el.dataset.countProgress='1';delete el.dataset.running}
+function count(el,force=false){if(window.deckEditor?.active||el.closest("[data-text-override]"))return;if(reduce.matches){finishCount(el);return}if(el.dataset.running&&!force)return;const old=numberFrames.get(el);if(old)cancelAnimationFrame(old);const value=+el.dataset.count;el.dataset.running='true';el.dataset.countProgress='0';el.textContent=countText(el,0);const started=performance.now();function frame(now){const progress=Math.min((now-started)/1100,1);el.dataset.countProgress=progress.toFixed(3);el.textContent=countText(el,value*(1-(1-progress)**3));if(progress<1)numberFrames.set(el,requestAnimationFrame(frame));else finishCount(el)}numberFrames.set(el,requestAnimationFrame(frame))}
+
+function go(n,hash=true){
+ n=Math.max(0,Math.min(slides.length-1,n));if(n===current)return;
+ current=n;
+ slides.forEach((slide,i)=>{slide.hidden=i!==n;slide.classList.toggle('active',i===n);slide.setAttribute('aria-hidden',i!==n)});
+ rail.forEach((button,i)=>{if(i===n)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current')});
+ $('#currentPage').textContent=String(n+1).padStart(2,'0');$('#currentTitle').textContent=slides[n].dataset.title;
+ $('#prev').disabled=n===0;$('#next').disabled=n===slides.length-1;$('#progress').style.width=`${(n+1)/slides.length*100}%`;
+ if(hash)history.replaceState(null,'',`#${n+1}`);
+ ensureCharts(n);refreshReactiveNumbers(slides[n]);
+ Object.values(charts).forEach(chart=>{if(chart.canvas.closest('.slide')===slides[n]){chart.resize();chart.stop();chart.update('none')}});
+ document.body.classList.toggle('video-mode',n===1);
+ window.scrollTo({top:0,behavior:'instant'});
+ $('#live').textContent=`${n+1} / ${slides.length}장. ${slides[n].dataset.title}`;
+ syncVideoSlide(n===1);
+ window.brandFilm?.setActive(slides[n].classList.contains('brand-film-slide'));
+}
+$$('[data-go]').forEach(button=>button.addEventListener('click',()=>go(+button.dataset.go)));
+$('#prev').onclick=()=>go(current-1);$('#next').onclick=()=>go(current+1);
+document.addEventListener('keydown',event=>{
+ if(event.target.closest('[contenteditable="true"]'))return;
+ if($$('dialog[open]').length)return;
+ if(current===1&&['Enter',' '].includes(event.key)&&!event.target.closest('button,a,input,select,textarea')){event.preventDefault();if(!event.repeat)togglePromoVideo();return}
+ if(event.target.closest('button,a,input,select,textarea')&&[' ','Enter'].includes(event.key))return;
+ if(['ArrowRight','PageDown'].includes(event.key)){event.preventDefault();go(current+1)}
+ if(['ArrowLeft','PageUp'].includes(event.key)){event.preventDefault();go(current-1)}
+ if(event.key==='Home')go(0);if(event.key==='End')go(slides.length-1);
+});
+
+const promoVideo=$('#promoVideo'),videoStage=$('#videoStage');
+let videoSeekActive=false;
+function mediaTime(seconds){seconds=Math.max(0,Math.floor(seconds||0));return Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0')}
+function updateVideoControls(){
+ const duration=Number.isFinite(promoVideo.duration)?promoVideo.duration:15;
+ $('#videoSeek').max=String(duration);if(!videoSeekActive)$('#videoSeek').value=String(promoVideo.currentTime||0);
+ $('#videoTime').textContent=mediaTime(promoVideo.currentTime)+' / '+mediaTime(duration);
+ $('#videoToggle').textContent=promoVideo.ended?'↻ 다시 재생':promoVideo.paused?'▶ 재생':'Ⅱ 일시정지';
+ $('#videoToggle').setAttribute('aria-label',promoVideo.ended?'영상 다시 재생':promoVideo.paused?'영상 재생':'영상 일시정지');
+ const full=!!document.fullscreenElement;
+ $('#videoFullscreen').innerHTML=full?'전체화면 해제 <b aria-hidden="true">⛶</b>':'전체화면 <b aria-hidden="true">⛶</b>';
+ $('#videoFullscreen').setAttribute('aria-label',full?'영상 전체화면 해제':'영상 전체화면');
+}
+function playPromoVideo(restart=false){
+ if(current!==1||window.deckEditor?.active)return;
+ if(restart||promoVideo.ended)promoVideo.currentTime=0;
+ promoVideo.muted=true;
+ const play=promoVideo.play();if(play)play.catch(()=>{if(current===1)$('#videoPlayFallback').hidden=false});
+}
+function requestVideoFullscreen(){
+ if(document.fullscreenElement)return;
+ if(navigator.userActivation&&!navigator.userActivation.isActive)return;
+ if(videoStage.requestFullscreen)videoStage.requestFullscreen().catch(()=>{});
+}
+function syncVideoSlide(active){
+ promoVideo.autoplay=active;
+ if(active&&!window.deckEditor?.active){
+  $('#videoPlayFallback').hidden=true;playPromoVideo(true);videoStage.focus({preventScroll:true});
+ }else{
+  promoVideo.pause();$('#videoPlayFallback').hidden=true;
+  if(document.fullscreenElement===videoStage)document.exitFullscreen().catch(()=>{});
+ }
+ updateVideoControls();
+}
+function togglePromoVideo(){if(promoVideo.paused||promoVideo.ended)playPromoVideo();else promoVideo.pause()}
+$('#videoToggle').addEventListener('click',togglePromoVideo);
+$('#videoRestart').addEventListener('click',()=>playPromoVideo(true));
+$('#videoPlayFallback').addEventListener('click',()=>playPromoVideo());
+promoVideo.addEventListener('click',togglePromoVideo);
+promoVideo.addEventListener('play',()=>{if(current!==1){promoVideo.pause();return}$('#videoPlayFallback').hidden=true;updateVideoControls()});
+for(const event of ['pause','ended','loadedmetadata','timeupdate','durationchange'])promoVideo.addEventListener(event,updateVideoControls);
+$('#videoSeek').addEventListener('input',event=>{videoSeekActive=true;promoVideo.currentTime=+event.target.value;updateVideoControls()});
+$('#videoSeek').addEventListener('change',()=>{videoSeekActive=false;updateVideoControls()});
+$('#videoSeek').addEventListener('keydown',event=>event.stopPropagation());
+$('#videoFullscreen').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});else requestVideoFullscreen()});
+document.addEventListener('fullscreenchange',updateVideoControls);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)promoVideo.pause()});
+
+window.addEventListener('hashchange',()=>go((parseInt(location.hash.slice(1),10)||1)-1,false));
+function intent(selector,fn){$$(selector).forEach(b=>{b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')fn(b)});b.addEventListener('focus',()=>fn(b));b.addEventListener('click',()=>fn(b))})}
+function selectWithin(selector,b){$$(selector).forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',x===b)})}
+
+const financeInsights={
+ segments:['3대 핵심 부문별 투자','12대 국가전략기술 + AI 집중 투자','AI-반도체, 첨단바이오, 양자 등 3대 게임체인저와 12대 전략기술에 7.8조 원을 투입하며, 기획 단계부터 AI 데이터 분석을 의무화하고 있습니다.'],
+ profit:['혁신도전형(APRO) R&D','혁신도전형 예산 전년 대비 +28.6%','실패 가능성이 높더라도 성공 시 파급력이 막대한 임무 중심(DARPA형) R&D에 1.35조 원을 배정하고 AI 시뮬레이션으로 후보군을 발굴합니다.'],
+ cash:['글로벌·AI 기획인프라','글로벌 공동 R&D 및 AI 데이터 허브 확대','글로벌 선도그룹 협력에 2.40조 원, 범부처 AI 연구데이터 통합 및 고성능 컴퓨팅 인프라 구축에 1.10조 원을 투입해 연구 생태계를 고도화합니다.']
+};
+
+const roads=[
+ ['S','글로벌 기술호라이즌 스캐닝과 유망 공백기술 조기 포착','전 세계 프리프린트(arXiv·bioRxiv), 특허 출원, 글로벌 VC 투자 흐름을 AI로 실시간 추적해 급부상하는 태동기 기술을 선제 포착합니다.','12대 국가전략기술 분야별 조기경보 대시보드와 기술수준 평가 자동화'],
+ ['D','AI 정책 코파일럿 기반 지능형 RFP 설계 및 예타 시뮬레이션','기존 6개월 이상 소요되던 기술수요조사·RFP 작성·타당성 분석을 다중 에이전트 모의실험으로 4주 이내에 완성합니다.','예타 개편 이후 사전 타당성 AI 시뮬레이션의 표준 모형 확립'],
+ ['L','AI 파운데이션 모델 + 로봇 결합 자율실험실(SDL) 확산','신소재·바이오·화학·배터리 분야에서 AI가 가설을 세우고 무인 로봇이 24시간 실험하는 Self-Driving Lab 거점을 구축합니다.','출연연·대학 자율실험실 데이터 표준화와 민간 기업 개방 활용률'],
+ ['E','스마트 동료평가(Peer-Review) 보조 및 연구보안 검증','시맨틱 임베딩으로 최적 평가위원을 자동 추천해 이해충돌을 차단하고, 국가핵심기술 유출 위험 및 연구윤리를 사전 점검합니다.','평가위원 수용성 확보와 알고리즘 투명성(Explainable AI) 감사 체계']
+];
+let selectedRoad=0,roadSheetOpener=null,roadFocusReturning=false,roadHoverReady=true;
+const roadSheet=$('#roadSheet');
+const roadDetails=[
+ {status:'전주기 1단계 · 전략 탐색 (Horizon Scanning)',intro:'전문가 설문(델파이) 위주의 느린 기술예측에서 실시간 글로벌 데이터 스트림 분석으로 전환합니다.',facts:['전 세계 1.2억 건 이상의 논문·특허·표준·투자 데이터를 지식그래프로 실시간 연결합니다.','인용 급증 변곡점과 이종 학문 간 최초 결합 신호를 탐지해 유망 태동기 기술을 발굴합니다.'],checks:['국내 연구역량(인력·인프라)과 글로벌 유망기술 간의 매칭 정확도','기술수준평가 및 중장기 투자전략 수립 주기의 단축 효과','소수 신진 연구자의 창의적 아이디어가 누락되지 않도록 하는 다양성 지표'],note:'인기 키워드 쏠림을 방지하기 위해 피인용수뿐 아니라 구조적 독창성(Novelty Index) 지표를 함께 반영해야 합니다.',pages:'1단계 탐색'},
+ {status:'전주기 2단계 · 지능형 기획 및 예타 (Policy Design)',intro:'신규 R&D 사업 기획과 예산 배분의 객관성·신속성을 동시에 끌어올리는 단계입니다.',facts:['국가 R&D 과제 DB(IRIS·NTIS)와 대조해 기존 과제와의 유사·중복성을 문맥 단위로 정밀 검증합니다.','기술·경제·정책 에이전트가 다중 시나리오 시뮬레이션으로 적정 예산 규모와 RFP 요구사항을 제안합니다.'],checks:['기획 소요일수 단축(평균 6개월 → 1개월)에 따른 적시 투자 효과','부처 간 융합 과제의 중복 예산 절감액 규모','현장 PD·기획위원의 AI 초안 활용 만족도 및 수정 비율'],note:'AI 시뮬레이션은 의사결정 보좌 도구이며, 국가 전략적 우선순위 판단은 인간 기획위원회의 고유 권한입니다.',pages:'2단계 기획'},
+ {status:'전주기 3단계 · 자율실험 및 연구수행 (Autonomous Lab)',intro:'AI 모델과 실험실 로보틱스를 결합해 연구 수행 자체의 속도를 10배 이상 높이는 패러다임입니다.',facts:['소재·바이오·촉매 등 반복 실험 비중이 높은 분야에 AI 자율실험실(Self-Driving Lab) 구축을 확대합니다.','실험 실패 데이터까지 표준화된 포맷으로 수집해 국가 과학기술 파운데이션 모델을 지속 고도화합니다.'],checks:['전통 실험 방식 대비 신물질 발굴 기간 및 연구비 절감률','국산 연구장비·센서와 AI 제어 소프트웨어 간의 표준 인터페이스 확보','출연연-대학-기업 간 자율실험실 원격 공유(Cloud Lab) 가동률'],note:'고가의 로봇 장비 도입 자체보다 실험 데이터의 자동 기록 및 표준화 프로토콜 확립이 선행되어야 합니다.',pages:'3단계 수행'},
+ {status:'전주기 4단계 · 스마트 평가 및 환류 (Smart Evaluation)',intro:'연구자 행정부담은 줄이고 동료평가의 공정성과 전문성을 강화하는 평가 혁신입니다.',facts:['제안서와 전 세계 연구자 논문·실적을 임베딩 매칭해 이해충돌 없는 최적 평가위원 후보군을 자동 추출합니다.','수백 페이지의 연구계획서·결과보고서에서 핵심 혁신성과 달성도를 요약한 평가 브리프를 제공합니다.'],checks:['평가위원 매칭 이의신청 감소율 및 전문성 만족도','연구자의 평가 준비 및 결과보고서 작성 시간 절감률','민감 국가전략기술 제안서의 폐쇄망 보안 유지 및 유출 차단'],note:'AI가 점수를 직접 매기는 자동 채점은 지양하며, 인간 평가위원의 판단 근거를 보강하는 보조자(Co-Reviewer)로 운영합니다.',pages:'4단계 평가'}
+];
+function selectRoad(i){if(i===selectedRoad)return;selectedRoad=i;selectWithin('[data-road]',$(`[data-road="${i}"]`));const d=roads[i];$('.road-index').textContent=d[0];$('#roadTitle').textContent=d[1];$('#roadText').textContent=d[2];$('#roadNext').textContent=d[3];$('.road-detail').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('.road-detail').classList.add('pulse'))}
+function renderRoadSheet(i){selectRoad(i);const d=roadDetails[i];selectWithin('[data-sheet-road]',$(`[data-sheet-road="${i}"]`));$('#roadSheetLetter').textContent=roads[i][0];$('#roadSheetTitle').textContent=roads[i][1];$('#roadSheetStatus').textContent=d.status;$('#roadSheetIntro').textContent=d.intro;$('#roadSheetNote').textContent=d.note;$('#roadSheetPages').textContent=d.pages;for(const [id,items] of [['#roadSheetFacts',d.facts],['#roadSheetChecks',d.checks]]){$(id).replaceChildren(...items.map(text=>{const li=document.createElement('li');li.textContent=text;return li}))}$$('[data-road]').forEach(b=>b.setAttribute('aria-expanded',String(roadSheet.open&&+b.dataset.road===i)));$('#roadDetailOpen').setAttribute('aria-expanded',String(roadSheet.open));$('.road-sheet-scroll').scrollTop=0}
+function openRoadSheet(i,opener){roadSheetOpener=opener;renderRoadSheet(i);roadSheet.classList.remove('is-closing');roadSheet.showModal();$('.road-sheet-scroll').scrollTop=0;document.documentElement.classList.add('road-sheet-open');$('#roadDetailOpen').setAttribute('aria-expanded','true');$(`[data-road="${i}"]`).setAttribute('aria-expanded','true')}
+async function closeRoadSheet(){if(!roadSheet.open||roadSheet.classList.contains('is-closing'))return;roadSheet.classList.add('is-closing');if(!reduce.matches)await Promise.allSettled(roadSheet.getAnimations().map(animation=>animation.finished));roadFocusReturning=true;roadHoverReady=false;roadSheet.close();roadSheet.classList.remove('is-closing');document.documentElement.classList.remove('road-sheet-open');$$('[data-road],#roadDetailOpen').forEach(b=>b.setAttribute('aria-expanded','false'));if(roadSheetOpener?.isConnected)roadSheetOpener.focus({preventScroll:true});queueMicrotask(()=>roadFocusReturning=false)}
+$$('[data-road]').forEach(button=>{button.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&!roadSheet.open&&!roadFocusReturning&&roadHoverReady)selectRoad(+button.dataset.road)});button.addEventListener('pointermove',event=>{if(event.pointerType!=='touch'&&!roadSheet.open&&!roadFocusReturning){roadHoverReady=true;selectRoad(+button.dataset.road)}});button.addEventListener('focus',()=>{if(!roadSheet.open&&!roadFocusReturning)selectRoad(+button.dataset.road)});button.addEventListener('click',()=>openRoadSheet(+button.dataset.road,button))});
+$('#roadDetailOpen').addEventListener('click',event=>openRoadSheet(selectedRoad,event.currentTarget));
+$$('[data-sheet-road]').forEach(button=>button.addEventListener('click',()=>renderRoadSheet(+button.dataset.sheetRoad)));
+$('#roadSheetClose').addEventListener('click',closeRoadSheet);
+roadSheet.addEventListener('keydown',event=>{if(event.key!=='Tab')return;const items=[...roadSheet.querySelectorAll('button:not([disabled]),a[href]')],first=items[0],last=items[items.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}else if(!roadSheet.contains(document.activeElement)){event.preventDefault();(event.shiftKey?last:first).focus()}});
+roadSheet.addEventListener('cancel',event=>{event.preventDefault();closeRoadSheet()});
+roadSheet.addEventListener('click',event=>{if(event.target!==roadSheet)return;const r=roadSheet.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeRoadSheet()});
+
+const trims=[
+ ['현재 즉시 도입 단계 · RAG 기반','수백만 건의 논문·특허·과제 즉시 요약 및 중복성 검증','국내외 R&D 데이터베이스를 시맨틱 검색(RAG)으로 연결해 선행기술 조사 시간을 90% 줄이고 기존 과제와의 유사·중복 여부를 10분 안에 판별합니다.','보안이 요구되는 미공개 국가전략기술 기획서는 폐쇄망 온프레미스(On-Premise) LLM 환경에서 안전하게 처리해야 합니다.'],
+ ['핵심 확산 단계 · 지식그래프 & 시뮬레이션','공백기술 발굴 및 RFP·예타 다중 시나리오 설계','글로벌 기술 지식그래프에서 미개척 융합 영역을 도출하고, 기술성·경제성·정책 부합성을 사전 시뮬레이션해 기획 기간을 78% 단축합니다.','아래 범위 차트는 평균 180일 걸리던 기획 소요일수를 38일 이내로 단축하는 효과를 보여줍니다.'],
+ ['차세대 목표 단계 · 자율 가설 & SDL 연동','AI 에이전트 군단과 자율실험실(SDL)의 실시간 결합','AI 에이전트가 과학적 가설과 실험 계획을 스스로 수립하고 자율실험실의 실증 결과를 실시간 반영해 동적으로 과제를 진화시킵니다.','차세대 AI for Science 파운데이션 모델과 국가 연구데이터 표준 파이프라인 구축이 전제되어야 합니다.']
+];
+function acceleration(){if(charts.acceleration){charts.acceleration.resize();return}let o=structuredClone(base);o.indexAxis='y';o.plugins.tooltip={enabled:false};o.plugins.legend={display:false};o.scales={x:{min:0,max:180,ticks:{stepSize:45,callback:v=>v+'일',font:{size:11}},grid:{color:'#eee9ee'},border:{display:false}},y:{grid:{display:false},border:{display:false},ticks:{display:false}}};const bound={id:'bound',afterDraw(c){let {ctx,scales:{x,y}}=c;ctx.save();ctx.strokeStyle=pink;ctx.lineWidth=2;ctx.setLineDash([3,3]);let a=x.getPixelForValue(38);ctx.beginPath();ctx.moveTo(a,c.chartArea.top);ctx.lineTo(a,c.chartArea.bottom);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=wine;ctx.font='bold 14px NanumSquare';ctx.textAlign='left';ctx.fillText('기획 기간 180일 → 38일 (−78.9%)',x.getPixelForValue(44),y.getPixelForValue(0)+4);ctx.restore()}};charts.acceleration=new Chart($('#accelerationChart'),{type:'bar',data:{labels:['Co-Pilot'],datasets:[{data:[[0,38]],backgroundColor:'#e8176827',barThickness:22}]},options:o,plugins:[bound]})}
+let selectedTrim=0;const trimNames=['Level 1 · Assistant','Level 2 · Co-Pilot','Level 3 · Agentic'];const trimVisualCaptions=['문헌·특허 RAG · 유사중복 자동 검증','지식그래프 공백기술 발굴 · 예타 시뮬레이션','자율 가설 생성 · 자율실험실(SDL) 실시간 루프'];
+function selectTrim(value,animate=true){const i=Math.max(0,Math.min(2,Number(value))),changed=i!==selectedTrim;selectedTrim=i;const lever=$('#trimLever');lever.value=String(i);lever.setAttribute('aria-valuetext',trimNames[i]);lever.style.setProperty('--lever-fill',`${i*50}%`);selectWithin('[data-trim]',$(`[data-trim="${i}"]`));$$('[data-trim-image]').forEach(image=>image.hidden=+image.dataset.trimImage!==i);$('#trimVisual').dataset.activeTrim=String(i);$('#trimVisual').setAttribute('aria-label',trimNames[i]+' 아키텍처 이미지');$('#trimVisualTag').textContent=trimNames[i];$('#trimVisualCaption').textContent=trimVisualCaptions[i];$('#trimVisualSource').textContent='AI R&D PLANNING ARCHITECTURE · 단계별 스펙 비주얼';if(!changed)return;const d=trims[i];$('#trimName').textContent=trimNames[i];$('#trimLabel').textContent=d[0];$('#trimTitle').textContent=d[1];$('#trimText').textContent=d[2];$('#trimNote').textContent=d[3];$('#trimChartArea').hidden=i!==1;if(i===1){acceleration();replayChart(charts.acceleration,true)}if(animate&&!reduce.matches){$('#trimDetails').classList.remove('pulse');requestAnimationFrame(()=>$('#trimDetails').classList.add('pulse'))}}
+$$('[data-trim]').forEach(button=>button.addEventListener('click',()=>selectTrim(button.dataset.trim)));
+$('#trimLever').addEventListener('input',event=>selectTrim(event.target.value));
+$('#trimLever').addEventListener('keydown',event=>{let next=selectedTrim;if(['ArrowUp','ArrowRight'].includes(event.key))next++;else if(['ArrowDown','ArrowLeft'].includes(event.key))next--;else if(event.key==='Home')next=0;else if(event.key==='End')next=2;else if(event.key===' '){event.preventDefault();event.stopPropagation();return}else return;event.preventDefault();event.stopPropagation();selectTrim(next)});
+
+const techs=[
+ ['1.2억 건 논문·특허·과제를 연결해 기술 부상 신호와 공백 영역을 포착','키워드 빈도 분석을 넘어 기술 간 인용 구조와 공급망 관계를 지식그래프(GraphRAG)로 모델링하여 유망 융합 주제를 정밀 도출합니다.'],
+ ['기술·경제·정책 에이전트가 가상 토론으로 RFP와 예타를 사전 검증','서로 다른 역할(기술성·시장성·규제·예산)을 부여받은 AI 에이전트들이 기획안의 허점을 교차 검증하고 최적의 포트폴리오 대안을 도출합니다.'],
+ ['시맨틱 매칭으로 공정한 평가위원을 추천하고 기술유출을 사전 차단','연구계획서와 연구자 실적을 심층 매칭해 이해충돌 없는 최적 전문가를 배정하고, 국가핵심기술 보안 및 연구윤리 위반 가능성을 자동 점검합니다.']
+];
+let selectedTech=1,techModalOpener=null,techFocusReturning=false,techHoverReady=true;
+const techModal=$('#techModal');
+const techDetails=[
+ {letter:'G',title:'기술호라이즌 지식그래프',english:'GLOBAL TECH KNOWLEDGE GRAPH',intro:'전 세계 논문·특허·표준·기업 투자 데이터를 거대한 관계망(Graph)으로 연결해 미래 유망기술과 공급망 병목을 찾아내는 엔진입니다.',steps:[['멀티모달 데이터 수집','글로벌 논문(arXiv·PubMed), 특허, IRIS 국가 R&D 과제를 실시간 수집·정제합니다.'],['지식그래프 임베딩','기술·연구자·기관·핵심소재를 노드와 엣지로 연결해 구조적 관계를 학습합니다.'],['공백·융합기술 탐지','급격히 성장하는 클러스터와 아직 연결되지 않은 고잠재력 융합 공백을 시각화합니다.']],effect:'소수 전문가의 주관적 경험에 의존하던 기술수요조사를 전 세계 전수 데이터 기반으로 전환하여 선도형(First-Mover) 과제 발굴 확률을 높입니다.',application:'12대 국가전략기술 로드맵 수립, 기술수준평가, 글로벌 공동연구 파트너 기관 매칭에 직접 활용됩니다.',note:'핵심 구분: 단순 텍스트 요약이 아니라 기술 간의 위계와 선후행 인과관계를 계산하는 GraphRAG 기술이 핵심입니다.'},
+ {letter:'S',title:'다중 에이전트 기획 시뮬레이터',english:'MULTI-AGENT R&D SIMULATOR',intro:'기술성·경제성·정책부합성·규제리스크를 담당하는 복수의 AI 에이전트가 가상 위원회를 구성해 R&D 기획안을 입체적으로 검증하는 엔진입니다.',steps:[['초안 및 대안 생성','도출된 공백기술을 바탕으로 목표 사양(RFP)과 단계별 마일스톤 초안을 생성합니다.'],['다중 에이전트 적대적 검토','기술 에이전트, 예산 에이전트, 규제 에이전트가 상호 반론과 보완을 거듭합니다.'],['포트폴리오 최적 배분','기존 국가 R&D 사업과의 중복을 제거하고 예산 투입 대비 파급효과를 시뮬레이션합니다.']],effect:'기획 기간을 6개월에서 4주 이내로 단축하면서도, 예비타당성 검토 수준의 치밀한 논리와 대안 시나리오를 사전 확보합니다.',application:'대형 국가연구개발사업 사전 기획, 혁신도전형(APRO) 사업 타당성 점검, 부처 간 융합사업 설계에 적용됩니다.',note:'모든 시뮬레이션 근거 문헌과 수식은 투명하게 출처 링크가 부여되어 인간 기획위원(PD)이 즉시 검증할 수 있습니다.'},
+ {letter:'E',title:'AI 동료평가 & 연구보안 엔진',english:'SMART PEER-REVIEW & SECURITY',intro:'대규모 R&D 과제의 선정·중간·최종 평가 과정에서 전문성과 공정성을 높이고 국가전략기술 유출 리스크를 차단하는 엔진입니다.',steps:[['시맨틱 평가위원 매칭','제안서 핵심 개념과 전국 연구자 논문·특허 벡터를 대조해 최적 전문가를 추천합니다.'],['이해충돌 & 중복 필터링','사제·공저자·동일기관 등 이해충돌을 자동 배제하고 기수행 과제와의 중복률을 산출합니다.'],['평가 브리프 & 보안 점검','제안서의 독창성·실현성 핵심 요약본을 제공하고 해외 기술유출·윤리 리스크를 스캔합니다.']],effect:'평가위원 섭외의 공정성 논란을 원천 차단하고, 평가위원이 방대한 서류 대신 핵심 과학적 쟁점 토론에 집중할 수 있게 돕습니다.',application:'범부처 통합연구지원시스템(IRIS) 평가위원 후보단 추출, 연구보안 등급 분류, 연구비 부정사용 이상탐지에 적용됩니다.',note:'AI는 평가 점수를 결정하지 않으며, 인간 평가위원의 공정하고 깊이 있는 심사를 돕는 지능형 보조자 역할을 수행합니다.'}
+];
+function selectTech(i){if(i===selectedTech)return;selectedTech=i;selectWithin('[data-tech]',$(`[data-tech="${i}"]`));const d=techs[i];$('#techTitle').textContent=d[0];$('#techText').textContent=d[1];$('.tech-explain').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('.tech-explain').classList.add('pulse'))}
+function renderTechModal(i){selectTech(i);const d=techDetails[i];selectWithin('[data-modal-tech]',$(`[data-modal-tech="${i}"]`));$('#techModalLetter').textContent=d.letter;$('#techModalTitle').textContent=d.title;$('#techModalEnglish').textContent=d.english;$('#techModalIntro').textContent=d.intro;$('#techModalEffect').textContent=d.effect;$('#techModalApplication').textContent=d.application;$('#techModalNote').textContent=d.note;$('#techModalFlow').replaceChildren(...d.steps.map(([title,text])=>{const li=document.createElement('li'),strong=document.createElement('strong'),p=document.createElement('p');strong.textContent=title;p.textContent=text;li.append(strong,p);return li}));$$('[data-tech]').forEach(b=>b.setAttribute('aria-expanded',String(techModal.open&&+b.dataset.tech===i)));$('.tech-modal-scroll').scrollTop=0}
+function openTechModal(i,opener){techModalOpener=opener;renderTechModal(i);techModal.classList.remove('is-closing');techModal.showModal();$('.tech-modal-scroll').scrollTop=0;document.documentElement.classList.add('tech-modal-open');$(`[data-tech="${i}"]`).setAttribute('aria-expanded','true')}
+async function closeTechModal(){if(!techModal.open||techModal.classList.contains('is-closing'))return;techModal.classList.add('is-closing');if(!reduce.matches)await Promise.allSettled(techModal.getAnimations().map(a=>a.finished));techFocusReturning=true;techHoverReady=false;techModal.close();techModal.classList.remove('is-closing');document.documentElement.classList.remove('tech-modal-open');$$('[data-tech]').forEach(b=>b.setAttribute('aria-expanded','false'));if(techModalOpener?.isConnected)techModalOpener.focus({preventScroll:true});queueMicrotask(()=>techFocusReturning=false)}
+$$('[data-tech]').forEach(button=>{button.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&!techModal.open&&!techFocusReturning&&techHoverReady)selectTech(+button.dataset.tech)});button.addEventListener('pointermove',event=>{if(event.pointerType!=='touch'&&!techModal.open&&!techFocusReturning){techHoverReady=true;selectTech(+button.dataset.tech)}});button.addEventListener('focus',()=>{if(!techModal.open&&!roadFocusReturning)selectTech(+button.dataset.tech)});button.addEventListener('click',()=>openTechModal(+button.dataset.tech,button))});
+$$('[data-modal-tech]').forEach(button=>button.addEventListener('click',()=>renderTechModal(+button.dataset.modalTech)));
+$('#techModalClose').addEventListener('click',closeTechModal);
+techModal.addEventListener('cancel',event=>{event.preventDefault();closeTechModal()});
+techModal.addEventListener('click',event=>{if(event.target!==techModal)return;const r=techModal.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeTechModal()});
+techModal.addEventListener('keydown',event=>{if(event.key!=='Tab')return;const items=[...techModal.querySelectorAll('button:not([disabled]),a[href]')],first=items[0],last=items[items.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}else if(!techModal.contains(document.activeElement)){event.preventDefault();(event.shiftKey?last:first).focus()}});
+
+$('#closingSources').onclick=()=>{$('#sources').showModal()};$('#sourceClose').onclick=()=>$('#sources').close();$('#sources').addEventListener('click',e=>{if(e.target===$('#sources')){let r=$('#sources').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('#sources').close()}});$('#fullscreen').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{}};
+reduce.addEventListener('change',()=>{Chart.defaults.animation.duration=reduce.matches?0:850;if(reduce.matches)$$('[data-count]').forEach(finishCount);Object.values(charts).forEach(c=>{c.stop();c.options.animation=reduce.matches?false:{duration:1100};c.canvas.dataset.filling='false';c.canvas.dataset.fillProgress='1';c.update('none')})});
+
+const annualData=[
+ {"year":"2024","revenue":26.50,"datacenter":5.00,"grossProfit":5.00,"operatingIncome":2.95,"netIncome":1.20,"operatingMargin":15.0,"operatingCashFlow":1.80,"capex":0.85,"freeCashFlow":0.45,"cashInvestments":180},
+ {"year":"2025","revenue":27.90,"datacenter":6.40,"grossProfit":6.40,"operatingIncome":3.30,"netIncome":1.80,"operatingMargin":38.0,"operatingCashFlow":2.15,"capex":1.05,"freeCashFlow":0.65,"cashInvestments":95},
+ {"year":"2026","revenue":29.60,"datacenter":7.80,"grossProfit":7.80,"operatingIncome":3.65,"netIncome":2.45,"operatingMargin":65.0,"operatingCashFlow":2.40,"capex":1.35,"freeCashFlow":1.10,"cashInvestments":38}
+];
+let annualSelected=2,annualFinanceMode='profit';
+const annualFinanceGroups={profit:{title:'3대 중점 투자',keys:['grossProfit','operatingIncome','netIncome'],labels:['12대 전략기술','기초·인재양성','AI·디지털 R&D'],max:10},cash:{title:'혁신·글로벌 투자',keys:['operatingCashFlow','capex','freeCashFlow'],labels:['글로벌 공동 R&D','혁신도전형 R&D','AI 기획·데이터허브'],max:4}};
+const annualFinancialLabels={id:'annualFinancialLabels',afterDatasetsDraw(chart){const {ctx}=chart;ctx.save();ctx.font='bold 15px NanumSquare';ctx.fillStyle=wine;ctx.textAlign='left';ctx.textBaseline='middle';chart.getDatasetMeta(0).data.forEach((bar,i)=>ctx.fillText(chart.data.datasets[0].data[i].toFixed(2)+'조',bar.x+8,bar.y));ctx.restore()}};
+function updateAnnualFinancial(){
+ const d=annualData[annualSelected],g=annualFinanceGroups[annualFinanceMode],values=g.keys.map(k=>d[k]);
+ $('#annualFinancialTitle').textContent=d.year+'년 '+g.title;
+ $('#annualLinkedYear').textContent=d.year+'년 지표 선택';
+ $('#annualFinancialChart').setAttribute('aria-label',d.year+'년 '+g.labels.map((label,i)=>label+' '+d[g.keys[i]].toFixed(2)+'조 원').join(', '));
+ $('#annualFinancialSummaryLabel').textContent=annualFinanceMode==='profit'?'IRIS AI 기획·평가 적용 과제율':'신규 사업 평균 기획 소요일';
+ $('#annualFinancialSummaryValue').innerHTML=annualFinanceMode==='profit'?d.operatingMargin.toFixed(1)+'<small>%</small>':d.cashInvestments+'<small>일</small>';
+ $('#annualFinancialNote').textContent=annualFinanceMode==='profit'?'범부처 통합연구지원시스템(IRIS)에 AI 유사·중복 검증 및 평가위원 매칭이 단계적으로 확대됩니다.':'AI 호라이즌 스캐닝과 예타 개편이 결합되어 기획 소요일수가 180일에서 38일로 단축됩니다.';
+ $('#annualYearNote').textContent=[
+  '2024년은 비효율·관행적 사업을 정비하고 글로벌 R&D와 국가전략기술 중심의 투자 체질 개선을 시작한 해입니다.',
+  '2025년은 R&D 예산을 27.9조 원으로 복원하고 3대 게임체인저와 혁신도전형 사업을 본격 확대한 해입니다.',
+  '2026년은 전략기술·AI 투자가 7.8조 원으로 확대되고, AI 기반 공백기술 발굴과 상시 기획 체계가 본격 가동되는 해입니다.'
+ ][annualSelected];
+ if(charts.annualFinancial){const c=charts.annualFinancial;c.data.labels=g.labels;c.data.datasets[0].data=values;c.options.scales.x.max=g.max;replayChart(c,true)}else{
+  const o=structuredClone(base);o.indexAxis='y';o.layout={padding:{right:72}};o.scales={x:{beginAtZero:true,max:g.max,ticks:{stepSize:2,font:{size:12}},grid:{color:'#f0edf2'},border:{display:false}},y:{ticks:{font:{size:14},color:ink},grid:{display:false},border:{display:false}}};o.plugins.tooltip.callbacks={label:ctx=>ctx.label+': '+ctx.raw.toFixed(2)+'조 원'};
+  charts.annualFinancial=new Chart($('#annualFinancialChart'),{type:'bar',data:{labels:g.labels,datasets:[{data:values,backgroundColor:pink,borderColor:wine,borderWidth:1,barThickness:23}]},options:o,plugins:[annualFinancialLabels]});
+ }
+ refreshReactiveNumbers($('.annual-financial-area'),true);
+}
+$$('[data-annual-finance]').forEach(button=>button.addEventListener('click',()=>{if(annualFinanceMode===button.dataset.annualFinance)return;annualFinanceMode=button.dataset.annualFinance;selectWithin('[data-annual-finance]',button);updateAnnualFinancial()}));
+const annualLabels={id:'annualLabels',afterDatasetsDraw(c){const {ctx}=c;ctx.save();ctx.textAlign='center';ctx.textBaseline='bottom';ctx.font='bold 14px NanumSquare';c.getDatasetMeta(0).data.forEach((bar,i)=>{ctx.fillStyle=i===annualSelected?wine:'#88828f';const value=c.data.datasets[0].data[i].toFixed(2)+'조';ctx.fillText(value,bar.x,bar.y-8)});ctx.restore()}};
+function makeAnnual(){
+ let r=structuredClone(base);r.layout={padding:{top:22}};r.scales.y.max=35;r.scales.y.ticks.callback=v=>v+'조';r.plugins.tooltip.callbacks={label:c=>`정부 R&D 총예산: ${annualData[c.dataIndex].revenue.toFixed(2)}조 원`};r.datasets={bar:{maxBarThickness:66}};
+ charts.annualRevenue=new Chart($('#annualRevenueChart'),{type:'bar',data:{labels:annualData.map(d=>d.year+'년'),datasets:[{label:'정부 R&D 총예산',data:annualData.map(d=>d.revenue),backgroundColor:annualData.map((_,i)=>i===annualSelected?pink:pale),borderRadius:3}]},options:r,plugins:[annualLabels]});
+ let p=structuredClone(base);p.layout={padding:{top:22}};p.scales.y.max=10;p.scales.y.ticks.callback=v=>v+'조';p.plugins.tooltip.callbacks={label:c=>`전략기술·AI R&D: ${annualData[c.dataIndex].datacenter.toFixed(2)}조 원`};p.datasets={bar:{maxBarThickness:66}};
+ charts.annualProduction=new Chart($('#annualProductionChart'),{type:'bar',data:{labels:annualData.map(d=>d.year+'년'),datasets:[{label:'전략기술·AI 투자',data:annualData.map(d=>d.datacenter),backgroundColor:annualData.map((_,i)=>i===annualSelected?wine:pale),borderRadius:3}]},options:p,plugins:[annualLabels]});
+ updateAnnualFinancial();
+}
+function replayAnnualSelection(chart,index){
+ if(!chart)return;const canvas=chart.canvas;chart.stop();chart.update('none');canvas.dataset.replayIndex=String(index);
+ if(reduce.matches){chart.options.animation=false;canvas.dataset.fillProgress='1';canvas.dataset.filling='false';return}
+ canvas.dataset.filling='true';canvas.dataset.fillProgress='0';canvas.dataset.replayCount=String(+(canvas.dataset.replayCount||0)+1);
+ const started=performance.now();
+ chart.options.animation={duration:0,onProgress:()=>{canvas.dataset.fillProgress=Math.min(1,(performance.now()-started)/1100).toFixed(3)},onComplete:()=>{canvas.dataset.fillProgress='1';canvas.dataset.filling='false'}};
+ chart.options.transitions.annualSelection={animation:{duration:0},animations:{y:{type:'number',duration:context=>context.dataIndex===index?1100:0,easing:'easeOutCubic',from:context=>context.dataIndex===index?context.chart.scales.y.getBasePixel():undefined}}};
+ chart.update('annualSelection');
+}
+function annualChange(value,prev){let pct=(value/prev-1)*100;return '전년 대비 '+(pct>=0?'+':'−')+Math.abs(pct).toFixed(1)+'%'}
+intent('[data-year]',b=>{let i=+b.dataset.year;if(i===annualSelected)return;annualSelected=i;selectWithin('[data-year]',b);let d=annualData[i],prev=annualData[i-1];$('#annualYearLabel').textContent=d.year+'년 정부 R&D';$('#annualProductionLabel').textContent=d.year+'년 전략기술·AI';$('#annualRevenueValue').innerHTML=d.revenue.toFixed(2)+'<small>조 원</small>';$('#annualProductionValue').innerHTML=d.datacenter.toFixed(2)+'<small>조 원</small>';$('#annualRevenueChange').textContent=prev?annualChange(d.revenue,prev.revenue):'구조개편 기준 연도';$('#annualProductionChange').textContent=prev?annualChange(d.datacenter,prev.datacenter):'구조개편 기준 연도';refreshReactiveNumbers($('.annual-slide'),true);updateAnnualFinancial();if(charts.annualRevenue){charts.annualRevenue.data.datasets[0].backgroundColor=annualData.map((_,j)=>j===i?pink:pale);charts.annualProduction.data.datasets[0].backgroundColor=annualData.map((_,j)=>j===i?wine:pale);replayAnnualSelection(charts.annualRevenue,i);replayAnnualSelection(charts.annualProduction,i)}});
+
+const reactiveNumbers='.big-stat,.op-head strong,.annual-metric strong,.growth,.delta,#financeInsightTitle,.caution strong,#annualRevenueChange,#annualProductionChange,#annualFinancialSummaryValue';
+function prepareReactiveNumber(target){if(target.hasAttribute("data-text-override")){target.classList.remove("replay-number");target.removeAttribute("aria-label");return []}if(!target.querySelector('[data-count]')){const walker=document.createTreeWalker(target,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){if(node.parentElement.closest('small'))continue;const match=node.textContent.match(/([+−-]?)(\d[\d,]*(?:\.\d+)?)/);if(!match)continue;const number=document.createElement('span');number.dataset.count=match[2].replaceAll(',','');number.dataset.decimals=(match[2].split('.')[1]||'').length;if(match[1])number.dataset.countSign=match[1];number.textContent=match[0];const before=node.textContent.slice(0,match.index),after=node.textContent.slice(match.index+match[0].length);node.replaceWith(document.createTextNode(before),number,document.createTextNode(after));break}}const counters=[...target.querySelectorAll('[data-count]')];if(counters.length){target.classList.add('replay-number');target.tabIndex=0;const label=target.cloneNode(true);label.querySelectorAll('[data-count]').forEach(el=>el.textContent=countText(el,+el.dataset.count));target.setAttribute('aria-label',label.textContent);counters.forEach(el=>el.setAttribute('aria-hidden','true'))}else{target.classList.remove('replay-number');target.removeAttribute('tabindex');target.removeAttribute('aria-label')}return counters}
+function refreshReactiveNumbers(root,animate=false){root.querySelectorAll(reactiveNumbers).forEach(target=>prepareReactiveNumber(target).forEach(el=>{if(animate)count(el,true)}))}
+function replayChart(chart,force=false){if(!chart)return;const canvas=chart.canvas;if(reduce.matches){chart.stop();chart.options.animation=false;canvas.dataset.fillProgress='1';canvas.dataset.filling='false';chart.update('none');return}if(canvas.dataset.filling==='true'&&!force)return;chart.stop();canvas.dataset.filling='true';canvas.dataset.fillProgress='0';canvas.dataset.replayCount=String(+(canvas.dataset.replayCount||0)+1);chart.options.animation={duration:1100,easing:'easeOutCubic',onProgress:animation=>{canvas.dataset.fillProgress=(animation.currentStep/Math.max(1,animation.numSteps)).toFixed(3)},onComplete:()=>{canvas.dataset.fillProgress='1';canvas.dataset.filling='false'}};chart.reset();chart.update()}
+function replayOnIntent(target,replay){target.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')replay()});target.addEventListener('focus',replay);target.addEventListener('click',replay);target.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();replay()}})}
+$$(reactiveNumbers).forEach(target=>{prepareReactiveNumber(target);replayOnIntent(target,()=>prepareReactiveNumber(target).forEach(el=>count(el)))});
+$$('canvas').forEach(canvas=>{canvas.classList.add('replay-chart');canvas.tabIndex=0;canvas.setAttribute('aria-description','마우스를 올리거나 Enter 키를 눌러 채워지는 효과를 다시 볼 수 있습니다.');replayOnIntent(canvas,()=>replayChart(Chart.getChart(canvas)))});
+
+$('#startPresentation').addEventListener('click',()=>go(1));
+window.deckPresentation={editModeChanged(active){
+ window.brandFilm?.editModeChanged(active);
+ if(active){promoVideo.pause();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});$$('[data-count]').forEach(finishCount);Object.values(charts).forEach(chart=>{chart.stop();chart.update('none')})}
+ else if(current===1)syncVideoSlide(true);
+ else refreshReactiveNumbers(slides[current]);
+}};
+
+go((parseInt(location.hash.slice(1),10)||1)-1,false);
+document.fonts.ready.then(()=>Object.values(charts).forEach(chart=>chart.update('none')));
+
+</script>
+<script>
+(() => {
+ 'use strict';
+ const source='https://www.msit.go.kr/';
+ const businesses=[
+  {name:'12대 전략기술',now:780,prior:640,ytd:780,scope:'반도체·디스플레이, 이차전지, 첨단모빌리티, 차세대원자력, 첨단바이오, 우주항공·해양, 수소, 사이버보안, 인공지능, 차세대통신, 첨단로봇·제조, 양자 등 12대 분야입니다.',change:'글로벌 특허·논문 지식그래프로 공급망 핵심 병목 기술을 식별하고, 부처 간 분절된 과제를 임무 중심 대형 프로젝트로 통합 기획합니다.',composition:'3대 게임체인저(AI-반도체·첨단바이오·양자)에 약 3.5조 원 집중 배정'},
+  {name:'기초·인재양성',now:365,prior:330,ytd:365,scope:'개인기초연구, 집단연구센터(SRC·ERC), 신진연구자 정착 지원 및 이공계 석·박사 연구장려금 사업입니다.',change:'수월성 중심의 창의·도전적 기초연구를 확대하고, AI가 아직 개척되지 않은 미지의 기초과학 질문을 탐색하도록 돕습니다.',composition:'리더·중견·신진 개인기초연구 및 대학 연구거점 지원'},
+  {name:'AI·디지털 R&D',now:245,prior:180,ytd:245,scope:'차세대 범용인공지능(AGI), 경량·저전력 AI 반도체(NPU·PIM), AI 안전연구소 및 분야별 AI for Science 플랫폼 구축 사업입니다.',change:'단순 AI 알고리즘 개발을 넘어 바이오·소재·제조·공공 전 영역에 과학기술 파운데이션 모델을 확산하는 데 집중합니다.',composition:'AI 파운데이션·컴퓨팅 인프라 및 산업·과학 AI 융합 R&D'}
+ ];
+ const modes=['segments','profit','cash'];
+ let mode='segments',selectedBusiness=0;
+ const dialogs=[$('#financeRevenueDrawer'),$('#financeSectorSheet'),$('#financeMetricModal')];
+ const openers=new WeakMap(),detailCharts={};
+ const jo=v=>(v/100).toFixed(2)+'조 원';
+ const percent=v=>v.toFixed(1)+'%';
+ function show(dialog,opener){
+  if(dialog.open)return;
+  openers.set(dialog,opener);dialog.classList.remove('is-closing');dialog.showModal();
+  document.documentElement.classList.add('finance-detail-open');
+  dialog.querySelector('.fin-scroll').scrollTop=0;
+  if(dialog.id==='financeRevenueDrawer')$('#financeRevenueTrigger').setAttribute('aria-expanded','true');
+ }
+ async function close(dialog){
+  if(!dialog.open||dialog.classList.contains('is-closing'))return;
+  dialog.classList.add('is-closing');
+  if(!reduce.matches)await Promise.allSettled(dialog.getAnimations().map(a=>a.finished));
+  dialog.close();dialog.classList.remove('is-closing');
+  if(!dialogs.some(d=>d.open))document.documentElement.classList.remove('finance-detail-open');
+  $('#financeRevenueTrigger').setAttribute('aria-expanded','false');
+  const opener=openers.get(dialog);if(opener?.isConnected)opener.focus({preventScroll:true});
+ }
+ dialogs.forEach(dialog=>{
+  dialog.querySelector('[data-fin-close]').addEventListener('click',()=>close(dialog));
+  dialog.addEventListener('cancel',event=>{event.preventDefault();close(dialog)});
+  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close(dialog)});
+  dialog.addEventListener('close',()=>{if(!dialogs.some(d=>d.open))document.documentElement.classList.remove('finance-detail-open')});
+ });
+ function draw(id,type,data,options){
+  if(detailCharts[id])detailCharts[id].destroy();
+  detailCharts[id]=new Chart($('#'+id),{type,data,options});
+ }
+ function detailOptions(){
+  const o=structuredClone(base);o.plugins.tooltip.callbacks={label:c=>`${c.dataset.label||c.label}: ${Array.isArray(c.raw)?Math.abs(c.raw[1]-c.raw[0]).toFixed(2):Number(c.raw).toFixed(2)}조 원`};
+  o.scales.y.ticks.callback=v=>v+'조';o.datasets={bar:{maxBarThickness:64}};
+  return o;
+ }
+ function openRevenue(opener){
+  show($('#financeRevenueDrawer'),opener);
+  const o=detailOptions();o.plugins.legend={display:true,position:'bottom',labels:{boxWidth:10,font:{size:12}}};o.scales.x.stacked=true;o.scales.y.stacked=true;
+  draw('financeYtdChart','bar',{labels:['2025년 예산','2026년 예산'],datasets:[{label:'3대 중점(전략·기초·AI)',data:[11.50,13.90],backgroundColor:pink,borderRadius:3},{label:'출연연·국방·기타 R&D',data:[16.40,15.70],backgroundColor:pale,borderRadius:3}]},o);
+ }
+ function openBusiness(index,opener){
+  selectedBusiness=Math.max(0,Math.min(2,index));const d=businesses[selectedBusiness],dialog=$('#financeSectorSheet');
+  dialog.dataset.business=String(selectedBusiness);
+  $$('[data-fin-business]').forEach(b=>{const selected=+b.dataset.finBusiness===selectedBusiness;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected))});
+  $('#finSectorTitle').textContent=d.name+' 투자 자세히 보기';$('#finSectorRevenue').textContent=jo(d.now);$('#finSectorYtd').textContent=jo(d.prior);$('#finSectorShare').textContent=percent(d.now/2960*100);
+  $('#finSectorScope').textContent=d.scope;$('#finSectorChange').textContent=d.change;$('#finSectorComposition').textContent=d.composition;
+  $('#finSectorGrowth').textContent='전년 대비 +'+percent((d.now/d.prior-1)*100);
+  $('#financeBusinessChart').setAttribute('aria-label',`${d.name}: 2025년 ${jo(d.prior)}, 2026년 ${jo(d.now)}`);
+  if(!dialog.open)show(dialog,opener);
+  const o=detailOptions();
+  draw('financeBusinessChart','bar',{labels:['2025년','2026년'],datasets:[{label:d.name,data:[d.prior/100,d.now/100],backgroundColor:[pale,pink],borderRadius:4}]},o);
+ }
+ function openMetric(opener){
+  const cash=mode==='cash',dialog=$('#financeMetricModal');dialog.dataset.metric=cash?'cash':'profit';
+  $('#finMetricTitle').textContent=cash?'글로벌·AI 기획인프라 자세히 보기':'혁신도전형 R&D 자세히 보기';
+  $('#finMetricLead').textContent=cash?'글로벌 선도그룹과의 공동연구 및 범부처 AI 데이터·컴퓨팅 인프라 투자 내역입니다.':'관행적·저효율 사업을 구조조정하고 전략기술·혁신도전형 과제로 재원을 재배분한 과정입니다.';
+  $('#finMetricValue').textContent=cash?'3.50조 원':'1.35조 원';
+  $('#finMetricValueLabel').textContent=cash?'2026년 글로벌 R&D + AI 데이터 허브':'2026년 혁신도전형(APRO) R&D';
+  $('#finMetricCompare').textContent=cash?'글로벌 공동연구 2.40조 + AI 기획·인프라 1.10조 원':'전년 1.05조 원 대비 +28.6% · PM에게 전권을 부여하는 DARPA형 기획 확대';
+  $('#finMetricFormula').textContent=cash?'2.40조(글로벌 협력) + 1.10조(AI 연구인프라) = 3.50조 원':'기존 27.9조 − 유사중복 정비 1.2조 + 전략증액 2.9조 = 29.6조 원';
+  $('#finMetricDetail').textContent=cash?'AI 인용·특허 네트워크 분석으로 해외 최정상 연구진을 매칭하고, 국가 연구데이터 레이크하우스와 공용 GPU 클러스터를 확충합니다.':'AI 기반 유사·중복성 검증과 성과 분석을 통해 한계 사업을 정비하고, 절감된 재원 이상을 초격차 전략기술과 도전적 연구에 재투입했습니다.';
+  $('#finMetricNote').textContent=cash?'글로벌 R&D는 단순 인력 교류가 아닌 핵심 원천기술 공동 확보에 초점을 맞춥니다.':'혁신도전형 R&D는 성실수행 인정 제도와 AI 마일스톤 점검을 결합해 도전성을 보장합니다.';
+  $('#finMetricChartTitle').textContent=cash?'글로벌 협력과 AI 연구인프라 결합':'예산 지출 효율화에서 전략 재투자까지';
+  show(dialog,opener);
+  const o=detailOptions();
+  const labels=cash?['글로벌 공동 R&D','AI 기획·데이터허브','합계 투자액']:['2025년 기저예산','유사중복·관행 정비','전략·AI 신규증액','2026년 총예산'];
+  const values=cash?[[0,2.40],[2.40,3.50],[0,3.50]]:[[0,27.9],[26.7,27.9],[26.7,29.6],[0,29.6]];
+  $('#financeBridgeChart').setAttribute('aria-label',labels.join(', '));
+  draw('financeBridgeChart','bar',{labels,datasets:[{data:values,backgroundColor:cash?[wine,pale,pink]:[wine,pale,pink,ink],borderRadius:3}]},o);
+ }
+ function selectMode(value){
+  const index=Math.max(0,Math.min(2,Number(value)));mode=modes[index];
+  $('#financeLever').value=String(index);$('#financeLever').style.setProperty('--finance-fill',index*50+'%');$('#financeLever').setAttribute('aria-valuetext',financeInsights[mode][0]);
+  selectWithin('[data-finance]',$(`[data-finance="${mode}"]`));makeFinance(mode);
+  $('#financeChartTitle').textContent=financeInsights[mode][0];$('#financeInsightTitle').textContent=financeInsights[mode][1];$('#financeInsight').textContent=financeInsights[mode][2];prepareReactiveNumber($('#financeInsightTitle'));
+  $('#financeBusinessLabels').hidden=mode!=='segments';$('#financeMetricOpen').hidden=mode==='segments';
+  $('#financeChartHint').textContent=mode==='segments'?'부문 이름이나 막대를 눌러 세부 투자 내역을 확인하세요.':'그래프를 누르면 예산 재배분과 세부 내용이 열립니다.';
+  $('#financeChart').setAttribute('aria-label',financeInsights[mode][0]);
+ }
+ window.financeDetails={chartClick(event,elements,chart){
+  const a=chart.chartArea;if(!a||event.x<a.left||event.x>a.right||event.y<a.top||event.y>a.bottom)return;
+  if(mode==='segments'){const index=elements[0]?.index??Math.min(2,Math.max(0,Math.floor((event.x-a.left)/(a.right-a.left)*3)));openBusiness(index,chart.canvas)}else openMetric(chart.canvas);
+ }};
+ $('#financeRevenueTrigger').addEventListener('click',event=>openRevenue(event.currentTarget));
+ $('#financeRevenueTrigger').addEventListener('keydown',event=>{if(window.deckEditor?.active&&event.target.closest('[contenteditable="true"]'))return;if(['Enter',' '].includes(event.key)){event.preventDefault();event.stopImmediatePropagation();openRevenue(event.currentTarget)}},true);
+ $$('[data-fin-business-open]').forEach(b=>b.addEventListener('click',()=>openBusiness(+b.dataset.finBusinessOpen,b)));
+ $$('[data-fin-business]').forEach(b=>b.addEventListener('click',()=>openBusiness(+b.dataset.finBusiness,openers.get($('#financeSectorSheet')))));
+ $$('[data-finance]').forEach(b=>b.addEventListener('click',()=>selectMode(modes.indexOf(b.dataset.finance))));
+ $('#financeLever').addEventListener('input',event=>selectMode(event.target.value));
+ $('#financeLever').addEventListener('keydown',event=>{let i=modes.indexOf(mode);if(['ArrowRight','ArrowUp'].includes(event.key))i++;else if(['ArrowLeft','ArrowDown'].includes(event.key))i--;else if(event.key==='Home')i=0;else if(event.key==='End')i=2;else return;event.preventDefault();event.stopPropagation();selectMode(i)});
+ $('#financeMetricOpen').addEventListener('click',event=>openMetric(event.currentTarget));
+ $('#financeChart').setAttribute('role','button');$('#financeChart').setAttribute('aria-haspopup','dialog');
+ $('#financeChart').addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)){event.preventDefault();if(mode==='segments')openBusiness(selectedBusiness,event.currentTarget);else openMetric(event.currentTarget)}});
+ dialogs.forEach(dialog=>dialog.querySelectorAll('[data-fin-source]').forEach(a=>a.href=source));
+ if(charts.finance){charts.finance.options.onClick=window.financeDetails.chartClick;charts.finance.options.scales.x.ticks.display=false;charts.finance.update('none')}
+})();
+</script>
+<script>
+(() => {
+ function initializeEditor(){
+ 'use strict';
+ const q=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)];
+ let embedded={};try{embedded=JSON.parse(q('#savedTextEdits').textContent)}catch{}
+ const storageKey='tesla-deck-text-edits-v1'+(typeof embedded.documentId==='string'?':'+embedded.documentId.slice(0,80):'');
+ const state={active:false,records:{},originals:new Map(),last:new WeakMap(),focused:null,selected:null,storageOK:true,exporting:false};
+ let pristine=null;
+ const fields=[
+  '.slide h1','.slide h2','.slide h3','.slide h4','.slide p','.slide figcaption','.slide figcaption > span',
+  '.slide .cover-flow span','.slide .stamp','.slide .road-node strong','.slide .road-node small',
+  '.slide .tech-option small','.slide .big-stat','.slide .op-head strong','.slide .annual-metric strong',
+  '.slide .caution > strong','#annualFinancialSummaryValue','#trimVisualCaption','#trimVisualTag','#trimNote','#roadTitle',
+  'dialog h2','dialog h3','dialog p','dialog .fin-stat strong','#roadSheetFacts','#roadSheetChecks','#techModalFlow'
+ ].join(',');
+ const additionalFields='.slide .road-title-button > span:first-child,.slide .tech-option > span:first-child';
+ let serial=0,observer;
+ const roots=()=>[q('#slides'),...all('dialog')];
+ function cleanHTML(html){
+  const template=document.createElement('template');template.innerHTML=html;
+  const allowed=new Set(['BR','EM','STRONG','B','I','SMALL','SPAN','A','UL','OL','LI','P']);
+  function clean(node){
+   if(node.nodeType===Node.TEXT_NODE)return document.createTextNode(node.textContent);
+   if(node.nodeType!==Node.ELEMENT_NODE||['SCRIPT','STYLE','IFRAME','OBJECT','SVG','MATH','IMG','VIDEO','INPUT'].includes(node.tagName))return document.createDocumentFragment();
+   if(!allowed.has(node.tagName)){const fragment=document.createDocumentFragment();node.childNodes.forEach(child=>fragment.append(clean(child)));if(node.tagName==='DIV')fragment.append(document.createElement('br'));return fragment}
+   const el=document.createElement(node.tagName.toLowerCase());
+   if(node.tagName==='BR'&&node.classList.contains('mobile-br'))el.className='mobile-br';
+   if(node.tagName==='A'){
+    try{const href=new URL(node.getAttribute('href')||'',location.href);if(['https:','http:'].includes(href.protocol)){el.href=href.href;el.target='_blank';el.rel='noopener'}}catch{}
+   }
+   node.childNodes.forEach(child=>el.append(clean(child)));return el;
+  }
+  const box=document.createElement('div');template.content.childNodes.forEach(node=>box.append(clean(node)));return box.innerHTML;
+ }
+ function context(el){
+  const id=el.id,slide=el.closest('.slide');
+  if(id.startsWith('annual')&&!['annualSelector'].includes(id)){
+   const year=slide?.querySelector('[data-year].selected')?.dataset.year||'2';
+   if(id.startsWith('annualFinancial'))return 'year:'+year+';finance:'+(slide?.querySelector('[data-annual-finance].selected')?.dataset.annualFinance||'profit');
+   return 'year:'+year;
+  }
+  if(el.closest('#financeSectorSheet'))return 'business:'+(el.closest('#financeSectorSheet').dataset.business||'0');
+  if(el.closest('#financeMetricModal'))return 'metric:'+(el.closest('#financeMetricModal').dataset.metric||'profit');
+  if(['financeChartTitle','financeInsightTitle','financeInsight'].includes(id))return 'finance:'+(slide?.querySelector('[data-finance].selected')?.dataset.finance||'segments');
+  if(['trimName','trimLabel','trimTitle','trimText','trimNote','trimVisualCaption','trimVisualTag'].includes(id))return 'trim:'+(slide?.querySelector('#trimLever')?.value||'0');
+  if(['roadTitle','roadText','roadNext'].includes(id))return 'road:'+(slide?.querySelector('[data-road].selected')?.dataset.road||'0');
+  if(el.closest('#roadSheet')&&id.startsWith('roadSheet'))return 'road:'+(el.closest('#roadSheet').querySelector('[data-sheet-road].selected')?.dataset.sheetRoad||'0');
+  if(['techTitle','techText'].includes(id))return 'tech:'+(slide?.querySelector('[data-tech].selected')?.dataset.tech||'1');
+  if(el.closest('#techModal')&&id.startsWith('techModal'))return 'tech:'+(el.closest('#techModal').querySelector('[data-modal-tech].selected')?.dataset.modalTech||'1');
+  return 'static';
+ }
+ function key(el){return el.dataset.textEdit+'|'+context(el)}
+ function recordFor(el,id){
+  const record=state.records[id];
+  // A published wording revision supersedes edits saved for an older revision.
+  return el.dataset.textRevision&&record?.revision!==el.dataset.textRevision?undefined:record;
+ }
+ function register(){
+  const used=new Set(all('[data-text-edit]').map(el=>el.dataset.textEdit));
+  // Register additions after the original fields to keep saved text IDs stable.
+  [...all(fields),...all(additionalFields)].forEach(el=>{
+   if(el.closest('.video-slide')||el.parentElement?.closest('[data-text-edit]')||el.querySelector('button,input,select,textarea,canvas,video,[id]'))return;
+   if(!el.dataset.textEdit){let id=el.id?'id:'+el.id:'';if(!id){do{id='text:'+String(++serial).padStart(3,'0')}while(used.has(id))}el.dataset.textEdit=id;used.add(id)}
+   if(state.active){el.contentEditable='true';el.spellcheck=false}
+  });
+ }
+ function loadRecords(value){
+  if(value?.version!==1||!value.records||typeof value.records!=='object')return {};
+  const result={};Object.entries(value.records).slice(0,1000).forEach(([id,record])=>{
+   if(id.length<180&&typeof record?.html==='string'&&typeof record?.original==='string'&&record.html.length<50000&&record.original.length<50000)result[id]={html:cleanHTML(record.html),original:cleanHTML(record.original),...(typeof record.revision==='string'&&record.revision.length<=80?{revision:record.revision}:{})};
+  });return result;
+ }
+ state.records=loadRecords(embedded);
+ try{const local=localStorage.getItem(storageKey);if(local)state.records=loadRecords(JSON.parse(local))}catch{state.storageOK=false}
+ function status(message){
+  q('#editorSaveStatus').textContent=message||(state.storageOK?`이 브라우저에 자동 저장 · ${Object.keys(state.records).length}개 문구`:'브라우저 저장을 사용할 수 없습니다 · HTML로 보관하세요');
+  q('#editorRestore').disabled=!state.selected||!state.records[key(state.selected)];
+ }
+ function persist(){
+  try{localStorage.setItem(storageKey,JSON.stringify({version:1,records:state.records}));state.storageOK=true}catch{state.storageOK=false}
+  status();
+ }
+ function observe(){roots().forEach(root=>observer.observe(root,{childList:true,characterData:true,subtree:true}))}
+ function apply(){
+  observer?.disconnect();register();if(!pristine&&q('#editorToggle'))pristine=document.documentElement.cloneNode(true);
+  all('[data-text-edit]').forEach(el=>{
+   if(state.active&&el===state.focused)return;
+   const id=key(el),previous=state.last.get(el),record=recordFor(el,id),raw=el.innerHTML;
+   if(!previous||previous.id!==id||previous.html!==raw)state.originals.set(id,record?.original??cleanHTML(raw));
+   if(record){
+    if(el.innerHTML!==record.html)el.innerHTML=record.html;
+    el.dataset.textOverride='true';el.removeAttribute('aria-label');
+   }else delete el.dataset.textOverride;
+   state.last.set(el,{id,html:el.innerHTML});
+  });
+  if(observer)observe();
+ }
+ function saveField(el){
+  const id=key(el),html=cleanHTML(el.innerHTML),original=state.originals.get(id)??recordFor(el,id)?.original??html;
+  if(html===original)delete state.records[id];else state.records[id]={html,original,...(el.dataset.textRevision?{revision:el.dataset.textRevision}:{})};
+  if(state.records[id])el.dataset.textOverride='true';else delete el.dataset.textOverride;
+  state.last.set(el,{id,html:el.innerHTML});persist();
+ }
+ function setMode(active){
+  if(state.focused)saveField(state.focused);
+  state.focused=null;state.active=active;document.body.classList.toggle('text-edit-mode',active);
+  q('#editorToggle').setAttribute('aria-pressed',String(active));q('#editorToggle').textContent=active?'편집 중':'글자 편집';q('#textEditorBar').hidden=!active;
+  window.deckPresentation?.editModeChanged(active);apply();
+  all('[data-text-edit]').forEach(el=>{if(active){el.contentEditable='true';el.spellcheck=false}else{el.removeAttribute('contenteditable');el.removeAttribute('spellcheck')}});
+  status();
+ }
+ window.deckEditor={get active(){return state.active}};
+ observer=new MutationObserver(apply);apply();observe();
+ // Saved text also renders in presentation mode; editing is an explicit toggle.
+ if(!q('#editorToggle'))return;
+
+ document.addEventListener('focusin',event=>{
+  if(!state.active)return;const el=event.target.closest('[data-text-edit]');if(!el)return;
+  state.focused=state.selected=el;status();
+ },true);
+ document.addEventListener('focusout',event=>{
+  if(!state.active)return;const el=event.target.closest('[data-text-edit]');if(!el)return;
+  saveField(el);state.focused=null;queueMicrotask(apply);
+ },true);
+ document.addEventListener('input',event=>{if(state.active){const el=event.target.closest('[data-text-edit]');if(el)saveField(el)}},true);
+ document.addEventListener('click',event=>{
+  const el=state.active&&event.target.closest('[data-text-edit]');
+  if(el){if(document.activeElement!==el)el.focus({preventScroll:true});event.preventDefault();event.stopImmediatePropagation()}
+ },true);
+ for(const type of ['pointerenter','pointermove','focus'])document.addEventListener(type,event=>{
+  if(!state.active)return;const el=event.target;if(el.closest?.('[data-text-edit]')||el.matches?.('button')&&el.querySelector('[data-text-edit]'))event.stopImmediatePropagation();
+ },true);
+ document.addEventListener('keydown',event=>{
+  if(!state.active||!event.target.closest('[data-text-edit]'))return;
+  event.stopImmediatePropagation();
+  if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();downloadHTML()}
+ },true);
+ document.addEventListener('paste',event=>{
+  if(!state.active||!event.target.closest('[data-text-edit]'))return;
+  event.preventDefault();document.execCommand('insertText',false,event.clipboardData.getData('text/plain'));
+ },true);
+ q('#editorToggle').addEventListener('click',()=>setMode(!state.active));
+ q('#editorDone').addEventListener('click',()=>setMode(false));
+ q('#editorRestore').addEventListener('click',()=>{
+  const el=state.selected;if(!el)return;const id=key(el),record=state.records[id];if(!record)return;
+  observer.disconnect();el.innerHTML=record.original;delete state.records[id];delete el.dataset.textOverride;state.originals.set(id,record.original);state.last.set(el,{id,html:el.innerHTML});persist();observe();el.focus();
+ });
+
+ const assets=new Map();
+ function assetURL(ref){const url=new URL(ref,location.href);if(url.origin!==location.origin)throw new Error('현재 발표자료의 파일만 포함할 수 있습니다.');return url.href}
+ async function fetchText(ref){const response=await fetch(assetURL(ref),{credentials:'same-origin'});if(!response.ok)throw new Error('발표자료 파일을 불러오지 못했습니다.');return response.text()}
+ function asDataURL(ref){
+  if(ref.startsWith('data:'))return Promise.resolve(ref);
+  const url=assetURL(ref);if(assets.has(url))return assets.get(url);
+  const promise=fetch(url,{credentials:'same-origin'}).then(async response=>{
+   if(!response.ok)throw new Error('이미지·영상 파일을 불러오지 못했습니다.');
+   const blob=await response.blob();return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob)});
+  });assets.set(url,promise);promise.catch(()=>assets.delete(url));return promise;
+ }
+ async function embedCSS(css,base){
+  const matches=[...css.matchAll(/url\((['"]?)([^)'"\s]+)\1\)/g)];
+  for(const match of matches){if(match[2].startsWith('data:')||match[2].startsWith('#'))continue;const value=await asDataURL(new URL(match[2],base).href);css=css.replaceAll(match[0],`url('${value}')`)}
+  return css;
+ }
+ async function downloadHTML(){
+  if(state.exporting)return;if(state.focused)saveField(state.focused);
+  state.exporting=true;q('#editorDownload').disabled=true;q('#editorDownload').setAttribute('aria-busy','true');status('HTML 준비 중 · 이미지와 영상까지 포함합니다');
+  try{
+   const clone=pristine.cloneNode(true);
+   clone.querySelectorAll('[contenteditable]').forEach(el=>{el.removeAttribute('contenteditable');el.removeAttribute('spellcheck')});
+   clone.querySelector('body').classList.remove('text-edit-mode','video-mode');
+   clone.querySelectorAll('.slide').forEach((slide,i)=>{slide.hidden=i!==0;slide.classList.toggle('active',i===0);});
+   clone.querySelectorAll('[data-count]').forEach(el=>{const value=+el.dataset.count,decimals=+(el.dataset.decimals||0);el.textContent=(el.dataset.countSign||'')+value.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});delete el.dataset.running});
+   clone.querySelector('#textEditorBar').hidden=true;
+   clone.querySelector('#editorToggle').setAttribute('aria-pressed','false');clone.querySelector('#editorToggle').textContent='글자 편집';
+   clone.querySelectorAll('video').forEach(video=>video.removeAttribute('autoplay'));
+   clone.querySelector('#currentPage').textContent='01';clone.querySelector('#currentTitle').textContent=clone.querySelector('.slide').dataset.title;
+   clone.querySelector('#prev').disabled=true;clone.querySelector('#next').disabled=false;clone.querySelector('#progress').style.width=(100/clone.querySelectorAll('.slide').length)+'%';
+   clone.querySelectorAll('.rail button').forEach((button,i)=>{if(i===0)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current')});
+   const payload=JSON.stringify({version:1,documentId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),records:state.records}).replaceAll('<','\\u003c');clone.querySelector('#savedTextEdits').textContent=payload;
+   for(const link of [...clone.querySelectorAll('link[rel="stylesheet"][href]')]){const href=link.getAttribute('href'),style=document.createElement('style');style.textContent=await embedCSS(await fetchText(href),new URL(href,location.href));link.replaceWith(style)}
+   for(const el of clone.querySelectorAll('img[src],video[src],[poster]')){
+    for(const attribute of ['src','poster']){const ref=el.getAttribute(attribute);if(ref&&!ref.startsWith('data:'))el.setAttribute(attribute,await asDataURL(ref))}
+   }
+   for(const script of [...clone.querySelectorAll('script[src]')]){const inline=document.createElement('script');inline.textContent=(await fetchText(script.getAttribute('src'))).replace(/<\/script/gi,'<\\/script');script.replaceWith(inline)}
+   const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob);
+   const anchor=document.createElement('a');anchor.href=url;anchor.download='국가RnD_AI기획_발표자료_'+clone.querySelectorAll('.slide').length+'장_편집본.html';anchor.hidden=true;document.body.append(anchor);anchor.click();
+   setTimeout(()=>{URL.revokeObjectURL(url);anchor.remove()},60000);status('HTML 다운로드 완료 · 영상과 수정한 문구를 포함했습니다');
+  }catch(error){status('다운로드하지 못했습니다 · '+(error.message||'다시 시도해 주세요'))}
+  finally{state.exporting=false;q('#editorDownload').disabled=false;q('#editorDownload').removeAttribute('aria-busy')}
+ }
+ q('#editorDownload').addEventListener('click',downloadHTML);
+ }
+ // Capture the export template only after all player scripts have been parsed.
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initializeEditor,{once:true});else initializeEditor();
+})();
+
+</script>
+<script>
+(() => {
+ 'use strict';
+ const video=document.querySelector('#brandFilmVideo'),player=document.querySelector('#brandFilmPlayer');
+ if(!video||!player)return;
+ const q=id=>document.getElementById(id),toggle=q('brandFilmToggle'),restart=q('brandFilmRestart'),seek=q('brandFilmSeek'),fullscreen=q('brandFilmFullscreen'),fallback=q('brandFilmFallback');
+ let active=false,seeking=false;
+ const time=value=>{const s=Math.max(0,Math.floor(value||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+ function update(){const duration=Number.isFinite(video.duration)?video.duration:15;seek.max=String(duration);if(!seeking)seek.value=String(video.currentTime||0);q('brandFilmTime').textContent=time(video.currentTime)+' / '+time(duration);toggle.textContent=video.ended?'↻ 다시 재생':video.paused?'▶ 재생':'Ⅱ 일시정지';toggle.setAttribute('aria-label',video.ended?'브랜드 영상 다시 재생':video.paused?'브랜드 영상 재생':'브랜드 영상 일시정지');const full=document.fullscreenElement===player;fullscreen.textContent=full?'전체화면 해제 ⛶':'전체화면 ⛶';fullscreen.setAttribute('aria-label',full?'브랜드 영상 전체화면 해제':'브랜드 영상 전체화면')}
+ function play(fromStart=false){if(!active||window.deckEditor?.active)return;if(fromStart||video.ended)video.currentTime=0;video.muted=true;fallback.hidden=true;const promise=video.play();if(promise)promise.catch(()=>{if(active&&!window.deckEditor?.active)fallback.hidden=false});update()}
+ function flip(){if(video.paused||video.ended)play();else video.pause()}
+ window.brandFilm={setActive(value){const entering=value&&!active;active=value;video.autoplay=value&&!window.deckEditor?.active;if(entering)play(true);else if(!value){video.pause();fallback.hidden=true;if(document.fullscreenElement===player)document.exitFullscreen().catch(()=>{})}update()},editModeChanged(editing){if(editing){video.pause();fallback.hidden=true}else if(active)play();update()}};
+ toggle.addEventListener('click',flip);video.addEventListener('click',flip);fallback.addEventListener('click',()=>play());restart.addEventListener('click',()=>play(true));
+ for(const name of ['play','pause','ended','loadedmetadata','timeupdate','durationchange'])video.addEventListener(name,()=>{if(name==='play'&&!active){video.pause();return}if(name==='play')fallback.hidden=true;update()});
+ seek.addEventListener('input',event=>{seeking=true;video.currentTime=+event.target.value;update()});seek.addEventListener('change',()=>{seeking=false;update()});seek.addEventListener('keydown',event=>event.stopPropagation());
+ fullscreen.addEventListener('click',()=>{if(document.fullscreenElement===player)document.exitFullscreen().catch(()=>{});else player.requestFullscreen?.().catch(()=>{})});
+ document.addEventListener('fullscreenchange',update);document.addEventListener('visibilitychange',()=>{if(document.hidden)video.pause()});
+ document.addEventListener('keydown',event=>{if(!active||document.querySelector('dialog[open]')||!['Enter',' '].includes(event.key)||event.target.closest('button,a,input,select,textarea,[contenteditable="true"]'))return;event.preventDefault();if(!event.repeat)flip()});
+ update();
+ // app.js initializes the route before this optional player module loads.
+ window.brandFilm.setActive(!video.closest('.slide').hidden);
+})();
+
+</script>
+</body></html>

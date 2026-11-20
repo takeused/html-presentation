@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>국가 R&D AI 정책 브리핑</title>
+<meta name="description" content="AI 기반 국가연구개발 전주기 지능화 정책을 배경·진단 → 비전·전략 → 추진과제 → 이행관리 순으로 정리한 15쪽 정책 브리핑.">
+<link rel="icon" href="data:,">
+<style>
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareR.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareB.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareEB.woff2') format('woff2');font-weight:800;font-display:swap}
+
+/* ───────── 디자인 토큰 : 정책 브리핑(Policy Briefing) ───────── */
+:root{
+  --navy:#0e2747;      /* 구조·제목·체계도 */
+  --blue:#1d5fbf;      /* 주 데이터·현재 선택 */
+  --teal:#0a8f88;      /* To-Be·AI 적용 후 */
+  --amber:#c9741c;     /* As-Is·문제·주의 */
+  --red:#c2413b;       /* 감액·리스크 */
+  --ink:#1d2433;
+  --muted:#667085;
+  --faint:#98a2b3;
+  --line:#dde2ea;
+  --tint:#eef3fa;      /* 파란 틴트 배경 */
+  --teal-tint:#e6f4f3;
+  --amber-tint:#fbf1e6;
+  --paper:#ffffff;
+  --canvas:#e9ecf1;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--canvas);overflow:hidden}
+body{font-family:NanumSquare,'Pretendard','Malgun Gothic',sans-serif;color:var(--ink);word-break:keep-all;overflow-wrap:normal;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+b,strong{font-weight:800}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+
+/* ───────── 1920×1080 고정 스테이지 + 비율 축소 ───────── */
+#viewport{position:fixed;inset:0;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;background:var(--paper);transform-origin:center center;transform:translate(-50%,-50%);box-shadow:0 10px 50px rgba(14,39,71,.18);overflow:hidden}
+
+/* 상단 바 */
+.chrome-top{position:absolute;left:0;right:0;top:0;height:76px;display:flex;align-items:center;padding:0 96px;border-bottom:1px solid var(--line);z-index:5;background:var(--paper)}
+.brand{display:flex;align-items:center;gap:14px;font-weight:800;font-size:20px;color:var(--navy);letter-spacing:-.3px;min-width:420px}
+.brand i{width:30px;height:30px;border-radius:6px;background:var(--navy);display:grid;place-items:center;color:#fff;font-style:normal;font-size:13px;letter-spacing:0}
+.brand span{font-weight:400;color:var(--muted);font-size:15px}
+.chapters{display:flex;gap:6px;margin:0 auto}
+.chapters button{font-size:16px;padding:9px 18px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
+.chapters button:hover{background:var(--tint);color:var(--navy)}
+.chapters button[aria-current=true]{background:var(--navy);color:#fff;font-weight:800}
+.tools{display:flex;gap:8px;min-width:420px;justify-content:flex-end}
+.tools button{font-size:14px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:8px 12px}
+.tools button:hover{color:var(--navy);border-color:var(--navy)}
+.tools button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#fff}
+
+/* 하단 바 */
+.chrome-bottom{position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;padding:0 96px;gap:24px;border-top:1px solid var(--line);z-index:5;background:var(--paper)}
+.source{flex:1;font-size:14px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pager{display:flex;align-items:center;gap:14px;font-size:16px;color:var(--muted)}
+.pager b{color:var(--navy);font-size:18px}
+.pager button{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;font-size:18px;color:var(--navy)}
+.pager button:hover:not(:disabled){background:var(--navy);color:#fff}
+.pager button:disabled{opacity:.3;cursor:default}
+.progress{position:absolute;left:0;bottom:0;height:4px;background:var(--blue);transition:width .4s ease;z-index:6}
+
+/* ───────── 슬라이드 공통 ───────── */
+.slide{position:absolute;left:0;right:0;top:76px;bottom:64px;padding:44px 96px 36px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s .35s}
+.slide.active{opacity:1;visibility:visible;transition:opacity .35s ease}
+.sh{margin-bottom:30px}
+.tag{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:var(--blue);letter-spacing:.2px;margin-bottom:14px}
+.tag em{font-style:normal;background:var(--navy);color:#fff;border-radius:4px;padding:3px 9px;font-size:14px}
+.sh h2{font-size:46px;line-height:1.28;font-weight:800;color:var(--navy);letter-spacing:-1.2px}
+.sh h2 mark{background:none;color:var(--blue)}
+.sh p{font-size:21px;line-height:1.55;color:var(--muted);margin-top:12px;max-width:1500px}
+.body{flex:1;min-height:0;display:grid;gap:32px}
+.card{border:1px solid var(--line);border-radius:10px;padding:26px 28px;background:var(--paper)}
+.card h3{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:10px;letter-spacing:-.4px}
+.card p{font-size:17px;line-height:1.6;color:#3d4556}
+.label{font-size:14px;font-weight:700;letter-spacing:1.2px;color:var(--faint);text-transform:uppercase}
+.note{font-size:15px;line-height:1.55;color:var(--muted);border-left:3px solid var(--amber);padding:4px 0 4px 14px}
+.chip{align-self:flex-start;justify-self:start;width:max-content;display:inline-block;font-size:17px;font-weight:800;border-radius:5px;padding:5px 12px;margin-bottom:6px}
+.chip.asis{background:var(--amber-tint);color:var(--amber)}
+.chip.tobe{background:var(--teal-tint);color:var(--teal)}
+.chip.goal{background:var(--tint);color:var(--blue)}
+
+/* 진입 애니메이션 */
+.slide .rise{opacity:0;transform:translateY(16px)}
+.slide.active .rise{animation:rise .55s cubic-bezier(.2,.7,.2,1) forwards}
+.slide.active .rise:nth-child(2){animation-delay:.08s}.slide.active .rise:nth-child(3){animation-delay:.16s}
+.slide.active .rise:nth-child(4){animation-delay:.24s}.slide.active .rise:nth-child(5){animation-delay:.32s}
+@keyframes rise{to{opacity:1;transform:none}}
+.slide.active.settled .rise,#stage.init .rise{opacity:1;transform:none;animation:none}
+#stage.init .slide{transition:none}
+.slide.active.settled .grow,.slide.active.settled .growx{transform:none;animation:none}
+@media (prefers-reduced-motion:reduce){.slide .rise{opacity:1;transform:none}.slide.active .rise{animation:none}}
+
+/* 선택형 버튼(탭) 공통 */
+.seg{display:flex;gap:8px}
+.seg button{border:1px solid var(--line);border-radius:8px;padding:10px 18px;font-size:17px;color:var(--muted);transition:all .2s}
+.seg button:hover{border-color:var(--blue);color:var(--blue)}
+.seg button[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:800}
+[data-panel]:not(.on):not(.keep){display:none!important}
+[data-panel].on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* SVG 차트 공통 */
+svg text{font-family:NanumSquare,sans-serif}
+.bar{transition:opacity .3s,fill .3s}
+.grow{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
+.slide.active .grow{animation:growY .8s cubic-bezier(.2,.7,.2,1) forwards}
+.growx{transform-box:fill-box;transform-origin:left;transform:scaleX(0)}
+.slide.active .growx{animation:growX .8s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes growY{to{transform:scaleY(1)}}@keyframes growX{to{transform:scaleX(1)}}
+.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.slide.active .draw{animation:draw 1.2s ease forwards .2s}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ───────── 01 표지 ───────── */
+.cover{padding:0;flex-direction:row}
+.cover-main{flex:1;padding:96px 96px 72px;display:flex;flex-direction:column}
+.cover-kicker{font-size:18px;font-weight:700;color:var(--blue);letter-spacing:1.5px}
+.cover h1{font-size:84px;line-height:1.18;font-weight:800;color:var(--navy);letter-spacing:-3px;margin:28px 0 30px}
+.cover h1 mark{background:linear-gradient(transparent 62%,#cfe0f7 62%);color:var(--navy)}
+.cover-sub{font-size:25px;line-height:1.6;color:#3d4556;max-width:900px}
+.cover-flow{margin-top:auto;display:flex;align-items:center;gap:12px;margin-bottom:34px}
+.cover-flow span{font-size:19px;font-weight:700;color:var(--navy);background:var(--tint);border-radius:999px;padding:10px 22px}
+.cover-flow i{font-style:normal;color:var(--faint);font-size:20px}
+.cover-meta{display:flex;gap:40px;font-size:17px;color:var(--muted);border-top:1px solid var(--line);padding-top:24px}
+.cover-meta b{display:block;color:var(--navy);font-size:19px;margin-top:4px}
+.cover-side{width:620px;background:var(--navy);color:#fff;padding:96px 64px 72px;display:flex;flex-direction:column;gap:38px;position:relative;overflow:hidden}
+.cover-side:after{content:'';position:absolute;right:-160px;bottom:-160px;width:460px;height:460px;border:1px solid rgba(255,255,255,.12);border-radius:50%;box-shadow:0 0 0 60px rgba(255,255,255,.03),0 0 0 120px rgba(255,255,255,.02)}
+.cover-side .label{color:#8fb3e6}
+.kpi-big{border-top:1px solid rgba(255,255,255,.18);padding-top:22px}
+.kpi-big strong{font-size:64px;letter-spacing:-2px;line-height:1}
+.kpi-big strong small{font-size:26px;margin-left:6px;font-weight:700}
+.kpi-big p{font-size:18px;color:#c4d3ea;margin-top:10px;line-height:1.5}
+.kpi-big .delta{color:#6ee0d6;font-weight:800}
+
+/* ───────── 02 한 장 요약 ───────── */
+.summary-wrap{grid-template-rows:1fr auto;gap:20px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.keymsg{background:var(--navy);color:#fff;border-radius:12px;padding:24px 34px;display:flex;align-items:center;gap:28px;font-size:25px;font-weight:700;letter-spacing:-.4px}
+.keymsg .label{color:#8fb3e6;white-space:nowrap}
+.keymsg mark{background:none;color:#6ee0d6}
+.sum-col{padding:34px 32px 30px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
+.sum-col:last-child{border-right:0;background:var(--tint)}
+.sum-col .step{font-size:15px;font-weight:800;color:var(--blue);letter-spacing:1px}
+.sum-col h3{font-size:31px;font-weight:800;color:var(--navy);line-height:1.35;letter-spacing:-.6px}
+.sum-col li{font-size:20px;line-height:1.55;color:#3d4556;padding-left:18px;position:relative;margin-bottom:12px}
+.sum-col li:before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.sum-col .big{margin-top:auto;border-top:1px dashed var(--line);padding-top:16px}
+.sum-col .big strong{font-size:56px;color:var(--navy);letter-spacing:-1.5px}
+.sum-col .big span{display:block;font-size:17px;color:var(--muted);margin-top:4px}
+.arrow-col{position:relative}
+.arrow-col:after{content:'';position:absolute;right:-13px;top:50%;width:24px;height:24px;background:var(--paper);border-top:1px solid var(--line);border-right:1px solid var(--line);transform:translateY(-50%) rotate(45deg);z-index:1}
+
+/* ───────── 03 투자 현황 ───────── */
+.invest{grid-template-columns:1.15fr 1fr}
+.chart-card{display:flex;flex-direction:column}
+.chart-card .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.legend{display:flex;gap:18px;font-size:15px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.chart-host{flex:1;min-height:0}
+.chart-host svg{width:100%;height:100%;display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px}
+.kpi{background:var(--tint);border-radius:10px;padding:18px 20px}
+.kpi span{font-size:15px;color:var(--muted)}
+.kpi strong{display:block;font-size:40px;color:var(--navy);letter-spacing:-1.2px;margin:6px 0 2px}
+.kpi strong small{font-size:18px;margin-left:3px}
+.kpi em{font-style:normal;font-size:15px;font-weight:800;color:var(--teal)}
+table.data{width:100%;border-collapse:collapse;font-size:17px}
+table.data th{font-size:14px;color:var(--muted);font-weight:700;text-align:right;padding:10px 12px;border-bottom:2px solid var(--navy)}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:right}
+table.data td.sel,table.data th.sel{background:var(--tint);color:var(--navy);font-weight:800}
+table.data tr.group td{font-weight:800;color:var(--navy)}
+
+/* ───────── 04 문제 진단 ───────── */
+.diag{grid-template-rows:auto repeat(4,1fr);gap:0;border-top:2px solid var(--navy)}
+.diag-row{display:grid;grid-template-columns:300px 1fr 70px 1fr 270px;align-items:center;border-bottom:1px solid var(--line);padding:0 8px}
+.diag-row.head{font-size:18px;font-weight:800;color:var(--muted);letter-spacing:1px;padding:12px 8px}
+.diag-row h3{font-size:28px;color:var(--navy);font-weight:800;letter-spacing:-.4px}
+.diag-row h3 span{display:block;font-size:18px;font-weight:400;color:var(--muted);margin-top:4px}
+.diag-row p{font-size:21.5px;line-height:1.55;color:#3d4556;padding-right:22px}
+.diag-row .to{color:var(--ink)}
+.diag-arrow{font-size:34px;color:var(--teal);text-align:center}
+.metric-pair{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;column-gap:10px;text-align:right}
+.metric-pair .from{font-size:22px;font-weight:700;color:var(--muted);white-space:nowrap}
+.metric-pair .from:after{content:'→';margin-left:10px;font-size:24px;font-weight:800;color:var(--teal)}
+.metric-pair .to-n{white-space:nowrap;font-size:42px;font-weight:800;color:var(--teal);letter-spacing:-1px}
+.metric-pair small{flex-basis:100%;margin-top:2px;font-size:16px;color:var(--faint)}
+
+/* ───────── 05 비전 체계도 ───────── */
+.frame{grid-template-rows:auto auto 1fr auto;gap:18px}
+.vision{background:var(--navy);color:#fff;border-radius:10px;padding:24px 34px;display:flex;align-items:center;gap:30px}
+.vision .label{color:#8fb3e6;min-width:120px}
+.vision strong{font-size:34px;letter-spacing:-1px}
+.goals{display:grid;grid-template-columns:140px repeat(3,1fr);gap:16px;align-items:stretch}
+.row-label{display:flex;align-items:center;font-size:23px;font-weight:800;letter-spacing:-.3px;line-height:1.3;color:var(--navy)}
+.goal{border:2px solid var(--blue);border-radius:10px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.goal h3{font-size:25px;color:var(--navy);font-weight:800;line-height:1.35}
+.goal .t{text-align:right;white-space:nowrap}
+.goal .t strong{font-size:42px;color:var(--blue);letter-spacing:-1px}
+.goal .t small{display:block;font-size:13px;color:var(--muted)}
+.strats{display:grid;grid-template-columns:140px repeat(4,1fr);gap:16px}
+.strat{background:var(--tint);border-radius:10px;padding:26px 26px;display:flex;flex-direction:column;gap:14px}
+.strat .no{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;color:var(--blue)}
+.strat .no i{font-style:normal;width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:16px}
+.strat h3{font-size:27px;color:var(--navy);font-weight:800;line-height:1.35;letter-spacing:-.4px}
+.strat ul{margin-top:4px}.strat li{font-size:20px;line-height:1.5;color:#3d4556;padding-left:16px;position:relative;margin-bottom:8px}
+.strat li:before{content:'·';position:absolute;left:2px;font-weight:800;color:var(--blue)}
+.base{display:grid;grid-template-columns:140px 1fr;gap:16px}
+.base-bar{border:1px dashed var(--navy);border-radius:10px;padding:16px 24px;display:flex;justify-content:space-around;font-size:18px;font-weight:700;color:var(--navy)}
+.base-bar span:before{content:'■';color:var(--teal);margin-right:8px;font-size:13px;vertical-align:2px}
+
+/* ───────── 06 전주기 흐름 ───────── */
+.cycle{grid-template-rows:auto 1fr;gap:40px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative;padding-bottom:58px}
+.flow:before{content:'';position:absolute;left:12%;right:12%;bottom:18px;height:30px;border:2px solid var(--teal);border-top:0;border-radius:0 0 16px 16px}
+.flow:after{content:'↺ 환류 (Feedback) : 평가·실험 데이터가 다음 탐색·기획으로 되돌아감';position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:var(--paper);padding:0 20px;font-size:21px;line-height:38px;font-weight:800;color:var(--teal);white-space:nowrap}
+.stage-btn{position:relative;text-align:left;border:2px solid var(--line);border-radius:12px;padding:28px 30px;transition:all .25s;background:var(--paper)}
+.stage-btn:not(:last-child):after{content:'';position:absolute;right:-24px;top:50%;width:18px;height:18px;border-top:3px solid var(--faint);border-right:3px solid var(--faint);transform:translateY(-50%) rotate(45deg)}
+.stage-btn .s{font-size:15px;font-weight:800;color:var(--faint);letter-spacing:1px}
+.stage-btn h3{font-size:34px;color:var(--navy);font-weight:800;margin:8px 0 4px}
+.stage-btn p{font-size:19px;color:var(--muted)}
+.stage-btn:hover{border-color:var(--blue)}
+.stage-btn[aria-selected=true]{border-color:var(--blue);background:var(--tint)}
+.stage-btn[aria-selected=true] .s{color:var(--blue)}
+.stage-detail{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.stage-detail{height:100%}.cycle>.rise{min-height:0}.cycle [data-panel].on{height:100%}
+.stage-detail .card{display:flex;flex-direction:column;gap:16px;padding:30px 32px}
+.stage-detail li{font-size:21px;line-height:1.55;color:#3d4556;padding-left:32px;position:relative;margin-bottom:16px}
+.stage-detail ul li:before{content:'✓';position:absolute;left:0;color:var(--teal);font-weight:800}
+.stage-detail ol{counter-reset:c}
+.stage-detail ol li:before{counter-increment:c;content:counter(c);position:absolute;left:0;top:2px;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:14px;display:grid;place-items:center;font-weight:800}
+.asis-tobe{display:flex;flex-direction:column;gap:14px}
+.asis-tobe div{border-radius:8px;padding:20px 22px;font-size:21px;line-height:1.55;flex:1}
+.asis-tobe .a{background:var(--amber-tint)}
+.asis-tobe .b{background:var(--teal-tint)}
+
+/* ───────── 07 4계층 아키텍처 ───────── */
+.arch{grid-template-columns:220px 64px 1fr 500px;gap:16px;align-items:stretch}
+.io{display:flex;flex-direction:column;justify-content:center;gap:10px}
+.io .label{margin-bottom:6px}
+.io span{font-size:18px;border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:#3d4556;background:var(--paper)}
+.io-in{justify-content:flex-end;padding-bottom:6px}
+.io-link{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:92px;gap:4px;color:var(--amber);font-weight:800}
+.io-link b{font-size:34px;line-height:1}
+.io-link small{font-size:14px;text-align:center;line-height:1.3}
+.lhead{display:grid;grid-template-columns:1fr 34px 240px;gap:10px;font-size:16px;font-weight:800;color:var(--muted);letter-spacing:.2px}
+.lhead span:last-child{grid-column:3;color:var(--teal)}
+.lrow{display:grid;grid-template-columns:1fr 34px 240px;gap:10px;align-items:center}
+.lrow .to{font-size:26px;font-weight:800;color:var(--teal);text-align:center}
+.users{display:flex;flex-wrap:wrap;gap:6px}
+.users span{font-size:18px;font-weight:700;color:var(--teal);border:1.5px solid var(--teal);border-radius:6px;padding:6px 10px;background:var(--paper);transition:opacity .25s,background .25s}
+.users.lbase span{border-style:dashed;border-color:var(--line);color:var(--muted);font-weight:600}
+.lrow .to.lbase{color:var(--faint)}
+.layers.has-sel .users{opacity:.4;transition:opacity .25s}
+.layers.has-sel .lrow:has(.layer[aria-selected=true]) .users{opacity:1}
+.layers.has-sel .lrow:has(.layer[aria-selected=true]) .users:not(.lbase) span{background:#e6f5f4}
+.layers{display:flex;flex-direction:column-reverse;gap:14px;justify-content:center;position:relative}
+.layer{display:grid;grid-template-columns:76px 1fr;align-items:center;text-align:left;border-radius:10px;padding:26px 26px;color:#fff;transition:transform .25s,box-shadow .25s,opacity .25s}
+.layer .n{font-size:38px;font-weight:800;opacity:.65}
+.layer h3{font-size:27px;font-weight:800;letter-spacing:-.4px}
+.layer p{font-size:18px;opacity:.85;margin-top:4px}
+.layer[data-tab="0"]{background:#2b3e5c}.layer[data-tab="1"]{background:#1c4f8f}.layer[data-tab="2"]{background:#1d5fbf}.layer[data-tab="3"]{background:#0a8f88}
+.layers.has-sel .layer{opacity:.45}
+.layers.has-sel .layer[aria-selected=true]{opacity:1;transform:translateX(10px);box-shadow:-6px 0 0 var(--amber)}
+.arch .detail{display:flex;flex-direction:column;gap:16px}
+.arch .detail .card{flex:1}
+.arch .detail h3{font-size:32px;line-height:1.4;margin:10px 0 18px}
+.arch .detail p{font-size:22px;line-height:1.65}
+.arch .detail .note{font-size:17px}
+.io-arrow{font-size:26px;color:var(--faint);text-align:center}
+
+/* ───────── 08 3대 엔진 ───────── */
+.engines{grid-template-columns:repeat(3,1fr);grid-template-rows:auto 1fr auto auto;column-gap:26px;row-gap:0}
+.engine{border:1px solid var(--line);border-radius:12px;display:grid;grid-row:span 4;grid-template-rows:subgrid;overflow:hidden}
+.engine header{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center}
+.engine header i{font-style:normal;width:52px;height:52px;border-radius:10px;background:var(--navy);color:#fff;font-size:24px;font-weight:800;display:grid;place-items:center;flex:none}
+.engine header h3{font-size:27px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.engine header small{display:block;font-size:13px;color:var(--faint);letter-spacing:1px;margin-top:3px}
+.engine ol{padding:28px 28px 10px;display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-around}
+.engine ol li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding-bottom:22px;position:relative}
+.engine ol li:not(:last-child):before{content:'';position:absolute;left:15px;top:32px;bottom:2px;width:2px;background:var(--line)}
+.engine ol li b{width:34px;height:34px;border-radius:50%;border:2px solid var(--blue);color:var(--blue);display:grid;place-items:center;font-size:15px;background:var(--paper);position:relative}
+.engine ol li strong{font-size:22px;color:var(--navy);display:block;margin-bottom:3px}
+.engine ol li span{font-size:18.5px;line-height:1.5;color:#4a5263}
+.engine .eff{background:var(--teal-tint);padding:22px 28px;display:flex;flex-direction:column;justify-content:center;font-size:19px;line-height:1.55;color:#20403f}
+.engine .eff b{color:var(--teal);display:block;font-size:13px;letter-spacing:1px;margin-bottom:4px}
+.engine .use{padding:16px 28px 20px;font-size:17px;line-height:1.5;color:var(--muted);border-top:1px solid var(--line)}
+
+/* ───────── 09 성숙도 모델 ───────── */
+.maturity{grid-template-columns:1.05fr 1fr;grid-template-rows:minmax(0,1fr);gap:40px}
+.stairs{position:relative;display:flex;align-items:flex-end;gap:14px;padding-top:24px;height:100%;min-height:0}
+.stair{flex:1;text-align:left;border-radius:10px 10px 0 0;padding:22px 22px;color:#fff;display:flex;flex-direction:column;gap:6px;transition:all .3s;position:relative}
+.stair[data-tab="0"]{height:42%;background:#7d93b6}.stair[data-tab="1"]{height:66%;background:#1d5fbf}.stair[data-tab="2"]{height:90%;background:#0e2747}
+.stair .lv{font-size:15px;font-weight:800;opacity:.75;letter-spacing:1px}
+.stair h3{font-size:32px;font-weight:800;letter-spacing:-.6px}
+.stair p{font-size:18px;opacity:.88;line-height:1.45}
+.stair .when{margin-top:auto;font-size:14px;font-weight:700;border-top:1px solid rgba(255,255,255,.3);padding-top:10px}
+.stairs.has-sel .stair{opacity:.45}
+.stairs.has-sel .stair[aria-selected=true]{opacity:1;box-shadow:0 -6px 0 var(--amber) inset}
+.stairs:before{content:'자율성·고도화 ↑';position:absolute;left:0;top:-6px;font-size:22px;color:var(--muted);font-weight:800;letter-spacing:-.3px}
+.lv-detail .card{height:100%;display:flex;flex-direction:column;gap:18px}
+.lv-detail .card{padding:34px 36px;gap:22px}
+.lv-detail h3{font-size:32px;line-height:1.4}
+.lv-detail p{font-size:21px;line-height:1.65}.lv-detail p.note{font-size:17px}
+.range{margin-top:6px}
+.range .track{position:relative;height:46px;background:var(--amber-tint);border-radius:6px}
+.range .fill{position:absolute;left:0;top:0;bottom:0;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;color:#fff;font-weight:800;font-size:17px}
+.range .scale{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-top:8px}
+
+/* ───────── 10·11 성과 지표 ───────── */
+.perf{grid-template-columns:1fr 1fr;gap:30px}
+.perf .card{display:flex;flex-direction:column}
+.perf .hero{display:flex;align-items:baseline;gap:14px;margin:4px 0 10px}
+.perf .hero strong{font-size:64px;color:var(--teal);letter-spacing:-2px}
+.perf .hero strong small{font-size:24px}
+.perf .hero>span{font-size:19px;color:var(--muted)}
+.multi{grid-template-columns:1.25fr 1fr;gap:34px}
+.mult-switch{margin-bottom:14px}
+.insight{display:flex;flex-direction:column;gap:20px}
+.insight .card{flex:1}
+.insight .card{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:32px 34px}
+.insight .card h3{font-size:29px;margin:0!important}
+.insight .card p{font-size:20px;line-height:1.65}
+
+/* ───────── 12 포트폴리오 ───────── */
+.portfolio{grid-template-columns:1.1fr 1fr;gap:36px}
+.stack100{display:flex;height:84px;border-radius:10px;overflow:hidden;margin:6px 0 22px}
+.stack100 button{display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:800;transition:opacity .25s,filter .25s}
+.stack100.has-sel button{opacity:.4}
+.stack100.has-sel button[aria-selected=true]{opacity:1}
+.axis-list{display:flex;flex-direction:column;gap:12px}
+.axis-list .card{padding:20px 24px}
+.axis-list{flex:1}
+.axis-list [data-panel]{opacity:.5;transition:opacity .25s,border-color .25s;cursor:pointer}
+.axis-list [data-panel].on{opacity:1;border-color:var(--blue);box-shadow:inset 4px 0 0 var(--blue);animation:none}
+.axis-list p{font-size:17.5px}
+.axis-list h3{display:flex;align-items:center;gap:12px;font-size:22px;margin-bottom:6px}
+.axis-list h3 i{width:14px;height:14px;border-radius:3px;display:inline-block;flex:none}
+
+/* ───────── 13 SDL 루프 ───────── */
+.sdl{grid-template-columns:720px 1fr;gap:40px}
+.loop{position:relative;width:640px;height:600px;margin:0 auto}
+.loop svg{position:absolute;inset:0}
+.loop-node{position:absolute;width:250px;text-align:center;border:2px solid var(--line);background:var(--paper);border-radius:14px;padding:18px 16px;transition:all .25s}
+.loop-node b{display:block;font-size:14px;color:var(--blue);letter-spacing:1px}
+.loop-node h3{font-size:22px;color:var(--navy);font-weight:800;margin-top:6px;line-height:1.35}
+.loop-node[aria-selected=true]{border-color:var(--blue);background:var(--tint);box-shadow:0 8px 24px rgba(29,95,191,.18)}
+.loop-node[data-tab="0"]{left:195px;top:0}.loop-node[data-tab="1"]{left:390px;top:350px}.loop-node[data-tab="2"]{left:0;top:350px}
+.loop-center{position:absolute;left:220px;top:230px;width:200px;text-align:center;font-size:15px;color:var(--muted);line-height:1.5}
+.loop-center strong{display:block;font-size:24px;color:var(--teal)}
+.sdl-right{display:flex;flex-direction:column;gap:20px}
+
+/* ───────── 14 거버넌스 ───────── */
+.gov{grid-template-columns:1fr 1.05fr;gap:36px}
+.check-list{display:flex;flex-direction:column;gap:14px}
+.check-list .label{margin-bottom:2px}
+.check{flex:1;display:grid;grid-template-columns:70px 1fr;gap:18px;align-content:center;border:1px solid var(--line);border-radius:10px;padding:24px 28px}
+.check .n{font-size:40px;font-weight:800;color:var(--amber)}
+.check h3{font-size:26px;color:var(--navy);font-weight:800;margin-bottom:6px}
+.check p{font-size:19.5px;line-height:1.55;color:#3d4556}
+.roles{border:1px solid var(--line);border-radius:12px;overflow:hidden;flex:1;display:flex}
+.roles table{height:100%}
+.roles table{width:100%;border-collapse:collapse}
+.roles th{font-size:20px;padding:18px 24px;text-align:left;color:#fff}
+.roles th.ai{background:var(--teal)}.roles th.hu{background:var(--navy)}
+.roles td{font-size:19.5px;line-height:1.5;padding:16px 24px;vertical-align:middle;border-bottom:1px solid var(--line);vertical-align:top;width:50%}
+.roles td:first-child{border-right:1px solid var(--line)}
+.roles tr:last-child td{border-bottom:0}
+.roles .stage{font-size:14px;font-weight:800;color:var(--faint);letter-spacing:1px;display:block;margin-bottom:3px}
+
+/* ───────── 15 결론 ───────── */
+.closing{grid-template-columns:1fr 1.05fr;gap:40px}
+.recs{display:flex;flex-direction:column;gap:16px}
+.recs{justify-content:space-between}
+.rec{flex:1;display:grid;grid-template-columns:80px 1fr;gap:10px;align-content:center;padding:20px 0;border-bottom:1px solid var(--line)}
+.rec:first-child{border-top:2px solid var(--navy)}
+.rec .n{font-size:52px;font-weight:800;color:var(--blue);line-height:1}
+.rec h3{font-size:29px;color:var(--navy);font-weight:800;margin-bottom:6px;letter-spacing:-.4px}
+.rec p{font-size:20.5px;line-height:1.55;color:#3d4556}
+.closing table.data{font-size:20px}.closing table.data td{padding:16px 14px}.closing table.data th{font-size:16px}
+.refs{font-size:16px;line-height:1.6;color:var(--muted);margin-top:14px}
+.refs b{color:var(--navy)}
+
+/* ───────── 편집 모드 ───────── */
+body.editing [data-edit]{outline:1px dashed rgba(201,116,28,.55);outline-offset:3px;cursor:text}
+body.editing [data-edit]:focus{outline:2px solid var(--amber);background:var(--amber-tint)}
+.toast{position:absolute;left:50%;top:92px;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:16px;font-weight:700;padding:10px 20px;border-radius:999px;z-index:9;display:none}
+body.editing .toast{display:block}
+
+/* ───────── 인쇄(PDF 저장) : 한 장 = 한 페이지 ───────── */
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;height:auto;background:#fff}
+  #viewport{position:static;display:block}
+  #stage{position:static;transform:none!important;box-shadow:none;height:auto;overflow:visible}
+  .chrome-top,.chrome-bottom,.progress,.toast{display:none}
+  .slide{position:relative;top:auto;bottom:auto;height:1080px;opacity:1;visibility:visible;page-break-after:always;break-after:page;padding-top:60px}
+  .slide .rise,.grow,.growx{opacity:1!important;transform:none!important;animation:none!important}
+  .draw{stroke-dashoffset:0!important;animation:none!important}
+  [data-panel]{display:none}[data-panel].on{display:block}
+}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<header class="chrome-top">
+  <div class="brand"><i>R&D</i>국가 R&D × AI 정책 브리핑 <span>2026 정부 R&D 기준</span></div>
+  <nav class="chapters" aria-label="장 이동">
+    <button data-goto="0">표지·요약</button>
+    <button data-goto="2">Ⅰ 추진배경</button>
+    <button data-goto="4">Ⅱ 비전·전략</button>
+    <button data-goto="6">Ⅲ 추진과제</button>
+    <button data-goto="13">Ⅳ 이행관리</button>
+  </nav>
+  <div class="tools">
+    <button id="editBtn" aria-pressed="false" title="문구를 클릭해 직접 수정">글자 편집</button>
+    <button id="saveBtn" title="수정본을 HTML로 저장">HTML 저장</button>
+    <button id="printBtn" title="한 장씩 PDF로 저장">PDF 인쇄</button>
+    <button id="fsBtn" title="전체화면">전체화면</button>
+  </div>
+</header>
+<div class="toast">편집 모드 · 점선 영역을 클릭해 수정하세요 (자동 저장)</div>
+
+<main id="slides">
+
+<!-- ═════════ 01 표지 ═════════ -->
+<section class="slide cover" data-chapter="0" data-source="국가과학기술자문회의·과학기술정보통신부·KISTEP·OECD 『AI in Science』 자료 재구성">
+  <div class="cover-main">
+    <div class="cover-kicker rise" data-edit>POLICY BRIEFING · NATIONAL R&D × AI</div>
+    <h1 class="rise" data-edit>직관이 아닌 <mark>데이터</mark>로<br>기획하는 국가 R&D</h1>
+    <p class="cover-sub rise" data-edit>기술 호라이즌 스캐닝부터 AI 기반 예타·RFP 설계, 자율실험실(SDL), 스마트 평가까지 — 국가연구개발 전주기 지능화 전략</p>
+    <div class="cover-flow rise"><span>탐색</span><i>→</i><span>기획</span><i>→</i><span>수행</span><i>→</i><span>평가</span><i>↺</i><span style="background:var(--teal-tint);color:var(--teal)">환류</span></div>
+    <div class="cover-meta rise">
+      <div>구분<b data-edit>정책 브리핑</b></div>
+      <div>기준<b data-edit>2026 정부 R&D 예산</b></div>
+      <div>구성<b data-edit>4개 장 · 15쪽</b></div>
+    </div>
+  </div>
+  <aside class="cover-side">
+    <span class="label">KEY NUMBERS</span>
+    <div class="kpi-big rise"><strong class="num"><span data-count="29.6" data-dec="1">29.6</span><small>조 원</small></strong><p data-edit>2026년 정부 R&D 총예산 <span class="delta">+6.1%</span></p></div>
+    <div class="kpi-big rise"><strong class="num"><span data-count="7.8" data-dec="1">7.8</span><small>조 원</small></strong><p data-edit>12대 전략기술·AI 투자 <span class="delta">+21.9%</span></p></div>
+    <div class="kpi-big rise"><strong class="num">180→<span data-count="38">38</span><small>일</small></strong><p data-edit>신규 사업 평균 기획 소요일 (AI 적용 목표)</p></div>
+  </aside>
+</section>
+
+<!-- ═════════ 02 한 장 요약 ═════════ -->
+<section class="slide" data-chapter="0" data-source="본 브리핑 전체 내용 요약">
+  <div class="sh">
+    <div class="tag"><em>요약</em>EXECUTIVE SUMMARY</div>
+    <h2 data-edit>예산 확대만으로는 부족하다 — <mark>기획·배분·평가의 정밀도</mark>를 AI로 높인다</h2>
+  </div>
+  <div class="body summary-wrap"><div class="summary">
+    <div class="sum-col arrow-col rise">
+      <span class="step">01 배경</span>
+      <h3 data-edit>전략기술 중심으로 투자 구조 전환</h3>
+      <ul data-edit><li>정부 R&D 29.6조 원, 전략기술·AI 7.8조 원</li><li>3대 게임체인저(AI-반도체·첨단바이오·양자) 집중</li></ul>
+      <div class="big"><strong class="num">26.4%</strong><span>전체 R&D 중 전략기술 비중</span></div>
+    </div>
+    <div class="sum-col arrow-col rise">
+      <span class="step">02 문제</span>
+      <h3 data-edit>기획은 느리고, 검증은 키워드 수준</h3>
+      <ul data-edit><li>신규 사업 기획에 평균 180일</li><li>키워드 기반 유사·중복 검증 정확도 58.5%</li><li>선진국 로드맵을 뒤따르는 추격형 기획</li></ul>
+      <div class="big"><strong class="num" style="color:var(--amber)">180일</strong><span>기존 평균 기획 소요일</span></div>
+    </div>
+    <div class="sum-col arrow-col rise">
+      <span class="step">03 전략</span>
+      <h3 data-edit>전주기 4단계에 AI를 심는다</h3>
+      <ul data-edit><li>탐색: 기술 호라이즌 스캐닝</li><li>기획: 지능형 RFP·예타 시뮬레이션</li><li>수행: 자율실험실(SDL)</li><li>평가: 스마트 동료평가·연구보안</li></ul>
+      <div class="big"><strong class="num">4계층</strong><span>데이터→지식그래프→시뮬레이션→현장</span></div>
+    </div>
+    <div class="sum-col rise">
+      <span class="step">04 기대효과</span>
+      <h3 data-edit>빠르고 공정한 선도형 R&D</h3>
+      <ul data-edit><li>기획 기간 −78.9% (180→38일)</li><li>유사·중복 검증 정확도 94.2%</li><li>후보물질·소재 탐색 속도 12배</li></ul>
+      <div class="big"><strong class="num" style="color:var(--teal)">65%</strong><span>IRIS AI 기획·평가 적용률 목표</span></div>
+    </div>
+  </div>
+  <div class="keymsg rise"><span class="label">KEY MESSAGE</span><span data-edit>AI는 <mark>근거를 제시</mark>하고, 사람은 <mark>결정하고 책임</mark>진다 — 전주기 지능화로 선도형 국가 R&D 체계를 만든다</span></div>
+  </div>
+</section>
+
+<!-- ═════════ 03 Ⅰ-1 투자 현황 ═════════ -->
+<section class="slide" data-chapter="1" data-source="출처: 과학기술정보통신부 정부 R&D 예산 배분·조정안, 국가과학기술자문회의 심의자료 재구성 · 2026년은 안/목표">
+  <div class="sh">
+    <div class="tag"><em>Ⅰ-1</em>추진배경 · R&D 투자 현황</div>
+    <h2 data-edit>총예산은 연 6% 늘었지만, <mark>전략기술·AI는 연 25%씩</mark> 늘었다</h2>
+    <p data-edit>연도를 선택하면 해당 연도의 부문별 투자 구성이 함께 바뀝니다.</p>
+  </div>
+  <div class="body invest" data-tabgroup="year" data-default="2">
+    <div class="card chart-card rise">
+      <div class="head">
+        <div class="seg" role="tablist">
+          <button data-tab="0" role="tab">2024</button><button data-tab="1" role="tab">2025</button><button data-tab="2" role="tab">2026(안)</button>
+        </div>
+        <div class="legend"><span><i style="background:#c6d3e6"></i>정부 R&D 총예산</span><span><i style="background:var(--blue)"></i>전략기술·AI</span></div>
+      </div>
+      <div class="chart-host" id="chartBudget"></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <div class="kpi-row">
+        <div class="kpi"><span>정부 R&D 총예산</span><strong class="num" id="kTotal">29.60<small>조</small></strong><em id="kTotalD">전년 대비 +6.1%</em></div>
+        <div class="kpi"><span>전략기술·AI</span><strong class="num" id="kStrat">7.80<small>조</small></strong><em id="kStratD">전년 대비 +21.9%</em></div>
+        <div class="kpi"><span>AI 기획·평가 적용률</span><strong class="num" id="kAi">65.0<small>%</small></strong><em id="kAiD">IRIS 지능화 목표</em></div>
+      </div>
+      <table class="data" id="tblBudget">
+        <thead><tr><th>부문 (조 원)</th><th data-col="0">2024</th><th data-col="1">2025</th><th data-col="2">2026(안)</th></tr></thead>
+        <tbody>
+          <tr class="group"><td>정부 R&D 총예산</td><td>26.50</td><td>27.90</td><td>29.60</td></tr>
+          <tr><td>12대 전략기술 & AI</td><td>5.00</td><td>6.40</td><td>7.80</td></tr>
+          <tr><td>기초연구 · 인재양성</td><td>2.95</td><td>3.30</td><td>3.65</td></tr>
+          <tr><td>AI·디지털 R&D 직접투자</td><td>1.20</td><td>1.80</td><td>2.45</td></tr>
+          <tr><td>글로벌 공동 R&D</td><td>1.80</td><td>2.15</td><td>2.40</td></tr>
+          <tr><td>혁신도전형(APRO) R&D</td><td>0.85</td><td>1.05</td><td>1.35</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 04 Ⅰ-2 문제 진단 ═════════ -->
+<section class="slide" data-chapter="1" data-source="출처: KISTEP·KISTI 지능형 R&D 기획·평가 시범사업, OECD 『Artificial Intelligence in Science』 종합">
+  <div class="sh">
+    <div class="tag"><em>Ⅰ-2</em>추진배경 · 현행 체계 진단</div>
+    <h2 data-edit>현행 R&D 기획·평가의 <mark>네 가지 병목</mark>과 AI 전환 방향</h2>
+  </div>
+  <div class="body diag">
+    <div class="diag-row head"><span>병목</span><span>현행 (As-Is)</span><span></span><span>AI 전환 방향 (To-Be)</span><span style="text-align:right">핵심 지표</span></div>
+    <div class="diag-row rise">
+      <h3 data-edit>기획 장기화<span>수작업 문헌조사·위원 섭외</span></h3>
+      <p data-edit>국내외 동향 조사와 RFP 작성이 수작업에 의존해 신규 사업 기획에 6개월 이상 소요</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>AI 코파일럿이 논문·특허·시장 동향 조사와 RFP 초안 작성을 실시간 지원</p>
+      <div class="metric-pair"><span class="from num">180일</span><span class="to-n num">38일</span><small>평균 기획 소요일</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>중복 검증 한계<span>단어 일치 기반 검색</span></h3>
+      <p data-edit>키워드·분류코드 매칭으로는 표현만 다른 실질적 중복 과제를 걸러내지 못함</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>문맥·방법론 임베딩(GraphRAG+LLM)으로 실질 중복을 판별하고 최적 전문가 추천</p>
+      <div class="metric-pair"><span class="from num">58.5%</span><span class="to-n num">94.2%</span><small>검증·매칭 정확도</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>추격형 기획<span>Fast-Follower</span></h3>
+      <p data-edit>선진국이 이미 발표한 로드맵을 뒤따르는 기획, 소수 위원 전공에 치우친 분과 장벽</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>지식그래프로 아직 출판되지 않은 구조적 공백·융합 영역을 먼저 찾아 선점 투자</p>
+      <div class="metric-pair"><span class="from num">1.0x</span><span class="to-n num">2.8x</span><small>융합·공백과제 발굴 정밀도</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>행정 부담<span>보고서·대조표 수작업</span></h3>
+      <p data-edit>동향 요약, 유사과제 대조표, 규격 보고서 작성에 연구자·정책담당자의 시간이 소모</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>에이전틱 R&D 행정으로 초안·요약을 자동 생성해 창의적 기획에 집중</p>
+      <div class="metric-pair"><span class="from num">100</span><span class="to-n num">28</span><small>연구자 행정소요 지수</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 05 Ⅱ-1 비전 체계도 ═════════ -->
+<section class="slide" data-chapter="2" data-source="출처: 범부처 국가연구개발 혁신방안 및 AI 지능화 전략 재구성">
+  <div class="sh">
+    <div class="tag"><em>Ⅱ-1</em>비전·전략 · 정책 체계도</div>
+    <h2 data-edit>1개 비전 · 3대 목표 · <mark>4대 추진전략</mark></h2>
+  </div>
+  <div class="body frame">
+    <div class="vision rise"><span class="label">VISION</span><strong data-edit>데이터와 AI로 설계하는 선도형 국가 R&D</strong></div>
+    <div class="goals rise">
+      <span class="row-label">3대 목표</span>
+      <div class="goal"><h3 data-edit>기획은 빠르게</h3><div class="t"><strong class="num">38일</strong><small>평균 기획 소요일</small></div></div>
+      <div class="goal"><h3 data-edit>평가는 공정하게</h3><div class="t"><strong class="num">94.2%</strong><small>검증·매칭 정확도</small></div></div>
+      <div class="goal"><h3 data-edit>현장은 넓게</h3><div class="t"><strong class="num">65%</strong><small>IRIS AI 적용률</small></div></div>
+    </div>
+    <div class="strats rise">
+      <span class="row-label">4대 전략</span>
+      <div class="strat"><span class="no"><i>S</i>전략 1 · 탐색</span><h3 data-edit>글로벌 기술 호라이즌 스캐닝</h3><ul data-edit><li>논문·특허·투자 데이터 실시간 추적</li><li>12대 전략기술 조기경보 대시보드</li></ul></div>
+      <div class="strat"><span class="no"><i>D</i>전략 2 · 기획</span><h3 data-edit>지능형 RFP·예타 설계</h3><ul data-edit><li>문맥 단위 유사·중복 검증</li><li>다중 에이전트 예산 시나리오</li></ul></div>
+      <div class="strat"><span class="no"><i>L</i>전략 3 · 수행</span><h3 data-edit>AI+로봇 자율실험실</h3><ul data-edit><li>소재·바이오·촉매 SDL 확대</li><li>실패 데이터까지 국가 DB 자산화</li></ul></div>
+      <div class="strat"><span class="no"><i>E</i>전략 4 · 평가</span><h3 data-edit>스마트 평가·연구보안</h3><ul data-edit><li>이해충돌 없는 평가위원 매칭</li><li>민감 기술 폐쇄망 처리·유출 차단</li></ul></div>
+    </div>
+    <div class="base rise">
+      <span class="row-label">추진 기반</span>
+      <div class="base-bar"><span data-edit>연구데이터 AI-Ready 표준화</span><span data-edit>사람이 최종 결정하는 책임 원칙</span><span data-edit>폐쇄망 LLM·연구보안</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 06 Ⅱ-2 전주기 전환 ═════════ -->
+<section class="slide" data-chapter="2" data-source="출처: OECD STI Outlook, 범부처 국가연구개발 혁신방안 기반 전주기 AI 로드맵">
+  <div class="sh">
+    <div class="tag"><em>Ⅱ-2</em>비전·전략 · 전주기 AI 전환</div>
+    <h2 data-edit>탐색 → 기획 → 수행 → 평가, <mark>끊기지 않고 되돌아오는</mark> R&D 순환</h2>
+    <p data-edit>단계를 선택하면 현행 대비 전환 내용, 주요 추진 내용, 점검 지표가 바뀝니다.</p>
+  </div>
+  <div class="body cycle" data-tabgroup="stage" data-default="1">
+    <div class="flow rise" role="tablist">
+      <button class="stage-btn" data-tab="0" role="tab"><span class="s">STAGE 1 · HORIZON SCAN</span><h3>탐색</h3><p>기술 조기경보</p></button>
+      <button class="stage-btn" data-tab="1" role="tab"><span class="s">STAGE 2 · POLICY DESIGN</span><h3>기획</h3><p>지능형 RFP·예타</p></button>
+      <button class="stage-btn" data-tab="2" role="tab"><span class="s">STAGE 3 · AUTONOMOUS LAB</span><h3>수행</h3><p>AI+로봇 자율실험</p></button>
+      <button class="stage-btn" data-tab="3" role="tab"><span class="s">STAGE 4 · SMART EVALUATION</span><h3>평가</h3><p>공정 평가·보안</p></button>
+    </div>
+    <div class="rise">
+      <div data-panel="0"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">As-Is</span><br><span data-edit>전문가 설문(델파이) 위주의 느린 기술예측</span></div><div class="b"><span class="chip tobe">To-Be</span><br><span data-edit>1.2억 건 논문·특허·표준·투자 데이터의 실시간 지식그래프 분석</span></div></div>
+        <div class="card"><span class="label">주요 추진 내용</span><ul data-edit><li>인용 급증 변곡점과 이종 학문 간 최초 결합 신호로 태동기 기술 발굴</li><li>arXiv·bioRxiv 프리프린트, 특허, 글로벌 VC 투자 흐름 실시간 추적</li></ul></div>
+        <div class="card"><span class="label">점검 지표</span><ol data-edit><li>국내 연구역량과 글로벌 유망기술 간 매칭 정확도</li><li>기술수준평가·중장기 투자전략 수립 주기 단축</li><li>신진 연구자 아이디어 누락 방지 다양성 지표</li></ol><p class="note" data-edit>인기 키워드 쏠림 방지를 위해 구조적 독창성(Novelty Index)을 함께 반영</p></div>
+      </div></div>
+      <div data-panel="1"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">As-Is</span><br><span data-edit>평균 6개월 기획, 키워드 기반 중복 검토</span></div><div class="b"><span class="chip tobe">To-Be</span><br><span data-edit>IRIS·NTIS 대조 문맥 단위 중복 검증 + 다중 시나리오 예산 시뮬레이션</span></div></div>
+        <div class="card"><span class="label">주요 추진 내용</span><ul data-edit><li>국가 R&D 과제 DB와 대조해 유사·중복성을 문맥 단위로 정밀 검증</li><li>기술·경제·정책 에이전트가 적정 예산 규모와 RFP 요구사항 제안</li></ul></div>
+        <div class="card"><span class="label">점검 지표</span><ol data-edit><li>기획 소요일 단축(6개월 → 1개월)에 따른 적시 투자 효과</li><li>부처 간 융합 과제의 중복 예산 절감액</li><li>PD·기획위원의 AI 초안 활용 만족도·수정 비율</li></ol><p class="note" data-edit>AI 시뮬레이션은 보좌 도구이며, 전략적 우선순위 판단은 기획위원회의 고유 권한</p></div>
+      </div></div>
+      <div data-panel="2"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">As-Is</span><br><span data-edit>사람이 수행하는 반복 합성·측정 실험</span></div><div class="b"><span class="chip tobe">To-Be</span><br><span data-edit>AI 모델과 실험실 로보틱스 결합으로 연구 수행 속도 10배 이상</span></div></div>
+        <div class="card"><span class="label">주요 추진 내용</span><ul data-edit><li>소재·바이오·촉매 등 반복 실험 분야에 자율실험실(SDL) 구축 확대</li><li>실패 데이터까지 표준 포맷으로 수집해 과학 파운데이션 모델 고도화</li></ul></div>
+        <div class="card"><span class="label">점검 지표</span><ol data-edit><li>신물질 발굴 기간 및 연구비 절감률</li><li>국산 장비·센서와 AI 제어 SW 간 표준 인터페이스</li><li>출연연·대학·기업 간 Cloud Lab 공유 가동률</li></ol><p class="note" data-edit>로봇 장비 도입보다 실험 데이터 자동 기록·표준화 프로토콜 확립이 선행되어야 함</p></div>
+      </div></div>
+      <div data-panel="3"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">As-Is</span><br><span data-edit>인맥·분류코드 기반 평가위원 섭외, 방대한 서류 심사</span></div><div class="b"><span class="chip tobe">To-Be</span><br><span data-edit>임베딩 매칭으로 이해충돌 없는 위원 추천 + 핵심 평가 브리프 제공</span></div></div>
+        <div class="card"><span class="label">주요 추진 내용</span><ul data-edit><li>제안서와 연구자 논문·실적을 임베딩 매칭해 최적 평가위원 후보군 추출</li><li>연구계획서·결과보고서의 혁신성·달성도를 요약한 평가 브리프 제공</li></ul></div>
+        <div class="card"><span class="label">점검 지표</span><ol data-edit><li>평가위원 매칭 이의신청 감소율·전문성 만족도</li><li>연구자의 평가 준비·보고서 작성 시간 절감률</li><li>민감 전략기술 제안서의 폐쇄망 보안 유지</li></ol><p class="note" data-edit>AI 자동 채점은 지양하고, 인간 평가위원의 판단 근거를 보강하는 Co-Reviewer로 운영</p></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 07 Ⅲ-1 4계층 플랫폼 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 국가연구개발 데이터 통합 및 AI 지능화 아키텍처 참조 모델">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-1</em>추진과제 · 지능형 R&D 플랫폼</div>
+    <h2 data-edit>부처 칸막이를 넘는 <mark>4계층 플랫폼</mark>으로 데이터를 정책으로 바꾼다</h2>
+  </div>
+  <div class="body arch" data-tabgroup="layer" data-default="1">
+    <div class="io io-in rise"><span class="label">입력 데이터</span><span data-edit>IRIS 과제 정보</span><span data-edit>NTIS 성과 데이터</span><span data-edit>OpenAlex · PubMed 논문</span><span data-edit>USPTO · KIPRIS 특허</span><span data-edit>표준 · VC 투자 동향</span><span data-edit>SDL 실험 데이터</span></div>
+    <div class="io-link rise"><b>→</b><small>01층으로<br>수집</small></div>
+    <div class="layers rise" role="tablist">
+      <div class="lrow"><button class="layer" data-tab="0" role="tab"><span class="n">01</span><div><h3>데이터 통합층</h3><p>IRIS + NTIS + 글로벌 1.2억 건 연동</p></div></button><span class="to lbase">↑</span><div class="users lbase"><span data-edit>기반층 · 상위 계층에 데이터 공급</span></div></div>
+      <div class="lrow"><button class="layer" data-tab="1" role="tab"><span class="n">02</span><div><h3>과학기술 LLM · 지식그래프층</h3><p>연구자·기관·기술·공급망 GraphRAG</p></div></button><span class="to">→</span><div class="users"><span data-edit>PD·PM 기획위원</span><span data-edit>연구자·연구기관</span></div></div>
+      <div class="lrow"><button class="layer" data-tab="2" role="tab"><span class="n">03</span><div><h3>정책·기획 시뮬레이션층</h3><p>공백기술 발굴 · RFP 설계 · 예타 모의실험</p></div></button><span class="to">→</span><div class="users"><span data-edit>PD·PM 기획위원</span><span data-edit>부처 정책담당자</span></div></div>
+      <div class="lrow"><button class="layer" data-tab="3" role="tab"><span class="n">04</span><div><h3>현장 실행층</h3><p>스마트 평가 · 자율실험실 환류</p></div></button><span class="to">→</span><div class="users"><span data-edit>평가위원</span><span data-edit>연구자·연구기관</span><span data-edit>자율실험실</span></div></div>
+      <div class="lhead"><span>플랫폼 계층 (아래에서 위로 데이터가 올라감)</span><span>이 계층을 쓰는 주체</span></div>
+    </div>
+    <div class="detail rise">
+      <div class="card" data-panel="0"><span class="label">LAYER 01</span><h3 data-edit>부처별 칸막이를 넘는 국가 연구데이터 레이크하우스</h3><p data-edit>범부처 IRIS 과제 정보, NTIS 성과 데이터, 해외 논문(OpenAlex·PubMed)·특허(USPTO·KIPRIS)를 실시간 파이프라인으로 단일 지식베이스에 통합합니다.</p></div>
+      <div class="card" data-panel="1"><span class="label">LAYER 02</span><h3 data-edit>과학기술 특화 LLM과 지식그래프 결합</h3><p data-edit>단순 키워드 검색의 환각(Hallucination)을 막기 위해 연구자·기술·특허·공급망의 인과관계를 구조화한 GraphRAG 아키텍처를 적용합니다.</p></div>
+      <div class="card" data-panel="2"><span class="label">LAYER 03</span><h3 data-edit>공백기술 도출 및 예타 모의실험</h3><p data-edit>글로벌 선도그룹 대비 국내 기술격차와 미개척 융합 영역을 자동 식별하고, 예산 투입 시나리오별 파급효과를 사전 시뮬레이션합니다.</p></div>
+      <div class="card" data-panel="3"><span class="label">LAYER 04</span><h3 data-edit>스마트 동료평가 보조와 자율실험실 환류</h3><p data-edit>이해충돌 없는 평가위원 매칭과 제안서 핵심 요약으로 평가 공정성을 높이고, 자율실험실의 실험 데이터를 다시 차기 기획에 반영합니다.</p></div>
+      <p class="note" data-edit>입력 데이터는 01층에 모여 위층으로 올라가고, 각 층의 결과는 오른쪽 주체가 씁니다. 계층을 선택하면 해당 주체가 강조됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 08 Ⅲ-2 3대 엔진 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: GraphRAG 기반 기술기획 방법론 및 다중 에이전트 정책 시뮬레이션 아키텍처">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-2</em>추진과제 · 핵심 AI 엔진</div>
+    <h2 data-edit>탐색·기획·평가를 이끄는 <mark>3대 AI 엔진</mark>의 작동 원리</h2>
+  </div>
+  <div class="body engines">
+    <article class="engine rise">
+      <header><i>G</i><div><h3 data-edit>기술 호라이즌 지식그래프</h3><small>GLOBAL TECH KNOWLEDGE GRAPH</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>멀티모달 데이터 수집</strong><span data-edit>글로벌 논문·특허·IRIS 과제를 실시간 수집·정제</span></div></li>
+        <li><b>2</b><div><strong data-edit>지식그래프 임베딩</strong><span data-edit>기술·연구자·기관·소재를 노드와 엣지로 연결해 관계 학습</span></div></li>
+        <li><b>3</b><div><strong data-edit>공백·융합기술 탐지</strong><span data-edit>급성장 클러스터와 미연결 고잠재 융합 공백을 시각화</span></div></li>
+      </ol>
+      <div class="eff"><b>정책 효과</b><span data-edit>소수 전문가 경험에 의존하던 기술수요조사를 전수 데이터 기반으로 전환해 선도형 과제 발굴 확률 제고</span></div>
+      <div class="use" data-edit>적용: 12대 전략기술 로드맵, 기술수준평가, 공동연구 파트너 매칭</div>
+    </article>
+    <article class="engine rise">
+      <header><i>S</i><div><h3 data-edit>다중 에이전트 기획 시뮬레이터</h3><small>MULTI-AGENT R&D SIMULATOR</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>초안 및 대안 생성</strong><span data-edit>공백기술을 바탕으로 RFP 목표 사양과 마일스톤 초안 생성</span></div></li>
+        <li><b>2</b><div><strong data-edit>에이전트 교차 검토</strong><span data-edit>기술·예산·규제 에이전트가 상호 반론과 보완을 반복</span></div></li>
+        <li><b>3</b><div><strong data-edit>포트폴리오 최적 배분</strong><span data-edit>기존 사업과의 중복 제거, 투입 대비 파급효과 시뮬레이션</span></div></li>
+      </ol>
+      <div class="eff"><b>정책 효과</b><span data-edit>기획 기간을 6개월에서 4주 이내로 단축하면서 예타 수준의 논리와 대안 시나리오를 사전 확보</span></div>
+      <div class="use" data-edit>적용: 대형 사업 사전 기획, 혁신도전형 타당성 점검, 부처 간 융합사업 설계</div>
+    </article>
+    <article class="engine rise">
+      <header><i>E</i><div><h3 data-edit>AI 동료평가·연구보안 엔진</h3><small>SMART PEER-REVIEW & SECURITY</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>시맨틱 평가위원 매칭</strong><span data-edit>제안서 개념과 연구자 논문·특허 벡터를 대조해 전문가 추천</span></div></li>
+        <li><b>2</b><div><strong data-edit>이해충돌·중복 필터링</strong><span data-edit>사제·공저자·동일기관 자동 배제, 기수행 과제 중복률 산출</span></div></li>
+        <li><b>3</b><div><strong data-edit>평가 브리프·보안 점검</strong><span data-edit>독창성·실현성 요약 제공, 기술유출·윤리 리스크 스캔</span></div></li>
+      </ol>
+      <div class="eff"><b>정책 효과</b><span data-edit>평가위원 섭외의 공정성 논란을 줄이고, 위원이 서류 대신 핵심 과학적 쟁점 토론에 집중</span></div>
+      <div class="use" data-edit>적용: IRIS 평가위원 후보단 추출, 연구보안 등급 분류, 연구비 이상탐지</div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════ 09 Ⅲ-3 단계별 고도화 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 범부처 R&D 기획 지능화 성숙도 모델(Lv.1~Lv.3), US DOE AI for Science 기획 체계 비교">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-3</em>추진과제 · 단계별 고도화</div>
+    <h2 data-edit>검색 보조에서 자율 기획까지, <mark>3단계로 나눠 도입</mark>한다</h2>
+    <p data-edit>단계를 선택하면 도입 시점·핵심 기능·전제 조건을 볼 수 있습니다.</p>
+  </div>
+  <div class="body maturity" data-tabgroup="level" data-default="1">
+    <div class="stairs rise" role="tablist">
+      <button class="stair" data-tab="0" role="tab"><span class="lv">LEVEL 1</span><h3>Assistant</h3><p>문헌·특허 RAG<br>유사중복 자동 검증</p><span class="when">즉시 도입</span></button>
+      <button class="stair" data-tab="1" role="tab"><span class="lv">LEVEL 2</span><h3>Co-Pilot</h3><p>지식그래프 공백기술 발굴<br>RFP·예타 시뮬레이션</p><span class="when">핵심 확산 단계</span></button>
+      <button class="stair" data-tab="2" role="tab"><span class="lv">LEVEL 3</span><h3>Agentic Architect</h3><p>자율 가설 생성<br>자율실험실 실시간 연동</p><span class="when">차세대 목표 단계</span></button>
+    </div>
+    <div class="lv-detail rise">
+      <div class="card" data-panel="0"><span class="chip goal">Lv.1 · 즉시 도입 · RAG 기반</span><h3 data-edit>수백만 건의 논문·특허·과제 즉시 요약과 중복성 검증</h3><p data-edit>국내외 R&D 데이터베이스를 시맨틱 검색(RAG)으로 연결해 선행기술 조사 시간을 90% 줄이고, 기존 과제와의 유사·중복 여부를 10분 안에 판별합니다.</p><p class="note" data-edit>미공개 국가전략기술 기획서는 폐쇄망 온프레미스 LLM 환경에서 처리해야 합니다.</p></div>
+      <div class="card" data-panel="1"><span class="chip goal">Lv.2 · 핵심 확산 · 지식그래프 & 시뮬레이션</span><h3 data-edit>공백기술 발굴과 RFP·예타 다중 시나리오 설계</h3><p data-edit>글로벌 기술 지식그래프에서 미개척 융합 영역을 도출하고, 기술성·경제성·정책 부합성을 사전 시뮬레이션해 기획 기간을 78% 단축합니다.</p>
+        <div class="range"><span class="label">평균 기획 소요일</span><div class="track" style="margin-top:8px"><div class="fill growx" style="width:21.1%">38일</div></div><div class="scale"><span>0</span><span>45</span><span>90</span><span>135</span><span>180일 (기존)</span></div></div></div>
+      <div class="card" data-panel="2"><span class="chip goal">Lv.3 · 차세대 목표 · 자율 가설 & SDL</span><h3 data-edit>AI 에이전트와 자율실험실(SDL)의 실시간 결합</h3><p data-edit>AI 에이전트가 과학적 가설과 실험 계획을 스스로 수립하고, 자율실험실의 실증 결과를 실시간 반영해 과제를 동적으로 진화시킵니다.</p><p class="note" data-edit>차세대 AI for Science 파운데이션 모델과 국가 연구데이터 표준 파이프라인 구축이 전제 조건입니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 10 Ⅲ-4 운영 효율 성과 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: KISTEP·KISTI 지능형 R&D 기획·평가 시범사업 및 글로벌 AI 정책 분석 리포트 종합">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-4</em>추진과제 · 기대효과 ① 운영 효율</div>
+    <h2 data-edit>기획 기간은 <mark>−78.9%</mark>, 검증 정확도는 <mark>94.2%</mark></h2>
+  </div>
+  <div class="body perf">
+    <div class="card rise">
+      <span class="label">신규 사업 기획 소요일 · 방식별</span>
+      <div class="hero"><strong class="num"><span data-count="38">38</span><small>일</small></strong><span>기존 180일 대비 −78.9%</span></div>
+      <div class="chart-host" id="chartDays"></div>
+      <p class="note" data-edit>논문·특허·시장 동향 조사와 RFP 초안 작성을 AI 코파일럿이 실시간 지원</p>
+    </div>
+    <div class="card rise">
+      <span class="label">유사·중복 검증 및 위원 매칭 정확도 · 방식별</span>
+      <div class="hero"><strong class="num"><span data-count="94.2" data-dec="1">94.2</span><small>%</small></strong><span>키워드 방식 대비 +35.7%p</span></div>
+      <div class="chart-host" id="chartAcc"></div>
+      <p class="note" data-edit>단어 일치가 아닌 문맥·방법론 임베딩으로 실질적 중복 과제를 가려냄</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 11 Ⅲ-5 연구 생산성 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: OECD 『Artificial Intelligence in Science』 및 주요국 AI for Science 실증 사례 종합 · 전통 방식 = 1x">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-5</em>추진과제 · 기대효과 ② 연구 생산성</div>
+    <h2 data-edit>AI for Science로 <mark>추격형에서 선도형</mark>으로</h2>
+    <p data-edit>지표를 선택하면 연구 방식 4단계별 변화를 비교합니다.</p>
+  </div>
+  <div class="body multi" data-tabgroup="mult" data-default="0">
+    <div class="card chart-card rise">
+      <div class="seg mult-switch" role="tablist"><button data-tab="0" role="tab">후보물질 탐색 속도</button><button data-tab="1" role="tab">공백과제 발굴 정밀도</button><button data-tab="2" role="tab">행정소요 지수</button></div>
+      <div class="chart-host" id="chartMult"></div>
+    </div>
+    <div class="insight rise">
+      <div class="card"><span class="chip tobe">전략 전환</span><h3 data-edit style="margin-top:12px">추격형(Fast-Follower) → 선도형(First-Mover)</h3><p data-edit>선진국 로드맵을 뒤따르던 기획에서 벗어나, AI가 아직 논문으로 출판되지 않은 구조적 공백 영역을 먼저 찾아 선점 투자를 가능하게 합니다.</p></div>
+      <div class="card"><span class="chip goal">운영 원칙</span><h3 data-edit style="margin-top:12px">실패 용인 + 데이터 자산화</h3><p data-edit>도전적 R&D의 실패 실험도 AI 학습용 실패 데이터(Negative Data)로 국가 DB에 축적하면 다음 과제의 성공률을 높이는 자산이 됩니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 12 Ⅲ-6 포트폴리오 재편 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 국가전략기술 육성 기본계획, 혁신도전형 R&D 추진전략, 정부 R&D 예산안 · 단위: 조 원">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-6</em>추진과제 · 재원 배분</div>
+    <h2 data-edit>중복 사업 1.2조를 정비하고 <mark>전략 분야에 2.9조를 재투자</mark>한다</h2>
+  </div>
+  <div class="body portfolio" data-tabgroup="axis" data-default="0">
+    <div class="card chart-card rise">
+      <span class="label">2026년 정부 R&D 구조 개편 브릿지 (조 원)</span>
+      <div class="chart-host" id="chartBridge"></div>
+      <p class="note" data-edit>AI 기반 유사·중복 검증과 성과 분석으로 한계 사업을 정비하고, 절감액 이상을 전략기술·도전적 연구에 재투입</p>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <span class="label">전략 포트폴리오 목표 비중</span>
+      <div class="stack100" role="tablist">
+        <button data-tab="0" role="tab" style="width:48%;background:var(--navy)">48%</button>
+        <button data-tab="1" role="tab" style="width:28%;background:var(--blue)">28%</button>
+        <button data-tab="2" role="tab" style="width:24%;background:var(--teal)">24%</button>
+      </div>
+      <div class="axis-list">
+        <div class="card keep" data-panel="0"><h3><i style="background:var(--navy)"></i><span data-edit>12대 국가전략기술 & 3대 게임체인저</span></h3><p data-edit>AI 공급망 분석으로 핵심 병목 기술을 식별하고 범부처 대형 플래그십 프로젝트로 집중 지원합니다. 3대 게임체인저(AI-반도체·첨단바이오·양자)에 약 3.5조 원 배정.</p></div>
+        <div class="card keep" data-panel="1"><h3><i style="background:var(--blue)"></i><span data-edit>혁신도전형 R&D (APRO · 한계도전)</span></h3><p data-edit>성공률이 낮더라도 국가 난제를 해결할 파괴적 기술을 AI 시뮬레이션으로 선별하고, PM에게 예산·과제 변경 자율성을 부여합니다. 2026년 1.35조 원(+28.6%).</p></div>
+        <div class="card keep" data-panel="2"><h3><i style="background:var(--teal)"></i><span data-edit>글로벌 공동연구 & 국가 AI 연구인프라</span></h3><p data-edit>AI 인용 네트워크 분석으로 세계 최고 연구그룹과 실질적 매칭을 지원하고, 연구계가 공용 활용하는 고성능 GPU·과학 파운데이션 모델을 구축합니다.</p></div>
+        <p class="note" data-edit>혁신도전형 R&D는 성실수행 인정 제도와 AI 마일스톤 점검을 결합해 도전성을 보장합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 13 Ⅲ-7 자율실험실 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 첨단소재·바이오 디지털 연구혁신 추진전략, 글로벌 Self-Driving Lab 확산 동향">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-7</em>추진과제 · 자율실험실(SDL)</div>
+    <h2 data-edit>AI가 가설을 세우고 로봇이 실험하는 <mark>닫힌 루프</mark></h2>
+  </div>
+  <div class="body sdl" data-tabgroup="loop" data-default="0">
+    <div class="loop rise" role="tablist">
+      <svg viewBox="0 0 640 600" aria-hidden="true">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0a8f88"/></marker></defs>
+        <path d="M455 120 A250 250 0 0 1 560 340" fill="none" stroke="#0a8f88" stroke-width="3" marker-end="url(#ah)"/>
+        <path d="M385 470 L265 470" fill="none" stroke="#0a8f88" stroke-width="3" marker-end="url(#ah)"/>
+        <path d="M80 340 A250 250 0 0 1 185 120" fill="none" stroke="#0a8f88" stroke-width="3" marker-end="url(#ah)"/>
+      </svg>
+      <button class="loop-node" data-tab="0" role="tab"><b>01 · IN-SILICO</b><h3>AI 가설 생성 &<br>분자·소재 설계</h3></button>
+      <button class="loop-node" data-tab="1" role="tab"><b>02 · ROBOTICS</b><h3>로봇 자동화<br>고속 합성·측정</h3></button>
+      <button class="loop-node" data-tab="2" role="tab"><b>03 · ACTIVE LEARNING</b><h3>능동학습 &<br>정책 환류</h3></button>
+      <div class="loop-center"><strong>24시간</strong>무인 실험 루프<br>실패 데이터까지 자산화</div>
+    </div>
+    <div class="sdl-right rise">
+      <div class="card" data-panel="0"><span class="label">STEP 01</span><h3 data-edit>과학기술 파운데이션 모델의 인실리코 가설 생성</h3><p data-edit>수억 개의 화합물·단백질·결정 구조를 학습한 AI가 목표 물성을 만족하는 후보군을 몇 시간 안에 스크리닝해 실험 범위를 좁힙니다.</p></div>
+      <div class="card" data-panel="1"><span class="label">STEP 02</span><h3 data-edit>로봇 기반 24시간 무인 고속 합성·정밀 측정</h3><p data-edit>AI가 설계한 실험 프로토콜에 따라 로봇 팔과 자동 분석 장비가 수천 건의 합성·배양·물성 측정을 수행하고 표준 데이터를 기록합니다.</p></div>
+      <div class="card" data-panel="2"><span class="label">STEP 03</span><h3 data-edit>능동학습 피드백과 국가 R&D 정책 환류</h3><p data-edit>실패 데이터를 포함한 실험 결과를 AI가 즉시 재학습해 다음 실험을 지시하고, 누적 성과는 국가 R&D 마일스톤 점검에 실시간 연동됩니다.</p></div>
+      <div class="card chart-card" style="flex:1"><span class="label">SDL 연계 국가 R&D 사업·거점 수 (개)</span><div class="chart-host" id="chartSdl"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 14 Ⅳ-1 거버넌스 ═════════ -->
+<section class="slide" data-chapter="4" data-source="출처: 국가과학기술자문회의·과기정통부·KISTEP 정책 보고서, OECD AI in Science 종합">
+  <div class="sh">
+    <div class="tag"><em>Ⅳ-1</em>이행관리 · 리스크와 거버넌스</div>
+    <h2 data-edit>성패는 시스템이 아니라 <mark>데이터 개방과 제도 안착</mark>에 달려 있다</h2>
+  </div>
+  <div class="body gov">
+    <div class="check-list rise">
+      <span class="label">3대 점검 과제</span>
+      <div class="check"><span class="n">01</span><div><h3 data-edit>연구데이터의 AI-Ready 표준화</h3><p data-edit>출연연·대학이 생산한 연구데이터가 사장되지 않고 AI가 즉시 학습 가능한 표준 포맷으로 공유·자산화되는지 확인</p></div></div>
+      <div class="check"><span class="n">02</span><div><h3 data-edit>AI 기획·평가의 설명가능성과 책임성</h3><p data-edit>알고리즘 편향·블랙박스 의사결정을 방지하고, PD·평가위원과 AI 간 역할 분담 가이드라인 마련</p></div></div>
+      <div class="check"><span class="n">03</span><div><h3 data-edit>예타 개편 이후의 신속 재정 규율</h3><p data-edit>기획 기간 단축이 부실 검증으로 이어지지 않도록 사전 타당성 시뮬레이션과 사후 마일스톤 관리 병행</p></div></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column;gap:14px">
+      <span class="label">AI와 사람의 역할 분담 원칙</span>
+      <div class="roles"><table>
+        <thead><tr><th class="ai">AI가 하는 일 · 보조</th><th class="hu">사람이 하는 일 · 결정</th></tr></thead>
+        <tbody>
+          <tr><td><span class="stage">탐색</span><span data-edit>유망·공백기술 신호 탐지, 근거 데이터 제시</span></td><td><span class="stage">탐색</span><span data-edit>국가 전략적 우선순위 판단</span></td></tr>
+          <tr><td><span class="stage">기획</span><span data-edit>RFP·예산 시나리오 초안, 출처 링크 부여</span></td><td><span class="stage">기획</span><span data-edit>PD·기획위원회의 검증과 최종 확정</span></td></tr>
+          <tr><td><span class="stage">평가</span><span data-edit>위원 후보 추천, 이해충돌 필터, 평가 브리프</span></td><td><span class="stage">평가</span><span data-edit>점수 부여와 심사 판단 (AI 자동 채점 지양)</span></td></tr>
+          <tr><td><span class="stage">보안</span><span data-edit>기술유출·윤리 리스크 스캔</span></td><td><span class="stage">보안</span><span data-edit>민감 기술의 폐쇄망 처리 결정과 책임</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note" data-edit>AI 분석 결과는 의사결정을 돕는 객관적 증거 자료이며, 최종 정책 결정 책임은 사람에게 있습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 15 Ⅳ-2 결론·제언 ═════════ -->
+<section class="slide" data-chapter="4" data-source="근거: 국가과학기술자문회의·과기정통부·KISTEP·OECD AI in Science 정책 보고서 종합">
+  <div class="sh">
+    <div class="tag"><em>Ⅳ-2</em>이행관리 · 결론 및 정책 제언</div>
+    <h2 data-edit>증거 기반(Evidence-Based) 국가 R&D를 위한 <mark>세 가지 제언</mark></h2>
+  </div>
+  <div class="body closing">
+    <div class="recs rise">
+      <div class="rec"><span class="n">1</span><div><h3 data-edit>데이터부터 — 국가 연구데이터 레이크하우스</h3><p data-edit>IRIS·NTIS·실험 데이터를 AI-Ready 표준으로 통합하는 것이 모든 지능화의 전제입니다.</p></div></div>
+      <div class="rec"><span class="n">2</span><div><h3 data-edit>단계적으로 — Lv.1 즉시 도입, Lv.2 확산</h3><p data-edit>검색·중복 검증 보조부터 도입하고, 지식그래프·시뮬레이션으로 기획 기간을 단계적으로 단축합니다.</p></div></div>
+      <div class="rec"><span class="n">3</span><div><h3 data-edit>사람이 책임지는 구조로 — 역할 분담 제도화</h3><p data-edit>AI는 근거를 제시하고 사람이 결정하는 원칙을 가이드라인과 평가 제도에 명문화합니다.</p></div></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <span class="label">최근 3개년 핵심 지표</span>
+      <table class="data" style="margin-top:10px">
+        <thead><tr><th>항목</th><th>2024</th><th>2025</th><th class="sel">2026(안/목표)</th></tr></thead>
+        <tbody>
+          <tr><td>정부 R&D 총예산 (조 원)</td><td>26.50</td><td>27.90</td><td class="sel">29.60</td></tr>
+          <tr><td>12대 전략기술 & AI (조 원)</td><td>5.00</td><td>6.40</td><td class="sel">7.80</td></tr>
+          <tr><td>AI·디지털 R&D 직접투자 (조 원)</td><td>1.20</td><td>1.80</td><td class="sel">2.45</td></tr>
+          <tr><td>혁신도전형(APRO) R&D (조 원)</td><td>0.85</td><td>1.05</td><td class="sel">1.35</td></tr>
+          <tr><td>신규 사업 평균 기획 소요일 (일)</td><td>180</td><td>95</td><td class="sel">38</td></tr>
+          <tr><td>IRIS AI 기획·평가 적용률 (%)</td><td>15.0</td><td>38.0</td><td class="sel">65.0</td></tr>
+        </tbody>
+      </table>
+      <p class="refs" data-edit><b>참고자료</b> · 과학기술정보통신부 정부 R&D 예산 배분·조정안 · 국가과학기술자문회의 심의자료 · KISTEP·KISTI 데이터·AI 기반 R&D 기획·평가 혁신 연구 · 국가전략기술 육성 기본계획 · OECD 『Artificial Intelligence in Science』</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="chrome-bottom">
+  <span class="source" id="source"></span>
+  <div class="pager"><button id="prev" aria-label="이전 장">←</button><span><b id="pageNo">01</b> / <span id="pageTotal">15</span></span><button id="next" aria-label="다음 장">→</button></div>
+</footer>
+<div class="progress" id="progress"></div>
+
+</div></div>
+
+<script>
+(()=>{
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const C={navy:'#0e2747',blue:'#1d5fbf',teal:'#0a8f88',amber:'#c9741c',red:'#c2413b',pale:'#c6d3e6',line:'#dde2ea',muted:'#667085',ink:'#1d2433'};
+
+/* ── 스테이지 비율 맞춤 ── */
+const stage=$('#stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+
+/* ── SVG 유틸 ── */
+function el(tag,attrs={},parent){const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n}
+function txt(parent,x,y,s,attrs={}){const t=el('text',{x,y,...attrs},parent);t.textContent=s;return t}
+function svgFor(host){const r=host.getBoundingClientRect();const scale=stage.getBoundingClientRect().width/1920||1;const w=Math.max(300,Math.round(r.width/scale)),h=Math.max(180,Math.round(r.height/scale));host.replaceChildren();return [el('svg',{viewBox:`0 0 ${w} ${h}`,preserveAspectRatio:'xMidYMid meet'},host),w,h]}
+
+/* 세로 막대 (그룹) */
+function columns(host,{labels,series,max,fmt=v=>v,tick=v=>Math.round(v),sel=-1,unit=''}){
+  const [s,w,h]=svgFor(host);const pl=56,pr=10,pt=34,pb=48,cw=w-pl-pr,ch=h-pt-pb;
+  for(let i=0;i<=4;i++){const y=pt+ch-ch*i/4;el('line',{x1:pl,x2:w-pr,y1:y,y2:y,stroke:C.line},s);txt(s,pl-10,y+5,tick(max*i/4),{'text-anchor':'end','font-size':14,fill:C.muted})}
+  const gw=cw/labels.length,bw=Math.min(70,gw*0.7/series.length);
+  labels.forEach((lb,i)=>{const gx=pl+gw*i+gw/2-bw*series.length/2;
+    series.forEach((se,j)=>{const v=se.values[i],bh=ch*v/max,x=gx+j*bw+2,y=pt+ch-bh,dim=sel>=0&&i!==sel;
+      el('rect',{x,y,width:bw-4,height:bh,rx:3,fill:se.color,class:'bar grow',opacity:dim?.35:1,style:`animation-delay:${i*90}ms`},s);
+      txt(s,x+(bw-4)/2,y-9,fmt(v)+unit,{'text-anchor':'middle','font-size':16,'font-weight':800,fill:dim?C.muted:C.ink,opacity:dim?.6:1})});
+    txt(s,pl+gw*i+gw/2,h-16,lb,{'text-anchor':'middle','font-size':16,fill:sel===i?C.navy:C.muted,'font-weight':sel===i?800:400})});
+}
+/* 꺾은선 */
+function line(host,{labels,values,max,color,unit='',hi=-1}){
+  const [s,w,h]=svgFor(host);const pl=50,pr=30,pt=30,pb=48,cw=w-pl-pr,ch=h-pt-pb;
+  for(let i=0;i<=4;i++){const y=pt+ch-ch*i/4;el('line',{x1:pl,x2:w-pr,y1:y,y2:y,stroke:C.line},s);txt(s,pl-10,y+5,Math.round(max*i/4),{'text-anchor':'end','font-size':14,fill:C.muted})}
+  const pts=values.map((v,i)=>[pl+cw*(i+.5)/values.length,pt+ch-ch*v/max]);
+  const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
+  el('path',{d:d+` L${pts.at(-1)[0]} ${pt+ch} L${pts[0][0]} ${pt+ch}Z`,fill:color,opacity:.08},s);
+  const path=el('path',{d,fill:'none',stroke:color,'stroke-width':3.5,class:'draw'},s);
+  path.style.setProperty('--len',Math.ceil(path.getTotalLength?.()||2000));
+  pts.forEach((p,i)=>{const on=i===hi;el('circle',{cx:p[0],cy:p[1],r:on?9:6,fill:on?color:'#fff',stroke:color,'stroke-width':3},s);
+    txt(s,p[0],p[1]-18,values[i]+unit,{'text-anchor':'middle','font-size':on?22:16,'font-weight':800,fill:on?color:C.ink});
+    txt(s,p[0],h-16,labels[i],{'text-anchor':'middle','font-size':15,fill:C.muted})});
+}
+/* 가로 막대 */
+function hbars(host,{labels,values,max,colors,unit=''}){
+  const [s,w,h]=svgFor(host);const pl=250,pr=80,n=labels.length,rowH=(h-10)/n,bh=Math.min(46,rowH*.55);
+  labels.forEach((lb,i)=>{const y=5+rowH*i+rowH/2;
+    txt(s,pl-16,y+6,lb,{'text-anchor':'end','font-size':17,fill:C.ink,'font-weight':i===n-1?800:400});
+    el('rect',{x:pl,y:y-bh/2,width:w-pl-pr,height:bh,rx:4,fill:'#f1f4f8'},s);
+    const bw=(w-pl-pr)*values[i]/max;el('rect',{x:pl,y:y-bh/2,width:bw,height:bh,rx:4,fill:colors[i],class:'growx',style:`animation-delay:${i*110}ms`},s);
+    txt(s,pl+bw+12,y+7,values[i]+unit,{'font-size':20,'font-weight':800,fill:colors[i]===C.pale?C.muted:colors[i]})});
+}
+/* 폭포(브릿지) */
+function waterfall(host,steps){
+  const [s,w,h]=svgFor(host);const pl=20,pr=20,pt=40,pb=56,cw=w-pl-pr,ch=h-pt-pb,lo=24,hi=30.5;
+  const Y=v=>pt+ch-ch*(v-lo)/(hi-lo);const gw=cw/steps.length,bw=gw*.56;let run=0;
+  el('line',{x1:pl,x2:w-pr,y1:pt+ch,y2:pt+ch,stroke:C.line},s);
+  txt(s,pl,pt+ch+44,'※ 세로축 24조 원부터 표시',{'font-size':13,fill:C.muted});
+  steps.forEach((st,i)=>{const x=pl+gw*i+(gw-bw)/2;let y0,y1,col,lab;
+    if(st.type==='total'){y0=lo;y1=st.v;run=st.v;col=i?C.navy:C.pale;lab=st.v.toFixed(1)}
+    else{const nv=run+st.v;y0=Math.min(run,nv);y1=Math.max(run,nv);col=st.v<0?C.red:C.teal;lab=(st.v>0?'+':'−')+Math.abs(st.v).toFixed(1);run=nv}
+    el('rect',{x,y:Y(y1),width:bw,height:Y(y0)-Y(y1),rx:3,fill:col,class:'grow',style:`animation-delay:${i*160}ms`},s);
+    txt(s,x+bw/2,Y(y1)-12,lab,{'text-anchor':'middle','font-size':22,'font-weight':800,fill:col===C.pale?C.muted:col});
+    txt(s,x+bw/2,pt+ch+24,st.label,{'text-anchor':'middle','font-size':16,fill:C.ink});
+    if(i<steps.length-1){const nx=pl+gw*(i+1)+(gw-bw)/2;el('line',{x1:x+bw,x2:nx,y1:Y(run),y2:Y(run),stroke:C.muted,'stroke-dasharray':'4 4'},s)}});
+}
+
+/* ── 데이터 ── */
+const budget={total:[26.5,27.9,29.6],strat:[5.0,6.4,7.8],ai:[15,38,65]};
+const pct=(a,b)=>((b/a-1)*100).toFixed(1);
+const mult=[
+  {labels:['전통 수작업','DB 검색','AI 코파일럿','AI + 자율실험실'],values:[1,2.5,6.5,12],max:13,unit:'x',hi:'탐색 속도 12배'},
+  {labels:['단일 분과 기획','다부처 합동','지식그래프 클러스터링','다중 에이전트 융합'],values:[1,1.4,2.2,2.8],max:3,unit:'x'},
+  {labels:['수작업 보고서','전자행정(IRIS 1.0)','AI 초안·요약 보조','에이전틱 R&D 행정'],values:[100,78,48,28],max:110,unit:''}
+];
+
+/* ── 슬라이드별 렌더러 ── */
+const renderers={
+  2:()=>{const g=$('[data-tabgroup=year]');const i=+(g.dataset.sel??2);
+    columns($('#chartBudget'),{labels:['2024','2025','2026(안)'],series:[{values:budget.total,color:C.pale},{values:budget.strat,color:C.blue}],max:32,fmt:v=>(+v).toFixed(1),sel:i});
+    $('#kTotal').innerHTML=budget.total[i].toFixed(2)+'<small>조</small>';$('#kStrat').innerHTML=budget.strat[i].toFixed(2)+'<small>조</small>';$('#kAi').innerHTML=budget.ai[i].toFixed(1)+'<small>%</small>';
+    $('#kTotalD').textContent=i?`전년 대비 +${pct(budget.total[i-1],budget.total[i])}%`:'기준 연도';
+    $('#kStratD').textContent=i?`전년 대비 +${pct(budget.strat[i-1],budget.strat[i])}%`:'기준 연도';
+    $('#kAiD').textContent=['초기 적용','단계적 확대','IRIS 지능화 목표'][i];
+    $$('#tblBudget th,#tblBudget td').forEach(c=>{const idx=c.cellIndex-1;c.classList.toggle('sel',idx===i)})},
+  9:()=>{line($('#chartDays'),{labels:['전통 수작업','DB 검색 보조','AI 코파일럿(Lv.2)','에이전틱(Lv.3)'],values:[180,120,65,38],max:200,color:C.teal,unit:'일',hi:3});
+    columns($('#chartAcc'),{labels:['단순 키워드','분류코드 매칭','초기 텍스트마이닝','GraphRAG + LLM'],series:[{values:[58.5,68.0,75.8,94.2],color:C.blue}],max:100,fmt:v=>(+v).toFixed(v%1?1:0),unit:'',sel:3})},
+  10:()=>{const i=+($('[data-tabgroup=mult]').dataset.sel??0),m=mult[i];
+    hbars($('#chartMult'),{labels:m.labels,values:m.values,max:m.max,unit:m.unit,colors:i===2?[C.amber,'#d99a57','#5bb3ad',C.teal]:[C.pale,'#8fb0dc',C.blue,C.teal]})},
+  11:()=>waterfall($('#chartBridge'),[{type:'total',v:27.9,label:'2025 기저'},{v:-1.2,label:'유사·중복 정비'},{v:2.9,label:'전략 분야 증액'},{type:'total',v:29.6,label:'2026 예산'}]),
+  12:()=>columns($('#chartSdl'),{labels:['2022','2023','2024','2025','2026'],series:[{values:[4,9,18,31,45],color:C.teal}],max:50,sel:4})
+};
+
+/* ── 탭 그룹 ── */
+function selectTab(group,i){
+  group.dataset.sel=i;
+  $$('[data-tab]',group).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+i));
+  $$('[data-panel]',group).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+i));
+  $$('.layers,.stairs,.stack100',group).forEach(x=>x.classList.add('has-sel'));
+  const idx=slides.indexOf(group.closest('.slide'));if(renderers[idx]&&idx===cur)renderers[idx]();
+}
+$$('[data-tabgroup]').forEach(g=>{
+  $$('.axis-list [data-panel]',g).forEach(c=>c.addEventListener('click',()=>{if(!document.body.classList.contains('editing'))selectTab(g,c.dataset.panel)}));
+  $$('[data-tab]',g).forEach(b=>{b.addEventListener('click',()=>{if(!document.body.classList.contains('editing'))selectTab(g,b.dataset.tab)})});
+  g.dataset.sel=g.dataset.default||0;
+  $$('[data-tab]',g).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+g.dataset.sel));
+  $$('[data-panel]',g).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+g.dataset.sel));
+  $$('.layers,.stairs,.stack100',g).forEach(x=>x.classList.add('has-sel'));
+});
+
+/* ── 카운트업 ── */
+function countUp(scope){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  $$('[data-count]',scope).forEach(n=>{const to=+n.dataset.count,dec=+(n.dataset.dec||0),t0=performance.now();
+    const f=t=>{const p=Math.min(1,(t-t0)/900),e=1-Math.pow(1-p,3);n.textContent=(to*e).toFixed(dec);if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
+
+/* ── 내비게이션 ── */
+const slides=$$('.slide');let cur=0;
+$('#pageTotal').textContent=String(slides.length).padStart(2,'0');
+function go(i,push=true){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  slides[cur].classList.remove('active');cur=i;const s=slides[cur];
+  slides.forEach(x=>x.classList.remove('settled'));clearTimeout(go.t);
+  void s.offsetWidth;s.classList.add('active');go.t=setTimeout(()=>s.classList.add('settled'),1400);
+  $('#pageNo').textContent=String(cur+1).padStart(2,'0');
+  $('#source').textContent=s.dataset.source||'';
+  $('#progress').style.width=((cur+1)/slides.length*100)+'%';
+  $('#prev').disabled=cur===0;$('#next').disabled=cur===slides.length-1;
+  const ch=+s.dataset.chapter;$$('.chapters button').forEach((b,k)=>b.setAttribute('aria-current',k===ch));
+  if(renderers[cur])requestAnimationFrame(()=>renderers[cur]());
+  if(!document.body.classList.contains('editing'))countUp(s);
+  if(push)history.replaceState(null,'','#'+(cur+1));
+}
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+$$('.chapters button').forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+addEventListener('keydown',e=>{if(document.body.classList.contains('editing'))return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1)});
+addEventListener('resize',()=>renderers[cur]&&renderers[cur]());
+
+/* ── 도구: 편집 · 저장 · 인쇄 · 전체화면 ── */
+const KEY='rnd-policy-briefing-edits';const edits=$$('[data-edit]');
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');edits.forEach((n,i)=>{if(saved[i]!=null)n.innerHTML=saved[i]})}catch(e){}
+function persist(){try{const o={};edits.forEach((n,i)=>o[i]=n.innerHTML);localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+$('#editBtn').onclick=()=>{const on=!document.body.classList.contains('editing');document.body.classList.toggle('editing',on);$('#editBtn').setAttribute('aria-pressed',on);
+  edits.forEach(n=>{n.contentEditable=on?'true':'false'});if(!on)persist()};
+edits.forEach(n=>n.addEventListener('input',persist));
+$('#saveBtn').onclick=()=>{const clone=document.documentElement.cloneNode(true);
+  clone.querySelector('body').classList.remove('editing');clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+  clone.querySelectorAll('.slide').forEach(n=>n.classList.remove('active'));clone.querySelector('#stage').removeAttribute('style');
+  const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='national_rnd_ai_policy_briefing_edited.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#printBtn').onclick=()=>{slides.forEach((s,i)=>renderers[i]&&renderers[i]());print()};
+$('#fsBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();
+
+stage.classList.add('init');
+go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1),false);
+const lift=()=>stage.classList.remove('init');['keydown','click'].forEach(t=>addEventListener(t,lift,{once:true,capture:true}));
+window.deck={go,get cur(){return cur}};
+})();
+</script>
+</body>
+</html>

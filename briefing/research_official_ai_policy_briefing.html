@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>연구직 공무원 AI 역량 브리핑</title>
+<meta name="description" content="AI 시대 연구직 공무원의 업무 변화와 4대 핵심역량을 추진배경 → 비전·전략 → 추진과제 → 이행관리 순으로 정리한 15쪽 정책 브리핑.">
+<link rel="icon" href="data:,">
+<style>
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareR.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareB.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareEB.woff2') format('woff2');font-weight:800;font-display:swap}
+
+/* ───────── 디자인 토큰 : 정책 브리핑(Policy Briefing) ───────── */
+:root{
+  --navy:#0e2747;      /* 구조·제목·체계도 */
+  --blue:#1d5fbf;      /* 주 데이터·현재 선택 */
+  --teal:#0a8f88;      /* To-Be·AI 적용 후 */
+  --amber:#c9741c;     /* As-Is·문제·주의 */
+  --red:#c2413b;       /* 감액·리스크 */
+  --ink:#1d2433;
+  --muted:#667085;
+  --faint:#98a2b3;
+  --line:#dde2ea;
+  --tint:#eef3fa;      /* 파란 틴트 배경 */
+  --teal-tint:#e6f4f3;
+  --amber-tint:#fbf1e6;
+  --paper:#ffffff;
+  --canvas:#e9ecf1;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--canvas);overflow:hidden}
+body{font-family:NanumSquare,'Pretendard','Malgun Gothic',sans-serif;color:var(--ink);word-break:keep-all;overflow-wrap:normal;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+b,strong{font-weight:800}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+
+/* ───────── 1920×1080 고정 스테이지 + 비율 축소 ───────── */
+#viewport{position:fixed;inset:0;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;background:var(--paper);transform-origin:center center;transform:translate(-50%,-50%);box-shadow:0 10px 50px rgba(14,39,71,.18);overflow:hidden}
+
+/* 상단 바 */
+.chrome-top{position:absolute;left:0;right:0;top:0;height:76px;display:flex;align-items:center;padding:0 96px;border-bottom:1px solid var(--line);z-index:5;background:var(--paper)}
+.brand{display:flex;align-items:center;gap:14px;font-weight:800;font-size:20px;color:var(--navy);letter-spacing:-.3px;min-width:420px}
+.brand i{width:30px;height:30px;border-radius:6px;background:var(--navy);display:grid;place-items:center;color:#fff;font-style:normal;font-size:13px;letter-spacing:0}
+.brand span{font-weight:400;color:var(--muted);font-size:15px}
+.chapters{display:flex;gap:6px;margin:0 auto}
+.chapters button{font-size:16px;padding:9px 18px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
+.chapters button:hover{background:var(--tint);color:var(--navy)}
+.chapters button[aria-current=true]{background:var(--navy);color:#fff;font-weight:800}
+.tools{display:flex;gap:8px;min-width:420px;justify-content:flex-end}
+.tools button{font-size:14px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:8px 12px}
+.tools button:hover{color:var(--navy);border-color:var(--navy)}
+.tools button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#fff}
+
+/* 하단 바 */
+.chrome-bottom{position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;padding:0 96px;gap:24px;border-top:1px solid var(--line);z-index:5;background:var(--paper)}
+.source{flex:1;font-size:14px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pager{display:flex;align-items:center;gap:14px;font-size:16px;color:var(--muted)}
+.pager b{color:var(--navy);font-size:18px}
+.pager button{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;font-size:18px;color:var(--navy)}
+.pager button:hover:not(:disabled){background:var(--navy);color:#fff}
+.pager button:disabled{opacity:.3;cursor:default}
+.progress{position:absolute;left:0;bottom:0;height:4px;background:var(--blue);transition:width .4s ease;z-index:6}
+
+/* ───────── 슬라이드 공통 ───────── */
+.slide{position:absolute;left:0;right:0;top:76px;bottom:64px;padding:44px 96px 36px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s .35s}
+.slide.active{opacity:1;visibility:visible;transition:opacity .35s ease}
+.sh{margin-bottom:30px}
+.tag{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:var(--blue);letter-spacing:.2px;margin-bottom:14px}
+.tag em{font-style:normal;background:var(--navy);color:#fff;border-radius:4px;padding:3px 9px;font-size:14px}
+.sh h2{font-size:46px;line-height:1.28;font-weight:800;color:var(--navy);letter-spacing:-1.2px}
+.sh h2 mark{background:none;color:var(--blue)}
+.sh p{font-size:21px;line-height:1.55;color:var(--muted);margin-top:12px;max-width:1500px}
+.body{flex:1;min-height:0;display:grid;gap:32px}
+.card{border:1px solid var(--line);border-radius:10px;padding:26px 28px;background:var(--paper)}
+.card h3{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:10px;letter-spacing:-.4px}
+.card p{font-size:17px;line-height:1.6;color:#3d4556}
+.label{font-size:14px;font-weight:700;letter-spacing:1.2px;color:var(--faint);text-transform:uppercase}
+.note{font-size:15px;line-height:1.55;color:var(--muted);border-left:3px solid var(--amber);padding:4px 0 4px 14px}
+.chip{align-self:flex-start;justify-self:start;width:max-content;display:inline-block;font-size:17px;font-weight:800;border-radius:5px;padding:5px 12px;margin-bottom:6px}
+.chip.asis{background:var(--amber-tint);color:var(--amber)}
+.chip.tobe{background:var(--teal-tint);color:var(--teal)}
+.chip.goal{background:var(--tint);color:var(--blue)}
+
+/* 진입 애니메이션 */
+.slide .rise{opacity:0;transform:translateY(16px)}
+.slide.active .rise{animation:rise .55s cubic-bezier(.2,.7,.2,1) forwards}
+.slide.active .rise:nth-child(2){animation-delay:.08s}.slide.active .rise:nth-child(3){animation-delay:.16s}
+.slide.active .rise:nth-child(4){animation-delay:.24s}.slide.active .rise:nth-child(5){animation-delay:.32s}
+@keyframes rise{to{opacity:1;transform:none}}
+.slide.active.settled .rise,#stage.init .rise{opacity:1;transform:none;animation:none}
+#stage.init .slide{transition:none}
+.slide.active.settled .grow,.slide.active.settled .growx{transform:none;animation:none}
+@media (prefers-reduced-motion:reduce){.slide .rise{opacity:1;transform:none}.slide.active .rise{animation:none}}
+
+/* 선택형 버튼(탭) 공통 */
+.seg{display:flex;gap:8px}
+.seg button{border:1px solid var(--line);border-radius:8px;padding:10px 18px;font-size:17px;color:var(--muted);transition:all .2s}
+.seg button:hover{border-color:var(--blue);color:var(--blue)}
+.seg button[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:800}
+[data-panel]:not(.on):not(.keep){display:none!important}
+[data-panel].on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* SVG 차트 공통 */
+svg text{font-family:NanumSquare,sans-serif}
+.bar{transition:opacity .3s,fill .3s}
+.grow{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
+.slide.active .grow{animation:growY .8s cubic-bezier(.2,.7,.2,1) forwards}
+.growx{transform-box:fill-box;transform-origin:left;transform:scaleX(0)}
+.slide.active .growx{animation:growX .8s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes growY{to{transform:scaleY(1)}}@keyframes growX{to{transform:scaleX(1)}}
+.draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.slide.active .draw{animation:draw 1.2s ease forwards .2s}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ───────── 01 표지 ───────── */
+.cover{padding:0;flex-direction:row}
+.cover-main{flex:1;padding:96px 96px 72px;display:flex;flex-direction:column}
+.cover-kicker{font-size:18px;font-weight:700;color:var(--blue);letter-spacing:1.5px}
+.cover h1{font-size:74px;line-height:1.18;font-weight:800;color:var(--navy);letter-spacing:-3px;margin:28px 0 30px}
+.cover h1 mark{background:linear-gradient(transparent 62%,#cfe0f7 62%);color:var(--navy)}
+.cover-sub{font-size:25px;line-height:1.6;color:#3d4556;max-width:900px}
+.cover-flow{margin-top:auto;display:flex;align-items:center;gap:12px;margin-bottom:34px}
+.cover-flow span{font-size:19px;font-weight:700;color:var(--navy);background:var(--tint);border-radius:999px;padding:10px 22px}
+.cover-flow i{font-style:normal;color:var(--faint);font-size:20px}
+.cover-meta{display:flex;gap:40px;font-size:17px;color:var(--muted);border-top:1px solid var(--line);padding-top:24px}
+.cover-meta b{display:block;color:var(--navy);font-size:19px;margin-top:4px}
+.cover-side{width:620px;background:var(--navy);color:#fff;padding:96px 64px 72px;display:flex;flex-direction:column;gap:38px;position:relative;overflow:hidden}
+.cover-side:after{content:'';position:absolute;right:-160px;bottom:-160px;width:460px;height:460px;border:1px solid rgba(255,255,255,.12);border-radius:50%;box-shadow:0 0 0 60px rgba(255,255,255,.03),0 0 0 120px rgba(255,255,255,.02)}
+.cover-side .label{color:#8fb3e6}
+.kpi-big{border-top:1px solid rgba(255,255,255,.18);padding-top:22px}
+.kpi-big strong{font-size:64px;letter-spacing:-2px;line-height:1}
+.kpi-big strong small{font-size:26px;margin-left:6px;font-weight:700}
+.kpi-big p{font-size:18px;color:#c4d3ea;margin-top:10px;line-height:1.5}
+.kpi-big .delta{color:#6ee0d6;font-weight:800}
+
+/* ───────── 02 한 장 요약 ───────── */
+.summary-wrap{grid-template-rows:1fr auto;gap:20px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.keymsg{background:var(--navy);color:#fff;border-radius:12px;padding:24px 34px;display:flex;align-items:center;gap:28px;font-size:25px;font-weight:700;letter-spacing:-.4px}
+.keymsg .label{color:#8fb3e6;white-space:nowrap}
+.keymsg mark{background:none;color:#6ee0d6}
+.sum-col{padding:34px 32px 30px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
+.sum-col:last-child{border-right:0;background:var(--tint)}
+.sum-col .step{font-size:15px;font-weight:800;color:var(--blue);letter-spacing:1px}
+.sum-col h3{font-size:31px;font-weight:800;color:var(--navy);line-height:1.35;letter-spacing:-.6px}
+.sum-col li{font-size:20px;line-height:1.55;color:#3d4556;padding-left:18px;position:relative;margin-bottom:12px}
+.sum-col li:before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.sum-col .big{margin-top:auto;border-top:1px dashed var(--line);padding-top:16px}
+.sum-col .big strong{font-size:56px;color:var(--navy);letter-spacing:-1.5px}
+.sum-col .big span{display:block;font-size:17px;color:var(--muted);margin-top:4px}
+.arrow-col{position:relative}
+.arrow-col:after{content:'';position:absolute;right:-13px;top:50%;width:24px;height:24px;background:var(--paper);border-top:1px solid var(--line);border-right:1px solid var(--line);transform:translateY(-50%) rotate(45deg);z-index:1}
+
+/* ───────── 03 투자 현황 ───────── */
+.invest{grid-template-columns:1.15fr 1fr}
+.chart-card{display:flex;flex-direction:column}
+.chart-card .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.legend{display:flex;gap:18px;font-size:15px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.chart-host{flex:1;min-height:0}
+.chart-host svg{width:100%;height:100%;display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px}
+.kpi{background:var(--tint);border-radius:10px;padding:18px 20px}
+.kpi span{font-size:15px;color:var(--muted)}
+.kpi strong{display:block;font-size:40px;color:var(--navy);letter-spacing:-1.2px;margin:6px 0 2px}
+.kpi strong small{font-size:18px;margin-left:3px}
+.kpi em{font-style:normal;font-size:15px;font-weight:800;color:var(--teal)}
+table.data{width:100%;border-collapse:collapse;font-size:17px}
+table.data th{font-size:14px;color:var(--muted);font-weight:700;text-align:right;padding:10px 12px;border-bottom:2px solid var(--navy)}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:right}
+table.data td.sel,table.data th.sel{background:var(--tint);color:var(--navy);font-weight:800}
+table.data tr.group td{font-weight:800;color:var(--navy)}
+
+/* ───────── 04 문제 진단 ───────── */
+.diag{grid-template-rows:auto repeat(4,1fr);gap:0;border-top:2px solid var(--navy)}
+.diag-row{display:grid;grid-template-columns:300px 1fr 70px 1fr 270px;align-items:center;border-bottom:1px solid var(--line);padding:0 8px}
+.diag-row.head{font-size:18px;font-weight:800;color:var(--muted);letter-spacing:1px;padding:12px 8px}
+.diag-row h3{font-size:28px;color:var(--navy);font-weight:800;letter-spacing:-.4px}
+.diag-row h3 span{display:block;font-size:18px;font-weight:400;color:var(--muted);margin-top:4px}
+.diag-row p{font-size:21.5px;line-height:1.55;color:#3d4556;padding-right:22px}
+.diag-row .to{color:var(--ink)}
+.diag-arrow{font-size:34px;color:var(--teal);text-align:center}
+.metric-pair{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;column-gap:10px;text-align:right}
+.metric-pair .from{font-size:22px;font-weight:700;color:var(--muted);white-space:nowrap}
+.metric-pair .from:after{content:'→';margin-left:10px;font-size:24px;font-weight:800;color:var(--teal)}
+.metric-pair .to-n{white-space:nowrap;font-size:42px;font-weight:800;color:var(--teal);letter-spacing:-1px}
+.metric-pair small{flex-basis:100%;margin-top:2px;font-size:16px;color:var(--faint)}
+
+/* ───────── 05 비전 체계도 ───────── */
+.frame{grid-template-rows:auto auto 1fr auto;gap:18px}
+.vision{background:var(--navy);color:#fff;border-radius:10px;padding:24px 34px;display:flex;align-items:center;gap:30px}
+.vision .label{color:#8fb3e6;min-width:120px}
+.vision strong{font-size:34px;letter-spacing:-1px}
+.goals{display:grid;grid-template-columns:140px repeat(3,1fr);gap:16px;align-items:stretch}
+.row-label{display:flex;align-items:center;font-size:23px;font-weight:800;letter-spacing:-.3px;line-height:1.3;color:var(--navy)}
+.goal{border:2px solid var(--blue);border-radius:10px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.goal h3{font-size:25px;color:var(--navy);font-weight:800;line-height:1.35}
+.goal .t{text-align:right;white-space:nowrap}
+.goal .t strong{font-size:42px;color:var(--blue);letter-spacing:-1px}
+.goal .t small{display:block;font-size:13px;color:var(--muted)}
+.strats{display:grid;grid-template-columns:140px repeat(4,1fr);gap:16px}
+.strat{background:var(--tint);border-radius:10px;padding:26px 26px;display:flex;flex-direction:column;gap:14px}
+.strat .no{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;color:var(--blue)}
+.strat .no i{font-style:normal;width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:16px}
+.strat h3{font-size:27px;color:var(--navy);font-weight:800;line-height:1.35;letter-spacing:-.4px}
+.strat ul{margin-top:4px}.strat li{font-size:20px;line-height:1.5;color:#3d4556;padding-left:16px;position:relative;margin-bottom:8px}
+.strat li:before{content:'·';position:absolute;left:2px;font-weight:800;color:var(--blue)}
+.base{display:grid;grid-template-columns:140px 1fr;gap:16px}
+.base-bar{border:1px dashed var(--navy);border-radius:10px;padding:16px 24px;display:flex;justify-content:space-around;font-size:18px;font-weight:700;color:var(--navy)}
+.base-bar span:before{content:'■';color:var(--teal);margin-right:8px;font-size:13px;vertical-align:2px}
+
+/* ───────── 06 전주기 흐름 ───────── */
+.cycle{grid-template-rows:auto 1fr;gap:40px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative;padding-bottom:58px}
+.flow:before{content:'';position:absolute;left:12%;right:12%;bottom:18px;height:30px;border:2px solid var(--teal);border-top:0;border-radius:0 0 16px 16px}
+.flow:after{content:'↺ 환류 (Feedback) : 평가·실험 데이터가 다음 탐색·기획으로 되돌아감';position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:var(--paper);padding:0 20px;font-size:21px;line-height:38px;font-weight:800;color:var(--teal);white-space:nowrap}
+.stage-btn{position:relative;text-align:left;border:2px solid var(--line);border-radius:12px;padding:28px 30px;transition:all .25s;background:var(--paper)}
+.stage-btn:not(:last-child):after{content:'';position:absolute;right:-24px;top:50%;width:18px;height:18px;border-top:3px solid var(--faint);border-right:3px solid var(--faint);transform:translateY(-50%) rotate(45deg)}
+.stage-btn .s{font-size:15px;font-weight:800;color:var(--faint);letter-spacing:1px}
+.stage-btn h3{font-size:34px;color:var(--navy);font-weight:800;margin:8px 0 4px}
+.stage-btn p{font-size:19px;color:var(--muted)}
+.stage-btn:hover{border-color:var(--blue)}
+.stage-btn[aria-selected=true]{border-color:var(--blue);background:var(--tint)}
+.stage-btn[aria-selected=true] .s{color:var(--blue)}
+.stage-detail{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.stage-detail{height:100%}.cycle>.rise{min-height:0}.cycle [data-panel].on{height:100%}
+.stage-detail .card{display:flex;flex-direction:column;gap:16px;padding:30px 32px}
+.stage-detail li{font-size:21px;line-height:1.55;color:#3d4556;padding-left:32px;position:relative;margin-bottom:16px}
+.stage-detail ul li:before{content:'✓';position:absolute;left:0;color:var(--teal);font-weight:800}
+.stage-detail ol{counter-reset:c}
+.stage-detail ol li:before{counter-increment:c;content:counter(c);position:absolute;left:0;top:2px;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:14px;display:grid;place-items:center;font-weight:800}
+.asis-tobe{display:flex;flex-direction:column;gap:14px}
+.asis-tobe div{border-radius:8px;padding:20px 22px;font-size:21px;line-height:1.55;flex:1}
+.asis-tobe .a{background:var(--amber-tint)}
+.asis-tobe .b{background:var(--teal-tint)}
+
+/* ───────── 07 4계층 아키텍처 ───────── */
+.arch{grid-template-columns:220px 64px 1fr 500px;gap:16px;align-items:stretch}
+.io{display:flex;flex-direction:column;justify-content:center;gap:10px}
+.io .label{margin-bottom:6px}
+.io span{font-size:18px;border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:#3d4556;background:var(--paper)}
+.io-in{justify-content:flex-end;padding-bottom:6px}
+.io-link{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:92px;gap:4px;color:var(--amber);font-weight:800}
+.io-link b{font-size:34px;line-height:1}
+.io-link small{font-size:14px;text-align:center;line-height:1.3}
+.lhead{display:grid;grid-template-columns:1fr 34px 240px;gap:10px;font-size:16px;font-weight:800;color:var(--muted);letter-spacing:.2px}
+.lhead span:last-child{grid-column:3;color:var(--teal)}
+.lrow{display:grid;grid-template-columns:1fr 34px 240px;gap:10px;align-items:center}
+.lrow .to{font-size:26px;font-weight:800;color:var(--teal);text-align:center}
+.users{display:flex;flex-wrap:wrap;gap:6px}
+.users span{font-size:18px;font-weight:700;color:var(--teal);border:1.5px solid var(--teal);border-radius:6px;padding:6px 10px;background:var(--paper);transition:opacity .25s,background .25s}
+.users.lbase span{border-style:dashed;border-color:var(--line);color:var(--muted);font-weight:600}
+.lrow .to.lbase{color:var(--faint)}
+.layers.has-sel .users{opacity:.4;transition:opacity .25s}
+.layers.has-sel .lrow:has(.layer[aria-selected=true]) .users{opacity:1}
+.layers.has-sel .lrow:has(.layer[aria-selected=true]) .users:not(.lbase) span{background:#e6f5f4}
+.layers{display:flex;flex-direction:column-reverse;gap:14px;justify-content:center;position:relative}
+.layer{display:grid;grid-template-columns:76px 1fr;align-items:center;text-align:left;border-radius:10px;padding:26px 26px;color:#fff;transition:transform .25s,box-shadow .25s,opacity .25s}
+.layer .n{font-size:38px;font-weight:800;opacity:.65}
+.layer h3{font-size:27px;font-weight:800;letter-spacing:-.4px}
+.layer p{font-size:18px;opacity:.85;margin-top:4px}
+.layer[data-tab="0"]{background:#2b3e5c}.layer[data-tab="1"]{background:#1c4f8f}.layer[data-tab="2"]{background:#1d5fbf}.layer[data-tab="3"]{background:#0a8f88}
+.layers.has-sel .layer{opacity:.45}
+.layers.has-sel .layer[aria-selected=true]{opacity:1;transform:translateX(10px);box-shadow:-6px 0 0 var(--amber)}
+.arch .detail{display:flex;flex-direction:column;gap:16px}
+.arch .detail .card{flex:1}
+.arch .detail h3{font-size:32px;line-height:1.4;margin:10px 0 18px}
+.arch .detail p{font-size:22px;line-height:1.65}
+.arch .detail .note{font-size:17px}
+.io-arrow{font-size:26px;color:var(--faint);text-align:center}
+
+/* ───────── 08 3대 엔진 ───────── */
+.engines{grid-template-columns:repeat(3,1fr);grid-template-rows:auto 1fr auto auto;column-gap:26px;row-gap:0}
+.engine{border:1px solid var(--line);border-radius:12px;display:grid;grid-row:span 4;grid-template-rows:subgrid;overflow:hidden}
+.engine header{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center}
+.engine header i{font-style:normal;width:52px;height:52px;border-radius:10px;background:var(--navy);color:#fff;font-size:24px;font-weight:800;display:grid;place-items:center;flex:none}
+.engine header h3{font-size:27px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.engine header small{display:block;font-size:13px;color:var(--faint);letter-spacing:1px;margin-top:3px}
+.engine ol{padding:28px 28px 10px;display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-around}
+.engine ol li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding-bottom:22px;position:relative}
+.engine ol li:not(:last-child):before{content:'';position:absolute;left:15px;top:32px;bottom:2px;width:2px;background:var(--line)}
+.engine ol li b{width:34px;height:34px;border-radius:50%;border:2px solid var(--blue);color:var(--blue);display:grid;place-items:center;font-size:15px;background:var(--paper);position:relative}
+.engine ol li strong{font-size:22px;color:var(--navy);display:block;margin-bottom:3px}
+.engine ol li span{font-size:18.5px;line-height:1.5;color:#4a5263}
+.engine .eff{background:var(--teal-tint);padding:22px 28px;display:flex;flex-direction:column;justify-content:center;font-size:19px;line-height:1.55;color:#20403f}
+.engine .eff b{color:var(--teal);display:block;font-size:13px;letter-spacing:1px;margin-bottom:4px}
+.engine .use{padding:16px 28px 20px;font-size:17px;line-height:1.5;color:var(--muted);border-top:1px solid var(--line)}
+
+/* ───────── 09 성숙도 모델 ───────── */
+.maturity{grid-template-columns:1.05fr 1fr;grid-template-rows:minmax(0,1fr);gap:40px}
+.stairs{position:relative;display:flex;align-items:flex-end;gap:14px;padding-top:24px;height:100%;min-height:0}
+.stair{flex:1;text-align:left;border-radius:10px 10px 0 0;padding:22px 22px;color:#fff;display:flex;flex-direction:column;gap:6px;transition:all .3s;position:relative}
+.stair[data-tab="0"]{height:42%;background:#7d93b6}.stair[data-tab="1"]{height:66%;background:#1d5fbf}.stair[data-tab="2"]{height:90%;background:#0e2747}
+.stair .lv{font-size:15px;font-weight:800;opacity:.75;letter-spacing:1px}
+.stair h3{font-size:32px;font-weight:800;letter-spacing:-.6px}
+.stair p{font-size:18px;opacity:.88;line-height:1.45}
+.stair .when{margin-top:auto;font-size:14px;font-weight:700;border-top:1px solid rgba(255,255,255,.3);padding-top:10px}
+.stairs.has-sel .stair{opacity:.45}
+.stairs.has-sel .stair[aria-selected=true]{opacity:1;box-shadow:0 -6px 0 var(--amber) inset}
+.stairs:before{content:'자율성·고도화 ↑';position:absolute;left:0;top:-6px;font-size:22px;color:var(--muted);font-weight:800;letter-spacing:-.3px}
+.lv-detail .card{height:100%;display:flex;flex-direction:column;gap:18px}
+.lv-detail .card{padding:34px 36px;gap:22px}
+.lv-detail h3{font-size:32px;line-height:1.4}
+.lv-detail p{font-size:21px;line-height:1.65}.lv-detail p.note{font-size:17px}
+.range{margin-top:6px}
+.range .track{position:relative;height:46px;background:var(--amber-tint);border-radius:6px}
+.range .fill{position:absolute;left:0;top:0;bottom:0;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;color:#fff;font-weight:800;font-size:17px}
+.range .scale{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-top:8px}
+
+/* ───────── 10·11 성과 지표 ───────── */
+.perf{grid-template-columns:1fr 1fr;gap:30px}
+.perf .card{display:flex;flex-direction:column}
+.perf .hero{display:flex;align-items:baseline;gap:14px;margin:4px 0 10px}
+.perf .hero strong{font-size:64px;color:var(--teal);letter-spacing:-2px}
+.perf .hero strong small{font-size:24px}
+.perf .hero>span{font-size:19px;color:var(--muted)}
+.multi{grid-template-columns:1.25fr 1fr;gap:34px}
+.mult-switch{margin-bottom:14px}
+.insight{display:flex;flex-direction:column;gap:20px}
+.insight .card{flex:1}
+.insight .card{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:32px 34px}
+.insight .card h3{font-size:29px;margin:0!important}
+.insight .card p{font-size:20px;line-height:1.65}
+
+/* ───────── 12 포트폴리오 ───────── */
+.portfolio{grid-template-columns:1.1fr 1fr;gap:36px}
+.stack100{display:flex;height:84px;border-radius:10px;overflow:hidden;margin:6px 0 22px}
+.stack100 button{display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:800;transition:opacity .25s,filter .25s}
+.stack100.has-sel button{opacity:.4}
+.stack100.has-sel button[aria-selected=true]{opacity:1}
+.axis-list{display:flex;flex-direction:column;gap:12px}
+.axis-list .card{padding:20px 24px}
+.axis-list{flex:1}
+.axis-list [data-panel]{opacity:.5;transition:opacity .25s,border-color .25s;cursor:pointer}
+.axis-list [data-panel].on{opacity:1;border-color:var(--blue);box-shadow:inset 4px 0 0 var(--blue);animation:none}
+.axis-list p{font-size:17.5px}
+.axis-list h3{display:flex;align-items:center;gap:12px;font-size:22px;margin-bottom:6px}
+.axis-list h3 i{width:14px;height:14px;border-radius:3px;display:inline-block;flex:none}
+
+/* ───────── 13 SDL 루프 ───────── */
+.sdl{grid-template-columns:720px 1fr;gap:40px}
+.loop{position:relative;width:640px;height:600px;margin:0 auto}
+.loop svg{position:absolute;inset:0}
+.loop-node{position:absolute;width:250px;text-align:center;border:2px solid var(--line);background:var(--paper);border-radius:14px;padding:18px 16px;transition:all .25s}
+.loop-node b{display:block;font-size:14px;color:var(--blue);letter-spacing:1px}
+.loop-node h3{font-size:22px;color:var(--navy);font-weight:800;margin-top:6px;line-height:1.35}
+.loop-node[aria-selected=true]{border-color:var(--blue);background:var(--tint);box-shadow:0 8px 24px rgba(29,95,191,.18)}
+.loop-node[data-tab="0"]{left:195px;top:0}.loop-node[data-tab="1"]{left:390px;top:350px}.loop-node[data-tab="2"]{left:0;top:350px}
+.loop-center{position:absolute;left:220px;top:230px;width:200px;text-align:center;font-size:15px;color:var(--muted);line-height:1.5}
+.loop-center strong{display:block;font-size:24px;color:var(--teal)}
+.sdl-right{display:flex;flex-direction:column;gap:20px}
+
+/* ───────── 14 거버넌스 ───────── */
+.gov{grid-template-columns:1fr 1.05fr;gap:36px}
+.check-list{display:flex;flex-direction:column;gap:14px}
+.check-list .label{margin-bottom:2px}
+.check{flex:1;display:grid;grid-template-columns:70px 1fr;gap:18px;align-content:center;border:1px solid var(--line);border-radius:10px;padding:24px 28px}
+.check .n{font-size:40px;font-weight:800;color:var(--amber)}
+.check h3{font-size:26px;color:var(--navy);font-weight:800;margin-bottom:6px}
+.check p{font-size:19.5px;line-height:1.55;color:#3d4556}
+.roles{border:1px solid var(--line);border-radius:12px;overflow:hidden;flex:1;display:flex}
+.roles table{height:100%}
+.roles table{width:100%;border-collapse:collapse}
+.roles th{font-size:20px;padding:18px 24px;text-align:left;color:#fff}
+.roles th.ai{background:var(--teal)}.roles th.hu{background:var(--navy)}
+.roles td{font-size:19.5px;line-height:1.5;padding:16px 24px;vertical-align:middle;border-bottom:1px solid var(--line);vertical-align:top;width:50%}
+.roles td:first-child{border-right:1px solid var(--line)}
+.roles tr:last-child td{border-bottom:0}
+.roles .stage{font-size:14px;font-weight:800;color:var(--faint);letter-spacing:1px;display:block;margin-bottom:3px}
+
+/* ───────── 15 결론 ───────── */
+.closing{grid-template-columns:1fr 1.05fr;gap:40px}
+.recs{display:flex;flex-direction:column;gap:16px}
+.recs{justify-content:space-between}
+.rec{flex:1;display:grid;grid-template-columns:80px 1fr;gap:10px;align-content:center;padding:20px 0;border-bottom:1px solid var(--line)}
+.rec:first-child{border-top:2px solid var(--navy)}
+.rec .n{font-size:52px;font-weight:800;color:var(--blue);line-height:1}
+.rec h3{font-size:29px;color:var(--navy);font-weight:800;margin-bottom:6px;letter-spacing:-.4px}
+.rec p{font-size:20.5px;line-height:1.55;color:#3d4556}
+.closing table.data{font-size:20px}.closing table.data td{padding:16px 14px}.closing table.data th{font-size:16px}
+.refs{font-size:16px;line-height:1.6;color:var(--muted);margin-top:14px}
+.refs b{color:var(--navy)}
+
+/* ───────── 편집 모드 ───────── */
+body.editing [data-edit]{outline:1px dashed rgba(201,116,28,.55);outline-offset:3px;cursor:text}
+body.editing [data-edit]:focus{outline:2px solid var(--amber);background:var(--amber-tint)}
+.toast{position:absolute;left:50%;top:92px;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:16px;font-weight:700;padding:10px 20px;border-radius:999px;z-index:9;display:none}
+body.editing .toast{display:block}
+
+/* ───────── 인쇄(PDF 저장) : 한 장 = 한 페이지 ───────── */
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;height:auto;background:#fff}
+  #viewport{position:static;display:block}
+  #stage{position:static;transform:none!important;box-shadow:none;height:auto;overflow:visible}
+  .chrome-top,.chrome-bottom,.progress,.toast{display:none}
+  .slide{position:relative;top:auto;bottom:auto;height:1080px;opacity:1;visibility:visible;page-break-after:always;break-after:page;padding-top:60px}
+  .slide .rise,.grow,.growx{opacity:1!important;transform:none!important;animation:none!important}
+  .draw{stroke-dashoffset:0!important;animation:none!important}
+  [data-panel]{display:none}[data-panel].on{display:block}
+}
+
+/* ───────── 연구직 덱 추가 레이아웃 ───────── */
+/* 06 직무 진화: 환류 대신 진행 방향 */
+.flow.prog:before{left:3%;right:3%;bottom:19px;height:0;border:0;border-top:2px solid var(--teal);border-radius:0}
+.flow.prog:after{content:'직무가 진화할수록 AI 위임은 늘고, 최종 판단 책임(Human-in-the-Loop)은 커진다  →'}
+/* 07 업무 재배분 */
+.mix-wrap{margin-top:10px}
+.mixrow{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;margin-bottom:12px}
+.mixrow b{font-size:19px;color:var(--navy)}
+.mix{display:flex;height:62px;border-radius:8px;overflow:hidden}
+.mix span{display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:800}
+.areas{display:flex;flex-direction:column;gap:12px;flex:1;margin-top:10px}
+.area{flex:1;display:grid;grid-template-columns:1fr 210px;align-items:center;gap:16px;padding:16px 24px}
+.area h3{font-size:22px;margin-bottom:4px}
+.area p{font-size:17px;line-height:1.5}
+.area .metric-pair .to-n{font-size:36px}
+/* 08 엔진: 원칙 행 추가 */
+.engines.e5{grid-template-rows:auto 1fr auto auto auto}
+.engines.e5 .engine{grid-row:span 5}
+.engines.e5 .engine ol{padding:22px 26px 4px}
+.engines.e5 .engine ol li{padding-bottom:16px}
+.engine .rule{padding:14px 28px 16px;font-size:16.5px;line-height:1.5;color:#7a4712;background:var(--amber-tint);border-top:1px solid #f0dcc4}
+/* 11 행정·보고 */
+.insight [data-panel].on{display:flex}
+.insight .stat{display:flex;align-items:baseline;gap:14px}
+.insight .stat strong{font-size:60px;color:var(--teal);letter-spacing:-2px;line-height:1}
+.insight .stat strong small{font-size:24px}
+.insight .stat span{font-size:19px;color:var(--muted)}
+.insight .chip{margin-bottom:0}
+/* 12 직렬별 */
+.series{grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto 1fr auto;column-gap:26px;row-gap:0}
+.serie{border:1px solid var(--line);border-radius:12px;display:grid;grid-row:span 4;grid-template-rows:subgrid;overflow:hidden}
+.serie header{padding:24px 28px 20px;border-bottom:1px solid var(--line);background:var(--tint)}
+.serie header h3{font-size:28px;color:var(--navy);font-weight:800;letter-spacing:-.5px;margin:6px 0 6px}
+.serie header small{font-size:17px;color:var(--muted)}
+.serie header small b{color:var(--blue);font-size:20px}
+.tags{padding:22px 28px 0;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.tags span{background:var(--paper);border:1.5px solid var(--blue);color:var(--blue);font-weight:700;font-size:18px;padding:7px 12px;border-radius:6px}
+.serie .d{padding:22px 28px;display:flex;flex-direction:column;justify-content:center}
+.serie .d h4{font-size:24px;color:var(--navy);font-weight:800;line-height:1.4;margin-bottom:12px}
+.serie .d p{font-size:20px;line-height:1.65;color:#3d4556}
+.need{background:var(--teal-tint);padding:20px 28px;font-size:22px;font-weight:800;color:#20403f;display:flex;align-items:center;gap:16px}
+.need b{font-size:14px;letter-spacing:1px;color:var(--teal)}
+/* 13 인증 파이프라인 */
+.pipeline{grid-template-columns:1fr 1fr;gap:36px}
+.tracks{display:flex;flex-direction:column;gap:14px}
+.track{flex:1;display:grid;grid-template-columns:76px 1fr;gap:16px;align-items:center;padding:22px 28px}
+.track .n{font-size:44px;font-weight:800;color:var(--blue);line-height:1}
+.track h3{font-size:26px;margin:4px 0 8px}
+.track p{font-size:18.5px;line-height:1.6}
+.pipeline .hero{display:flex;align-items:baseline;gap:14px;margin:4px 0 10px}
+.pipeline .hero strong{font-size:64px;color:var(--teal);letter-spacing:-2px}
+.pipeline .hero strong small{font-size:24px}
+.pipeline .hero>span{font-size:19px;color:var(--muted)}
+#tblYear td,#tblYear th{padding:6px 12px}
+.gov .check{padding:18px 26px}.gov .check h3{font-size:24px}.gov .check p{font-size:18.5px}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<header class="chrome-top">
+  <div class="brand"><i>AI</i>연구직 공무원 × AI 역량 브리핑 <span>국립·공립 연구기관 기준</span></div>
+  <nav class="chapters" aria-label="장 이동">
+    <button data-goto="0">표지·요약</button>
+    <button data-goto="2">Ⅰ 추진배경</button>
+    <button data-goto="4">Ⅱ 비전·전략</button>
+    <button data-goto="6">Ⅲ 추진과제</button>
+    <button data-goto="13">Ⅳ 이행관리</button>
+  </nav>
+  <div class="tools">
+    <button id="editBtn" aria-pressed="false" title="문구를 클릭해 직접 수정">글자 편집</button>
+    <button id="saveBtn" title="수정본을 HTML로 저장">HTML 저장</button>
+    <button id="printBtn" title="한 장씩 PDF로 저장">PDF 인쇄</button>
+    <button id="fsBtn" title="전체화면">전체화면</button>
+  </div>
+</header>
+<div class="toast">편집 모드 · 점선 영역을 클릭해 수정하세요 (자동 저장)</div>
+
+<main id="slides">
+
+<!-- ═════════ 01 표지 ═════════ -->
+<section class="slide cover" data-chapter="0" data-source="인사혁신처·국가공무원인재개발원 AI 역량 프레임워크, 국립연구기관 연구직 직무분석, OECD Public Sector AI Skills 자료 재구성">
+  <div class="cover-main">
+    <div class="cover-kicker rise" data-edit>POLICY BRIEFING · PUBLIC RESEARCHER × AI</div>
+    <h1 class="rise" data-edit>실험·문서 실무자에서<br><mark>정책을 설계하는</mark> 연구직 공무원으로</h1>
+    <p class="cover-sub rise" data-edit>보건·환경·농업·공업·기상·학예 연구직 공무원의 주 40시간 업무 구조 변화와, AI 시대에 갖춰야 할 4대 핵심역량·인사 지원 과제</p>
+    <div class="cover-flow rise"><span>업무 재배분</span><i>→</i><span>4대 핵심역량</span><i>→</i><span>스마트 연구실</span><i>→</i><span style="background:var(--teal-tint);color:var(--teal)">인증·인사 혁신</span></div>
+    <div class="cover-meta rise">
+      <div>구분<b data-edit>정책 브리핑</b></div>
+      <div>대상<b data-edit>국가·지방 연구직 공무원</b></div>
+      <div>구성<b data-edit>4개 장 · 15쪽</b></div>
+    </div>
+  </div>
+  <aside class="cover-side">
+    <span class="label">KEY NUMBERS · 2026 목표</span>
+    <div class="kpi-big rise"><strong class="num"><span data-count="24.8" data-dec="1">24.8</span><small>시간/주</small></strong><p data-edit>고부가 연구·정책 시간 <span class="delta">12.8h → 24.8h (비중 62%)</span></p></div>
+    <div class="kpi-big rise"><strong class="num"><span data-count="144">144</span><small>건/월</small></strong><p data-edit>연구직 공무원 1인당 정밀 시료·데이터 분석 <span class="delta">45건 대비 3.2배</span></p></div>
+    <div class="kpi-big rise"><strong class="num">72→<span data-count="19">19</span><small>시간</small></strong><p data-edit>현장 위기 원인규명~정책권고 <span class="delta">−73.6%</span></p></div>
+  </aside>
+</section>
+
+<!-- ═════════ 02 요약 ═════════ -->
+<section class="slide" data-chapter="0" data-source="본 브리핑 전체 내용 요약">
+  <div class="sh">
+    <div class="tag"><em>요약</em>EXECUTIVE SUMMARY</div>
+    <h2 data-edit>반복은 AI에 맡기고, 연구직 공무원은 <mark>가설·검증·정책 번역</mark>에 집중한다</h2>
+  </div>
+  <div class="body summary-wrap"><div class="summary">
+    <div class="sum-col arrow-col rise">
+      <span class="step">01 배경</span>
+      <h3 data-edit>AI가 연구 일상으로 들어왔다</h3>
+      <ul data-edit><li>AI 일상 활용률 24% → 88% (2024 → 2026)</li><li>내부망 보안 LLM·분석 AI 전 직렬 보급</li></ul>
+      <div class="big"><strong class="num">88%</strong><span>연구직 AI 일상 활용률 (2026 목표)</span></div>
+    </div>
+    <div class="sum-col arrow-col rise">
+      <span class="step">02 문제</span>
+      <h3 data-edit>전문성이 행정·수기 작업에 묶여 있다</h3>
+      <ul data-edit><li>반복 행정·문서에 주 16.8시간</li><li>보고서 1건 작성에 평균 40시간</li><li>위기 원인규명~정책권고 72시간</li></ul>
+      <div class="big"><strong class="num" style="color:var(--amber)">42%</strong><span>AI 도입 전 행정·문서 업무 비중</span></div>
+    </div>
+    <div class="sum-col arrow-col rise">
+      <span class="step">03 전략</span>
+      <h3 data-edit>4대 핵심역량을 기르고 인증한다</h3>
+      <ul data-edit><li>C1 도메인 AI 융합 리터러시</li><li>C2 연구데이터·실험 오케스트레이션</li><li>C3 과학기반 정책 번역</li><li>C4 AI 검증·연구윤리·보안</li></ul>
+      <div class="big"><strong class="num">3단계</strong><span>Basic → Advanced → Master 인증 트랙</span></div>
+    </div>
+    <div class="sum-col rise">
+      <span class="step">04 기대효과</span>
+      <h3 data-edit>연구 몰입과 위기 대응력 강화</h3>
+      <ul data-edit><li>고부가 연구·정책 비중 32% → 62%</li><li>정밀 분석 처리량 3.2배</li><li>위기 대응 시간 −73.6%</li></ul>
+      <div class="big"><strong class="num" style="color:var(--teal)">62%</strong><span>주 40시간 중 고부가 연구·정책 비중</span></div>
+    </div>
+  </div>
+  <div class="keymsg rise"><span class="label">KEY MESSAGE</span><span data-edit>AI는 연구직 공무원을 대체하지 않는다 — <mark>AI가 근거를 내고</mark>, 사람이 <mark>판단하고 책임</mark>진다</span></div>
+  </div>
+</section>
+
+<!-- ═════════ 03 Ⅰ-1 3개년 변화 ═════════ -->
+<section class="slide" data-chapter="1" data-source="출처: 공공부문 AI 활용 실태조사, 국립연구기관 디지털 전환 로드맵, 연구직 직무분석(주 40시간 기준) 재구성 · 2026년은 목표">
+  <div class="sh">
+    <div class="tag"><em>Ⅰ-1</em>추진배경 · 3개년 업무 변화</div>
+    <h2 data-edit>AI 일상 활용률이 <mark>24%에서 88%로</mark> 오르며 업무 구조가 바뀐다</h2>
+    <p data-edit>연도를 선택하면 주 40시간 구성과 핵심 지표가 함께 바뀝니다.</p>
+  </div>
+  <div class="body invest" data-tabgroup="year" data-default="2">
+    <div class="card chart-card rise">
+      <div class="head">
+        <div class="seg" role="tablist">
+          <button data-tab="0" role="tab">2024</button><button data-tab="1" role="tab">2025</button><button data-tab="2" role="tab">2026(목표)</button>
+        </div>
+        <div class="legend"><span><i style="background:var(--teal)"></i>고부가 연구·정책</span><span><i style="background:var(--amber)"></i>반복 행정·문서</span><span><i style="background:#c6d3e6"></i>단순 전처리</span></div>
+      </div>
+      <div class="chart-host" id="chartHours"></div>
+      <p class="note" id="yNote" data-edit></p>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <div class="kpi-row">
+        <div class="kpi"><span>AI 일상 활용률</span><strong class="num" id="kUse">88.0<small>%</small></strong><em id="kUseD"></em></div>
+        <div class="kpi"><span>주간 고부가 연구시간</span><strong class="num" id="kHigh">24.8<small>h</small></strong><em id="kHighD"></em></div>
+        <div class="kpi"><span>AI 역량교육 이수율</span><strong class="num" id="kEdu">85.0<small>%</small></strong><em id="kEduD"></em></div>
+      </div>
+      <table class="data" id="tblYear">
+        <thead><tr><th>지표</th><th>2024</th><th>2025</th><th>2026(목표)</th></tr></thead>
+        <tbody>
+          <tr class="group"><td>AI 일상 활용률 (%)</td><td>24.0</td><td>58.0</td><td>88.0</td></tr>
+          <tr><td>고부가 연구·정책 (시간/주)</td><td>12.8</td><td>19.2</td><td>24.8</td></tr>
+          <tr><td>반복 행정·문서 (시간/주)</td><td>16.8</td><td>11.2</td><td>6.4</td></tr>
+          <tr><td>단순 시료·데이터 전처리 (시간/주)</td><td>10.4</td><td>9.6</td><td>8.8</td></tr>
+          <tr><td>1인당 월간 정밀 분석 (건)</td><td>45</td><td>92</td><td>144</td></tr>
+          <tr><td>위기 원인규명~정책권고 (시간)</td><td>72</td><td>38</td><td>19</td></tr>
+          <tr><td>보고서 1건 작성시간 (시간)</td><td>40</td><td>24</td><td>14</td></tr>
+          <tr><td>AI 역량교육·인증 이수율 (%)</td><td>18.0</td><td>52.0</td><td>85.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 04 Ⅰ-2 병목 진단 ═════════ -->
+<section class="slide" data-chapter="1" data-source="출처: 국립연구기관 연구직 직무분석, 공공 연구기관 생성형 AI 코파일럿 시범 운영, 디지털 실험실·예찰 고도화 사례 종합">
+  <div class="sh">
+    <div class="tag"><em>Ⅰ-2</em>추진배경 · 현행 업무 진단</div>
+    <h2 data-edit>연구직 업무의 <mark>네 가지 병목</mark>과 AI 전환 방향</h2>
+  </div>
+  <div class="body diag">
+    <div class="diag-row head"><span>병목</span><span>현행 (As-Is)</span><span></span><span>AI 전환 방향 (To-Be)</span><span style="text-align:right">핵심 지표</span></div>
+    <div class="diag-row rise">
+      <h3 data-edit>반복 행정·문서<span>보고서·민원답변 초안 수작업</span></h3>
+      <p data-edit>결과보고서·규정 검토·국회/민원 기술답변 초안 작성에 근무시간의 42%를 소모</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>내부망 LLM이 과거 보고서·법령·통계를 요약해 초안을 쓰고, 연구직 공무원은 팩트체크와 정책 함의 검토에 집중</p>
+      <div class="metric-pair"><span class="from num">16.8h</span><span class="to-n num">6.4h</span><small>주간 행정·문서 시간</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>보고서 작성 장기화<span>실험 로그·통계표 수작업 정리</span></h3>
+      <p data-edit>실험 로그 정리부터 통계표·그래프 작성, 결과보고서 집필까지 사람이 모두 수행</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>AI가 로그·통계표를 요약해 초안을 만들고, 모든 문장·수치에 원문 인용 링크를 다는 Citation-First 적용</p>
+      <div class="metric-pair"><span class="from num">40시간</span><span class="to-n num">14시간</span><small>보고서 1건당 작성시간</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>정밀 분석 병목<span>수기 전처리·판독</span></h3>
+      <p data-edit>시료 수기 전처리, 장비 개별 조작, 엑셀 수작업 통계 처리로 분석량이 묶임</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>크로마토그래피·유전체·위성영상·센서 데이터의 노이즈 제거와 피크 검출을 AI가 1차 자동화</p>
+      <div class="metric-pair"><span class="from num">45건</span><span class="to-n num">144건</span><small>1인당 월간 정밀 분석</small></div>
+    </div>
+    <div class="diag-row rise">
+      <h3 data-edit>위기 대응 지연<span>감염병·오염·재난</span></h3>
+      <p data-edit>유사 사고·판례 검색, 확산 분석, 법적 기준치 대조를 순차적인 수작업으로 처리</p>
+      <div class="diag-arrow">→</div>
+      <p class="to" data-edit>유사 사례 RAG, 유해물질·병원체 확산 시뮬레이션, 기준치 대조를 AI 파이프라인이 동시에 처리</p>
+      <div class="metric-pair"><span class="from num">72시간</span><span class="to-n num">19시간</span><small>원인규명~정책권고</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 05 Ⅱ-1 비전 체계도 ═════════ -->
+<section class="slide" data-chapter="2" data-source="출처: 인사혁신처·국가공무원인재개발원 연구직 공무원 미래 역량모델링, 스마트 국립연구실 구축 로드맵 재구성">
+  <div class="sh">
+    <div class="tag"><em>Ⅱ-1</em>비전·전략 · 역량 체계도</div>
+    <h2 data-edit>1개 비전 · 3대 목표 · <mark>4대 핵심역량</mark></h2>
+  </div>
+  <div class="body frame">
+    <div class="vision rise"><span class="label">VISION</span><strong data-edit>과학적 진실을 꿰뚫는 도메인 안목 + AI 오케스트레이션 리더십</strong></div>
+    <div class="goals rise">
+      <span class="row-label">3대 목표</span>
+      <div class="goal"><h3 data-edit>연구에 몰입한다</h3><div class="t"><strong class="num">62%</strong><small>고부가 연구·정책 비중 (2026)</small></div></div>
+      <div class="goal"><h3 data-edit>역량을 인증한다</h3><div class="t"><strong class="num">92%</strong><small>AI 역량 인증 취득 (2028 목표)</small></div></div>
+      <div class="goal"><h3 data-edit>실험실을 바꾼다</h3><div class="t"><strong class="num">85%</strong><small>핵심 국공립 실험실 스마트화 (2028 목표)</small></div></div>
+    </div>
+    <div class="strats rise">
+      <span class="row-label">4대<br>핵심역량</span>
+      <div class="strat"><span class="no"><i>C1</i>도메인 AI</span><h3 data-edit>도메인 AI 융합 리터러시</h3><ul data-edit><li>과학 난제를 AI가 풀 수 있는 문제로 정의</li><li>AI 출력의 물리·생물·화학적 타당성 판별</li></ul></div>
+      <div class="strat"><span class="no"><i>C2</i>데이터·실험</span><h3 data-edit>연구데이터 거버넌스 · 실험 오케스트레이션</h3><ul data-edit><li>공공 연구데이터 FAIR 표준화</li><li>스마트랩·AI 에이전트 워크플로 지휘</li></ul></div>
+      <div class="strat"><span class="no"><i>C3</i>정책 번역</span><h3 data-edit>과학기반 정책 번역 · 리스크 커뮤니케이션</h3><ul data-edit><li>분석 결과를 법령·기준치·대국민 언어로</li><li>불확실성 범위를 투명하게 설명</li></ul></div>
+      <div class="strat"><span class="no"><i>C4</i>검증·보안</span><h3 data-edit>AI 검증 · 연구윤리 · 기술안보</h3><ul data-edit><li>할루시네이션·편향 감사, 재현성 교차검증</li><li>민감 연구데이터 폐쇄망 통제</li></ul></div>
+    </div>
+    <div class="base rise">
+      <span class="row-label">추진 기반</span>
+      <div class="base-bar"><span data-edit>직무기술서(JD) 개편</span><span data-edit>데이터·AI 기여의 성과평가 반영</span><span data-edit>기관 전용 보안 LLM·GPU 샌드박스</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 06 Ⅱ-2 직무 진화 4단계 ═════════ -->
+<section class="slide" data-chapter="2" data-source="출처: 연구직 공무원 직무재설계(Job Redesign) 및 경력개발경로(CDP) 혁신안">
+  <div class="sh">
+    <div class="tag"><em>Ⅱ-2</em>비전·전략 · 직무 진화 로드맵</div>
+    <h2 data-edit>실무자에서 <mark>과학정책 아키텍트</mark>로, 직무는 4단계로 진화한다</h2>
+    <p data-edit>단계를 선택하면 현재 모습, 다음 전환 과제, 업무 변화, 역량 점검 항목이 바뀝니다.</p>
+  </div>
+  <div class="body cycle" data-tabgroup="road" data-default="1">
+    <div class="flow prog rise" role="tablist">
+      <button class="stage-btn" data-tab="0" role="tab"><span class="s">STAGE 1 · HANDS-ON TESTER</span><h3>전통 실무형</h3><p>수기 시험·문서 실무</p></button>
+      <button class="stage-btn" data-tab="1" role="tab"><span class="s">STAGE 2 · AI CO-PILOT USER</span><h3>코파일럿 활용</h3><p>문헌·행정 스마트화</p></button>
+      <button class="stage-btn" data-tab="2" role="tab"><span class="s">STAGE 3 · LAB ORCHESTRATOR</span><h3>자율실험 지휘</h3><p>스마트랩·데이터 지휘</p></button>
+      <button class="stage-btn" data-tab="3" role="tab"><span class="s">STAGE 4 · POLICY ARCHITECT</span><h3>정책 아키텍트</h3><p>국가정책·국제표준 선도</p></button>
+    </div>
+    <div class="rise">
+      <div data-panel="0"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">현재</span><br><span data-edit>숙련된 실험 능력이 강점이나 반복 행정과 수기 분석이 병목 (근무시간의 68%)</span></div><div class="b"><span class="chip tobe">다음 전환 과제</span><br><span data-edit>전자연구노트(ELN)·표준 데이터 기록 습관화와 내부망 AI 코파일럿 도입</span></div></div>
+        <div class="card"><span class="label">업무 모습</span><ul data-edit><li>시료 수기 전처리, 장비 개별 조작, 엑셀 수작업 통계에 많은 시간 소요</li><li>보고서·규정 검토·국회/민원 답변 등 행정 부담이 연구 몰입을 방해</li></ul></div>
+        <div class="card"><span class="label">역량 점검</span><ol data-edit><li>흩어진 실험 데이터를 ELN과 표준 포맷으로 전환</li><li>정형 보고서·민원답변의 템플릿화와 내부망 RAG 연동</li><li>직무기술서에서 단순 반복 측정 비중 축소</li></ol><p class="note" data-edit>실험 숙련도는 사라지지 않고, AI 출력값의 오류를 잡아내는 검증력의 토대가 됩니다.</p></div>
+      </div></div>
+      <div data-panel="1"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">현재</span><br><span data-edit>내부망 LLM과 분석 AI로 문헌 조사·행정 시간을 절반 이하로 단축</span></div><div class="b"><span class="chip tobe">다음 전환 과제</span><br><span data-edit>도메인 특화 프롬프트 설계와 RAG 인용 원문 교차검증 루틴 확립</span></div></div>
+        <div class="card"><span class="label">업무 모습</span><ul data-edit><li>논문·특허·법령·고시를 RAG로 교차 검색해 선행조사 시간 75% 단축</li><li>통계 분석 코드와 시각화 초안을 AI와 협업해 데이터 처리 가속</li></ul></div>
+        <div class="card"><span class="label">역량 점검</span><ol data-edit><li>AI가 만든 인용 문헌·수치의 원문 일치 100% 검증</li><li>미공개 시험성적·역학·안보 데이터의 외부 LLM 입력 차단</li><li>기관별 도메인 프롬프트 라이브러리 구축·공유</li></ol><p class="note" data-edit>신임부터 실무급까지 전 직렬 연구직 공무원이 도달해야 하는 기본 단계입니다.</p></div>
+      </div></div>
+      <div data-panel="2"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">현재</span><br><span data-edit>다중 AI 에이전트와 스마트랩 장비를 지휘해 고속 탐색 수행</span></div><div class="b"><span class="chip tobe">다음 전환 과제</span><br><span data-edit>국립연구기관 AI-LIMS 전면 연동과 자율실험실(SDL) 운영 프로토콜 고도화</span></div></div>
+        <div class="card"><span class="label">업무 모습</span><ul data-edit><li>베이지안 최적화·디지털 트윈으로 시행착오 실험을 절반 이하로 압축</li><li>관측망·센서·분석장비 스트림에서 이상 신호를 자동 탐지</li></ul></div>
+        <div class="card"><span class="label">역량 점검</span><ol data-edit><li>FAIR 표준 데이터셋 구축 기여도의 평가 반영</li><li>센서 노이즈와 실제 이상 징후를 구분하는 판독력</li><li>타 직렬 데이터셋을 연계한 융합 분석 수행</li></ol><p class="note" data-edit>중견 연구직 공무원이 단일 실험실을 넘어 자동화 파이프라인을 지휘하는 단계입니다.</p></div>
+      </div></div>
+      <div data-panel="3"><div class="stage-detail">
+        <div class="card asis-tobe"><span class="label">전환</span><div class="a"><span class="chip asis">현재</span><br><span data-edit>실시간 과학 증거로 국가 법제·규제·글로벌 표준을 선도하는 리더</span></div><div class="b"><span class="chip tobe">다음 전환 과제</span><br><span data-edit>정책 기획 부서와의 교류 확대와 고위 연구직 인사 트랙 강화</span></div></div>
+        <div class="card"><span class="label">업무 모습</span><ul data-edit><li>정책 시뮬레이터로 기준치 변화의 사회경제적 영향 산출</li><li>WHO·ISO·IPCC 표준 협상에서 AI 분석 근거로 글로벌 표준 선도</li></ul></div>
+        <div class="card"><span class="label">역량 점검</span><ol data-edit><li>복합 위기 시 즉시 실행 가능한 과학적 대안 제시</li><li>불확실성·위험도를 국민 눈높이로 설명하는 리스크 소통</li><li>공공 연구데이터 개방과 AI 연구 생태계 거버넌스 총괄</li></ol><p class="note" data-edit>선임 연구직 공무원이 국가 핵심 정책의 공동 설계자로 자리매김하는 단계입니다.</p></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 07 Ⅲ-1 주 40시간 재배분 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 국립연구기관 직무분석 및 AI 업무효율화 실증, 공공부문 생성형 AI 업무효율화 실증 리포트 · 주 40시간 기준">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-1</em>추진과제 · 업무 재배분</div>
+    <h2 data-edit>반복 행정 <mark>주 10.4시간</mark>을 덜어 고부가 연구를 주 24.8시간으로</h2>
+  </div>
+  <div class="body portfolio">
+    <div class="card chart-card rise">
+      <span class="label">주간 반복 행정·문서 시간 감축 브릿지 (시간/주)</span>
+      <div class="chart-host" id="chartAdmin"></div>
+      <p class="note" data-edit>내부 행정 LLM이 과거 보고서·법령·국회 답변서를 검색·요약해 초안을 쓰고, 연구직 공무원은 팩트체크와 정책 함의 검토에 집중합니다.</p>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <span class="label">주 40시간 구성 변화</span>
+      <div class="mix-wrap">
+        <div class="mixrow"><b>AI 도입 전</b><div class="mix"><span style="width:32%;background:var(--teal)">32%</span><span style="width:42%;background:var(--amber)">42%</span><span style="width:26%;background:#9fb0c8">26%</span></div></div>
+        <div class="mixrow"><b>내재화 후</b><div class="mix"><span style="width:62%;background:var(--teal)">62%</span><span style="width:16%;background:var(--amber)">16%</span><span style="width:22%;background:#9fb0c8">22%</span></div></div>
+        <div class="legend" style="margin-left:124px"><span><i style="background:var(--teal)"></i>고부가 연구·정책</span><span><i style="background:var(--amber)"></i>반복 행정·문서</span><span><i style="background:#9fb0c8"></i>단순 전처리</span></div>
+      </div>
+      <span class="label" style="margin-top:26px">늘어난 고부가 3대 영역 (시간/주)</span>
+      <div class="areas">
+        <div class="area card"><div><h3 data-edit>AI 실험·모델링 설계</h3><p data-edit>시뮬레이션 조건과 탐색 공간을 설계하고 이상 징후의 원인을 판독</p></div><div class="metric-pair"><span class="from num">5.6h</span><span class="to-n num">10.4h</span></div></div>
+        <div class="area card"><div><h3 data-edit>과학기반 정책·법령 번역</h3><p data-edit>시험·감시 결과를 법령 개정안·안전 기준치·대국민 언어로 변환</p></div><div class="metric-pair"><span class="from num">4.0h</span><span class="to-n num">8.0h</span></div></div>
+        <div class="area card"><div><h3 data-edit>다부처·글로벌 공동연구</h3><p data-edit>기후·감염병·공급망 난제 공동 해결과 ISO·WHO·IPCC 표준화 주도</p></div><div class="metric-pair"><span class="from num">3.2h</span><span class="to-n num">6.4h</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 08 Ⅲ-2 3대 실무 엔진 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 국립연구기관 AI 실무 툴킷 및 과학기반 정책결정(EBPM) 운영 프로토콜">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-2</em>추진과제 · AI 실무 엔진</div>
+    <h2 data-edit>문헌 조사·실험 설계·정책 번역을 맡는 <mark>3대 AI 실무 엔진</mark></h2>
+  </div>
+  <div class="body engines e5">
+    <article class="engine rise">
+      <header><i>R</i><div><h3 data-edit>문헌·법령·선행연구 RAG</h3><small>LITERATURE & REGULATION RAG</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>연구·정책 질문 구조화</strong><span data-edit>기술 쟁점과 대상 법령·국가·연도 범위를 명확히 정의</span></div></li>
+        <li><b>2</b><div><strong data-edit>근거 기반 교차 추출</strong><span data-edit>내부 지식베이스·학술 DB에서 실험 수치와 법 조항을 비교표로</span></div></li>
+        <li><b>3</b><div><strong data-edit>원문 대조·도메인 해석</strong><span data-edit>연구직 공무원이 인용 원문을 검수하고 현장 적용 가능성 판정</span></div></li>
+      </ol>
+      <div class="eff"><b>업무 효과</b><span data-edit>선행문헌·법령 조사 시간 75% 단축, 국회·언론·민원 기술답변의 정확도와 일관성 향상</span></div>
+      <div class="use" data-edit>적용: 신규 과제 선행조사, WHO·EPA·EU 기준 비교, 법령·고시 개정 기술검토서</div>
+      <div class="rule" data-edit>원칙: 원문 출처가 확인되지 않는 문장은 공문서에 쓰지 않는다 (Citation-First)</div>
+    </article>
+    <article class="engine rise">
+      <header><i>L</i><div><h3 data-edit>자율 실험 설계 · 이상치 탐지</h3><small>BAYESIAN DOE & ANOMALY DETECTION</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>탐색 공간·경계조건 설정</strong><span data-edit>연구직 공무원이 허용 범위와 목표 지표(수율·검출한계 등)를 설정</span></div></li>
+        <li><b>2</b><div><strong data-edit>최적 후보 추천·전처리</strong><span data-edit>AI가 정보 이득이 큰 다음 실험 조건을 추천하고 노이즈 제거</span></div></li>
+        <li><b>3</b><div><strong data-edit>이상 징후 판독·규명</strong><span data-edit>특이 피크가 장비 오류인지 새 현상인지 연구직 공무원이 최종 판독</span></div></li>
+      </ol>
+      <div class="eff"><b>업무 효과</b><span data-edit>시행착오 실험 48% 이상 절감, 연구직 공무원 1인당 월간 정밀 분석 처리량 3.2배</span></div>
+      <div class="use" data-edit>적용: 유해물질·마약류 스크리닝, 병원체 변이 감시, 극한기상·수질 이상 탐지, 신소재 물성 탐색</div>
+      <div class="rule" data-edit>원칙: 장비 교정 상태와 LIMS 원본 로우데이터의 무결성을 보존한다</div>
+    </article>
+    <article class="engine rise">
+      <header><i>P</i><div><h3 data-edit>증거기반 정책 시뮬레이터</h3><small>EVIDENCE-TO-POLICY TRANSLATOR</small></div></header>
+      <ol>
+        <li><b>1</b><div><strong data-edit>분석 결과 연동</strong><span data-edit>시험·감시 데이터와 오차범위·신뢰구간을 시뮬레이터에 입력</span></div></li>
+        <li><b>2</b><div><strong data-edit>다중 정책 시나리오 모의실험</strong><span data-edit>기준치 강화·완화·단계 적용 시 위험 감소 효과와 비용 산출</span></div></li>
+        <li><b>3</b><div><strong data-edit>권고안·대국민 설명문 확정</strong><span data-edit>연구직 공무원이 부처 협의용 브리프와 국민 설명자료를 최종 감수</span></div></li>
+      </ol>
+      <div class="eff"><b>업무 효과</b><span data-edit>위기 원인 규명부터 정책 권고까지 리드타임 72시간 → 19시간 (−74%)</span></div>
+      <div class="use" data-edit>적용: 감염병 방역 수위 결정, 환경·식품 안전기준 설정, 재난 경보, 기술규제 합리화 자문</div>
+      <div class="rule" data-edit>원칙: 과학적 불확실성 범위를 함께 적어 결정권자가 리스크를 인지하게 한다</div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════ 09 Ⅲ-3 협업 성숙도 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 국립연구기관 AI 협업 성숙도 모델(Stage 1~3) 및 연구직 공무원 실무 가이드라인">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-3</em>추진과제 · 인간-AI 협업 단계</div>
+    <h2 data-edit>문서 보조에서 정책 시뮬레이션까지, <mark>협업 수준을 3단계로</mark> 높인다</h2>
+    <p data-edit>단계를 선택하면 대상 직급·핵심 기능·유의사항을 볼 수 있습니다.</p>
+  </div>
+  <div class="body maturity" data-tabgroup="level" data-default="0">
+    <div class="stairs rise" role="tablist">
+      <button class="stair" data-tab="0" role="tab"><span class="lv">STAGE 1</span><h3>Co-Pilot</h3><p>문헌·법령 RAG<br>보고서 초안 자동화</p><span class="when">전 직렬 기본 역량</span></button>
+      <button class="stair" data-tab="1" role="tab"><span class="lv">STAGE 2</span><h3>Smart Lab</h3><p>자율실험(DoE)<br>시료·센서 이상치 자동탐지</p><span class="when">중견 연구직 공무원 핵심 역량</span></button>
+      <button class="stair" data-tab="2" role="tab"><span class="lv">STAGE 3</span><h3>Policy Architect</h3><p>디지털트윈 위기예측<br>과학기반 정책 번역</p><span class="when">선임 연구직 공무원 리더십 역량</span></button>
+    </div>
+    <div class="lv-detail rise">
+      <div class="card" data-panel="0"><span class="chip goal">Stage 1 · 전 직렬 기본 역량 · 내부망 RAG</span><h3 data-edit>선행논문·법령 검색과 결과보고서 초안 작성 시간 65% 단축</h3><p data-edit>국립연구기관 내부 보고서·고시·해외 논문을 RAG로 즉시 검색·요약하고, 정형 보고서와 민원 기술답변 초안을 생성해 반복 문서 작업을 줄입니다.</p><p class="note" data-edit>미공개 시험성적서·역학조사·안보 관련 데이터는 외부 상용 LLM에 넣지 않고 기관 폐쇄망 전용 AI에서 처리해야 합니다.</p></div>
+      <div class="card" data-panel="1"><span class="chip goal">Stage 2 · 중견 연구직 공무원 핵심 역량 · AI-LIMS & 자율실험</span><h3 data-edit>AI 실험 조건 설계(DoE)와 시료·센서 데이터 자동 스크리닝</h3><p data-edit>베이지안 최적화로 실험 횟수를 줄이고, 크로마토그래피·유전체·위성 데이터의 이상치를 자동 검출해 정밀 분석 처리량을 3.2배로 높입니다.</p>
+        <div class="range"><span class="label">정밀 분석·보고 완수 시간</span><div class="track" style="margin-top:8px"><div class="fill growx" style="width:28%">28시간</div></div><div class="scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100시간 (기존)</span></div></div></div>
+      <div class="card" data-panel="2"><span class="chip goal">Stage 3 · 선임 연구직 공무원 리더십 역량 · 디지털트윈 & 정책 번역</span><h3 data-edit>복합 위기 확산 예측과 법령·안전기준치 시나리오 도출</h3><p data-edit>감염병·기후재난·유해물질 확산 시뮬레이션 결과를 바탕으로 행정부처와 국민에게 정책 대안과 안전 기준을 제시합니다.</p><p class="note" data-edit>시뮬레이션의 불확실성 범위(신뢰구간)를 함께 적고, 최종 법적·과학적 판단은 연구직 공무원이 책임집니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 10 Ⅲ-4 현장 대응 성과 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 국립환경과학원·질병관리청·국립농업과학원·기상청 등 디지털 실험실·예찰 고도화 사례 종합">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-4</em>추진과제 · 기대효과 ① 현장 대응</div>
+    <h2 data-edit>위기 대응 시간은 <mark>−73.6%</mark>, 정밀 분석 처리량은 <mark>3.2배</mark></h2>
+  </div>
+  <div class="body perf">
+    <div class="card rise">
+      <span class="label">현장 위기(감염병·오염·재난) 원인규명~정책권고 · 방식별</span>
+      <div class="hero"><strong class="num"><span data-count="19">19</span><small>시간</small></strong><span>기존 72시간 대비 −73.6%</span></div>
+      <div class="chart-host" id="chartCrisis"></div>
+      <p class="note" data-edit>유사 사고·판례 RAG 검색, 확산 시뮬레이션, 법적 기준치 대조를 AI 파이프라인이 동시에 처리</p>
+    </div>
+    <div class="card rise">
+      <span class="label">연구직 공무원 1인당 월간 정밀 시료·데이터 분석 · 방식별</span>
+      <div class="hero"><strong class="num"><span data-count="144">144</span><small>건/월</small></strong><span>기존 45건 대비 3.2배</span></div>
+      <div class="chart-host" id="chartLab"></div>
+      <p class="note" data-edit>크로마토그래피·유전체·위성영상·센서 데이터의 노이즈 제거와 피크 검출을 AI가 1차 자동화</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 11 Ⅲ-5 행정·보고 생산성 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 공공 연구기관 생성형 AI 코파일럿 시범 운영 및 문서 행정 시간 절감 효과 측정">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-5</em>추진과제 · 기대효과 ② 행정·보고</div>
+    <h2 data-edit>보고서·국회답변·성적서 검토 시간을 <mark>65~68% 줄인다</mark></h2>
+    <p data-edit>업무를 선택하면 1건당 소요시간을 방식별로 비교합니다.</p>
+  </div>
+  <div class="body multi" data-tabgroup="admin" data-default="0">
+    <div class="card chart-card rise">
+      <div class="seg mult-switch" role="tablist"><button data-tab="0" role="tab">연구결과 보고서</button><button data-tab="1" role="tab">국회·언론·민원 답변</button><button data-tab="2" role="tab">시험성적·규격 검토</button></div>
+      <span class="label" id="adminTitle"></span>
+      <div class="chart-host" id="chartAdminMode"></div>
+    </div>
+    <div class="insight rise">
+      <div class="card" data-panel="0"><span class="chip tobe">단축률</span><div class="stat"><strong class="num">65<small>%</small></strong><span>건당 40시간 → 14시간</span></div><h3 data-edit>‘프롬프트 엔지니어링’을 넘어 ‘검증 엔지니어링’으로</h3><p data-edit>AI가 실험 로그와 통계표를 요약해 초안을 만들면, 연구직 공무원은 수치 왜곡이나 과장된 인과관계를 걸러내고 정책적 함의를 다듬습니다.</p></div>
+      <div class="card" data-panel="1"><span class="chip tobe">단축률</span><div class="stat"><strong class="num">68<small>%</small></strong><span>건당 14.0시간 → 4.5시간</span></div><h3 data-edit>긴급 현안에도 일관된 과학적 근거 제시</h3><p data-edit>과거 답변서·국내외 기준치·최신 시험통계를 AI가 대조해 초안을 제시하므로 현안 대응의 신속성과 일관성이 높아집니다.</p></div>
+      <div class="card" data-panel="2"><span class="chip tobe">단축률</span><div class="stat"><strong class="num">67.5<small>%</small></strong><span>건당 16.0시간 → 5.2시간</span></div><h3 data-edit>단위·허용오차 대조는 AI, 특이 결함 판정은 연구직 공무원</h3><p data-edit>수백 개 시험 항목의 단위 환산과 고시 기준치 부합 여부를 AI가 1차 전수 스크리닝해 휴먼에러를 줄입니다.</p></div>
+      <div class="card keep"><span class="chip goal">공통 원칙</span><h3 data-edit>근거 인용 의무화 (Citation-First)</h3><p data-edit>공공 연구보고서에 생성형 AI를 쓸 때는 모든 문장과 수치가 실험 로그나 법령·논문 원문에 연결되도록 인용 검증을 의무화합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 12 Ⅲ-6 직렬별 특화 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 질병관리청·식품의약품안전처·국립환경과학원·기상청·농촌진흥청·국립문화유산연구원 직렬별 디지털 전환 사례">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-6</em>추진과제 · 직렬별 특화 역량</div>
+    <h2 data-edit>직렬마다 AI 업무가 다르다 — <mark>직렬군별 필수 역량</mark>을 따로 기른다</h2>
+  </div>
+  <div class="body series">
+    <article class="serie rise">
+      <header><span class="label">직렬군 1</span><h3 data-edit>보건·식품·의약·질병 연구직</h3><small>AI 역량 요구지수 <b>94</b>점</small></header>
+      <div class="tags"><span data-edit>감염병 유전체 변이 감시</span><span data-edit>독성 예측(In-silico)</span><span data-edit>역학 시뮬레이션</span></div>
+      <div class="d"><h4 data-edit>바이오 파운데이션 모델과 실시간 위해성 평가</h4><p data-edit>병원체 전장유전체 변이 조기 탐지, 신종 화학물질·마약류의 인실리코 독성 예측, 백신·치료제 후보 스크리닝을 지휘합니다.</p></div>
+      <div class="need"><b>필수 역량</b><span data-edit>바이오 데이터 보안·윤리</span></div>
+    </article>
+    <article class="serie rise">
+      <header><span class="label">직렬군 2</span><h3 data-edit>환경·기상·농업·산림·해양 연구직</h3><small>AI 역량 요구지수 <b>96</b>점</small></header>
+      <div class="tags"><span data-edit>기후·수질 디지털 트윈</span><span data-edit>위성 영상 판독</span><span data-edit>유전체 스마트 육종</span></div>
+      <div class="d"><h4 data-edit>지구시스템 디지털 트윈과 스마트 육종·예찰</h4><p data-edit>위성·레이더·IoT 센서를 결합한 극한기상·수질오염 시뮬레이션과 유전체 기반 기후적응 신품종 개발을 주도합니다.</p></div>
+      <div class="need"><b>필수 역량</b><span data-edit>시공간 빅데이터 처리</span></div>
+    </article>
+    <article class="serie rise">
+      <header><span class="label">직렬군 3</span><h3 data-edit>공업·표준·안전·학예·기록 연구직</h3><small>AI 역량 요구지수 <b>91</b>점</small></header>
+      <div class="tags"><span data-edit>신소재 물성 예측</span><span data-edit>표준시험 자동화</span><span data-edit>문화유산 초분광 복원·번역</span></div>
+      <div class="d"><h4 data-edit>신소재·표준 자동화와 디지털 헤리티지</h4><p data-edit>첨단소재 물성 예측, 국가표준 시험 자동화, 재난·법과학 정밀 감정, 고문헌 AI 번역과 문화유산 비파괴 복원을 수행합니다.</p></div>
+      <div class="need"><b>필수 역량</b><span data-edit>멀티모달 AI 활용</span></div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════ 13 Ⅲ-7 인증 파이프라인 ═════════ -->
+<section class="slide" data-chapter="3" data-source="출처: 국가공무원인재개발원 과학기술·AI 교육 혁신방안 및 스마트 국립연구실 구축 로드맵 · 2027·2028년은 목표">
+  <div class="sh">
+    <div class="tag"><em>Ⅲ-7</em>추진과제 · 교육·인증 체계</div>
+    <h2 data-edit>스마트 국립연구실과 <mark>직급별 3단계 AI 역량 인증</mark>을 함께 갖춘다</h2>
+  </div>
+  <div class="body pipeline">
+    <div class="tracks rise">
+      <div class="track card"><span class="n">01</span><div><span class="chip goal">Basic · 신임 연구사 필수</span><h3 data-edit>AI-LIMS와 데이터 표준화</h3><p data-edit>수기 연구노트와 개별 PC 엑셀로 흩어진 시험·관측 데이터를 LIMS에 자동 적재하고, 기관 간 호환되는 표준 메타데이터로 관리합니다.</p></div></div>
+      <div class="track card"><span class="n">02</span><div><span class="chip goal">Advanced · 실무 연구직 공무원</span><h3 data-edit>자율실험과 도메인 AI 설계</h3><p data-edit>위험·반복 전처리를 자동화 장비에 맡기고, 직렬별 특화 모델(독성·기상·물성 예측 등)을 현업 데이터로 미세조정해 분석 정밀도를 높입니다.</p></div></div>
+      <div class="track card"><span class="n">03</span><div><span class="chip goal">Master · 선임 연구직 공무원</span><h3 data-edit>과학정책 아키텍트와 거버넌스</h3><p data-edit>복수의 AI 에이전트와 스마트랩 데이터를 결합해 국가 난제에 대한 법령·예산·표준 대안을 설계하고 알고리즘 윤리·보안을 총괄합니다.</p></div></div>
+    </div>
+    <div class="card chart-card rise">
+      <span class="label">연구직 공무원 AI 역량 인증 취득률 (%)</span>
+      <div class="hero"><strong class="num"><span data-count="92">92</span><small>%</small></strong><span>2028년 목표 · 2026년 85%</span></div>
+      <div class="chart-host" id="chartCert"></div>
+      <p class="note" data-edit>2028년까지 핵심 국공립 실험실 85%를 AI-LIMS 기반 스마트 연구실로 전환하는 목표와 함께 추진합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 14 Ⅳ-1 거버넌스 ═════════ -->
+<section class="slide" data-chapter="4" data-source="출처: 공공 연구기관 AI 실무 활용 및 검증 가이드라인, 국립연구기관 AI 협업 성숙도 모델">
+  <div class="sh">
+    <div class="tag"><em>Ⅳ-1</em>이행관리 · 검증 원칙과 역할 분담</div>
+    <h2 data-edit>AI가 근거를 내고, <mark>판단과 책임은 연구직 공무원</mark>이 진다</h2>
+  </div>
+  <div class="body gov">
+    <div class="check-list rise">
+      <span class="label">4대 점검 원칙</span>
+      <div class="check"><span class="n">01</span><div><h3 data-edit>근거 인용 의무화</h3><p data-edit>AI가 만든 문장·수치는 실험 로그나 법령·논문 원문과 100% 대조해 확인한 뒤에만 공문서에 반영</p></div></div>
+      <div class="check"><span class="n">02</span><div><h3 data-edit>민감 데이터 폐쇄망 처리</h3><p data-edit>미공개 시험성적·역학조사·안보 데이터는 외부 상용 LLM에 넣지 않고 기관 전용 AI에서만 처리</p></div></div>
+      <div class="check"><span class="n">03</span><div><h3 data-edit>불확실성 병기</h3><p data-edit>시뮬레이션 결과에는 오차범위·신뢰구간을 함께 적어 결정권자가 리스크를 인지하도록 함</p></div></div>
+      <div class="check"><span class="n">04</span><div><h3 data-edit>원본 데이터 무결성</h3><p data-edit>장비 교정 상태와 LIMS 원본 로우데이터를 보존해 재현성 교차검증이 가능하도록 관리</p></div></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column;gap:14px">
+      <span class="label">AI와 연구직 공무원의 역할 분담</span>
+      <div class="roles"><table>
+        <thead><tr><th class="ai">AI가 하는 일 · 보조</th><th class="hu">연구직 공무원이 하는 일 · 판단</th></tr></thead>
+        <tbody>
+          <tr><td><span class="stage">문헌 조사</span><span data-edit>논문·법령·내부 보고서 교차 검색, 인용 링크가 붙은 비교표 생성</span></td><td><span class="stage">문헌 조사</span><span data-edit>핵심 인용 원문 검수, 국내 현장 적용 가능성 판정</span></td></tr>
+          <tr><td><span class="stage">실험</span><span data-edit>다음 실험 조건 추천, 센서 노이즈 제거, 이상 신호 탐지</span></td><td><span class="stage">실험</span><span data-edit>탐색 범위·경계조건 설정, 특이 신호의 원인 판독</span></td></tr>
+          <tr><td><span class="stage">정책 번역</span><span data-edit>기준치 시나리오별 위험 감소 효과와 비용 산출</span></td><td><span class="stage">정책 번역</span><span data-edit>정책 브리프·대국민 설명자료 최종 감수</span></td></tr>
+          <tr><td><span class="stage">보고·답변</span><span data-edit>실험 로그·통계표 요약 초안, 과거 답변·기준치 대조</span></td><td><span class="stage">보고·답변</span><span data-edit>수치 왜곡·과장된 인과 검증, 정책 함의 정리</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note" data-edit>AI가 고도화될수록 법적·과학적 최종 판단 책임(Human-in-the-Loop)을 지는 연구직 공무원의 도메인 전문성은 더 중요해집니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 15 Ⅳ-2 결론·제언 ═════════ -->
+<section class="slide" data-chapter="4" data-source="근거: 인사혁신처·국가공무원인재개발원·과학기술정보통신부·OECD Public Sector AI Skills 프레임워크 종합">
+  <div class="sh">
+    <div class="tag"><em>Ⅳ-2</em>이행관리 · 결론 및 인사·조직 제언</div>
+    <h2 data-edit>개인 학습만으로는 부족하다 — <mark>인사·조직이 함께 바꿀 세 가지</mark></h2>
+  </div>
+  <div class="body closing">
+    <div class="recs rise">
+      <div class="rec"><span class="n">1</span><div><h3 data-edit>업무 재정의 — 직접 수행에서 AI 지휘·검증·정책 번역으로</h3><p data-edit>반복 시험과 문서 초안은 AI와 자동화 장비에 맡기고, 가설 설계·결과 검증·법령/기준치 설계에 집중하도록 직무기술서를 개편합니다.</p></div></div>
+      <div class="rec"><span class="n">2</span><div><h3 data-edit>성과평가 혁신 — 데이터셋 구축과 AI 기여 인정</h3><p data-edit>논문·시험 건수 위주 평가를 넘어, 기관 공용 AI-Ready 데이터셋 구축과 도메인 AI 워크플로 개발 성과를 승진·성과급에 반영합니다.</p></div></div>
+      <div class="rec"><span class="n">3</span><div><h3 data-edit>안전한 실험 환경 — 전용 보안 LLM·GPU 샌드박스</h3><p data-edit>보안 우려로 AI 활용을 주저하지 않도록 폐쇄망에서도 과학 파운데이션 모델과 RAG를 실험할 수 있는 전용 인프라를 제공합니다.</p></div></div>
+    </div>
+    <div class="rise" style="display:flex;flex-direction:column">
+      <span class="label">최근 3개년 핵심 지표</span>
+      <table class="data" style="margin-top:10px">
+        <thead><tr><th>항목</th><th>2024</th><th>2025</th><th class="sel">2026(목표)</th></tr></thead>
+        <tbody>
+          <tr><td>AI 일상 활용률 (%)</td><td>24.0</td><td>58.0</td><td class="sel">88.0</td></tr>
+          <tr><td>고부가 연구·정책 (시간/주)</td><td>12.8</td><td>19.2</td><td class="sel">24.8</td></tr>
+          <tr><td>반복 행정·문서 (시간/주)</td><td>16.8</td><td>11.2</td><td class="sel">6.4</td></tr>
+          <tr><td>1인당 월간 정밀 분석 (건)</td><td>45</td><td>92</td><td class="sel">144</td></tr>
+          <tr><td>위기 원인규명~정책권고 (시간)</td><td>72</td><td>38</td><td class="sel">19</td></tr>
+          <tr><td>AI 역량교육·인증 이수율 (%)</td><td>18.0</td><td>52.0</td><td class="sel">85.0</td></tr>
+        </tbody>
+      </table>
+      <p class="refs" data-edit><b>참고자료</b> · 인사혁신처·국가공무원인재개발원 AI 역량 교육 체계 · 과학기술정보통신부 국립연구기관 디지털 연구혁신·스마트랩 전략 · 국립연구기관 연구직 표준 직무분석(주 40시간 기준) · OECD 『Public Sector AI & Future Skills』</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="chrome-bottom">
+  <span class="source" id="source"></span>
+  <div class="pager"><button id="prev" aria-label="이전 장">←</button><span><b id="pageNo">01</b> / <span id="pageTotal">15</span></span><button id="next" aria-label="다음 장">→</button></div>
+</footer>
+<div class="progress" id="progress"></div>
+
+</div></div>
+
+<script>
+(()=>{
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const C={navy:'#0e2747',blue:'#1d5fbf',teal:'#0a8f88',amber:'#c9741c',red:'#c2413b',pale:'#c6d3e6',line:'#dde2ea',muted:'#667085',ink:'#1d2433'};
+
+/* ── 스테이지 비율 맞춤 ── */
+const stage=$('#stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+
+/* ── SVG 유틸 ── */
+function el(tag,attrs={},parent){const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n}
+function txt(parent,x,y,s,attrs={}){const t=el('text',{x,y,...attrs},parent);t.textContent=s;return t}
+function svgFor(host){const r=host.getBoundingClientRect();const scale=stage.getBoundingClientRect().width/1920||1;const w=Math.max(300,Math.round(r.width/scale)),h=Math.max(180,Math.round(r.height/scale));host.replaceChildren();return [el('svg',{viewBox:`0 0 ${w} ${h}`,preserveAspectRatio:'xMidYMid meet'},host),w,h]}
+
+/* 세로 막대 (그룹) */
+function columns(host,{labels,series,max,fmt=v=>v,tick=v=>Math.round(v),sel=-1,unit=''}){
+  const [s,w,h]=svgFor(host);const pl=56,pr=10,pt=34,pb=48,cw=w-pl-pr,ch=h-pt-pb;
+  for(let i=0;i<=4;i++){const y=pt+ch-ch*i/4;el('line',{x1:pl,x2:w-pr,y1:y,y2:y,stroke:C.line},s);txt(s,pl-10,y+5,tick(max*i/4),{'text-anchor':'end','font-size':14,fill:C.muted})}
+  const gw=cw/labels.length,bw=Math.min(70,gw*0.7/series.length);
+  labels.forEach((lb,i)=>{const gx=pl+gw*i+gw/2-bw*series.length/2;
+    series.forEach((se,j)=>{const v=se.values[i],bh=ch*v/max,x=gx+j*bw+2,y=pt+ch-bh,dim=sel>=0&&i!==sel;
+      el('rect',{x,y,width:bw-4,height:bh,rx:3,fill:se.color,class:'bar grow',opacity:dim?.35:1,style:`animation-delay:${i*90}ms`},s);
+      txt(s,x+(bw-4)/2,y-9,fmt(v)+unit,{'text-anchor':'middle','font-size':16,'font-weight':800,fill:dim?C.muted:C.ink,opacity:dim?.6:1})});
+    txt(s,pl+gw*i+gw/2,h-16,lb,{'text-anchor':'middle','font-size':16,fill:sel===i?C.navy:C.muted,'font-weight':sel===i?800:400})});
+}
+/* 꺾은선 */
+function line(host,{labels,values,max,color,unit='',hi=-1}){
+  const [s,w,h]=svgFor(host);const pl=50,pr=30,pt=30,pb=48,cw=w-pl-pr,ch=h-pt-pb;
+  for(let i=0;i<=4;i++){const y=pt+ch-ch*i/4;el('line',{x1:pl,x2:w-pr,y1:y,y2:y,stroke:C.line},s);txt(s,pl-10,y+5,Math.round(max*i/4),{'text-anchor':'end','font-size':14,fill:C.muted})}
+  const pts=values.map((v,i)=>[pl+cw*(i+.5)/values.length,pt+ch-ch*v/max]);
+  const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
+  el('path',{d:d+` L${pts.at(-1)[0]} ${pt+ch} L${pts[0][0]} ${pt+ch}Z`,fill:color,opacity:.08},s);
+  const path=el('path',{d,fill:'none',stroke:color,'stroke-width':3.5,class:'draw'},s);
+  path.style.setProperty('--len',Math.ceil(path.getTotalLength?.()||2000));
+  pts.forEach((p,i)=>{const on=i===hi;el('circle',{cx:p[0],cy:p[1],r:on?9:6,fill:on?color:'#fff',stroke:color,'stroke-width':3},s);
+    txt(s,p[0],p[1]-18,values[i]+unit,{'text-anchor':'middle','font-size':on?22:16,'font-weight':800,fill:on?color:C.ink});
+    txt(s,p[0],h-16,labels[i],{'text-anchor':'middle','font-size':15,fill:C.muted})});
+}
+/* 가로 막대 */
+function hbars(host,{labels,values,max,colors,unit=''}){
+  const [s,w,h]=svgFor(host);const pl=250,pr=80,n=labels.length,rowH=(h-10)/n,bh=Math.min(46,rowH*.55);
+  labels.forEach((lb,i)=>{const y=5+rowH*i+rowH/2;
+    txt(s,pl-16,y+6,lb,{'text-anchor':'end','font-size':17,fill:C.ink,'font-weight':i===n-1?800:400});
+    el('rect',{x:pl,y:y-bh/2,width:w-pl-pr,height:bh,rx:4,fill:'#f1f4f8'},s);
+    const bw=(w-pl-pr)*values[i]/max;el('rect',{x:pl,y:y-bh/2,width:bw,height:bh,rx:4,fill:colors[i],class:'growx',style:`animation-delay:${i*110}ms`},s);
+    txt(s,pl+bw+12,y+7,values[i]+unit,{'font-size':20,'font-weight':800,fill:colors[i]===C.pale?C.muted:colors[i]})});
+}
+/* 폭포(브릿지) */
+function waterfall(host,steps,{lo=0,hi,dec=1,unit='',note=''}={}){
+  const [s,w,h]=svgFor(host);const pl=20,pr=20,pt=40,pb=56,cw=w-pl-pr,ch=h-pt-pb;
+  const Y=v=>pt+ch-ch*(v-lo)/(hi-lo);const gw=cw/steps.length,bw=gw*.56;let run=0;
+  el('line',{x1:pl,x2:w-pr,y1:pt+ch,y2:pt+ch,stroke:C.line},s);
+  if(note)txt(s,pl,pt+ch+44,note,{'font-size':13,fill:C.muted});
+  steps.forEach((st,i)=>{const x=pl+gw*i+(gw-bw)/2;let y0,y1,col,lab;
+    if(st.type==='total'){y0=lo;y1=st.v;run=st.v;col=i?C.teal:C.amber;lab=st.v.toFixed(dec)+unit}
+    else{const nv=run+st.v;y0=Math.min(run,nv);y1=Math.max(run,nv);col=st.v<0?'#d99a57':C.teal;lab=(st.v>0?'+':'−')+Math.abs(st.v).toFixed(dec)+unit;run=nv}
+    el('rect',{x,y:Y(y1),width:bw,height:Y(y0)-Y(y1),rx:3,fill:col,class:'grow',style:`animation-delay:${i*160}ms`},s);
+    txt(s,x+bw/2,Y(y1)-12,lab,{'text-anchor':'middle','font-size':22,'font-weight':800,fill:col});
+    txt(s,x+bw/2,pt+ch+26,st.label,{'text-anchor':'middle','font-size':17,fill:C.ink});
+    if(i<steps.length-1){const nx=pl+gw*(i+1)+(gw-bw)/2;el('line',{x1:x+bw,x2:nx,y1:Y(run),y2:Y(run),stroke:C.muted,'stroke-dasharray':'4 4'},s)}});
+}
+
+/* ── 데이터 ── */
+const yr={use:[24,58,88],high:[12.8,19.2,24.8],admin:[16.8,11.2,6.4],prep:[10.4,9.6,8.8],edu:[18,52,85]};
+const yNotes=['2024년 · 개인 차원에서 논문 요약·번역 등에 생성형 AI를 부분 활용하고 보안 가이드라인을 마련한 해',
+  '2025년 · 기관 내부망 RAG 코파일럿과 분석 AI가 도입되어 반복 행정이 줄고 고부가 시간이 19.2시간으로 늘어난 해',
+  '2026년 · 연구직 88%가 문헌 조사·실험 설계·정책 시뮬레이션에 AI 에이전트를 일상적으로 쓰는 전환점 (목표)'];
+const pct=(a,b)=>((b/a-1)*100).toFixed(1);
+const adminModes=[
+  {title:'연구결과 보고서 1건당 작성 소요시간 (시간)',labels:['전통 수작업 작성','템플릿·검색 보조','내부망 RAG 초안','AI 코파일럿 + 자동시각화'],values:[40,28,18,14],max:44},
+  {title:'국회·언론·민원 기술답변 1건당 대응 시간 (시간)',labels:['수기 자료 탐색','키워드 검색','과거답변 RAG 연동','AI 팩트체크 & 초안'],values:[14.0,9.5,6.2,4.5],max:15.5},
+  {title:'시험성적서·기술규격 적합성 검토 시간 (시간)',labels:['전수 수기 대조','엑셀 매크로 검산','AI 규격 자동대조','AI 이상치·단위 자동검증'],values:[16.0,11.5,7.4,5.2],max:17.5}
+];
+
+/* ── 슬라이드별 렌더러 ── */
+const renderers={
+  2:()=>{const g=$('[data-tabgroup=year]');const i=+(g.dataset.sel??2);
+    columns($('#chartHours'),{labels:['2024','2025','2026(목표)'],series:[{values:yr.high,color:C.teal},{values:yr.admin,color:C.amber},{values:yr.prep,color:C.pale}],max:28,fmt:v=>(+v).toFixed(1),unit:'h',sel:i});
+    $('#kUse').innerHTML=yr.use[i].toFixed(1)+'<small>%</small>';$('#kHigh').innerHTML=yr.high[i].toFixed(1)+'<small>h</small>';$('#kEdu').innerHTML=yr.edu[i].toFixed(1)+'<small>%</small>';
+    $('#kUseD').textContent=i?`전년 대비 +${pct(yr.use[i-1],yr.use[i])}%`:'기준 연도';
+    $('#kHighD').textContent=i?`전년 대비 +${pct(yr.high[i-1],yr.high[i])}%`:'기준 연도 (비중 32%)';
+    $('#kEduD').textContent=i?`전년 대비 +${(yr.edu[i]-yr.edu[i-1]).toFixed(0)}%p`:'기준 연도';
+    $('#yNote').textContent=yNotes[i];
+    $$('#tblYear th,#tblYear td').forEach(c=>{const idx=c.cellIndex-1;c.classList.toggle('sel',idx===i)})},
+  6:()=>waterfall($('#chartAdmin'),[{type:'total',v:16.8,label:'AI 도입 전'},{v:-5.2,label:'보고서·민원 초안'},{v:-3.4,label:'법령·문헌 검토'},{v:-1.8,label:'데이터 정리'},{type:'total',v:6.4,label:'내재화 후'}],{lo:0,hi:19,unit:'h'}),
+  9:()=>{line($('#chartCrisis'),{labels:['전통 수기 대응','초기 디지털 검색','내부망 RAG 결합','AI 시뮬레이션 통합'],values:[72,52,31,19],max:80,color:C.teal,unit:'h',hi:3});
+    columns($('#chartLab'),{labels:['수기 전처리·판독','통계 매크로 보조','AI 이상탐지 결합','AI + 스마트랩'],series:[{values:[45,68,108,144],color:C.blue}],max:160,fmt:v=>v,unit:'건',sel:3})},
+  10:()=>{const i=+($('[data-tabgroup=admin]').dataset.sel??0),m=adminModes[i];$('#adminTitle').textContent=m.title;
+    hbars($('#chartAdminMode'),{labels:m.labels,values:m.values,max:m.max,unit:'h',colors:[C.amber,'#d99a57','#5bb3ad',C.teal]})},
+  12:()=>line($('#chartCert'),{labels:['2024','2025','2026','2027(목표)','2028(목표)'],values:[18,52,85,90,92],max:100,color:C.teal,unit:'%',hi:4})
+};
+
+/* ── 탭 그룹 ── */
+function selectTab(group,i){
+  group.dataset.sel=i;
+  $$('[data-tab]',group).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+i));
+  $$('[data-panel]',group).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+i));
+  $$('.layers,.stairs,.stack100',group).forEach(x=>x.classList.add('has-sel'));
+  const idx=slides.indexOf(group.closest('.slide'));if(renderers[idx]&&idx===cur)renderers[idx]();
+}
+$$('[data-tabgroup]').forEach(g=>{
+  $$('.axis-list [data-panel]',g).forEach(c=>c.addEventListener('click',()=>{if(!document.body.classList.contains('editing'))selectTab(g,c.dataset.panel)}));
+  $$('[data-tab]',g).forEach(b=>{b.addEventListener('click',()=>{if(!document.body.classList.contains('editing'))selectTab(g,b.dataset.tab)})});
+  g.dataset.sel=g.dataset.default||0;
+  $$('[data-tab]',g).forEach(b=>b.setAttribute('aria-selected',+b.dataset.tab===+g.dataset.sel));
+  $$('[data-panel]',g).forEach(p=>p.classList.toggle('on',+p.dataset.panel===+g.dataset.sel));
+  $$('.layers,.stairs,.stack100',g).forEach(x=>x.classList.add('has-sel'));
+});
+
+/* ── 카운트업 ── */
+function countUp(scope){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  $$('[data-count]',scope).forEach(n=>{const to=+n.dataset.count,dec=+(n.dataset.dec||0),t0=performance.now();
+    const f=t=>{const p=Math.min(1,(t-t0)/900),e=1-Math.pow(1-p,3);n.textContent=(to*e).toFixed(dec);if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
+
+/* ── 내비게이션 ── */
+const slides=$$('.slide');let cur=0;
+$('#pageTotal').textContent=String(slides.length).padStart(2,'0');
+function go(i,push=true){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  slides[cur].classList.remove('active');cur=i;const s=slides[cur];
+  slides.forEach(x=>x.classList.remove('settled'));clearTimeout(go.t);
+  void s.offsetWidth;s.classList.add('active');go.t=setTimeout(()=>s.classList.add('settled'),1400);
+  $('#pageNo').textContent=String(cur+1).padStart(2,'0');
+  $('#source').textContent=s.dataset.source||'';
+  $('#progress').style.width=((cur+1)/slides.length*100)+'%';
+  $('#prev').disabled=cur===0;$('#next').disabled=cur===slides.length-1;
+  const ch=+s.dataset.chapter;$$('.chapters button').forEach((b,k)=>b.setAttribute('aria-current',k===ch));
+  if(renderers[cur])requestAnimationFrame(()=>renderers[cur]());
+  if(!document.body.classList.contains('editing'))countUp(s);
+  if(push)history.replaceState(null,'','#'+(cur+1));
+}
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+$$('.chapters button').forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+addEventListener('keydown',e=>{if(document.body.classList.contains('editing'))return;
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1)});
+addEventListener('resize',()=>renderers[cur]&&renderers[cur]());
+
+/* ── 도구: 편집 · 저장 · 인쇄 · 전체화면 ── */
+const KEY='research-official-ai-briefing-edits';const edits=$$('[data-edit]');
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');edits.forEach((n,i)=>{if(saved[i]!=null)n.innerHTML=saved[i]})}catch(e){}
+function persist(){try{const o={};edits.forEach((n,i)=>o[i]=n.innerHTML);localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+$('#editBtn').onclick=()=>{const on=!document.body.classList.contains('editing');document.body.classList.toggle('editing',on);$('#editBtn').setAttribute('aria-pressed',on);
+  edits.forEach(n=>{n.contentEditable=on?'true':'false'});if(!on)persist()};
+edits.forEach(n=>n.addEventListener('input',persist));
+$('#saveBtn').onclick=()=>{const clone=document.documentElement.cloneNode(true);
+  clone.querySelector('body').classList.remove('editing');clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+  clone.querySelectorAll('.slide').forEach(n=>n.classList.remove('active'));clone.querySelector('#stage').removeAttribute('style');
+  const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='research_official_ai_policy_briefing_edited.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#printBtn').onclick=()=>{slides.forEach((s,i)=>renderers[i]&&renderers[i]());print()};
+$('#fsBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();
+
+stage.classList.add('init');
+go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1),false);
+const lift=()=>stage.classList.remove('init');['keydown','click'].forEach(t=>addEventListener(t,lift,{once:true,capture:true}));
+window.deck={go,get cur(){return cur}};
+})();
+</script>
+</body>
+</html>

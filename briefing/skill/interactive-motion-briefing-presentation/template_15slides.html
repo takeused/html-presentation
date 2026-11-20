@@ -1,0 +1,1308 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#e81768"><meta name="description" content="엔비디아(NVIDIA)의 AI 팩토리 사업 현황, 최근 3년 재무 실적, 차세대 Blackwell·Rubin 아키텍처와 피지컬 AI 전략을 살펴보는 15장 인터랙티브 발표자료.">
+<title>NVIDIA · AI 팩토리와 차세대 Rubin 브리핑 (15장)</title>
+<link rel="icon" href="data:,">
+<style>
+@font-face{font-family:NanumSquare;src:url('assets/NanumSquareR.woff2') format('woff2');font-weight:400;font-display:swap}@font-face{font-family:NanumSquare;src:url('assets/NanumSquareB.woff2') format('woff2');font-weight:700;font-display:swap}@font-face{font-family:NanumSquare;src:url('assets/NanumSquareEB.woff2') format('woff2');font-weight:800;font-display:swap}
+:root{--pink:#e81768;--wine:#920951;--ink:#292a33;--muted:#787983;--line:#e9e8ed;--pale:#fbedf3}*{box-sizing:border-box}body{margin:0;font-family:NanumSquare,sans-serif;color:var(--ink);background:#eeeef0;word-break:keep-all;overflow-wrap:normal}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}a{color:inherit}h1,h2,h3,h4,p,figure{margin:0}em{font-style:normal;color:var(--pink)}button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--wine);outline-offset:5px}button:disabled{opacity:.25;cursor:default}[hidden]{display:none!important}.presentation{position:relative;min-height:100svh;max-width:1920px;margin:auto;background:white;overflow:hidden}.topbar{height:72px;margin:0 4%;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.brand{font-size:31px;letter-spacing:6px;text-decoration:none;font-weight:800;display:flex;align-items:center;gap:25px}.brand span{font-size:12px;letter-spacing:1.7px;font-weight:400;border-left:1px solid var(--line);padding-left:24px;color:var(--muted)}.actions{display:flex;align-items:center;gap:20px}.edition{font-size:14px;color:var(--muted)}.text-button{font-size:15px;padding:6px 0;border-bottom:1px solid #c6c5cc}.icon-button{border:1px solid var(--line);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;font-size:28px;transition:transform .25s,background .25s}.icon-button:hover{background:var(--pale);transform:translateY(-2px)}.rail{position:absolute;left:0;top:50%;transform:translateY(-50%);width:7%;display:flex;flex-direction:column;gap:14px;z-index:2}.rail button{font-size:15px;color:#aaa8b1;padding:8px 0;position:relative}.rail button:before{content:'';position:absolute;left:0;top:50%;height:2px;width:0;background:var(--pink);transition:width .3s}.rail button[aria-current=true]{color:var(--pink);font-weight:800}.rail button[aria-current=true]:before{width:26%}#slides{margin:0 5% 0 10%}.slide{min-height:calc(100svh - 138px);padding:34px 0 25px;display:flex;flex-direction:column;justify-content:center;position:relative}.slide.active{animation:enter .6s cubic-bezier(.2,.8,.2,1) both}@keyframes enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}.slide-heading{margin-bottom:30px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:15px}.eyebrow i{width:9px;height:9px;border-radius:50%;background:var(--pink)}h1{font-size:clamp(52px,5.405vw,94px);line-height:1.22;letter-spacing:-2.8px;font-weight:800}h2{font-size:clamp(34px,3.45vw,61px);line-height:1.3;letter-spacing:-1.6px;font-weight:800}.subtitle{font-size:20px;color:var(--muted);line-height:1.65;margin-top:14px}.mobile-br{display:none}.lead{font-size:25px;line-height:1.8;margin-top:24px;color:#61616e}.source-line{font-size:12px;line-height:1.8;color:#8b8893;margin-top:24px}.source-line a{text-decoration:none;border-bottom:1px solid #d7d4de}.bottom-bar{height:66px;margin:0 4%;border-top:1px solid var(--line);display:flex;align-items:center;gap:18px}.page-counter{font-size:16px;display:flex;gap:8px}.page-counter strong{color:var(--pink)}.page-counter span{color:#a7a5ad}#currentTitle{font-size:15px}.footer-hint{margin-left:auto;font-size:12px;color:#9997a2}.footer-hint span{margin-left:20px}.bottom-actions{display:flex;gap:10px}.progress-track{position:absolute;bottom:0;left:0;right:0;height:3px;background:#f4f1f4}#progress{height:100%;background:linear-gradient(90deg,var(--wine),var(--pink));width:14.285%;transition:width .45s}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.cover{display:grid;grid-template-columns:43% 57%;align-content:center;align-items:center}.cover-copy{position:relative;z-index:1;padding-bottom:45px}.start{background:var(--pink);color:white;padding:16px 22px;display:inline-flex;gap:40px;align-items:center;font-size:18px;margin-top:32px;transition:transform .3s,box-shadow .3s}.start span{font-size:29px}.start:hover{transform:translateY(-4px);box-shadow:0 10px 25px #e8176828}.cover-date{font-size:12px;margin-top:18px;color:#99949f}.hero-visual{position:relative;aspect-ratio:1.05;display:flex;align-items:center}.hero-visual>img{position:relative;z-index:1;width:111%;max-width:none;margin-left:-5%;mix-blend-mode:multiply;transition:transform .8s}.visual-word{position:absolute;top:3%;left:6%;font-size:clamp(69px,10.35vw,172px);font-weight:800;letter-spacing:5px;color:#f7f3f6}.orbit{position:absolute;border:1px solid #f1e6ed;border-radius:50%;transition:transform 1s}.orbit-a{width:90%;aspect-ratio:1;left:7%;top:0}.orbit-b{width:72%;aspect-ratio:1;left:17%;top:9%;border-style:dashed}.hero-visual:hover .orbit-a{transform:rotate(24deg) scale(1.04)}.hero-visual:hover .orbit-b{transform:rotate(-30deg)}.hero-visual:hover>img,.hero-visual:focus-visible>img{transform:translateY(-10px) scale(1.025)}.stamp{position:absolute;right:0;top:5%;z-index:2;background:var(--wine);border:7px solid white;outline:1px solid #ebdce5;width:104px;height:104px;border-radius:50%;color:white;text-align:center;display:flex;flex-direction:column;justify-content:center;font-size:15px;line-height:1.45;letter-spacing:.6px;transform:rotate(9deg);transition:transform .6s}.hero-visual:hover .stamp{transform:rotate(-7deg)}.hero-visual figcaption{position:absolute;bottom:0;right:0;font-size:11px;color:#a8a0ad}.cover-flow{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:27px 0 5px;border-top:1px solid var(--line);font-size:16px;letter-spacing:.3px}.cover-flow i{display:block;width:12%;height:2px;background:linear-gradient(90deg,var(--pink),#e8d9e2);position:relative}.cover-flow i:after{content:'';position:absolute;right:0;width:6px;height:6px;background:var(--pink);border-radius:50%;top:-2px}.finance-layout{display:grid;grid-template-columns:59% 35%;gap:6%;align-items:center}.chart-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.chart-top h3{font-size:22px}.chart-top>span{font-size:12px;color:var(--muted)}.chart-box{height:280px;position:relative}.chart-switch{display:flex;gap:18px;border-top:1px solid var(--line);margin-top:16px;padding-top:15px}.chart-switch button{font-size:15px;padding:7px 0;color:var(--muted);border-bottom:2px solid transparent}.chart-switch .selected{color:var(--pink);border-color:var(--pink);font-weight:800}.small-label{font-size:14px;letter-spacing:.4px;color:var(--muted)}.big-stat{font-size:clamp(63px,6.44vw,103px);font-weight:800;letter-spacing:-3px;margin-top:7px;line-height:1.1}.big-stat small{font-size:44px;margin-left:4px;color:var(--pink)}.growth{font-size:18px;color:var(--pink);margin-top:10px}.metric-rule{height:1px;background:var(--line);margin:24px 0}.finance-copy h3{font-size:28px;line-height:1.4}.finance-copy>p:not(.small-label):not(.growth){font-size:18px;line-height:1.8;color:#73717f;margin-top:12px}.caution{border-left:3px solid var(--pink);padding-left:15px;margin-top:22px}.caution strong{font-size:18px}.caution p{font-size:15px;color:var(--muted);line-height:1.8;margin-top:6px}.operations-layout{display:grid;grid-template-columns:1fr 1fr;gap:6%}.operation+.operation{border-left:1px solid var(--line);padding-left:10%}.op-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.op-head strong{font-size:clamp(39px,4.14vw,69px);letter-spacing:-2px;display:block;margin-top:10px}.op-head strong small{font-size:22px;margin-left:8px;font-weight:400;letter-spacing:0}.delta{font-size:14px;color:var(--pink);white-space:nowrap}.operation h3{font-size:16px;margin-top:27px;font-weight:400;display:flex;justify-content:space-between}.operation h3 small{color:var(--muted);font-size:12px}.op-chart{height:235px;margin-top:13px}.op-note{font-size:15px;color:var(--muted);line-height:1.8;margin-top:17px}.roadmap{position:relative;display:flex;justify-content:space-between;padding:8px 25px 30px}.road-line{position:absolute;left:8%;right:8%;top:66px;height:12px;background:linear-gradient(90deg,#292a33,var(--wine),var(--pink));border-radius:20px}.road-node{position:relative;z-index:1;text-align:center;display:flex;align-items:center;flex-direction:column;width:21%;transition:transform .4s}.round{width:114px;height:114px;border:9px solid white;outline:2px solid #eee9ed;border-radius:50%;background:var(--ink);display:grid;place-items:center;box-shadow:0 7px 0 #e8e4e9;transition:background .4s,transform .4s,outline-color .4s}.round b{font-size:42px;font-weight:800;color:white}.road-node:nth-of-type(2) .round{background:var(--wine)}.road-node:nth-of-type(3) .round{background:#bb0d5e}.road-node:nth-of-type(4) .round{background:var(--pink)}.road-node.selected .round{outline-color:var(--pink);transform:translateY(-8px);box-shadow:0 12px 26px #e8176824}.road-node strong{font-size:24px;margin-top:23px}.road-node small{font-size:15px;color:var(--muted);margin-top:8px}.road-detail{display:grid;grid-template-columns:70px 1fr 28%;gap:28px;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:25px 0;min-height:175px}.road-index{font-size:80px;font-weight:800;color:var(--pink)}.road-detail h3{font-size:30px;margin:10px 0;line-height:1.4}.road-detail p:not(.small-label){font-size:18px;line-height:1.8;color:#74717d}.next-step{border-left:1px solid var(--line);padding-left:26px}.next-step span{font-size:14px;color:var(--pink)}.next-step p{margin-top:10px}.road-caveat{font-size:14px;color:var(--muted);line-height:1.8;margin-top:18px}.roadster-layout{display:grid;grid-template-columns:56% 38%;gap:6%;align-items:center}.official-photo{height:365px;overflow:hidden;position:relative;background:#121316}.official-photo img{width:100%;height:100%;object-fit:cover;transition:transform 1s}.reactive:hover img,.reactive:focus-visible img{transform:scale(1.045)}.official-photo figcaption{position:absolute;left:20px;bottom:18px;color:#fff9;font-size:10px;letter-spacing:1px}.official-photo figcaption span{display:block;font-size:11px;margin-top:5px;letter-spacing:0}.trim-tabs{display:flex;gap:16px;border-bottom:1px solid var(--line);margin-bottom:24px}.trim-tabs button{font-size:16px;color:var(--muted);padding:12px 0;border-bottom:3px solid transparent}.trim-tabs .selected{color:var(--pink);border-color:var(--pink);font-weight:800}.trim-copy h3{font-size:34px;line-height:1.4;margin:10px 0 14px;letter-spacing:-.6px}.trim-copy>p:not(.small-label){font-size:19px;line-height:1.8;color:#73717e}.trim-note{font-size:14px;line-height:1.8;color:var(--wine);border-left:2px solid var(--pink);padding-left:13px;margin-top:22px}.range-label{font-size:12px;color:var(--muted);margin-top:18px}.range-chart{height:68px;margin-top:8px}.range-note{font-size:11px;color:var(--muted);line-height:1.6}.technology-layout{display:grid;grid-template-columns:57% 38%;gap:5%;align-items:center}.tech-visual{position:relative}.tech-visual img{width:100%;display:block;transition:transform .8s;mix-blend-mode:multiply}.tech-visual figcaption{font-size:11px;color:#97909e;text-align:center;margin-top:8px}.tech-option{display:flex;align-items:center;width:100%;gap:16px;text-align:left;padding:16px 0;border-bottom:1px solid var(--line);transition:transform .3s}.tech-option>span{width:43px;height:43px;border:2px solid var(--pink);border-radius:50%;display:grid;place-items:center;color:var(--pink);font-weight:800;transition:background .3s,color .3s;flex-shrink:0}.tech-option h3{font-size:26px;line-height:1.5}.tech-option small{display:block;margin-top:3px;letter-spacing:.8px;font-size:10px;color:var(--muted)}.tech-option.selected{transform:translateX(6px)}.tech-option.selected>span{background:var(--pink);color:white}.tech-explain{padding-top:22px;min-height:120px}.tech-explain h4{font-size:19px;line-height:1.6;color:var(--wine)}.tech-explain p{font-size:16px;line-height:1.8;margin-top:9px;color:var(--muted)}.closing{display:grid;grid-template-columns:47% 46%;gap:7%;align-content:center;align-items:center}.closing h2{font-size:clamp(34px,3.68vw,62px);line-height:1.4}.closing .lead{font-size:21px;line-height:1.8;margin-top:18px}.closing-photo{height:200px;overflow:hidden;margin-top:25px;position:relative;background:#101012}.closing-photo img{height:100%;width:100%;object-fit:cover;object-position:70% 55%;transition:transform 1s}.closing-photo figcaption{position:absolute;bottom:12px;left:15px;font-size:10px;color:#fff9}.watch-list article{display:flex;gap:23px;align-items:flex-start;padding:23px 0;border-bottom:1px solid var(--line);transition:transform .35s}.watch-list article:hover,.watch-list article:focus-visible{transform:translateX(7px)}.watch-list article>span{display:grid;place-items:center;width:43px;height:43px;border:2px solid var(--pink);border-radius:50%;font-size:15px;color:var(--pink);flex-shrink:0;transition:background .35s,color .35s}.watch-list article:hover>span{background:var(--pink);color:white}.watch-list article h3{font-size:29px}.watch-list article p{font-size:16px;line-height:1.8;color:var(--muted);margin-top:9px}.source-cta{font-size:16px;color:var(--pink);display:flex;justify-content:space-between;align-items:center;width:100%;padding:22px 0}.source-cta span{font-size:30px}.closing-note{font-size:11px;color:#a09aa7}.closing>.source-line{grid-column:1/-1;margin-top:5px}dialog{border:1px solid var(--line);padding:0;width:min(780px,92vw);max-height:85svh;color:var(--ink);box-shadow:0 30px 120px #292a3340}dialog::backdrop{background:#292a3355;backdrop-filter:none;-webkit-backdrop-filter:none}.dialog-top{display:flex;justify-content:space-between;align-items:center;padding:22px 28px;border-bottom:1px solid var(--line)}.dialog-top h2{font-size:30px}.dialog-content{padding:25px 30px;font-size:18px;line-height:1.8}.dialog-content>p{margin-bottom:20px}.dialog-content ol{padding-left:22px}.dialog-content li{margin:18px 0}.dialog-content li p{font-size:15px;color:var(--muted);margin-top:5px}.dialog-content a{color:var(--wine)}.dialog-content h3{margin:25px 0 15px;font-size:24px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:15px}th,td{padding:10px 8px;text-align:right;border-bottom:1px solid var(--line)}th:first-child{text-align:left}thead{background:var(--pale)}.pulse{animation:enter .4s both}
+@media(min-width:1600px){.chart-box{height:340px}.op-chart{height:290px}.official-photo{height:430px}.tech-visual{max-height:450px}.tech-visual img{max-height:420px;object-fit:contain}.closing-photo{height:230px}.roadmap{padding-bottom:48px}.road-detail{padding:35px 0}.road-node strong{font-size:28px}.subtitle{font-size:22px}}
+@media(max-width:1100px){.brand span{display:none}.edition{display:none}.finance-layout{grid-template-columns:57% 38%;gap:5%}.chart-box{height:260px}.finance-copy h3{font-size:25px}.finance-copy>p:not(.small-label):not(.growth){font-size:16px}.official-photo{height:320px}.trim-tabs{gap:12px}.trim-tabs button{font-size:14px}.trim-copy h3{font-size:29px}.trim-copy>p:not(.small-label){font-size:16px}.tech-option h3{font-size:22px}.lead{font-size:22px}.road-detail{grid-template-columns:55px 1fr 28%;gap:20px}.road-detail h3{font-size:26px}.watch-list article h3{font-size:25px}.watch-list article p{font-size:15px}.footer-hint{display:none}.bottom-actions{margin-left:auto}}
+@media(max-width:760px){.presentation{min-height:100svh}.topbar{height:62px;margin:0 6%}.brand{font-size:28px;letter-spacing:5px}.actions{gap:15px}.rail{position:relative;top:auto;left:auto;transform:none;width:auto;flex-direction:row;justify-content:space-between;margin:0 6%;gap:0;height:50px;align-items:center}.rail button{font-size:14px;width:29px;padding:10px 0}.rail button:before{top:auto;bottom:0;left:25%;height:2px}.rail button[aria-current=true]:before{width:50%}#slides{margin:0 7%}.slide{min-height:calc(100svh - 182px);padding:26px 0 24px;justify-content:flex-start}.slide-heading{margin-bottom:26px}.eyebrow{font-size:10px;letter-spacing:1.5px;margin-bottom:13px}h1{font-size:54px;letter-spacing:-2px}h2{font-size:36px;line-height:1.4;letter-spacing:-1px}.mobile-br{display:block}.subtitle{font-size:16px;line-height:1.8;margin-top:12px}.lead{font-size:20px;line-height:1.8;margin-top:20px}.source-line{font-size:10px;margin-top:22px;line-height:1.9}.cover{display:flex;gap:0}.cover-copy{padding-bottom:0}.start{font-size:15px;padding:12px 17px;gap:35px;margin-top:22px}.cover-date{font-size:10px;margin-top:14px}.hero-visual{width:100%;min-height:295px;aspect-ratio:1.13;margin-top:24px}.hero-visual>img{width:108%;margin-left:-4%}.visual-word{font-size:90px}.stamp{width:78px;height:78px;font-size:10px;border-width:5px;right:0}.hero-visual figcaption{font-size:10px}.cover-flow{font-size:10px;padding:23px 0 4px;width:100%;margin-top:19px}.cover-flow i{width:6%}.finance-layout{display:flex;flex-direction:column;gap:28px;align-items:stretch}.finance-copy{border-top:1px solid var(--line);padding-top:24px}.big-stat{font-size:72px;letter-spacing:-2px}.big-stat small{font-size:35px}.growth{font-size:15px}.chart-box{height:240px}.chart-top h3{font-size:20px}.chart-top>span{font-size:10px}.chart-switch{gap:18px}.chart-switch button{font-size:12px}.finance-copy h3{font-size:26px}.finance-copy>p:not(.small-label):not(.growth){font-size:16px}.caution p{font-size:14px}.operations-layout{grid-template-columns:1fr;gap:30px}.operation+.operation{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:28px}.op-head strong{font-size:52px}.op-head strong small{font-size:19px}.op-head .small-label{font-size:12px}.delta{font-size:12px}.op-chart{height:210px}.operation h3{margin-top:23px;font-size:14px}.op-note{font-size:14px}.roadmap{padding:10px 0 27px;flex-wrap:wrap;gap:23px 10px}.road-node{width:46%}.road-line{display:none}.round{height:86px;width:86px;border-width:7px}.round b{font-size:35px}.road-node strong{font-size:20px;margin-top:15px}.road-node small{font-size:12px;margin-top:6px}.road-detail{grid-template-columns:38px 1fr;gap:15px;align-items:start;padding:22px 0;min-height:260px}.road-index{font-size:54px}.road-detail h3{font-size:26px;margin-top:9px}.road-detail p:not(.small-label){font-size:15px}.road-detail .small-label{font-size:11px}.next-step{grid-column:2;border-left:0;padding-left:0}.next-step p{margin-top:5px}.road-caveat{font-size:12px}.roadster-layout{grid-template-columns:1fr;gap:25px}.official-photo{height:235px}.official-photo figcaption{left:13px;bottom:12px;font-size:10px}.official-photo figcaption span{font-size:10px}.trim-tabs{gap:22px;margin-bottom:19px}.trim-tabs button{font-size:15px}.trim-copy h3{font-size:30px}.trim-copy>p:not(.small-label){font-size:16px}.trim-note{font-size:12px}.technology-layout{grid-template-columns:1fr;gap:20px}.tech-visual img{width:110%;margin-left:-5%}.tech-visual figcaption{font-size:10px;margin-top:12px}.tech-option{padding:14px 0}.tech-option h3{font-size:24px}.tech-option>span{width:37px;height:37px}.tech-option small{font-size:10px}.tech-explain h4{font-size:18px}.tech-explain p{font-size:15px}.closing{display:flex;gap:24px}.closing h2{font-size:38px}.closing .lead{font-size:18px}.closing-photo{height:180px;margin-top:23px}.watch-list article{padding:20px 0;gap:17px}.watch-list article h3{font-size:25px}.watch-list article p{font-size:15px}.watch-list article>span{width:35px;height:35px;font-size:12px}.source-cta{font-size:15px}.closing-note{font-size:10px}.bottom-bar{height:70px;margin:0 6%;gap:11px}.page-counter{font-size:14px;gap:5px}#currentTitle{font-size:12px;max-width:120px;line-height:1.6}.bottom-actions{gap:8px}.icon-button{width:33px;height:33px;font-size:24px}.text-button{font-size:14px}.dialog-top{padding:18px 20px}.dialog-top h2{font-size:28px}.dialog-content{padding:20px;font-size:15px}.dialog-content li p{font-size:12px}table{font-size:12px}th,td{padding:8px 5px}}
+.annual-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6%}.annual-chart-area{min-width:0}.annual-chart-area+.annual-chart-area{border-left:1px solid var(--line);padding-left:10%}.annual-chart{height:240px;position:relative;min-width:0}.annual-detail{display:grid;grid-template-columns:24% 1fr 1fr;gap:6%;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;margin-top:25px}.annual-years{display:flex;gap:16px;align-items:center}.annual-years button{font-size:16px;color:var(--muted);padding:10px 0;border-bottom:2px solid transparent;transition:color .25s,border-color .25s,transform .25s}.annual-years button.selected{color:var(--pink);font-weight:800;border-color:var(--pink);transform:translateY(-2px)}.annual-metric strong{font-size:39px;letter-spacing:-1px;display:block;margin-top:8px;font-weight:800}.annual-metric strong small{font-weight:400;font-size:16px;margin-left:7px;letter-spacing:0}.annual-metric>p:last-child{font-size:14px;margin-top:9px;color:var(--pink)}.annual-note{font-size:15px;color:var(--muted);line-height:1.8;margin-top:16px}
+@media(min-width:761px) and (max-height:800px){.annual-chart{height:185px}.annual-detail{padding:16px 0;margin-top:17px}.annual-note{font-size:12px;margin-top:13px}.annual-metric strong{font-size:35px}.annual-slide .source-line{font-size:11px;margin-top:13px}}
+@media(max-width:760px){.annual-layout{grid-template-columns:1fr;gap:28px}.annual-chart-area+.annual-chart-area{border-left:0;border-top:1px solid var(--line);padding:25px 0 0}.annual-chart{height:215px}.annual-chart-area .chart-top>span{font-size:10px}.annual-detail{grid-template-columns:1fr 1fr;gap:20px 12px;margin-top:25px;padding:18px 0}.annual-years{grid-column:1/-1;gap:28px}.annual-years button{font-size:16px}.annual-metric strong{font-size:31px}.annual-metric strong small{font-size:12px;margin-left:4px}.annual-metric .small-label{font-size:11px}.annual-metric>p:last-child{font-size:11px}.annual-note{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Keep the presentation controls visible on typical laptop screens. */
+@media(min-width:761px){.hero-visual{height:min(43vw,calc(100svh - 265px));aspect-ratio:auto}.hero-visual>img{height:100%;object-fit:contain}.cover-copy{padding-bottom:20px}}
+@media(min-width:761px) and (max-height:800px){.slide{padding:22px 0 19px}.slide-heading{margin-bottom:21px}.slide-heading h2{font-size:44px}.slide-heading .eyebrow{margin-bottom:11px}.subtitle{font-size:18px;margin-top:11px}.chart-box{height:205px}.chart-top{margin-bottom:12px}.big-stat{font-size:79px}.metric-rule{margin:17px 0}.caution{margin-top:16px}.finance-copy h3{font-size:25px}.finance-copy>p:not(.small-label):not(.growth){font-size:15px;line-height:1.75}.op-chart{height:185px}.op-head strong{font-size:55px}.operation h3{margin-top:19px}.source-line{margin-top:18px}.round{width:95px;height:95px}.road-line{top:57px}.road-node strong{margin-top:15px}.roadmap{padding-bottom:23px}.road-detail{padding:20px 0;min-height:145px}.road-detail h3{font-size:28px}.road-detail p:not(.small-label){font-size:15px}.road-caveat{margin-top:14px}.official-photo{height:300px}.trim-tabs{margin-bottom:16px}.trim-copy h3{font-size:30px;margin-bottom:10px}.trim-copy>p:not(.small-label){font-size:16px}.trim-note{margin-top:15px;font-size:12px}.tech-visual img{max-height:325px;object-fit:contain}.tech-option{padding:12px 0}.tech-option h3{font-size:24px}.tech-explain{padding-top:17px;min-height:100px}.tech-explain p{font-size:15px}.closing-photo{height:150px;margin-top:20px}.closing h2{font-size:48px}.closing .lead{font-size:20px}.watch-list article{padding:18px 0}.watch-list article p{font-size:15px}.watch-list article h3{font-size:26px}.source-cta{padding:17px 0}.cover .lead{font-size:22px}.cover .start{margin-top:24px}.cover .cover-date{margin-top:15px}}
+
+/* Larger presentation type and a prominent year selector above the charts. */
+.annual-selector{display:flex;align-items:center;gap:24px;margin:0 0 24px}.annual-selector>.small-label{font-size:16px;color:var(--ink);font-weight:700;white-space:nowrap}.annual-years{display:flex;gap:12px;flex:0 1 460px}.annual-years button{flex:1;min-width:110px;min-height:56px;padding:12px 18px;border:1px solid var(--line);border-bottom:4px solid var(--line);font-size:28px;font-weight:800;line-height:1.2;color:#77717f;background:#faf8fa;transition:background .25s,color .25s,border-color .25s,transform .25s}.annual-years button.selected{background:var(--pale);color:var(--pink);border-color:var(--pink);transform:translateY(-2px)}.annual-detail{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6%}.annual-chart-area .chart-top{gap:12px;align-items:flex-start}.annual-chart-area .chart-top h3{white-space:nowrap}.annual-chart-area .chart-top>span{text-align:right;line-height:1.5;max-width:50%}.annual-chart{height:220px}.annual-metric strong{font-size:36px}.annual-metric>p:last-child{font-size:14px}.finance-layout>* , .operations-layout>* , .roadster-layout>* , .technology-layout>* , .closing>*{min-width:0}.chart-switch{flex-wrap:wrap;gap:8px 18px}.trim-tabs{flex-wrap:wrap;gap:6px 20px}.tech-explain{min-height:150px}.footer-hint{display:none}.bottom-actions{margin-left:auto}.annual-slide .slide-heading{margin-bottom:22px}
+@media(min-width:761px) and (max-height:800px){.annual-selector{margin-bottom:18px}.annual-years button{min-height:52px;font-size:26px;padding:10px 16px}.annual-chart{height:165px}.annual-detail{margin-top:16px;padding:15px 0}.annual-metric strong{font-size:33px}.annual-slide .source-line{font-size:11px}.annual-note{font-size:13px}.slide-heading{margin-bottom:18px}.hero-visual{height:min(40vw,calc(100svh - 280px))}.cover-copy{padding-bottom:0}.road-detail{grid-template-columns:50px minmax(0,1fr) 28%}.road-detail h3{font-size:26px}.road-detail p:not(.small-label){font-size:15px}.next-step{padding-left:18px}.tech-explain{min-height:145px}.official-photo{height:320px}}
+@media(max-width:1100px) and (min-width:761px){.annual-detail{gap:25px}.annual-chart-area .chart-top{display:block;min-height:54px}.annual-chart-area .chart-top>span{display:block;text-align:left;max-width:none;margin-top:7px}.annual-metric strong{font-size:30px}.annual-metric strong small{font-size:14px}.road-detail{grid-template-columns:38px minmax(0,1fr) 28%;gap:16px}.op-head{align-items:flex-start;flex-direction:column;gap:10px}}
+@media(max-width:760px){.annual-selector{display:block;margin:0 0 24px}.annual-selector>.small-label{display:block;font-size:14px;margin-bottom:12px}.annual-years{gap:9px;max-width:none}.annual-years button{min-width:0;min-height:56px;font-size:25px;padding:13px 8px}.annual-chart{height:235px}.annual-chart-area .chart-top h3{font-size:20px}.annual-chart-area .chart-top>span{font-size:11px}.annual-detail{grid-template-columns:1fr;gap:23px}.annual-metric strong{font-size:34px}.annual-metric strong small{font-size:16px}.annual-metric .small-label{font-size:13px}.annual-metric>p:last-child{font-size:13px}.annual-note{font-size:13px}.annual-slide .source-line{font-size:11px}.cover-copy{width:100%}.cover-flow{flex-wrap:wrap;gap:12px}.cover-flow i{width:4%}.op-head{flex-wrap:wrap;row-gap:10px}.trim-tabs{gap:5px 20px}.trim-tabs button{font-size:16px}.chart-switch button{font-size:14px}.chart-top>span{font-size:11px}.range-chart{height:82px}.range-note{font-size:12px}.watch-list article{gap:14px}.watch-list article h3{font-size:24px}.tech-explain{min-height:160px}.tech-option h3{font-size:22px}.tech-option small{font-size:10px}.source-line{color:#77717f}.annual-detail .annual-metric:nth-child(2){padding-top:20px;border-top:1px solid var(--line)}}
+.replay-number{font-variant-numeric:tabular-nums;cursor:pointer}.replay-chart{cursor:pointer;border-radius:3px}.replay-number:focus-visible,.replay-chart:focus-visible{outline:3px solid var(--pink);outline-offset:5px}
+/* Roadster trim selector: image, vertical lever, linked details. */
+.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.2fr) 175px minmax(0,1fr);gap:28px;align-items:center}.roadster-slide .official-photo{height:390px;align-self:center}.trim-lever{align-self:center;padding:12px 0;min-width:0}.trim-lever>.small-label{font-size:15px;color:var(--ink);font-weight:700;margin:0 0 18px 5px}.lever-control{height:266px;display:grid;grid-template-columns:46px minmax(0,1fr);gap:7px;align-items:stretch}.lever-control input{--lever-fill:0%;writing-mode:vertical-lr;direction:ltr;appearance:none;-webkit-appearance:none;width:46px;height:266px;margin:0;cursor:ns-resize;background:transparent;touch-action:none;accent-color:var(--pink)}.lever-control input::-webkit-slider-runnable-track{width:8px;height:100%;border-radius:8px;background:linear-gradient(to bottom,var(--pink) var(--lever-fill),#e5dee5 var(--lever-fill));box-shadow:0 0 0 1px #ddd4dc}.lever-control input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:36px;height:32px;border:3px solid white;border-radius:8px;background:linear-gradient(0deg,transparent 35%,#fff9 35%,#fff9 41%,transparent 41%,transparent 59%,#fff9 59%,#fff9 65%,transparent 65%),var(--pink);box-shadow:0 3px 9px #92095135,0 0 0 1px var(--pink)}.lever-control input::-moz-range-track{width:8px;height:100%;border-radius:8px;background:#e5dee5}.lever-control input::-moz-range-progress{background:var(--pink);width:8px}.lever-control input::-moz-range-thumb{width:30px;height:26px;border:3px solid white;border-radius:8px;background:var(--pink);box-shadow:0 0 0 1px var(--pink)}.lever-stops{display:flex;flex-direction:column;justify-content:space-between;min-width:0}.lever-stops button{position:relative;display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;min-height:38px;padding:8px 0;text-align:left;white-space:nowrap;color:var(--muted);transition:color .25s,transform .25s}.lever-stops button i{width:6px;height:6px;flex-shrink:0;background:#c9c0ca;border-radius:50%;transition:background .25s,box-shadow .25s}.lever-stops button.selected{color:var(--pink);transform:translateX(2px)}.lever-stops button.selected i{background:var(--pink);box-shadow:0 0 0 4px var(--pale)}.lever-hint{font-size:11px;color:var(--muted);line-height:1.6;margin:16px 0 0 5px}.roadster-slide .trim-copy{min-height:410px;border-left:1px solid var(--line);padding-left:25px;display:flex;flex-direction:column;justify-content:center}.trim-copy>p.trim-current{font-size:29px;font-weight:800;line-height:1.25;color:var(--wine);letter-spacing:-.5px;margin:0 0 12px}.roadster-slide .trim-copy h3{font-size:clamp(26px,2.4vw,33px);line-height:1.4}.roadster-slide .trim-copy>p:not(.small-label):not(.trim-current){font-size:17px;line-height:1.8}.roadster-slide .trim-note{font-size:13px;line-height:1.8}.roadster-slide .range-note{font-size:11px;line-height:1.7}.roadster-slide .range-chart{height:78px}.roadster-slide .range-label{font-size:12px}
+@media(min-width:761px) and (max-height:800px){.roadster-slide .official-photo{height:350px}.roadster-slide .trim-copy{min-height:390px}.roadster-slide .trim-copy h3{font-size:28px}.roadster-slide .trim-copy>p:not(.small-label):not(.trim-current){font-size:16px}.roadster-slide .trim-note{font-size:12px}}
+@media(min-width:761px) and (max-width:1100px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.1fr) 151px minmax(0,1fr);gap:18px}.lever-control{grid-template-columns:36px minmax(0,1fr);gap:5px}.lever-control input{width:36px}.lever-stops button{font-size:15px;gap:6px}.roadster-slide .trim-copy{padding-left:18px}.trim-copy>p.trim-current{font-size:26px}}
+@media(max-width:760px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1fr) 132px;gap:25px 14px;align-items:center}.roadster-slide .official-photo{height:278px}.trim-lever{padding:0}.trim-lever>.small-label{font-size:12px;margin:0 0 13px 3px}.lever-control{height:222px;grid-template-columns:30px minmax(0,1fr);gap:6px}.lever-control input{width:30px;height:222px}.lever-control input::-webkit-slider-thumb{width:29px;height:29px;border-width:3px}.lever-stops button{font-size:13px;gap:5px;min-height:32px;padding:6px 0}.lever-stops button i{width:5px;height:5px}.lever-hint{font-size:9px;margin:11px 0 0 3px}.roadster-slide .trim-copy{grid-column:1/-1;min-height:0;border-left:0;border-top:1px solid var(--line);padding:23px 0 0;display:block}.trim-copy>p.trim-current{font-size:29px}.roadster-slide .trim-copy h3{font-size:29px}.roadster-slide .trim-copy>p:not(.small-label):not(.trim-current){font-size:16px}.roadster-slide .trim-note{font-size:13px}.roadster-slide .range-chart{height:82px}}
+.lever-control input::-webkit-slider-thumb{margin-left:-14px}@media(max-width:760px){.lever-control input::-webkit-slider-thumb{margin-left:-10.5px}}
+
+/* Linked annual financial view; fixed scales are preserved across years. */
+.annual-slide .annual-layout{grid-template-columns:minmax(0,.88fr) minmax(0,.92fr) minmax(0,1.5fr);gap:27px}.annual-slide .annual-chart-area+.annual-chart-area{padding-left:25px}.annual-financial-area{min-width:0;padding-left:25px;border-left:1px solid var(--line)}.annual-slide .annual-chart-area .chart-top{display:flex;min-height:28px;gap:8px;align-items:baseline}.annual-slide .chart-top h3{font-size:22px;white-space:normal}.annual-slide .chart-top>span{font-size:12px;white-space:nowrap;max-width:none;margin:0}.annual-slide .annual-chart{height:208px}.annual-slide .annual-metric{border-top:1px solid var(--line);padding-top:17px;margin-top:10px}.annual-slide .annual-metric .small-label{font-size:13px}.annual-slide .annual-metric strong{font-size:33px}.annual-slide .annual-metric strong small{font-size:14px}.annual-slide .annual-metric>p:last-child{font-size:14px}.annual-linked{font-size:14px;color:var(--wine);margin-left:auto}.annual-finance-switch{display:flex;gap:8px;margin:0 0 6px}.annual-finance-switch button{padding:9px 15px;border:1px solid var(--line);font-size:16px;line-height:1.2;color:var(--muted);font-weight:700;min-height:40px}.annual-finance-switch button.selected{color:var(--wine);background:var(--pale);border-color:var(--pink)}.annual-financial-chart{height:181px;position:relative;min-width:0}.annual-financial-summary{border-top:1px solid var(--line);padding-top:15px;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:15px}.annual-financial-summary>span{font-size:14px;line-height:1.6;max-width:56%}.annual-financial-summary strong{font-size:31px;white-space:nowrap;letter-spacing:-.6px;color:var(--wine)}.annual-financial-summary small{font-size:13px;font-weight:400;margin-left:5px}.annual-financial-note{font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px;min-height:44px}.annual-slide .annual-note{font-size:14px;border-top:1px solid var(--line);padding-top:14px;margin-top:20px}
+@media(min-width:761px) and (max-height:800px){.annual-slide .annual-selector{margin-bottom:17px}.annual-slide .annual-chart{height:172px}.annual-financial-chart{height:145px}.annual-slide .annual-metric strong{font-size:30px}.annual-financial-summary strong{font-size:29px}.annual-financial-note{font-size:12px;min-height:40px}.annual-slide .annual-note{margin-top:13px;padding-top:11px;font-size:13px}.annual-slide .source-line{margin-top:11px}}
+@media(min-width:761px) and (max-width:1100px){.annual-slide .annual-layout{grid-template-columns:1fr 1fr;gap:25px}.annual-financial-area{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);padding:22px 0 0}.annual-financial-chart{height:180px}.annual-financial-summary{justify-content:flex-start;gap:25px}.annual-financial-note{min-height:0}.annual-linked{display:none}}
+@media(max-width:760px){.annual-slide .annual-layout{grid-template-columns:1fr;gap:28px}.annual-slide .annual-chart-area+.annual-chart-area{padding:25px 0 0}.annual-financial-area{border-left:0;border-top:1px solid var(--line);padding:25px 0 0}.annual-slide .annual-chart{height:235px}.annual-slide .annual-metric strong{font-size:35px}.annual-slide .annual-metric .small-label{font-size:14px}.annual-linked{margin:13px 0 0;font-size:13px}.annual-financial-chart{height:215px}.annual-slide .chart-top h3{font-size:24px}.annual-finance-switch{margin-bottom:12px}.annual-finance-switch button{min-height:44px;font-size:17px;flex:1}.annual-financial-summary strong{font-size:32px}.annual-financial-summary small{font-size:12px}.annual-financial-note{min-height:0;font-size:13px}.annual-slide .annual-note{font-size:13px;margin-top:22px}.annual-slide .annual-selector{margin-bottom:27px}}
+
+/* Clickable growth headings and an accessible bottom detail sheet. */
+.road-title-button{font:inherit;font-weight:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:15px;width:100%;line-height:1.4}.road-title-button>span:first-child{flex:1}.road-open-icon{display:grid;place-items:center;width:36px;height:36px;flex:none;border:1px solid var(--pink);color:var(--pink);border-radius:50%;font-size:24px;transition:transform .25s,background .25s,color .25s}.road-title-button:hover,.road-title-button:focus-visible{color:var(--wine)}.road-title-button:hover .road-open-icon{transform:translate(2px,-2px);background:var(--pink);color:white}.road-detail-hint{display:block;font-size:12px;line-height:1.6;color:var(--wine);margin:-3px 0 9px}.road-sheet-open{overflow:hidden}.road-sheet{position:fixed;inset:auto 0 0;margin:0 auto;padding:0;width:min(1100px,calc(100% - 40px));max-width:none;max-height:84svh;border:0;border-top:5px solid var(--pink);border-radius:22px 22px 0 0;background:white;box-shadow:0 -20px 90px #292a333b;overflow:hidden;color:var(--ink);overscroll-behavior:contain}.road-sheet[open]{display:flex;flex-direction:column;animation:road-sheet-in .42s cubic-bezier(.22,1,.36,1) both}.road-sheet.is-closing{animation:road-sheet-out .24s ease-in both}.road-sheet::backdrop{background:#19101d85;backdrop-filter:none;-webkit-backdrop-filter:none}.road-sheet-header{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:23px 35px 18px;border-bottom:1px solid var(--line);flex:none}.road-sheet-header .eyebrow{font-size:11px;margin:0 0 8px;letter-spacing:2px}.road-sheet-caption{font-size:14px;color:var(--muted)}.road-sheet-close{display:flex;align-items:center;gap:12px;min-height:44px;padding:3px 10px 3px 15px;font-size:15px;border:1px solid var(--line);border-radius:24px;flex:none;color:var(--ink)}.road-sheet-close b{font-size:28px;font-weight:400;line-height:1}.road-sheet-close:hover{background:var(--pale);border-color:var(--pink)}.road-sheet-scroll{overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:22px 35px 28px}.road-sheet-tabs{display:flex;gap:10px;margin-bottom:25px}.road-sheet-tabs button{min-height:43px;padding:9px 19px;border:1px solid var(--line);font-size:16px;font-weight:700;line-height:1.3;color:var(--muted)}.road-sheet-tabs button.selected{background:var(--pale);border-color:var(--pink);color:var(--wine)}.road-sheet-heading{display:flex;align-items:center;gap:22px}.road-sheet-heading>span{width:65px;height:65px;display:grid;place-items:center;flex:none;background:var(--wine);border-radius:50%;color:white;font-size:33px;font-weight:800}.road-sheet-heading .small-label{font-size:13px;color:var(--wine);margin-bottom:8px}.road-sheet-heading h2{font-size:31px;line-height:1.4;letter-spacing:-.7px}.road-sheet-intro{font-size:18px;line-height:1.8;color:var(--muted);margin:20px 0 25px}.road-sheet-columns{display:grid;grid-template-columns:1.08fr 1fr;gap:40px}.road-sheet-columns section+section{border-left:1px solid var(--line);padding-left:32px}.road-sheet-columns h3{font-size:21px;line-height:1.5;margin:0 0 13px}.road-sheet-columns ul,.road-sheet-columns ol{padding:0 0 0 23px;margin:0;font-size:17px;line-height:1.85}.road-sheet-columns li{margin-bottom:10px;padding-left:3px}.road-sheet-columns li::marker{color:var(--pink);font-weight:800}.road-sheet-context{font-size:12px;color:var(--muted);line-height:1.6;margin:-5px 0 13px}.road-sheet-note{font-size:14px;line-height:1.8;color:var(--wine);background:#fcf4f8;border-left:3px solid var(--pink);padding:13px 18px;margin-top:21px}.road-sheet-source{border-top:1px solid var(--line);padding-top:16px;margin-top:22px;font-size:11px;line-height:1.8;color:var(--muted)}.road-sheet-source a{color:var(--wine);text-decoration:underline;text-underline-offset:3px}@keyframes road-sheet-in{from{transform:translateY(100%);opacity:.5}to{transform:translateY(0);opacity:1}}@keyframes road-sheet-out{from{transform:translateY(0);opacity:1}to{transform:translateY(100%);opacity:.5}}
+@media(max-width:760px){.road-open-icon{width:31px;height:31px;font-size:21px}.road-title-button{gap:9px}.road-detail-hint{font-size:11px}.road-sheet{width:100%;max-height:88svh;border-radius:19px 19px 0 0}.road-sheet-header{padding:18px 21px 15px;gap:12px}.road-sheet-header .eyebrow{font-size:9px;letter-spacing:1px}.road-sheet-caption{font-size:12px}.road-sheet-close{font-size:13px;gap:8px;padding:2px 9px 2px 13px}.road-sheet-scroll{padding:18px 22px 25px}.road-sheet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}.road-sheet-tabs button{font-size:15px;padding:10px 8px;min-height:44px}.road-sheet-heading{gap:14px;align-items:flex-start}.road-sheet-heading>span{width:45px;height:45px;font-size:25px}.road-sheet-heading .small-label{font-size:11px;margin-bottom:7px}.road-sheet-heading h2{font-size:25px;letter-spacing:-.5px}.road-sheet-intro{font-size:16px;margin:18px 0 21px}.road-sheet-columns{grid-template-columns:1fr;gap:21px}.road-sheet-columns section+section{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.road-sheet-columns h3{font-size:20px}.road-sheet-columns ul,.road-sheet-columns ol{font-size:16px;line-height:1.85;padding-left:22px}.road-sheet-note{font-size:13px;padding:12px 14px}.road-sheet-source{font-size:10px}.road-sheet-context{font-size:11px}}
+
+/* Higher trims at the top; the linked official visual sits to the lever's right. */
+.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.2fr) 175px minmax(0,1fr)}.lever-control input{direction:rtl}.lever-control input::-webkit-slider-runnable-track{background:linear-gradient(to top,var(--pink) var(--lever-fill),#e5dee5 var(--lever-fill))}.trim-visual{position:relative;background:#060607}.roadster-slide .trim-visual img{height:100%;width:100%;object-fit:contain;object-position:center;display:block}.roadster-slide .trim-visual img[hidden]{display:none}.roadster-slide .trim-visual img:not([hidden]){animation:trim-visual-in .35s ease-out both}.roadster-slide .trim-visual figcaption{left:0;bottom:0;right:0;padding:38px 16px 14px;background:linear-gradient(transparent,#000d);pointer-events:none}.trim-visual figcaption b{display:block;font-weight:700;font-size:14px;line-height:1.6;color:white}.trim-visual figcaption span{display:block;font-size:10px;line-height:1.6;margin-top:3px;color:#ddd}.trim-visual-tag{position:absolute;top:15px;left:15px;z-index:1;background:#ffffffed;color:var(--wine);font-size:17px;font-weight:800;padding:8px 12px;border-left:3px solid var(--pink);line-height:1.2}.roadster-slide .trim-visual:hover img{transform:none}.roadster-slide .subtitle{max-width:100%}@keyframes trim-visual-in{from{opacity:.4;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
+@media(min-width:761px) and (max-width:1100px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1.1fr) 151px minmax(0,1fr)}}
+@media(max-width:760px){.roadster-slide .roadster-layout{grid-template-columns:minmax(0,1fr) 132px}.trim-visual-tag{top:11px;left:10px;font-size:13px;padding:6px 8px}.trim-visual figcaption b{font-size:11px}.trim-visual figcaption span{font-size:9px}.roadster-slide .trim-visual figcaption{padding:28px 10px 11px}.roadster-slide .trim-visual{height:278px}}
+
+/* Centered, keyboard-accessible technology details. */
+.tech-popup-hint{font-size:12px;line-height:1.6;color:var(--wine);margin:12px 0 0}.tech-option{position:relative;padding-right:30px}.tech-option:after{content:'↗';position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--pink)}.tech-modal-open{overflow:hidden}.tech-modal{position:fixed;inset:0;margin:auto;padding:0;width:min(900px,calc(100% - 40px));max-width:none;height:fit-content;max-height:86svh;border:0;border-top:5px solid var(--pink);border-radius:18px;background:#fff;box-shadow:0 25px 120px #292a3355;color:var(--ink);overflow:hidden}.tech-modal[open]{display:flex;flex-direction:column;animation:tech-modal-in .3s cubic-bezier(.22,1,.36,1) both}.tech-modal.is-closing{animation:tech-modal-out .18s ease-in both}.tech-modal::backdrop{background:#19101d88;backdrop-filter:none;-webkit-backdrop-filter:none}.tech-modal-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 30px 17px;border-bottom:1px solid var(--line);flex:none}.tech-modal-header .eyebrow{font-size:10px;margin:0 0 7px;letter-spacing:2px}.tech-modal-header>div>p:last-child{font-size:14px;color:var(--muted)}.tech-modal-close{display:flex;align-items:center;gap:12px;min-height:44px;padding:3px 10px 3px 15px;border:1px solid var(--line);border-radius:24px;font-size:15px;flex:none}.tech-modal-close b{font-size:28px;line-height:1;font-weight:400}.tech-modal-close:hover{background:var(--pale);border-color:var(--pink)}.tech-modal-scroll{padding:20px 30px 25px;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}.tech-modal-tabs{display:flex;gap:9px;margin-bottom:24px}.tech-modal-tabs button{flex:1;min-height:43px;font-size:15px;font-weight:700;border:1px solid var(--line);color:var(--muted);padding:9px 10px;line-height:1.4}.tech-modal-tabs button.selected{border-color:var(--pink);background:var(--pale);color:var(--wine)}.tech-modal-heading{display:flex;align-items:center;gap:18px}.tech-modal-heading>span{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--wine);color:white;font-size:31px;font-weight:800;flex:none}.tech-modal-heading .small-label{font-size:11px;letter-spacing:1px;color:var(--wine);margin-bottom:7px}.tech-modal-heading h2{font-size:31px;line-height:1.3;letter-spacing:-.5px}.tech-modal-intro{font-size:18px;line-height:1.8;color:var(--muted);margin:18px 0 24px}.tech-flow-title{font-size:19px;margin:0 0 13px;line-height:1.5}.tech-modal-flow{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 25px;padding:0;counter-reset:tech-step}.tech-modal-flow li{position:relative;counter-increment:tech-step;padding:17px 16px 16px;border-top:2px solid var(--pink);background:#faf7fa;min-width:0}.tech-modal-flow li:before{content:counter(tech-step,decimal-leading-zero);display:block;color:var(--wine);font-size:12px;letter-spacing:1px;margin-bottom:10px}.tech-modal-flow strong{display:block;font-size:17px;line-height:1.5}.tech-modal-flow p{font-size:14px;line-height:1.75;color:var(--muted);margin-top:9px}.tech-modal-details{display:grid;grid-template-columns:1fr 1fr;gap:28px}.tech-modal-details section+section{border-left:1px solid var(--line);padding-left:27px}.tech-modal-details h3{font-size:19px;line-height:1.5;margin:0 0 10px}.tech-modal-details p{font-size:16px;line-height:1.85;color:var(--muted)}.tech-modal-note{font-size:13px;line-height:1.8;border-left:3px solid var(--pink);padding:11px 15px;background:#fcf4f8;color:var(--wine);margin-top:22px}.tech-modal-source{font-size:11px;line-height:1.8;color:var(--muted);border-top:1px solid var(--line);padding-top:15px;margin-top:20px}.tech-modal-source a{color:var(--wine);text-decoration:underline;text-underline-offset:3px}@keyframes tech-modal-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes tech-modal-out{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.97)}}
+@media(max-width:760px){.tech-popup-hint{font-size:11px}.tech-modal{width:calc(100% - 24px);max-height:88svh;border-radius:15px}.tech-modal-header{padding:17px 20px 14px;gap:12px}.tech-modal-header .eyebrow{font-size:9px;letter-spacing:1px}.tech-modal-header>div>p:last-child{font-size:12px}.tech-modal-close{font-size:13px;gap:8px;min-height:42px;padding:2px 9px 2px 12px}.tech-modal-scroll{padding:18px 20px 23px}.tech-modal-tabs{display:grid;grid-template-columns:1fr;gap:7px;margin-bottom:22px}.tech-modal-tabs button{min-height:43px;font-size:15px}.tech-modal-heading{gap:12px;align-items:flex-start}.tech-modal-heading>span{width:42px;height:42px;font-size:25px}.tech-modal-heading h2{font-size:25px;line-height:1.4}.tech-modal-heading .small-label{font-size:9px;letter-spacing:.5px;line-height:1.5}.tech-modal-intro{font-size:16px;line-height:1.8;margin:17px 0 21px}.tech-modal-flow{grid-template-columns:1fr;gap:10px;margin-bottom:22px}.tech-modal-flow li{padding:13px 15px}.tech-modal-flow li:before{margin-bottom:5px}.tech-modal-flow strong{font-size:17px}.tech-modal-flow p{font-size:14px;margin-top:6px}.tech-modal-details{grid-template-columns:1fr;gap:20px}.tech-modal-details section+section{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}.tech-modal-details p{font-size:15px}.tech-modal-note{font-size:12px}.tech-modal-source{font-size:10px}}
+
+/* Revenue drilldowns and a three-stop horizontal finance lever. */
+.finance-revenue-trigger{cursor:pointer;border-radius:12px;margin:-8px -12px 0;padding:8px 12px;transition:background .2s,box-shadow .2s}.finance-revenue-trigger:hover{background:var(--pale);box-shadow:0 0 0 1px #e8176826}.finance-revenue-trigger:focus-visible{outline:3px solid var(--pink);outline-offset:3px}.finance-copy .finance-revenue-hint{font-size:13px;color:var(--wine);line-height:1.5;margin:1px 0 8px}.finance-revenue-hint span{margin-left:8px}.finance-slide .chart-box canvas{cursor:pointer}.finance-business-labels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:1px}.finance-business-labels button{font-size:17px;font-weight:800;padding:10px 3px;border-bottom:1px solid var(--line);white-space:nowrap;transition:color .2s,background .2s}.finance-business-labels button:hover{background:var(--pale);color:var(--wine)}.finance-business-labels span{font-size:13px;color:var(--pink);margin-left:4px}.finance-chart-hint{font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 0}.finance-metric-open{font-size:13px;line-height:1.5;color:var(--wine);padding:7px 0;border-bottom:1px solid var(--line);margin-top:5px}.finance-lever{margin-top:18px;padding:0 3px}.finance-lever input{display:block;-webkit-appearance:none;appearance:none;width:calc(66.666667% + 30px);margin:0 calc(16.666667% - 15px);height:7px;border-radius:9px;border:0;background:linear-gradient(to right,var(--pink) 0,var(--pink) var(--finance-fill,0%),#e7e0e7 var(--finance-fill,0%),#e7e0e7 100%);cursor:ew-resize;touch-action:pan-y;accent-color:var(--pink)}.finance-lever input::-webkit-slider-thumb{-webkit-appearance:none;box-sizing:border-box;width:30px;height:32px;border-radius:8px;background:repeating-linear-gradient(to bottom,var(--pink) 0 10px,#ffd9e9 10px 12px,var(--pink) 12px 19px,#ffd9e9 19px 21px,var(--pink) 21px 32px);border:3px solid white;box-shadow:0 0 0 1px #e8176880,0 3px 8px #92095125}.finance-lever input::-moz-range-thumb{box-sizing:border-box;width:30px;height:32px;border-radius:8px;background:var(--pink);border:3px solid white;box-shadow:0 0 0 1px var(--pink)}.finance-lever input:focus-visible{outline:2px solid var(--wine);outline-offset:12px}.finance-lever-labels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:14px}.finance-lever-labels button{font-size:16px;font-weight:700;color:var(--muted);min-height:43px;padding:7px 2px;line-height:1.45}.finance-lever-labels button.selected{color:var(--pink)}
+.finance-detail-open{overflow:hidden}.fin-overlay{position:fixed;padding:0;border:0;color:var(--ink);background:#fff;overflow:hidden;box-shadow:0 25px 100px #292a3340}.fin-overlay[open]{display:flex;flex-direction:column}.fin-overlay::backdrop{background:#22172377;backdrop-filter:none;-webkit-backdrop-filter:none}.fin-header{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:23px 28px;border-bottom:1px solid var(--line);flex:none;background:#fff}.fin-header .eyebrow{font-size:10px;letter-spacing:1.6px;margin:0 0 8px}.fin-header h2{font-size:29px;line-height:1.35;letter-spacing:-.7px}.fin-header>button{flex:none;display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:25px;padding:6px 13px;font-size:14px;min-height:43px}.fin-header>button:hover{background:var(--pale);border-color:var(--pink)}.fin-header b{font-size:25px;font-weight:400;line-height:1}.fin-scroll{overflow:auto;overscroll-behavior:contain;padding:24px 28px 28px;scrollbar-gutter:stable;min-height:0}.fin-scroll>p,.fin-sector-layout p{font-size:16px;line-height:1.8;color:var(--muted)}.fin-scroll .fin-period{font-size:12px;color:var(--wine);line-height:1.6;margin:0 0 19px}.fin-scroll h3{font-size:21px;line-height:1.5;margin:22px 0 11px}.fin-stat strong{display:block;font-size:26px;line-height:1.4;font-weight:800;letter-spacing:-.5px;color:var(--ink)}.fin-stat p{font-size:12px;line-height:1.65;color:var(--muted);margin-bottom:6px}.fin-ytd-hero strong{font-size:43px;color:var(--pink);letter-spacing:-1.5px}.fin-ytd-hero p{font-size:14px;margin-top:8px}.fin-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:17px 0;border-block:1px solid var(--line)}.fin-stat-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.fin-stat-grid .fin-stat+.fin-stat{border-left:1px solid var(--line);padding-left:16px}.fin-chart-wrap{position:relative;min-width:0}.fin-ytd-chart{height:240px;margin:19px 0}.fin-breakdown{margin:0}.fin-breakdown>div{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding:12px 0;font-size:16px}.fin-breakdown dt{color:var(--muted)}.fin-breakdown dd{margin:0;font-weight:800}.fin-scroll .fin-note{font-size:13px;line-height:1.8;border-left:3px solid var(--pink);padding:12px 15px;background:#fcf3f7;color:var(--wine);margin:22px 0 0}.fin-scroll .fin-source{font-size:11px;line-height:1.8;border-top:1px solid var(--line);padding-top:15px;margin-top:23px;color:#827988}.fin-source a{text-decoration:underline;text-underline-offset:3px;color:var(--wine)}.fin-drawer{inset:0 0 0 auto;margin:0;width:min(550px,100vw);height:100svh;max-width:none;max-height:100svh;border-left:4px solid var(--pink)}.fin-drawer[open]{animation:fin-drawer-in .32s ease-out both}.fin-drawer.is-closing{animation:fin-drawer-out .2s ease-in both}.fin-sheet{inset:auto 0 0;margin:0 auto;width:min(1180px,calc(100vw - 36px));max-width:none;max-height:88svh;border-top:4px solid var(--pink);border-radius:20px 20px 0 0}.fin-sheet[open]{animation:fin-sheet-in .32s cubic-bezier(.22,1,.36,1) both}.fin-sheet.is-closing{animation:fin-sheet-out .2s ease-in both}.fin-tabs{display:flex;gap:9px;margin-bottom:18px}.fin-tabs button{flex:1;min-height:43px;border:1px solid var(--line);padding:9px 12px;font-size:16px;color:var(--muted);font-weight:700}.fin-tabs button.selected{color:var(--wine);border-color:var(--pink);background:var(--pale)}.fin-sector-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:30px}.fin-sector-layout>div{min-width:0}.fin-sector-layout .fin-stat strong{font-size:23px}.fin-sector-layout .fin-growth{font-size:18px;font-weight:800;color:var(--pink);margin:15px 0 10px}.fin-business-chart{height:260px}.fin-modal{inset:0;margin:auto;width:min(880px,calc(100vw - 40px));max-width:none;max-height:90svh;border-radius:18px;border-top:4px solid var(--pink)}.fin-modal[open]{animation:fin-modal-in .28s ease-out both}.fin-modal.is-closing{animation:fin-modal-out .18s ease-in both}.fin-metric-hero{margin:22px 0;padding:18px 22px;background:#faf5f8;border-left:3px solid var(--pink)}.fin-metric-hero strong{color:var(--pink);font-size:38px}.fin-metric-hero p:last-child{font-size:14px;margin-top:8px}.fin-bridge-chart{height:245px}.fin-scroll .fin-formula{color:var(--wine);font-size:17px;font-weight:800;line-height:1.8;margin:17px 0}.fin-modal .fin-scroll>p:not(.fin-period):not(.fin-note):not(.fin-source):not(.fin-formula){font-size:17px}
+@keyframes fin-drawer-in{from{transform:translateX(100%)}to{transform:translateX(0)}}@keyframes fin-drawer-out{to{transform:translateX(100%)}}@keyframes fin-sheet-in{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes fin-sheet-out{to{transform:translateY(100%)}}@keyframes fin-modal-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes fin-modal-out{to{opacity:0;transform:scale(.97)}}
+@media(max-width:760px){.finance-business-labels button{font-size:15px}.finance-business-labels span{font-size:11px;margin-left:1px}.finance-lever-labels button{font-size:14px}.finance-lever{margin-top:22px}.finance-copy .finance-revenue-hint{font-size:14px}.fin-header{padding:18px 20px;gap:10px}.fin-header h2{font-size:24px}.fin-header>button{gap:6px;font-size:12px;padding:5px 10px}.fin-scroll{padding:20px 20px 25px}.fin-ytd-hero strong{font-size:36px}.fin-stat strong{font-size:22px}.fin-stat-grid{gap:10px}.fin-stat-grid .fin-stat+.fin-stat{padding-left:10px}.fin-sheet{width:calc(100vw - 16px);max-height:90svh}.fin-sector-layout{grid-template-columns:1fr;gap:20px}.fin-sector-layout .fin-stat-grid{grid-template-columns:1fr 1fr}.fin-sector-layout .fin-stat-grid .fin-stat:last-child{grid-column:1/-1;border-left:0;padding:12px 0 0;border-top:1px solid var(--line)}.fin-modal{width:calc(100vw - 20px);max-height:91svh}.fin-metric-hero{padding:16px}.fin-metric-hero strong{font-size:33px}.fin-bridge-chart{height:235px}.fin-scroll .fin-formula{font-size:15px}.fin-ytd-chart{height:215px}.fin-business-chart{height:225px}.fin-scroll .fin-source{overflow-wrap:anywhere}}
+
+/* Cover guidance. */
+.start-hint{font-size:13px;line-height:1.7;color:var(--wine);margin-top:13px;max-width:390px}
+@media(max-width:760px){.start-hint{font-size:12px;max-width:300px}}
+
+/* Slide-sized motion film; fullscreen remains an explicit control. */
+.video-slide{padding:24px 0;animation:none!important}.video-stage{position:relative;width:min(100%,calc((100svh - 186px)*16/9));max-width:100%;aspect-ratio:16/9;align-self:center;background:#080808;color:#fff;isolation:isolate;display:grid;place-items:center;outline:none!important;border-radius:12px;overflow:hidden}.video-stage:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:0}.video-stage video{width:100%;height:100%;object-fit:contain;background:#080808;display:block;cursor:pointer}.video-top{position:absolute;z-index:2;top:0;left:0;right:0;padding:22px 30px 50px;display:flex;align-items:center;justify-content:space-between;gap:18px;pointer-events:none;background:linear-gradient(#0008,transparent)}.video-brand{font-size:25px;font-weight:800;letter-spacing:5px;text-shadow:0 1px 8px #0008}.video-brand small{font-size:10px;letter-spacing:1.6px;font-weight:400;margin-left:18px}.video-top>div{display:flex;align-items:center;gap:16px}.video-page{font-size:13px;letter-spacing:1px}.video-stage button{color:white;min-height:44px;border:1px solid #ffffff40;border-radius:8px;background:#18181f72;padding:9px 14px;font-size:14px;backdrop-filter:blur(10px);white-space:nowrap;pointer-events:auto;transition:background .2s}.video-stage button:hover{background:#e81768c9}.video-stage button:focus-visible,.video-stage input:focus-visible{outline:3px solid #ff8bbb;outline-offset:4px}.video-top button{display:flex;gap:10px;align-items:center}.video-top button b{font-size:22px;font-weight:400}.video-bottom{position:absolute;z-index:2;bottom:0;left:0;right:0;padding:65px 30px 24px;background:linear-gradient(transparent,#000a);pointer-events:none}.video-controls{display:flex;align-items:center;gap:12px;max-width:1320px;margin:auto;pointer-events:auto}.video-controls #videoToggle{background:#e81768ba;border-color:#ff6ea555;min-width:115px;font-weight:700}.video-time{font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums;margin:0 3px;color:#ffffffe0}.video-seek{flex:1;min-width:70px}.video-seek input{width:100%;accent-color:#f43d84;cursor:pointer;min-height:34px}.video-page-actions{display:flex;gap:8px}.video-controls .video-page-actions button:last-child{background:#ffffffeb;color:#292a33;font-weight:800;border-color:transparent}.video-stage .video-play-fallback{position:absolute;z-index:3;font-size:20px;font-weight:800;padding:19px 27px;background:#e81768dc;border-color:#ffffff55;border-radius:14px;box-shadow:0 15px 60px #0004}
+@media(max-width:760px){.video-top{padding:16px 16px 46px;gap:10px}.video-brand{font-size:20px;letter-spacing:3px}.video-brand small{display:block;font-size:8px;letter-spacing:1px;margin:5px 0 0}.video-top>div{gap:9px}.video-page{font-size:11px}.video-stage button{font-size:12px;min-height:44px;padding:9px 11px}.video-top button b{font-size:19px}.video-bottom{padding:58px 16px 18px;padding-bottom:max(18px,env(safe-area-inset-bottom))}.video-controls{display:grid;grid-template-columns:auto auto 1fr;gap:8px}.video-controls #videoToggle{min-width:0}.video-time{font-size:11px;justify-self:end}.video-seek{grid-column:1/-1;grid-row:2}.video-page-actions{grid-row:3;grid-column:1/-1;justify-content:space-between}.video-page-actions button{min-width:110px}.video-stage .video-play-fallback{font-size:17px;padding:15px 22px}}
+@media(max-height:480px) and (orientation:landscape){.video-top{padding:10px 16px 30px}.video-brand{font-size:18px}.video-brand small{display:none}.video-bottom{padding:35px 16px 10px}.video-controls{display:flex;gap:8px}.video-time{font-size:10px}.video-stage button{font-size:11px;min-height:36px;padding:6px 9px}.video-controls #videoToggle{min-width:88px}.video-page-actions button{min-width:0}.video-seek{min-width:65px}}
+
+/* Closing brand film: a visible title and a player that stops on leaving the slide. */
+.brand-film-slide{align-items:center;padding-top:24px;padding-bottom:22px;justify-content:center}.brand-film-slide .slide-heading{width:100%;margin-bottom:18px}.brand-film-slide .eyebrow{margin-bottom:10px}.brand-film-slide h2{font-size:clamp(32px,3.5vw,58px);line-height:1.3}.brand-film-player{width:min(100%,1100px,calc((100svh - 346px)*16/9));border:1px solid var(--line);border-radius:12px;overflow:hidden;background:white;box-shadow:0 12px 38px #9209510b}.brand-film-screen{position:relative;width:100%;aspect-ratio:16/9;background:var(--pale)}.brand-film-screen video{width:100%;height:100%;display:block;object-fit:contain;cursor:pointer}.brand-film-controls{min-height:56px;display:flex;align-items:center;gap:10px;padding:9px 13px;background:white;color:var(--ink);border-top:1px solid var(--line)}.brand-film-controls button{font-size:14px;min-height:36px;padding:7px 12px;border:1px solid var(--line);border-radius:7px;white-space:nowrap}.brand-film-controls button:hover{border-color:var(--pink);background:var(--pale);color:var(--wine)}#brandFilmToggle{background:var(--pink);border-color:var(--pink);color:white;min-width:99px}.brand-film-time{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}.brand-film-seek{flex:1;min-width:50px;display:flex;align-items:center}.brand-film-seek input{width:100%;min-width:0;accent-color:var(--pink);cursor:pointer}.brand-film-fallback{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);padding:17px 28px;border-radius:40px;background:var(--pink);color:white;box-shadow:0 8px 30px #92095133;font-size:19px;font-weight:700}.brand-film-player:fullscreen{width:100vw;height:100vh;max-width:none;border:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;background:var(--ink);padding:14px}.brand-film-player:fullscreen .brand-film-screen{height:calc(100vh - 86px);aspect-ratio:auto;min-height:0}.brand-film-player:fullscreen .brand-film-controls{flex-shrink:0;border-radius:0 0 8px 8px}.brand-film-screen video:focus-visible{outline-offset:-4px}
+@media(max-width:760px){.brand-film-slide{padding-top:30px;justify-content:flex-start;min-height:calc(100svh - 160px)}.brand-film-slide .slide-heading{margin-bottom:24px}.brand-film-slide h2{font-size:34px;letter-spacing:-1px}.brand-film-player{width:100%;border-radius:9px}.brand-film-controls{flex-wrap:wrap;gap:8px;padding:10px}.brand-film-controls button{font-size:12px;padding:7px 9px;min-height:40px}#brandFilmToggle{min-width:91px}.brand-film-time{margin-left:auto;font-size:11px}.brand-film-seek{order:4;flex-basis:calc(100% - 110px);min-height:30px}.brand-film-controls #brandFilmFullscreen{order:5;margin-left:auto}.brand-film-player:fullscreen{padding:8px}.brand-film-player:fullscreen .brand-film-screen{height:calc(100vh - 130px)}.brand-film-slide .eyebrow{font-size:11px}}
+@media(min-width:761px) and (max-height:650px){.brand-film-slide{padding-top:16px;padding-bottom:14px}.brand-film-slide h2{font-size:36px}.brand-film-slide .eyebrow{display:none}.brand-film-slide .slide-heading{margin-bottom:12px}.brand-film-player{width:min(100%,calc((100svh - 286px)*16/9))}}
+
+/* Direct text editing is opt-in and keeps the presentation layout intact. */
+.editor-toggle{border:1px solid var(--pink);border-radius:8px;padding:8px 13px;min-height:38px;font-size:14px;font-weight:700;color:var(--wine);background:var(--pale);white-space:nowrap}.editor-toggle[aria-pressed="true"]{background:var(--pink);color:white}.text-edit-mode .presentation{padding-bottom:122px}.text-edit-mode [data-text-edit]{outline:1px dashed #e8176870;outline-offset:4px;cursor:text;min-height:1em;caret-color:var(--pink);white-space:pre-wrap}.text-edit-mode [data-text-edit]:hover{outline-color:var(--pink);background:#e8176807}.text-edit-mode [data-text-edit]:focus{outline:2px solid var(--pink)!important;outline-offset:5px;background:#fff7fa}.text-edit-mode [data-text-edit]:empty:before{content:'텍스트 입력';color:var(--muted);font-size:14px}.text-edit-mode .slide.active,.text-edit-mode .pulse{animation:none}.text-edit-mode .replay-number:before{display:none}.text-edit-mode .reactive:hover img{transform:none}.text-edit-mode .brand-film-slide{min-height:calc(100svh - 250px)}.text-edit-mode .brand-film-player{width:min(100%,1000px,calc((100svh - 430px)*16/9))}.text-editor-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;width:calc(100% - 32px);max-width:1050px;background:#292a33;color:white;padding:16px 20px;display:flex;align-items:center;gap:20px;border:1px solid #ffffff28;box-shadow:0 10px 35px #292a3328;border-radius:13px}.text-editor-help{flex:1;min-width:0}.text-editor-help strong{display:block;font-size:17px;line-height:1.5}.text-editor-help>span{display:block;font-size:12px;color:#ded5df;line-height:1.6;margin-top:4px}.text-editor-actions{display:flex;gap:9px;align-items:center}.text-editor-actions button{font-size:14px;color:white;border:1px solid #ffffff55;border-radius:8px;min-height:44px;padding:10px 13px;white-space:nowrap}.text-editor-actions button:disabled{opacity:.4;cursor:default}.text-editor-actions #editorDownload{background:var(--pink);border-color:var(--pink);font-weight:800}.text-editor-actions #editorDone{background:white;color:var(--ink);font-weight:800}.text-editor-actions button:focus-visible{outline:3px solid #ff8bbb;outline-offset:3px}
+@media(max-width:760px){.topbar .actions{gap:8px}.topbar .editor-toggle{font-size:12px;padding:7px 8px;min-height:36px}.topbar .text-button{font-size:12px}.text-edit-mode .presentation{padding-bottom:176px}.text-edit-mode .brand-film-slide{min-height:calc(100svh - 210px)}.text-edit-mode .brand-film-player{width:100%}.text-editor-bar{bottom:10px;width:calc(100% - 20px);padding:13px 14px;display:block;border-radius:12px}.text-editor-help strong{font-size:15px}.text-editor-help>span{font-size:11px}.text-editor-actions{margin-top:12px;gap:7px}.text-editor-actions button{flex:1;font-size:12px;min-height:42px;padding:9px 7px}.text-edit-mode [data-text-edit]{outline-offset:2px}}
+
+/* Keep the requested three-line cover and a usable film at mobile widths. */
+.cover h1{font-size:clamp(26px,3.7vw,71px);line-height:1.28;letter-spacing:-.04em}.cover h1>span,.cover h1>em{display:block;white-space:nowrap}
+@media(max-width:760px){.cover h1{font-size:clamp(26px,7.7vw,54px)}.video-slide{padding:16px 0}.video-stage:not(:fullscreen){width:100%;aspect-ratio:auto;display:flex;flex-direction:column}.video-stage:not(:fullscreen) .video-top{position:relative;order:-1;width:100%;padding:12px;background:#080808}.video-stage:not(:fullscreen) video{height:auto;aspect-ratio:16/9}.video-stage:not(:fullscreen) .video-bottom{position:relative;width:100%;padding:12px;background:#080808}}
+@media(max-height:480px) and (orientation:landscape){.video-controls{flex-wrap:wrap;justify-content:center}}
+
+/* Channel credit and education closing slide. */
+.topbar{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:20px}.topbar .brand{justify-self:start}.topbar .actions{justify-self:end}.creator-credit{display:flex;align-items:center;justify-self:center;gap:9px;white-space:nowrap;font-size:15px;font-weight:700;line-height:1.4}.creator-credit img{width:44px;height:44px;object-fit:contain;flex:none}.creator-slide{align-items:center;text-align:center}.creator-panel{width:min(100%,1000px);padding:22px 0 30px}.creator-logo{display:block;width:140px;height:140px;object-fit:contain;margin:0 auto 15px}.creator-panel .eyebrow{display:flex;justify-content:center;margin-bottom:18px}.creator-panel h2{font-size:clamp(28px,3.15vw,52px);line-height:1.5;letter-spacing:-1.1px}.creator-disclaimer{font-size:clamp(17px,1.65vw,25px);line-height:1.85;color:var(--muted);margin:22px auto 31px;max-width:950px}.creator-guide{display:inline-flex;align-items:center;justify-content:center;gap:32px;min-height:64px;padding:17px 28px;text-decoration:none;background:var(--pink);color:white;border-radius:9px;font-size:22px;font-weight:800;transition:transform .25s,background .25s,box-shadow .25s}.creator-guide:hover,.creator-guide:focus-visible{background:var(--wine);transform:translateY(-3px);box-shadow:0 9px 22px #92095120}.creator-guide>span{font-size:29px;line-height:1}.creator-signature{font-size:20px;font-weight:700;margin-top:28px;line-height:1.7}
+@media(max-width:1100px){.topbar .brand span{display:none}.creator-credit{font-size:14px}}
+@media(max-width:760px){.topbar{height:96px;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:56px 40px;column-gap:12px}.topbar .brand{grid-column:1;grid-row:1}.topbar .actions{grid-column:2;grid-row:1}.creator-credit{grid-column:1/-1;grid-row:2;gap:6px;font-size:13px;padding-bottom:6px}.creator-credit img{width:32px;height:32px}.slide{min-height:calc(100svh - 216px)}.creator-panel{padding:16px 0 28px}.creator-logo{width:116px;height:116px;margin-bottom:10px}.creator-panel h2{font-size:25px;line-height:1.65;letter-spacing:-.7px}.creator-disclaimer{font-size:16px;line-height:1.9;margin:20px 0 26px}.creator-guide{font-size:18px;min-height:58px;padding:15px 20px;gap:19px}.creator-signature{font-size:17px;margin-top:24px}}
+@media(prefers-reduced-motion:reduce){.creator-guide{transition:none}.creator-guide:hover,.creator-guide:focus-visible{transform:none}}
+
+/* 15-slide compact rail adjustment */
+.rail { gap: 8px; }
+.rail button { font-size: 13px; padding: 5px 0; }
+@media(max-width:760px){
+  .rail { overflow-x: auto; gap: 4px; padding: 0 4px; }
+  .rail button { font-size: 12px; width: 24px; flex: none; }
+}
+/* Interactive Stack / Inference / Sovereign / Physical AI Layouts */
+.interactive-split { display: grid; grid-template-columns: 56% 38%; gap: 6%; align-items: center; }
+.pill-switch { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.pill-switch button { flex: 1; min-width: 130px; min-height: 44px; padding: 9px 14px; border: 1px solid var(--line); border-bottom: 3px solid var(--line); background: #faf8fa; font-size: 15px; font-weight: 700; color: var(--muted); transition: all .25s; }
+.pill-switch button.selected { background: var(--pale); color: var(--wine); border-color: var(--pink); transform: translateY(-2px); }
+.layer-cards { display: flex; flex-direction: column; gap: 10px; }
+.layer-btn { display: flex; align-items: center; gap: 16px; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid var(--line); border-left: 4px solid var(--line); background: #fff; transition: all .25s; }
+.layer-btn > span { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--pink); display: grid; place-items: center; font-weight: 800; color: var(--pink); flex-shrink: 0; font-size: 14px; }
+.layer-btn strong { display: block; font-size: 20px; line-height: 1.35; }
+.layer-btn small { display: block; font-size: 13px; color: var(--muted); margin-top: 3px; }
+.layer-btn.selected { border-color: var(--pink); background: var(--pale); transform: translateX(6px); }
+.layer-btn.selected > span { background: var(--pink); color: #fff; }
+.layer-detail-box { margin-top: 16px; padding: 16px 18px; border-left: 3px solid var(--pink); background: #fcf4f8; min-height: 108px; }
+.layer-detail-box h4 { font-size: 18px; color: var(--wine); line-height: 1.45; }
+.layer-detail-box p { font-size: 15px; color: var(--ink); line-height: 1.75; margin-top: 6px; }
+@media(max-width:760px){
+  .interactive-split { grid-template-columns: 1fr; gap: 24px; }
+}
+
+</style>
+</head>
+<body>
+<div class="presentation">
+<header class="topbar">
+  <a class="brand" href="#1" aria-label="첫 장으로">NVIDIA<span>AI FACTORY & RUBIN BRIEFING</span></a>
+  <div class="creator-credit" aria-label="인터랙티브 모션 브리핑"><img src="assets/nvidia-logo-badge.png" alt="브리핑 로고" width="40" height="40"><span>TESLA BRIEFING STYLE · 15 SLIDES</span></div>
+  <div class="actions"><span class="edition">FY2026 공시 기준</span><button id="editorToggle" class="editor-toggle" aria-pressed="false">글자 편집</button><button id="fullscreen" class="icon-button" aria-label="전체 화면">⛶</button></div>
+</header>
+
+<nav class="rail" aria-label="슬라이드 선택">
+  <button data-go="0" aria-label="1장 엔비디아가 AI 시대에 칩이 아닌 AI 공장을 짓는 이유">01</button>
+  <button data-go="1" aria-label="2장 AI 팩토리 홍보 모션그래픽">02</button>
+  <button data-go="2" aria-label="3장 사업과 수익 구조">03</button>
+  <button data-go="3" aria-label="4장 최근 3년 주요 실적과 재무">04</button>
+  <button data-go="4" aria-label="5장 최신 분기 운영 실적">05</button>
+  <button data-go="5" aria-label="6장 풀스택 AI 생태계 해자">06</button>
+  <button data-go="6" aria-label="7장 4대 차세대 성장 로드맵">07</button>
+  <button data-go="7" aria-label="8장 차세대 슈퍼컴퓨팅 3가지 스펙">08</button>
+  <button data-go="8" aria-label="9장 AI 팩토리 3대 핵심 기술">09</button>
+  <button data-go="9" aria-label="10장 추론 경제학과 토큰 생산성">10</button>
+  <button data-go="10" aria-label="11장 수요 다변화와 소버린 AI">11</button>
+  <button data-go="11" aria-label="12장 피지컬 AI와 3-컴퓨터 아키텍처">12</button>
+  <button data-go="12" aria-label="13장 앞으로 확인할 핵심 지표">13</button>
+  <button data-go="13" aria-label="14장 NVIDIA 지능을 생산하는 시대">14</button>
+  <button data-go="14" aria-label="15장 제작 안내 및 브리핑 크레딧">15</button>
+</nav>
+
+<main id="slides">
+<!-- SLIDE 01: COVER -->
+<section class="slide cover" data-title="엔비디아가 AI 시대에 칩이 아닌 AI 공장을 짓는 이유">
+ <div class="cover-copy">
+  <p class="eyebrow"><i></i> NVIDIA BUSINESS & ARCHITECTURE BRIEFING</p>
+  <h1 data-text-revision="nv-cover-v1"><span><em>엔비디아</em>가 AI 시대에</span><span><em>칩이 아닌</em> AI 공장을</span><span><em>짓는</em> 이유</span></h1>
+  <p class="lead">데이터센터, 풀스택 소프트웨어, 차세대 Rubin 아키텍처와<br>피지컬 AI 로보틱스 전략을 15장으로 살펴봅니다.</p>
+  <button class="start" id="startPresentation" aria-describedby="startHint">발표 시작하기 <span>↗</span></button>
+  <p class="start-hint" id="startHint">2페이지에서 장표 크기로 15초 모션그래픽 영상 자동 재생 · 다음 장은 직접 이동</p>
+  <p class="cover-date">재무 실적 FY2024~FY2026 Form 10-K · 아키텍처 로드맵 GTC 기준</p>
+ </div>
+ <figure class="hero-visual reactive" tabindex="0">
+  <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+  <span class="visual-word" aria-hidden="true">NVIDIA</span>
+  <img src="assets/nvidia-ecosystem.png" alt="GPU, NVLink, AI Factory, CUDA, Physical AI가 연결된 엔비디아 풀스택 생태계 개념도">
+  <span class="stamp">SILICON<br>AI FACTORY<br>ROBOTICS</span>
+  <figcaption>엔비디아 풀스택 생태계 연결 구조를 표현한 개념 이미지</figcaption>
+ </figure>
+ <div class="cover-flow"><span>가속 컴퓨팅과 CUDA</span><i></i><span>랙 스케일 AI 팩토리</span><i></i><span>Blackwell · Rubin</span><i></i><span>소버린 · 피지컬 AI</span></div>
+</section>
+
+<!-- SLIDE 02: OPENING 15S MOTION GRAPHICS FILM -->
+<section class="slide video-slide" data-title="엔비디아 AI 팩토리 모션그래픽" hidden>
+ <div id="videoStage" class="video-stage" tabindex="-1" aria-label="장표 안에서 재생되는 엔비디아 홍보 모션그래픽">
+  <video id="promoVideo" muted playsinline preload="metadata" poster="assets/nvidia-poster.jpg" src="assets/nvidia-promo.mp4" aria-label="엔비디아 AI 팩토리 홍보 모션그래픽, 15초 무음 영상"></video>
+  <div class="video-top"><span class="video-brand">NVIDIA <small>MOTION FILM · 15 SEC</small></span><div><span class="video-page">02 / 15</span><button id="videoFullscreen" aria-label="영상 전체화면">전체화면 <b aria-hidden="true">⛶</b></button></div></div>
+  <button id="videoPlayFallback" class="video-play-fallback" hidden>▶ 영상 재생</button>
+  <div class="video-bottom"><div class="video-controls"><button id="videoToggle" aria-label="영상 일시정지">Ⅱ 일시정지</button><button id="videoRestart" aria-label="영상을 처음부터 재생">↻ 처음부터</button><span id="videoTime" class="video-time">0:00 / 0:15</span><label class="video-seek"><span class="sr-only">영상 재생 위치</span><input id="videoSeek" type="range" min="0" max="15" step="0.05" value="0" aria-label="영상 재생 위치"></label><div class="video-page-actions"><button data-go="0" aria-label="영상 이전 장표로 이동">← 이전 장</button><button data-go="2" aria-label="영상 다음 장표로 이동">다음 장 →</button></div></div></div>
+ </div>
+</section>
+
+<!-- SLIDE 03: FINANCE SLIDE WITH HORIZONTAL LEVER & 3 DIALOGS -->
+<section class="slide finance-slide" data-title="사업과 수익 구조" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> BUSINESS PERFORMANCE</p><h2>매출은 2배 이상 뛰고,<br class="mobile-br"><em> 영업이익률은 62%를 넘겼다</em></h2><p class="subtitle">데이터센터 부문이 전체 매출의 88.3%를 견인하며 압도적인 영업 레버리지를 창출했습니다.</p></div>
+ <div class="finance-layout">
+  <div class="chart-area">
+   <div class="chart-top"><h3 id="financeChartTitle">사업별 매출</h3><span id="financeUnit">십억 달러 (USD B)</span></div>
+   <div class="chart-box"><canvas id="financeChart" role="img" aria-label="FY2025와 FY2026 사업별 매출 비교"></canvas></div>
+   <div class="finance-business-labels" id="financeBusinessLabels" role="group" aria-label="사업별 매출 자세히 보기">
+    <button data-fin-business-open="0" aria-haspopup="dialog" aria-controls="financeSectorSheet">데이터센터 <span>↗</span></button>
+    <button data-fin-business-open="1" aria-haspopup="dialog" aria-controls="financeSectorSheet">게이밍·AI PC <span>↗</span></button>
+    <button data-fin-business-open="2" aria-haspopup="dialog" aria-controls="financeSectorSheet">전문시각화·오토 <span>↗</span></button>
+   </div>
+   <p class="finance-chart-hint" id="financeChartHint">사업 이름이나 막대를 눌러 세부 내용을 확인하세요.</p>
+   <button id="financeMetricOpen" class="finance-metric-open" aria-haspopup="dialog" aria-controls="financeMetricModal" hidden>그래프 상세보기 ↗</button>
+   <div class="finance-lever">
+    <label class="sr-only" for="financeLever">재무 차트 가로 레버</label>
+    <input id="financeLever" type="range" min="0" max="2" step="1" value="0" aria-valuetext="사업별 매출" aria-controls="financeChart financeInsight">
+    <div class="finance-lever-labels" role="group" aria-label="재무 차트 항목">
+     <button class="selected" data-finance="segments" aria-pressed="true">사업별 매출</button>
+     <button data-finance="profit" aria-pressed="false">영업이익</button>
+     <button data-finance="cash" aria-pressed="false">투자와 현금흐름</button>
+    </div>
+   </div>
+  </div>
+  <div class="finance-copy">
+   <div class="finance-revenue-trigger" id="financeRevenueTrigger" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="financeRevenueDrawer" aria-expanded="false">
+    <p class="small-label">FY2026 연간 총매출</p>
+    <div class="big-stat">$<span data-count="130.50" data-decimals="2">130.50</span><small>B</small></div>
+    <p id="financeRevenueHint" class="finance-revenue-hint">반기별 누적 매출 구성 보기 <span aria-hidden="true">↗</span></p>
+   </div>
+   <p class="growth">전년 대비 +114.2%</p>
+   <div class="metric-rule"></div>
+   <h3 id="financeInsightTitle">데이터센터 매출 비중 88.3%</h3>
+   <p id="financeInsight">데이터센터 매출은 1,151.86억 달러로 전년 대비 142.4% 급증했습니다. 클라우드 CSP와 기업들의 AI 학습·추론 클러스터 구축이 성장을 주도했습니다.</p>
+   <div class="caution"><strong>GAAP 영업이익률 62.4%</strong><p>신제품(Blackwell) 초기 양산 비용 반영으로 4분기 매출총이익률은 소폭 조정됐으나, 연간 영업이익은 814.53억 달러를 기록했습니다.</p></div>
+  </div>
+ </div>
+ <p class="source-line">출처: <a href="https://investor.nvidia.com/" target="_blank" rel="noopener">NVIDIA FY2025/FY2026 Form 10-K (2025.01 결산 회계연도 기준)</a> · 전년 대비 비교 · B = 10억 달러</p>
+</section>
+
+<!-- SLIDE 04: 3-YEAR LINKED PERFORMANCE DASHBOARD -->
+<section class="slide annual-slide" data-title="최근 3년 주요 실적과 재무" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> THREE-YEAR PERFORMANCE</p><h2>연도로 살펴보는<br class="mobile-br"><em> 엔비디아의 실적 점프</em></h2><p class="subtitle">최근 3개 회계연도 실적 · 연도를 누르면 전체 매출·데이터센터 매출과 주요 재무지표가 함께 바뀝니다.</p></div>
+ <div class="annual-selector"><span class="small-label">회계연도 선택</span><div class="annual-years" role="group" aria-label="연간 실적 연도 선택"><button data-year="0" aria-pressed="false">FY24</button><button data-year="1" aria-pressed="false">FY25</button><button data-year="2" class="selected" aria-pressed="true">FY26</button></div><p class="annual-linked" id="annualLinkedYear" aria-live="polite">FY26 실적 선택</p></div>
+ <div class="annual-layout">
+  <div class="annual-chart-area"><div class="chart-top"><h3>연간 연결 매출</h3><span>십억 달러</span></div><div class="annual-chart"><canvas id="annualRevenueChart" role="img" aria-label="연간 매출: FY24 26.974, FY25 60.922, FY26 130.497십억 달러"></canvas></div><div class="annual-metric"><p class="small-label" id="annualYearLabel">FY26 연결 매출</p><strong id="annualRevenueValue">1,304.97<small>억 달러</small></strong><p id="annualRevenueChange">전년 대비 +114.2%</p></div></div>
+  <div class="annual-chart-area"><div class="chart-top"><h3>데이터센터 매출</h3><span>십억 달러</span></div><div class="annual-chart"><canvas id="annualProductionChart" role="img" aria-label="데이터센터 매출: FY24 15.005, FY25 47.525, FY26 115.186십억 달러"></canvas></div><div class="annual-metric"><p class="small-label" id="annualProductionLabel">FY26 데이터센터 매출</p><strong id="annualProductionValue">1,151.86<small>억 달러</small></strong><p id="annualProductionChange">전년 대비 +142.4%</p></div></div>
+  <div class="annual-financial-area"><div class="chart-top"><h3 id="annualFinancialTitle">FY26 수익성</h3><span>십억 달러</span></div><div class="annual-finance-switch" role="group" aria-label="연간 주요 재무지표"><button class="selected" data-annual-finance="profit" aria-pressed="true">수익성</button><button data-annual-finance="cash" aria-pressed="false">현금흐름</button></div><div class="annual-financial-chart"><canvas id="annualFinancialChart" role="img" aria-label="FY26 매출총이익 97.858, 영업이익 81.453, 순이익 72.880십억 달러"></canvas></div><div class="annual-financial-summary"><span id="annualFinancialSummaryLabel">GAAP 영업이익률</span><strong id="annualFinancialSummaryValue">62.4<small>%</small></strong></div><p class="annual-financial-note" id="annualFinancialNote">순이익은 GAAP 기준 728.80억 달러로 2년 만에 16배 이상 증가했습니다.</p></div>
+ </div>
+ <p class="annual-note" id="annualYearNote">FY26 매출은 1,304.97억 달러, 영업이익률은 62.4%를 기록하며 AI 인프라 투자의 최대 수혜를 입증했습니다.</p>
+ <p class="source-line">출처: <a href="https://investor.nvidia.com/" target="_blank" rel="noopener">NVIDIA Form 10-K</a> · 회계연도는 매년 1월 말 종료 기준(FY24=2023.1, FY25=2024.1, FY26=2025.1 결산 상응)</p>
+</section>
+
+<!-- SLIDE 05: LATEST QUARTERLY OPERATIONS -->
+<section class="slide" data-title="최신 분기 운영 실적" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> LATEST OPERATIONS</p><h2>AI 컴퓨팅과 초고속 네트워킹,<br class="mobile-br"><em> 데이터센터 두 축의 운영 실적</em></h2><p class="subtitle">대규모 GPU 클러스터 출하와 함께 병목을 없애는 네트워킹(NVLink·Spectrum-X) 수요가 동반 확대되고 있습니다.</p></div>
+ <div class="operations-layout">
+  <div class="operation">
+   <div class="op-head"><div><p class="small-label">최신 분기(Q4) 데이터센터 매출</p><strong>$<span data-count="35.58" data-decimals="2">35.58</span><small>B</small></strong></div><span class="delta">전분기 +15.6%</span></div>
+   <h3>분기별 데이터센터 매출 추이 <small>십억 달러 (USD B)</small></h3>
+   <div class="op-chart"><canvas id="deliveryChart" role="img" aria-label="최근 4개 분기 데이터센터 매출 추이"></canvas></div>
+   <p class="op-note">Blackwell 아키텍처가 첫 양산 분기에만 110억 달러 이상의 매출을 달성하며 빠른 세대 전환을 이뤘습니다.</p>
+  </div>
+  <div class="operation">
+   <div class="op-head"><div><p class="small-label">연간 네트워킹 부문 매출</p><strong>$<span data-count="12.99" data-decimals="2">12.99</span><small>B</small></strong></div><span class="delta">전년 대비 +21.6%</span></div>
+   <h3>분기별 네트워킹 매출 추이 <small>십억 달러 (USD B)</small></h3>
+   <div class="op-chart"><canvas id="storageChart" role="img" aria-label="최근 4개 분기 네트워킹 매출 추이"></canvas></div>
+   <p class="op-note">AI 전용 이더넷 플랫폼인 Spectrum-X와 NVLink 스위치가 수만 개 GPU 클러스터의 필수 인프라로 자리 잡았습니다.</p>
+  </div>
+ </div>
+ <p class="source-line">출처: <a href="https://investor.nvidia.com/" target="_blank" rel="noopener">NVIDIA Quarterly Financial Trend (Q1~Q4)</a> · 데이터센터 매출 = 컴퓨팅(Compute) + 네트워킹(Networking)</p>
+</section>
+
+<!-- SLIDE 06: FULL-STACK AI ECOSYSTEM MOAT (NEW SLIDE FOR 15-SLIDE DECK) -->
+<section class="slide stack-slide" data-title="풀스택 AI 생태계 해자" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> FULL-STACK PLATFORM MOAT</p><h2>칩 단품을 넘어 풀스택 생태계로<br class="mobile-br"><em> 완성한 경쟁 해자</em></h2><p class="subtitle">오른쪽 4계층 플랫폼 버튼을 누르면 계층별 경쟁 우위 지표와 핵심 역할이 함께 바뀝니다.</p></div>
+ <div class="interactive-split">
+  <div class="chart-area">
+   <div class="chart-top"><h3 id="stackChartTitle">계층별 플랫폼 경쟁력 지수</h3><span>상대 지표 (100점 만점 기준)</span></div>
+   <div class="chart-box"><canvas id="stackChart" role="img" aria-label="엔비디아 풀스택 4계층 경쟁력 비교 차트"></canvas></div>
+   <p class="finance-chart-hint">오른쪽 계층 항목을 선택하면 그래프에서 해당 계층이 강조됩니다.</p>
+  </div>
+  <div>
+   <div class="layer-cards" role="group" aria-label="풀스택 4계층 선택">
+    <button class="layer-btn selected" data-stack="0" aria-pressed="true"><span>01</span><div><strong>Silicon · GPU / CPU / DPU</strong><small>Hopper · Blackwell · Grace · Rubin</small></div></button>
+    <button class="layer-btn" data-stack="1" aria-pressed="false"><span>02</span><div><strong>Interconnect · NVLink & Spectrum-X</strong><small>초고속 스케일업 & 스케일아웃 패브릭</small></div></button>
+    <button class="layer-btn" data-stack="2" aria-pressed="false"><span>03</span><div><strong>CUDA-X & NIM 마이크로서비스</strong><small>590만 개발자 · 3,700개 이상 가속 애플리케이션</small></div></button>
+    <button class="layer-btn" data-stack="3" aria-pressed="false"><span>04</span><div><strong>Domain AI · Omniverse & BioNeMo</strong><small>산업별 특화 파운데이션 모델 및 디지털 트윈</small></div></button>
+   </div>
+   <div class="layer-detail-box" id="stackDetailBox" aria-live="polite">
+    <h4 id="stackDetailTitle">1년 주기로 단축된 실리콘 아키텍처 혁신</h4>
+    <p id="stackDetailText">단일 GPU가 아닌 CPU(Grace/Vera), GPU(Blackwell/Rubin), DPU(BlueField) 3종 칩을 공동 설계해 시스템 단위의 병목을 제거합니다.</p>
+   </div>
+  </div>
+ </div>
+ <p class="source-line">출처: NVIDIA Investor Presentation & GTC Keynote · 개발자 생태계 규모(590만 명) 및 가속 라이브러리 현황 기준</p>
+</section>
+
+<!-- SLIDE 07: 4-NODE GROWTH ROADMAP + BOTTOM SHEET -->
+<section class="slide" data-title="4대 차세대 성장 로드맵" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> GROWTH ROADMAP</p><h2>데이터센터를 바탕으로<br class="mobile-br"><em> 소프트웨어와 로보틱스로 범위 확대</em></h2><p class="subtitle">사업별 아이콘이나 소제목을 누르면 아래에서 상세 패널이 올라옵니다.</p></div>
+ <div class="roadmap">
+  <div class="road-line" aria-hidden="true"></div>
+  <button class="road-node selected" data-road="0" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="true"><span class="round"><b>R</b></span><strong>Rubin AI Factory</strong><small>차세대 랙 아키텍처</small></button>
+  <button class="road-node" data-road="1" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="false"><span class="round"><b>N</b></span><strong>NIM & AI Enterprise</strong><small>구독형 소프트웨어</small></button>
+  <button class="road-node" data-road="2" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="false"><span class="round"><b>C</b></span><strong>Cosmos & Omniverse</strong><small>월드 파운데이션 모델</small></button>
+  <button class="road-node" data-road="3" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false" aria-pressed="false"><span class="round"><b>G</b></span><strong>Isaac GR00T</strong><small>휴머노이드 로보틱스</small></button>
+ </div>
+ <div class="road-detail" aria-live="polite">
+  <div class="road-index" aria-hidden="true">R</div>
+  <div>
+   <p class="small-label" id="roadStatus">차세대 로드맵 · 1년 주기 아키텍처</p>
+   <h3><button id="roadDetailOpen" class="road-title-button" aria-haspopup="dialog" aria-controls="roadSheet" aria-expanded="false"><span id="roadTitle">Vera Rubin NVL144와 HBM4 기반 AI 팩토리</span><span class="road-open-icon" aria-hidden="true">↗</span></button></h3>
+   <span class="road-detail-hint">소제목을 눌러 자세히 보기</span>
+   <p id="roadText">Blackwell에 이어 차세대 Rubin GPU와 Vera CPU, HBM4 메모리를 결합한 랙 스케일 AI 팩토리 로드맵을 추진하고 있습니다.</p>
+  </div>
+  <div class="next-step"><span>다음 확인 지점</span><p id="roadNext">TSMC CoWoS-L 패키징 및 HBM4 메모리 수율과 고객 인도 일정</p></div>
+ </div>
+ <p class="road-caveat">아키텍처 발표와 대량 양산 인도는 시차가 존재합니다. 아래 계획은 회사가 공개한 기술 로드맵 기준이며 일정은 공급망 상황에 따라 달라질 수 있습니다.</p>
+ <p class="source-line">출처: NVIDIA GTC Architecture Roadmap & Form 10-K · 제품 출시 일정 및 사양은 제조사 발표 기준</p>
+</section>
+
+<!-- SLIDE 08: VERTICAL SPEC LEVER (BLACKWELL -> BLACKWELL ULTRA -> VERA RUBIN) -->
+<section class="slide roadster-slide" data-title="차세대 AI 슈퍼컴퓨팅 3가지 스펙" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> AI SUPERCOMPUTER SPECS</p><h2>엔비디아가 제시하는<br class="mobile-br"><em> AI 슈퍼컴퓨터의 3가지 스펙</em></h2><p class="subtitle">아래의 Blackwell에서 위의 Vera Rubin까지 · 세로 레버를 움직이면 이미지와 사양 설명이 함께 바뀝니다.</p></div>
+ <div class="roadster-layout">
+  <figure class="official-photo reactive trim-visual" id="trimVisual" data-active-trim="0" tabindex="0" aria-label="Blackwell 관련 아키텍처 이미지">
+   <img data-trim-image="0" src="assets/nvidia-blackwell.jpg" alt="Blackwell GB200 NVL72 랙 스케일 아키텍처 요약 이미지">
+   <img data-trim-image="1" src="assets/nvidia-blackwell-ultra.jpg" alt="Blackwell Ultra GB300 NVL72 및 288GB HBM3e 사양 이미지" hidden>
+   <img data-trim-image="2" src="assets/nvidia-vera-rubin.png" alt="차세대 Vera Rubin NVL144 및 HBM4 아키텍처 이미지" hidden>
+   <span class="trim-visual-tag" id="trimVisualTag">Blackwell</span>
+   <figcaption><b id="trimVisualCaption">GB200 NVL72 · 양산 출하 중</b><span id="trimVisualSource">NVIDIA ARCHITECTURE · 랙 스케일 스펙 요약 비주얼</span></figcaption>
+  </figure>
+  <div class="trim-lever">
+   <p class="small-label">아키텍처 선택</p>
+   <div class="lever-control">
+    <input id="trimLever" type="range" min="0" max="2" step="1" value="0" orient="vertical" aria-label="아키텍처 사양 세로 레버" aria-valuetext="Blackwell" aria-controls="trimDetails trimVisual">
+    <div class="lever-stops" role="group" aria-label="아키텍처 구성 선택: 위 Vera Rubin, 가운데 Blackwell Ultra, 아래 Blackwell">
+     <button data-trim="2" aria-pressed="false" aria-controls="trimDetails trimVisual"><i aria-hidden="true"></i>Vera Rubin</button>
+     <button data-trim="1" aria-pressed="false" aria-controls="trimDetails trimVisual"><i aria-hidden="true"></i>B-Ultra</button>
+     <button class="selected" data-trim="0" aria-pressed="true" aria-controls="trimDetails trimVisual"><i aria-hidden="true"></i>Blackwell</button>
+    </div>
+   </div>
+   <p class="lever-hint">위로 올릴수록 차세대 확장 스펙</p>
+  </div>
+  <div class="trim-copy" id="trimDetails" aria-live="polite" aria-atomic="true">
+   <p class="trim-current" id="trimName">Blackwell (GB200 NVL72)</p>
+   <p class="small-label" id="trimLabel">주력 양산 모델 · HBM3e 192GB</p>
+   <h3 id="trimTitle">72개 GPU를 하나로 묶은 표준 AI 팩토리</h3>
+   <p id="trimText">36개의 Grace CPU와 72개의 Blackwell GPU를 NVLink 5로 연결해 1.44 ExaFLOPS의 FP4 추론 성능과 130TB/s 대역폭을 제공합니다.</p>
+   <div id="trimChartArea" hidden>
+    <p class="range-label">추론 메모리 용량 확대 · GPU당 288GB HBM3e 12-Hi</p>
+    <div class="range-chart"><canvas id="accelerationChart" role="img" aria-label="Blackwell Ultra는 GPU당 288GB HBM3e를 탑재해 추론 처리량을 1.5배 향상"></canvas></div>
+    <p class="range-note">긴 문맥(Long-Context) 추론과 에이전틱 AI를 위해 랙당 20TB 이상의 초고속 메모리를 제공합니다.</p>
+   </div>
+   <div class="trim-note" id="trimNote">랙당 전력 밀도가 최대 120kW에 달해 데이터센터의 직수 액체 냉각(DLC) 인프라 구축이 함께 요구됩니다.</div>
+  </div>
+ </div>
+ <p class="source-line">출처: <a href="https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/" target="_blank" rel="noopener">NVIDIA Architecture Whitepaper & GTC Keynote</a> · FP4 Sparse 연산 기준 제조사 발표 수치</p>
+</section>
+
+<!-- SLIDE 09: CORE TECHNOLOGY + 3-STEP MODAL -->
+<section class="slide" data-title="AI 팩토리 3대 핵심 기술" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> AI FACTORY TECHNOLOGY</p><h2>통신 병목과 발열을 돌파하는<br class="mobile-br"><em> 랙 스케일 핵심 기술</em></h2><p class="subtitle">오른쪽 기술 이름을 누르면 화면 가운데에서 3단계 작동 원리와 상세 설명을 볼 수 있습니다.</p></div>
+ <div class="technology-layout">
+  <figure class="tech-visual reactive" tabindex="0">
+   <img src="assets/nvidia-nvlink-concept.png" alt="NVLink 패브릭, FP4 트랜스포머 엔진, 직수 액체 냉각의 3대 핵심 원리를 표현한 개념도">
+   <figcaption>원리 설명용 아키텍처 개념도 · 랙 스케일 통합 구조</figcaption>
+  </figure>
+  <div class="tech-list">
+   <button class="tech-option" data-tech="0" aria-haspopup="dialog" aria-controls="techModal" aria-expanded="false" aria-pressed="false"><span>N</span><div><h3>NVLink & NVSwitch 패브릭</h3><small>ALL-TO-ALL GPU INTERCONNECT</small></div></button>
+   <button class="tech-option selected" data-tech="1" aria-haspopup="dialog" aria-controls="techModal" aria-expanded="false" aria-pressed="true"><span>T</span><div><h3>2세대 FP4 트랜스포머 엔진</h3><small>MICRO-TENSOR SCALING FP4</small></div></button>
+   <button class="tech-option" data-tech="2" aria-haspopup="dialog" aria-controls="techModal" aria-expanded="false" aria-pressed="false"><span>L</span><div><h3>100% 직수 액체 냉각 (DLC)</h3><small>DIRECT-TO-CHIP LIQUID COOLING</small></div></button>
+   <p class="tech-popup-hint">기술 항목 클릭 → 3단계 작동 원리 팝업</p>
+   <div class="tech-explain" aria-live="polite">
+    <h4 id="techTitle">정밀도를 지키면서 추론 속도를 2배 높이는 4비트 연산</h4>
+    <p id="techText">마이크로 텐서 스케일링 기술로 모델 가중치를 FP4(4비트)로 양자화해 메모리 사용량은 절반으로 줄이고 처리량은 극대화합니다.</p>
+   </div>
+  </div>
+ </div>
+ <p class="source-line">출처: NVIDIA Blackwell & NVLink Technical Overview · 제조사 기술 백서 기반 작동 원리 요약</p>
+</section>
+
+<!-- SLIDE 10: INFERENCE ECONOMICS & TOKEN PRODUCTIVITY (NEW SLIDE FOR 15-SLIDE DECK) -->
+<section class="slide inference-slide" data-title="추론 경제학과 토큰 생산성" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> INFERENCE ECONOMICS</p><h2>학습에서 추론(Reasoning) 시대로,<br class="mobile-br"><em> 와트당 토큰 생산성의 도약</em></h2><p class="subtitle">생각하는 AI(Test-Time Scaling) 확산으로 연산 수요가 폭증하며, 토큰당 생성 원가를 낮추는 아키텍처가 핵심이 됐습니다.</p></div>
+ <div class="interactive-split">
+  <div class="chart-area">
+   <div class="chart-top"><h3 id="infChartTitle">세대별 실시간 LLM 추론 처리량 배수</h3><span>Hopper H100 = 1x 기준</span></div>
+   <div class="chart-box"><canvas id="inferenceChart" role="img" aria-label="Hopper 대비 Blackwell 및 Rubin 세대의 추론 경제성 비교"></canvas></div>
+   <div class="pill-switch" role="group" aria-label="추론 경제성 지표 선택">
+    <button class="selected" data-inf="throughput" aria-pressed="true">실시간 추론 처리량</button>
+    <button data-inf="energy" aria-pressed="false">와트당 에너지 효율</button>
+    <button data-inf="cost" aria-pressed="false">토큰당 비용 절감 지수</button>
+   </div>
+  </div>
+  <div class="finance-copy">
+   <p class="small-label" id="infStatLabel">GB200 NVL72 실시간 추론 도약</p>
+   <div class="big-stat"><span id="infStatNumber" data-count="30" data-decimals="0">30</span><small id="infStatUnit">x</small></div>
+   <p class="growth" id="infStatSub">H100 HGX 대비 거대언어모델(MoE) 추론 기준</p>
+   <div class="metric-rule"></div>
+   <h3 id="infInsightTitle">추론(Reasoning) 모델이 만드는 연산 승수 효과</h3>
+   <p id="infInsightText">단순 질의응답과 달리 다단계 추론(Chain-of-Thought) 모델은 답변 하나당 수십 배의 토큰을 생성합니다. NVL72는 72개 GPU를 단일 메모리처럼 묶어 지연시간 장벽을 해결합니다.</p>
+   <div class="caution"><strong>AI 팩토리의 수익성 공식 = 메가와트(MW)당 토큰 생산량</strong><p>전력 한계가 뚜렷한 데이터센터에서는 칩 가격보다 와트당 생성 가능한 토큰 수가 고객의 투자수익률(ROI)을 결정합니다.</p></div>
+  </div>
+ </div>
+ <p class="source-line">출처: NVIDIA GTC Inference Benchmarks (GPT-MoE 1.8T 파라미터 실시간 추론 기준) · 워크로드 및 배치 크기에 따라 편차 존재</p>
+</section>
+
+<!-- SLIDE 11: CUSTOMER DIVERSIFICATION & SOVEREIGN AI (NEW SLIDE FOR 15-SLIDE DECK) -->
+<section class="slide sovereign-slide" data-title="수요 다변화와 소버린 AI" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> DEMAND DIVERSIFICATION</p><h2>빅테크 클라우드를 넘어<br class="mobile-br"><em> 엔터프라이즈와 소버린 AI로 확산</em></h2><p class="subtitle">오른쪽 3대 수요 주체를 선택하면 데이터센터 매출 기여 구조와 핵심 투자 동력을 확인할 수 있습니다.</p></div>
+ <div class="interactive-split">
+  <div class="chart-area">
+   <div class="chart-top"><h3>데이터센터 수요 주체별 매출 비중과 성장성</h3><span>비중(%) 및 성장 기여</span></div>
+   <div class="chart-box"><canvas id="sovereignChart" role="img" aria-label="클라우드 CSP, 엔터프라이즈·소비자 인터넷, 소버린 AI 수요 비중"></canvas></div>
+   <p class="finance-chart-hint">오른쪽 수요 그룹 버튼을 눌러 부문별 상세 배경을 확인하세요.</p>
+  </div>
+  <div>
+   <div class="layer-cards" role="group" aria-label="수요 주체 선택">
+    <button class="layer-btn selected" data-sov="0" aria-pressed="true"><span>50%</span><div><strong>클라우드 하이퍼스케일러 (CSP)</strong><small>글로벌 퍼블릭 클라우드 및 멀티테넌트 AI 인프라</small></div></button>
+    <button class="layer-btn" data-sov="1" aria-pressed="false"><span>36%</span><div><strong>소비자 인터넷 & 엔터프라이즈</strong><small>추천 엔진, 생성형 AI 코파일럿, 산업별 특화 AI</small></div></button>
+    <button class="layer-btn" data-sov="2" aria-pressed="false"><span>14%</span><div><strong>국가 주도 소버린 AI (Sovereign AI)</strong><small>자국 언어·문화·공공 데이터 기반 국가 AI 팩토리</small></div></button>
+   </div>
+   <div class="layer-detail-box" id="sovDetailBox" aria-live="polite">
+    <h4 id="sovDetailTitle">클라우드 서비스 사업자(CSP): 데이터센터 매출의 약 50% 견인</h4>
+    <p id="sovDetailText">글로벌 빅테크 CSP들이 기존 범용 CPU 서버를 가속 컴퓨팅으로 교체하고, 자체 파운데이션 모델 학습 및 기업 고객용 GPU 클라우드 임대를 동시에 확대하고 있습니다.</p>
+   </div>
+  </div>
+ </div>
+ <p class="source-line">출처: NVIDIA FY2026 Form 10-K & CFO Commentary · 클라우드 CSP 비중 약 50%, 나머지는 소비자 인터넷·엔터프라이즈·소버린 AI로 구성</p>
+</section>
+
+<!-- SLIDE 12: PHYSICAL AI & 3-COMPUTER ARCHITECTURE (NEW SLIDE FOR 15-SLIDE DECK) -->
+<section class="slide physical-slide" data-title="피지컬 AI와 3-컴퓨터 아키텍처" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> PHYSICAL AI & ROBOTICS</p><h2>가상 세계에서 학습하고<br class="mobile-br"><em> 현실 세계에서 움직이는 피지컬 AI</em></h2><p class="subtitle">자율주행과 휴머노이드 로봇을 구동하는 엔비디아의 '3-컴퓨터(Three-Computer)' 파이프라인과 오토모티브 성장 추이입니다.</p></div>
+ <div class="interactive-split">
+  <div>
+   <div class="layer-cards" role="group" aria-label="피지컬 AI 3-컴퓨터 단계 선택">
+    <button class="layer-btn selected" data-phys="0" aria-pressed="true"><span>01</span><div><strong>DGX SuperPOD · AI 모델 학습</strong><small>대규모 멀티모달·행동 파운데이션 모델 훈련</small></div></button>
+    <button class="layer-btn" data-phys="1" aria-pressed="false"><span>02</span><div><strong>Omniverse & Cosmos · 시뮬레이션</strong><small>물리 법칙 기반 디지털 트윈 및 합성 데이터 생성</small></div></button>
+    <button class="layer-btn" data-phys="2" aria-pressed="false"><span>03</span><div><strong>AGX Thor · 온디바이스 엣지 추론</strong><small>자율주행차(DRIVE) 및 휴머노이드(Isaac) 실시간 제어</small></div></button>
+   </div>
+   <div class="layer-detail-box" id="physDetailBox" aria-live="polite">
+    <h4 id="physDetailTitle">1단계 컴퓨터 (DGX): 로봇과 자율주행의 두뇌를 만드는 훈련 공장</h4>
+    <p id="physDetailText">수조 개의 토큰과 주행·행동 비디오 데이터를 학습해 물리 세계를 이해하는 파운데이션 모델(Isaac GR00T, DRIVE AI)을 구축합니다.</p>
+   </div>
+  </div>
+  <div class="chart-area">
+   <div class="chart-top"><h3>오토모티브 & 로보틱스 연간 매출 추이</h3><span>백만 달러 (USD M)</span></div>
+   <div class="chart-box"><canvas id="physicalChart" role="img" aria-label="FY22부터 FY26까지 오토모티브 및 로보틱스 매출 성장 추이"></canvas></div>
+   <p class="finance-chart-hint">FY2026 오토모티브 매출은 16.94억 달러(+55.3%)로 역대 최대치를 경신했습니다.</p>
+  </div>
+ </div>
+ <p class="source-line">출처: NVIDIA FY2026 Form 10-K (Automotive Segment) & Physical AI Keynote · DRIVE Orin/Thor 양산 확대 반영</p>
+</section>
+
+<!-- SLIDE 13: CLOSING WATCH-LIST & RAW SOURCES BUTTON -->
+<section class="slide closing" data-title="앞으로 확인할 핵심 지표" hidden>
+ <div class="closing-copy">
+  <p class="eyebrow"><i></i> WHAT TO WATCH</p>
+  <h2>엔비디아의 다음 성과는<br><em>양산 수율과 고객 ROI에서</em></h2>
+  <p class="lead">폭발적인 인프라 투자 이후에는<br>차세대 랙 공급 속도와 고객의 실제 수익화를 확인해야 합니다.</p>
+  <figure class="closing-photo reactive" tabindex="0">
+   <img src="assets/nvidia-factory-rear.jpg" alt="액체 냉각 기반 엔비디아 AI 팩토리 슈퍼클러스터 개념 이미지">
+   <figcaption>액체 냉각 기반 AI Factory 슈퍼클러스터</figcaption>
+  </figure>
+ </div>
+ <div class="watch-list">
+  <article tabindex="0"><span>01</span><div><h3>차세대 랙 수율과 매출총이익률 방어</h3><p>Blackwell Ultra와 Rubin 전환 과정에서 패키징(CoWoS)·액체 냉각 수율을 안정화하고 매출총이익률 70%대 중반을 회복하는지 확인합니다.</p></div></article>
+  <article tabindex="0"><span>02</span><div><h3>빅테크 AI 설비투자(CapEx)의 수익화</h3><p>클라우드 CSP와 기업 고객들이 대규모 GPU 투자를 실제 AI 소프트웨어·추론 매출과 현금흐름으로 연결하는지 점검합니다.</p></div></article>
+  <article tabindex="0"><span>03</span><div><h3>소버린 AI와 피지컬 AI의 비중 확대</h3><p>소수 빅테크 편중도를 낮추고 국가별 소버린 AI, 엔터프라이즈 NIM 구독, 오토모티브·로보틱스 매출이 구조적으로 커지는지 봅니다.</p></div></article>
+  <button class="source-cta" id="closingSources">공식 공시 자료와 상세 재무 수치 보기 <span>↗</span></button>
+  <p class="closing-note">발표자의 핵심 관찰 포인트 · 투자 권유가 아닌 사업 및 기술 현황 브리핑</p>
+ </div>
+ <p class="source-line">근거: NVIDIA FY2024~FY2026 Form 10-K, Quarterly Financial Reports, GTC Architecture Whitepapers</p>
+</section>
+
+<!-- SLIDE 14: CLOSING BRAND FILM (15S MOTION GRAPHICS) -->
+<section class="slide brand-film-slide" data-title="NVIDIA 지능을 생산하는 시대" hidden>
+ <div class="slide-heading"><p class="eyebrow"><i></i> NVIDIA BRAND FILM</p><h2>NVIDIA <em>지능을 생산하는 시대</em></h2></div>
+ <div class="brand-film-player" id="brandFilmPlayer">
+  <div class="brand-film-screen"><video id="brandFilmVideo" muted playsinline preload="metadata" poster="assets/nvidia-brand-poster.jpg" src="assets/nvidia-brand-film.mp4" aria-label="NVIDIA 지능을 생산하는 시대, 15초 브랜드 홍보 모션그래픽" tabindex="0"></video><button id="brandFilmFallback" class="brand-film-fallback" hidden>▶ 영상 재생</button></div>
+  <div class="brand-film-controls"><button id="brandFilmToggle" aria-label="브랜드 영상 재생">▶ 재생</button><button id="brandFilmRestart" aria-label="브랜드 영상 처음부터 다시 보기">↻ 다시 보기</button><span id="brandFilmTime" class="brand-film-time">0:00 / 0:15</span><label class="brand-film-seek"><span class="sr-only">브랜드 영상 재생 위치</span><input id="brandFilmSeek" type="range" min="0" max="15" step="0.05" value="0" aria-label="브랜드 영상 재생 위치"></label><button id="brandFilmFullscreen" aria-label="브랜드 영상 전체화면">전체화면 ⛶</button></div>
+ </div>
+</section>
+
+<!-- SLIDE 15: CREATOR / EDITION INFO -->
+<section class="slide creator-slide" data-title="제작 안내 · 인터랙티브 모션 브리핑" hidden>
+ <div class="creator-panel">
+  <img class="creator-logo" src="assets/nvidia-logo-badge.png" alt="브리핑 로고" width="130" height="130">
+  <p class="eyebrow" id="creatorEyebrow"><i></i> INTERACTIVE MOTION BRIEFING</p>
+  <h2 id="creatorTitle">이 15장 HTML 슬라이드는<br><em>테슬라 브리핑 스타일 스킬</em>로 제작되었으며</h2>
+  <p class="creator-disclaimer" id="creatorNotice">상단 '글자 편집' 버튼을 눌러 브라우저에서 직접 문구를 수정하고,<br class="mobile-br"> 영상과 이미지까지 포함된 단일 HTML 파일로 다운로드할 수 있습니다.</p>
+  <button class="creator-guide" id="creatorBackToStart" data-go="0">1페이지 표지로 돌아가기 <span aria-hidden="true">↺</span></button>
+  <p class="creator-signature" id="creatorAttribution">인터랙티브 모션 브리핑 덱 · 15 SLIDES EDITION</p>
+ </div>
+</section>
+</main>
+
+<footer class="bottom-bar">
+ <div class="page-counter"><strong id="currentPage">01</strong><span>/ 15</span></div>
+ <span id="currentTitle">엔비디아가 AI 시대에 칩이 아닌 AI 공장을 짓는 이유</span>
+ <span class="footer-hint">마우스 · 키보드 방향키로 탐색 <span>← → 이동</span></span>
+ <div class="bottom-actions"><button class="icon-button" id="prev" aria-label="이전 슬라이드">←</button><button class="icon-button" id="next" aria-label="다음 슬라이드">→</button></div>
+</footer>
+<div class="progress-track"><div id="progress"></div></div>
+</div>
+
+<div id="textEditorBar" class="text-editor-bar" hidden>
+ <div class="text-editor-help">
+  <strong>글자 편집 모드 · 원하는 문구를 클릭해 바로 수정하세요</strong>
+  <span id="editorSaveStatus">이 브라우저에 자동 저장 · 0개 문구</span>
+ </div>
+ <div class="text-editor-actions">
+  <button id="editorRestore" disabled>선택 문구 원래대로</button>
+  <button id="editorDownload">HTML 다운로드</button>
+  <button id="editorDone">편집 완료</button>
+ </div>
+</div>
+
+<script id="savedTextEdits" type="application/json">{"version":1,"records":{}}</script>
+<div class="sr-only" id="live" aria-live="polite"></div>
+
+<!-- DIALOG 1: FULL RAW DATA SOURCES -->
+<dialog id="sources">
+ <div class="dialog-top"><h2>자료 출처와 원자료 수치</h2><button class="icon-button" id="sourceClose" aria-label="출처 창 닫기">×</button></div>
+ <div class="dialog-content">
+  <p>작성 기준: 엔비디아(NVIDIA Corporation) 최근 3개 회계연도 Form 10-K 공시 수치 및 GTC 공식 아키텍처 백서 기준. 향후 출시 제품 사양은 회사 발표 계획으로 표시했습니다.</p>
+  <ol>
+   <li><a href="https://investor.nvidia.com/" target="_blank" rel="noopener">NVIDIA Annual Report (Form 10-K)</a><p>최근 3개년 연결 손익계산서, 부문별 매출(Data Center, Gaming, Professional Visualization, Automotive) 및 현금흐름표 원자료.</p></li>
+   <li><a href="https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/" target="_blank" rel="noopener">NVIDIA Blackwell & Rubin Architecture Technical Whitepaper</a><p>GB200 NVL72, Blackwell Ultra(GB300), 차세대 Vera Rubin NVL144 아키텍처 제원 및 NVLink, FP4 트랜스포머 엔진 기술 설명.</p></li>
+  </ol>
+  <h3>최근 3개 회계연도 연간 원자료 (단위: 백만 달러)</h3>
+  <div class="table-scroll">
+   <table>
+    <thead><tr><th>항목</th><th>FY24</th><th>FY25</th><th>FY26</th></tr></thead>
+    <tbody>
+     <tr><th>연결 총매출</th><td>26,974</td><td>60,922</td><td>130,497</td></tr>
+     <tr><th>데이터센터 매출</th><td>15,005</td><td>47,525</td><td>115,186</td></tr>
+     <tr><th>게이밍 매출</th><td>9,067</td><td>10,447</td><td>11,350</td></tr>
+     <tr><th>전문 시각화 매출</th><td>1,544</td><td>1,553</td><td>1,878</td></tr>
+     <tr><th>오토모티브 매출</th><td>903</td><td>1,091</td><td>1,694</td></tr>
+     <tr><th>GAAP 매출총이익</th><td>15,356</td><td>44,301</td><td>97,858</td></tr>
+     <tr><th>GAAP 영업이익</th><td>4,224</td><td>32,972</td><td>81,453</td></tr>
+     <tr><th>GAAP 순이익</th><td>4,368</td><td>29,760</td><td>72,880</td></tr>
+     <tr><th>영업현금흐름</th><td>5,641</td><td>28,090</td><td>64,089</td></tr>
+     <tr><th>잉여현금흐름 (FCF)</th><td>3,808</td><td>27,021</td><td>60,853</td></tr>
+     <tr><th>GAAP 영업이익률</th><td>15.7%</td><td>54.1%</td><td>62.4%</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+</dialog>
+
+<!-- DIALOG 2: ROADMAP BOTTOM SHEET -->
+<dialog id="roadSheet" class="road-sheet" aria-labelledby="roadSheetTitle" aria-describedby="roadSheetIntro">
+ <div class="road-sheet-header"><div><p class="eyebrow"><i></i> GROWTH ROADMAP · DETAILS</p><p class="road-sheet-caption">차세대 성장 로드맵 자세히 보기</p></div><button class="road-sheet-close" id="roadSheetClose" aria-label="사업 상세 패널 닫기" autofocus><span>닫기</span><b aria-hidden="true">×</b></button></div>
+ <div class="road-sheet-scroll">
+  <div class="road-sheet-tabs" role="group" aria-label="상세 패널 사업 선택">
+   <button data-sheet-road="0" class="selected" aria-pressed="true">Rubin AI Factory</button>
+   <button data-sheet-road="1" aria-pressed="false">NIM & AI Enterprise</button>
+   <button data-sheet-road="2" aria-pressed="false">Cosmos & Omniverse</button>
+   <button data-sheet-road="3" aria-pressed="false">Isaac GR00T</button>
+  </div>
+  <div class="road-sheet-content" id="roadSheetContent" aria-live="polite" aria-atomic="true">
+   <div class="road-sheet-heading"><span id="roadSheetLetter" aria-hidden="true">R</span><div><p class="small-label" id="roadSheetStatus">차세대 랙 아키텍처 · 1년 주기 혁신</p><h2 id="roadSheetTitle">Vera Rubin NVL144와 HBM4 기반 AI 팩토리</h2></div></div>
+   <p class="road-sheet-intro" id="roadSheetIntro">차세대 실리콘 아키텍처와 랙 스케일 시스템 통합 계획을 나누어 살펴봅니다.</p>
+   <div class="road-sheet-columns">
+    <section><h3>회사 공개 내용</h3><ul id="roadSheetFacts"></ul></section>
+    <section><h3>살펴볼 세부 지표</h3><p class="road-sheet-context">발표자가 후속 자료에서 확인할 지점</p><ol id="roadSheetChecks"></ol></section>
+   </div>
+   <p class="road-sheet-note" id="roadSheetNote"></p>
+  </div>
+  <p class="road-sheet-source">근거: <a href="https://investor.nvidia.com/" id="roadSheetSource" target="_blank" rel="noopener">NVIDIA GTC Roadmap & Form 10-K</a> · <span id="roadSheetPages">Architecture & Strategy</span> · 회사 공개 계획과 발표자의 확인 지점을 구분했습니다.</p>
+ </div>
+</dialog>
+
+<!-- DIALOG 3: TECHNOLOGY CENTER MODAL -->
+<dialog id="techModal" class="tech-modal" aria-labelledby="techModalTitle" aria-describedby="techModalIntro">
+ <div class="tech-modal-header"><div><p class="eyebrow"><i></i> AI FACTORY TECHNOLOGY</p><p>핵심 기술 상세 설명</p></div><button id="techModalClose" class="tech-modal-close" aria-label="기술 상세 팝업 닫기" autofocus><span>닫기</span><b aria-hidden="true">×</b></button></div>
+ <div class="tech-modal-scroll">
+  <div class="tech-modal-tabs" role="group" aria-label="팝업 기술 선택">
+   <button data-modal-tech="0" aria-pressed="false">NVLink & NVSwitch 패브릭</button>
+   <button data-modal-tech="1" class="selected" aria-pressed="true">2세대 FP4 트랜스포머 엔진</button>
+   <button data-modal-tech="2" aria-pressed="false">100% 직수 액체 냉각 (DLC)</button>
+  </div>
+  <div class="tech-modal-content" aria-live="polite" aria-atomic="true">
+   <div class="tech-modal-heading"><span id="techModalLetter" aria-hidden="true">T</span><div><p class="small-label" id="techModalEnglish">MICRO-TENSOR SCALING FP4</p><h2 id="techModalTitle">2세대 FP4 트랜스포머 엔진</h2></div></div>
+   <p class="tech-modal-intro" id="techModalIntro"></p>
+   <h3 class="tech-flow-title">작동 원리 (3단계)</h3>
+   <ol class="tech-modal-flow" id="techModalFlow"></ol>
+   <div class="tech-modal-details">
+    <section><h3>AI 팩토리에 주는 효과</h3><p id="techModalEffect"></p></section>
+    <section><h3>적용과 아키텍처 구분</h3><p id="techModalApplication"></p></section>
+   </div>
+   <p class="tech-modal-note" id="techModalNote"></p>
+  </div>
+  <p class="tech-modal-source">출처: <a href="https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/" id="techModalSource" target="_blank" rel="noopener">NVIDIA Architecture Technical Whitepaper</a> · 제조사의 기술 백서를 바탕으로 작동 원리를 풀어 쓴 설명입니다.</p>
+ </div>
+</dialog>
+
+<!-- DIALOG 4: FINANCE RIGHT DRAWER (HALF-YEAR / QUARTERLY CUMULATIVE REVENUE) -->
+<dialog id="financeRevenueDrawer" class="fin-overlay fin-drawer" aria-labelledby="finRevenueTitle" aria-describedby="finRevenuePeriod">
+ <header class="fin-header"><div><p id="finRevenueEyebrow" class="eyebrow">FULL-YEAR REVENUE BREAKDOWN</p><h2 id="finRevenueTitle">FY2026 반기별 매출 구성</h2></div><button data-fin-close aria-label="누적 매출 패널 닫기" autofocus>닫기 <b>×</b></button></header>
+ <div class="fin-scroll">
+  <p id="finRevenuePeriod" class="fin-period">FY2026 연간 공시 기준 · 상반기(Q1~Q2) vs 하반기(Q3~Q4)</p>
+  <div class="fin-ytd-hero fin-stat"><strong id="finRevenueTotal">1,304.97억 달러</strong><p id="finRevenueGrowth">전년 609.22억 달러 대비 +114.2%</p></div>
+  <div class="fin-chart-wrap fin-ytd-chart"><canvas id="financeYtdChart" role="img" aria-label="FY2025와 FY2026 상반기·하반기 누적 매출 비교 막대그래프"></canvas></div>
+  <div class="fin-stat-grid two"><div class="fin-stat"><p id="finRevenueQ1Label">FY26 상반기 (H1)</p><strong id="finRevenueQ1">560.84억 달러</strong></div><div class="fin-stat"><p id="finRevenueQ2Label">FY26 하반기 (H2)</p><strong id="finRevenueQ2">744.13억 달러</strong></div></div>
+  <h3 id="finRevenueBreakdownTitle">연간 부문별 매출 구성</h3>
+  <dl class="fin-breakdown"><div><dt>데이터센터 (Compute + Networking)</dt><dd>1,151.86억 달러</dd></div><div><dt>게이밍 & AI PC</dt><dd>113.50억 달러</dd></div><div><dt>전문 시각화 & 오토모티브·기타</dt><dd>39.61억 달러</dd></div></dl>
+  <p id="finRevenueCutoff" class="fin-note">하반기(Q3 $35.08B + Q4 $39.33B)에만 744억 달러 이상의 매출을 기록하며 분기마다 최고 실적을 경신했습니다.</p>
+  <p id="finRevenueSource" class="fin-source">출처: <a data-fin-source href="https://investor.nvidia.com/" target="_blank" rel="noopener">NVIDIA FY2026 Form 10-K, 연결 손익계산서</a> · USD 기준</p>
+ </div>
+</dialog>
+
+<!-- DIALOG 5: FINANCE SECTOR BOTTOM SHEET -->
+<dialog id="financeSectorSheet" class="fin-overlay fin-sheet" data-business="0" aria-labelledby="finSectorTitle" aria-describedby="finSectorPeriod">
+ <header class="fin-header"><div><p id="finSectorEyebrow" class="eyebrow">SEGMENT DETAILS</p><h2 id="finSectorTitle">데이터센터 부문 자세히 보기</h2></div><button data-fin-close aria-label="사업 상세 패널 닫기" autofocus>닫기 <b>×</b></button></header>
+ <div class="fin-scroll">
+  <div class="fin-tabs" role="group" aria-label="세부 사업 선택">
+   <button data-fin-business="0" class="selected" aria-pressed="true">데이터센터</button>
+   <button data-fin-business="1" aria-pressed="false">게이밍·AI PC</button>
+   <button data-fin-business="2" aria-pressed="false">전문시각화·오토</button>
+  </div>
+  <p id="finSectorPeriod" class="fin-period">연간 비교: FY2025 vs FY2026 · 단위: 억 달러</p>
+  <div class="fin-sector-layout">
+   <div>
+    <div class="fin-stat-grid">
+     <div class="fin-stat"><p id="finSectorRevenueLabel">FY2026 매출</p><strong id="finSectorRevenue">1,151.86억 달러</strong></div>
+     <div class="fin-stat"><p id="finSectorYtdLabel">FY2025 매출</p><strong id="finSectorYtd">475.25억 달러</strong></div>
+     <div class="fin-stat"><p id="finSectorShareLabel">전체 매출 비중</p><strong id="finSectorShare">88.3%</strong></div>
+    </div>
+    <h3 id="finSectorScopeTitle">사업에 포함되는 내용</h3>
+    <p id="finSectorScope">HGX/DGX/NVL72 AI 서버 컴퓨팅 플랫폼, NVLink·InfiniBand·Spectrum-X 네트워킹, NVIDIA AI Enterprise 소프트웨어를 포함합니다.</p>
+    <h3 id="finSectorChangeTitle">이번 회계연도의 변화</h3>
+    <p id="finSectorChange">Hopper H200 수요 지속과 Blackwell 초기 대량 양산이 맞물리며 컴퓨팅 매출이 전년 대비 162% 급증했습니다.</p>
+    <p id="finSectorComposition" class="fin-note">컴퓨팅(Compute) 1,021.96억 달러 · 네트워킹(Networking) 129.90억 달러</p>
+   </div>
+   <div>
+    <p id="finSectorGrowth" class="fin-growth">전년 대비 +142.4%</p>
+    <div class="fin-chart-wrap fin-business-chart"><canvas id="financeBusinessChart" role="img" aria-label="부문별 전년 대비 매출 비교"></canvas></div>
+   </div>
+  </div>
+  <p id="finSectorSource" class="fin-source">출처: <a data-fin-source href="https://investor.nvidia.com/" target="_blank" rel="noopener">NVIDIA FY2026 Form 10-K, Segment Information</a></p>
+ </div>
+</dialog>
+
+<!-- DIALOG 6: FINANCE METRIC BRIDGE MODAL -->
+<dialog id="financeMetricModal" class="fin-overlay fin-modal" data-metric="profit" aria-labelledby="finMetricTitle" aria-describedby="finMetricLead">
+ <header class="fin-header"><div><p id="finMetricEyebrow" class="eyebrow">FY2026 FINANCIAL BRIDGE</p><h2 id="finMetricTitle">영업이익 자세히 보기</h2></div><button data-fin-close aria-label="재무 상세 팝업 닫기" autofocus>닫기 <b>×</b></button></header>
+ <div class="fin-scroll">
+  <p id="finMetricPeriod" class="fin-period">연간 실적 · FY2026 · 단위: 억 달러 (USD 100M)</p>
+  <p id="finMetricLead">매출총이익에서 연구개발비(R&D)와 판매관리비(SG&A)를 빼면 영업이익이 남습니다.</p>
+  <div class="fin-metric-hero fin-stat"><p id="finMetricValueLabel">FY2026 GAAP 영업이익</p><strong id="finMetricValue">814.53억 달러</strong><p id="finMetricCompare">전년 329.72억 달러 대비 +147.0% · 영업이익률 54.1% → 62.4%</p></div>
+  <h3 id="finMetricChartTitle">매출총이익에서 영업이익까지</h3>
+  <div class="fin-chart-wrap fin-bridge-chart"><canvas id="financeBridgeChart" role="img" aria-label="매출총이익에서 영업비용을 차감한 영업이익 연결 그래프"></canvas></div>
+  <p id="finMetricFormula" class="fin-formula">978.58억 − 129.14억 − 34.91억 = 814.53억 달러</p>
+  <p id="finMetricDetail">매출총이익은 978.58억 달러(이익률 75.0%), 영업비용 합계는 164.05억 달러입니다. 매출이 2배 이상 늘어나면서 고정비 레버리지 효과가 극대화됐습니다.</p>
+  <p id="finMetricNote" class="fin-note">GAAP 순이익은 728.80억 달러입니다. 영업이익은 이자수익 및 법인세 비용 반영 전 지표입니다.</p>
+  <p id="finMetricSource" class="fin-source">출처: <a data-fin-source href="https://investor.nvidia.com/" target="_blank" rel="noopener">NVIDIA FY2026 Form 10-K</a> · FCF = 영업현금흐름 − 자본지출(CapEx).</p>
+ </div>
+</dialog>
+
+<script src="assets/chart.umd.min.js"></script>
+<script>
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const slides=$$('.slide'),rail=$$('.rail button'),reduce=matchMedia('(prefers-reduced-motion: reduce)');let current=-1;
+Chart.defaults.font.family='NanumSquare, sans-serif';Chart.defaults.color='#88828f';Chart.defaults.font.size=14;Chart.defaults.animation.duration=reduce.matches?0:850;
+const pink='#e81768',wine='#920951',ink='#292a33',pale='#dcd8e0';
+const charts={};
+const base={responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:ink,padding:12,titleFont:{family:'NanumSquare'},bodyFont:{family:'NanumSquare'}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{font:{size:12}}},y:{beginAtZero:true,grid:{color:'#f0edf2'},border:{display:false},ticks:{font:{size:12}}}}};
+
+function makeFinance(mode='segments'){
+ const configs={
+  segments:{labels:['데이터센터','게이밍·AI PC','전문시각화·오토'],datasets:[{label:'FY2025',data:[47.525,10.447,2.950],backgroundColor:pale,borderRadius:3},{label:'FY2026',data:[115.186,11.350,3.961],backgroundColor:[ink,wine,pink],borderRadius:3}]},
+  profit:{labels:['GAAP 영업이익'],datasets:[{label:'FY2025',data:[32.972],backgroundColor:pale,borderRadius:3},{label:'FY2026',data:[81.453],backgroundColor:pink,borderRadius:3}]},
+  cash:{labels:['영업현금흐름','잉여현금흐름(FCF)'],datasets:[{label:'FY2025',data:[28.090,27.021],backgroundColor:pale,borderRadius:3},{label:'FY2026',data:[64.089,60.853],backgroundColor:pink,borderRadius:3}]}
+ };
+ const options=structuredClone(base);options.plugins.legend={display:true,position:'bottom',align:'start',labels:{boxWidth:9,boxHeight:9,padding:20,font:{size:12}}};options.plugins.tooltip.callbacks={label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toFixed(2)}B`};options.scales.y.ticks.callback=v=>'$'+v+'B';options.datasets={bar:{maxBarThickness:46}};options.scales.x.ticks.display=mode!=='segments';options.onClick=(event,elements,chart)=>window.financeDetails?.chartClick(event,elements,chart);
+ if(charts.finance){charts.finance.data=configs[mode];charts.finance.options=options;charts.finance.update('none');replayChart(charts.finance,true)}else charts.finance=new Chart($('#financeChart'),{type:'bar',data:configs[mode],options});
+}
+
+const stackData=[
+ {title:'1년 주기로 단축된 실리콘 아키텍처 혁신',text:'단일 GPU가 아닌 CPU(Grace/Vera), GPU(Blackwell/Rubin), DPU(BlueField) 3종 칩을 공동 설계해 시스템 단위의 병목을 제거합니다.',scores:[98,84,88,82]},
+ {title:'수만 개 GPU를 단일 컴퓨터로 묶는 초고속 패브릭',text:'랙 내부는 NVLink 5/6로, 랙 간 연결은 InfiniBand 및 Spectrum-X AI 이더넷으로 연결해 통신 대기 시간을 최소화합니다.',scores:[85,99,86,80]},
+ {title:'590만 개발자와 3,700개 가속 앱이 만든 CUDA 해자',text:'20년 가까이 축적된 CUDA-X 라이브러리와 NIM 추론 마이크로서비스가 고객의 전환 비용을 높이고 즉각적인 배포를 지원합니다.',scores:[88,85,99,90]},
+ {title:'산업별 파운데이션 모델과 디지털 트윈 플랫폼',text:'신약 개발(BioNeMo), 물리 시뮬레이션(Omniverse·Cosmos), 자율주행(DRIVE) 등 산업별 AI 팩토리 솔루션을 제공합니다.',scores:[82,80,91,97]}
+];
+let selectedStack=0;
+function makeStack(){
+ const o=structuredClone(base);o.indexAxis='y';o.scales.x.max=100;o.plugins.tooltip.callbacks={label:c=>`플랫폼 경쟁력 지수: ${c.raw}점`};
+ charts.stack=new Chart($('#stackChart'),{type:'bar',data:{labels:['Silicon (칩)','Interconnect','CUDA-X & NIM','Domain AI'],datasets:[{data:stackData[selectedStack].scores,backgroundColor:[0,1,2,3].map(i=>i===selectedStack?pink:pale),borderRadius:4,barThickness:28}]},options:o});
+}
+function selectStack(i){
+ selectedStack=i;selectWithin('[data-stack]',$(`[data-stack="${i}"]`));
+ const d=stackData[i];$('#stackDetailTitle').textContent=d.title;$('#stackDetailText').textContent=d.text;
+ if(charts.stack){charts.stack.data.datasets[0].data=d.scores;charts.stack.data.datasets[0].backgroundColor=[0,1,2,3].map(j=>j===i?pink:pale);replayChart(charts.stack,true)}
+ $('#stackDetailBox').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('#stackDetailBox').classList.add('pulse'));
+}
+$$('[data-stack]').forEach(b=>{b.addEventListener('click',()=>selectStack(+b.dataset.stack));b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')selectStack(+b.dataset.stack)})});
+
+const infModes={
+ throughput:{chartTitle:'세대별 실시간 LLM 추론 처리량 배수 (H100 = 1x)',data:[1,4,30,90],labels:['Hopper HGX','H200 HGX','Blackwell NVL72','Vera Rubin NVL144'],statLabel:'GB200 NVL72 실시간 추론 도약',statNum:30,unit:'x',sub:'H100 대비 거대 MoE 모델 실시간 추론 기준',title:'추론(Reasoning) 모델이 만드는 연산 승수 효과',text:'단순 질의응답과 달리 다단계 추론(Chain-of-Thought) 모델은 답변 하나당 수십 배의 토큰을 생성합니다. NVL72는 72개 GPU를 단일 메모리처럼 묶어 지연시간 장벽을 해결합니다.'},
+ energy:{chartTitle:'동일 토큰 생성 시 와트당 에너지 효율 배수 (H100 = 1x)',data:[1,2.2,25,65],labels:['Hopper HGX','H200 HGX','Blackwell NVL72','Vera Rubin NVL144'],statLabel:'랙 스케일 에너지 효율 향상',statNum:25,unit:'x',sub:'동일 전력(MW) 투입 시 토큰 생산 효율 개선',title:'전력 제약 데이터센터의 해법: 액체 냉각과 FP4',text:'구리 케이블 기반 NVLink 스파인과 100% 직수 액체 냉각(DLC)을 결합해 광트랜시버와 공랭 팬이 소비하던 막대한 전력을 연산으로 돌렸습니다.'},
+ cost:{chartTitle:'100만 토큰 생성당 상대 원가 지수 (낮을수록 우수, H100 = 100)',data:[100,55,5,2],labels:['Hopper HGX','H200 HGX','Blackwell NVL72','Vera Rubin NVL144'],statLabel:'토큰당 추론 비용 절감 효과',statNum:95,unit:'%',sub:'차세대 아키텍처 전환에 따른 TCO 절감폭',title:'칩 가격이 비싸져도 시스템 총소유비용(TCO)은 하락',text:'최신 세대 AI 팩토리는 초기 도입 단가가 높지만, 압도적인 처리량 덕분에 토큰 1개당 생산 원가를 최대 20분의 1 수준으로 낮춥니다.'}
+};
+let selectedInf='throughput';
+function makeInference(){
+ const d=infModes[selectedInf],o=structuredClone(base);
+ o.plugins.tooltip.callbacks={label:c=>`${c.label}: ${c.raw}${selectedInf==='cost'?' (상대원가)':'x'}`};
+ charts.inference=new Chart($('#inferenceChart'),{type:'bar',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:[pale,pale,pink,wine],borderRadius:4,maxBarThickness:54}]},options:o});
+}
+function selectInf(mode){
+ if(!infModes[mode])return;selectedInf=mode;
+ selectWithin('[data-inf]',$(`[data-inf="${mode}"]`));
+ const d=infModes[mode];
+ $('#infChartTitle').textContent=d.chartTitle;$('#infStatLabel').textContent=d.statLabel;
+ $('#infStatNumber').dataset.count=String(d.statNum);$('#infStatNumber').textContent=String(d.statNum);$('#infStatUnit').textContent=d.unit;
+ $('#infStatSub').textContent=d.sub;$('#infInsightTitle').textContent=d.title;$('#infInsightText').textContent=d.text;
+ count($('#infStatNumber'),true);
+ if(charts.inference){charts.inference.data.datasets[0].data=d.data;replayChart(charts.inference,true)}
+}
+$$('[data-inf]').forEach(b=>b.addEventListener('click',()=>selectInf(b.dataset.inf)));
+
+const sovDetails=[
+ {title:'클라우드 서비스 사업자(CSP): 데이터센터 매출의 약 50% 견인',text:'글로벌 빅테크 CSP들이 기존 범용 CPU 서버를 가속 컴퓨팅으로 교체하고, 자체 파운데이션 모델 학습 및 기업 고객용 GPU 클라우드 임대를 동시에 확대하고 있습니다.'},
+ {title:'소비자 인터넷 & 엔터프라이즈: 데이터센터 매출의 약 36% 차지',text:'글로벌 인터넷 플랫폼의 AI 추천·검색 고도화와 금융·헬스케어·제조 대기업들의 사내 에이전틱 AI 도입이 두 번째 거대한 수요 축을 형성하고 있습니다.'},
+ {title:'국가 주도 소버린 AI(Sovereign AI): 연간 백억 달러 규모로 급성장',text:'각국 정부와 통신사·국영 기업들이 자국 언어·법률·안보 데이터를 지키는 독자적 AI 팩토리를 구축하며 새로운 구조적 성장 동력으로 부상했습니다.'}
+];
+let selectedSov=0;
+function makeSovereign(){
+ const o=structuredClone(base);o.scales.y.max=60;o.scales.y.ticks.callback=v=>v+'%';
+ o.plugins.tooltip.callbacks={label:c=>`매출 비중: 약 ${c.raw}%`};
+ charts.sovereign=new Chart($('#sovereignChart'),{type:'bar',data:{labels:['클라우드 CSP','소비자 인터넷·기업','소버린 AI·공공'],datasets:[{data:[50,36,14],backgroundColor:[0,1,2].map(i=>i===selectedSov?pink:pale),borderRadius:4,maxBarThickness:64}]},options:o});
+}
+function selectSov(i){
+ selectedSov=i;selectWithin('[data-sov]',$(`[data-sov="${i}"]`));
+ $('#sovDetailTitle').textContent=sovDetails[i].title;$('#sovDetailText').textContent=sovDetails[i].text;
+ if(charts.sovereign){charts.sovereign.data.datasets[0].backgroundColor=[0,1,2].map(j=>j===i?pink:pale);replayChart(charts.sovereign,true)}
+ $('#sovDetailBox').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('#sovDetailBox').classList.add('pulse'));
+}
+$$('[data-sov]').forEach(b=>{b.addEventListener('click',()=>selectSov(+b.dataset.sov));b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')selectSov(+b.dataset.sov)})});
+
+const physDetails=[
+ {title:'1단계 컴퓨터 (DGX): 로봇과 자율주행의 두뇌를 만드는 훈련 공장',text:'수조 개의 토큰과 주행·행동 비디오 데이터를 학습해 물리 세계를 이해하는 파운데이션 모델(Isaac GR00T, DRIVE AI)을 구축합니다.'},
+ {title:'2단계 컴퓨터 (Omniverse & Cosmos): 가상 세계의 물리 시뮬레이션',text:'현실 세계에서 수집하기 위험하거나 부족한 주행·작업 시나리오를 디지털 트윈 속에서 수백만 번 시뮬레이션하며 강화학습을 수행합니다.'},
+ {title:'3단계 컴퓨터 (AGX Thor): 차량과 휴머노이드 내부의 실시간 엣지 두뇌',text:'Blackwell 아키텍처 기반 차량·로봇용 SoC인 DRIVE AGX Thor가 센서 데이터를 실시간 처리해 자율주행과 로봇 동작을 제어합니다.'}
+];
+let selectedPhys=0;
+function makePhysical(){
+ const o=structuredClone(base);o.scales.y.max=2000;o.scales.y.ticks.callback=v=>'$'+v+'M';
+ o.plugins.tooltip.callbacks={label:c=>`오토모티브·로보틱스 매출: $${c.raw.toLocaleString('en-US')}M`};
+ charts.physical=new Chart($('#physicalChart'),{type:'line',data:{labels:['FY22','FY23','FY24','FY25','FY26'],datasets:[{label:'오토모티브 매출',data:[566,903,1091,1250,1694],borderColor:pink,backgroundColor:'#e8176815',fill:true,tension:.28,pointBackgroundColor:['#fff','#fff','#fff','#fff',pink],pointBorderColor:pink,pointRadius:5,borderWidth:2.5}]},options:o});
+}
+function selectPhys(i){
+ selectedPhys=i;selectWithin('[data-phys]',$(`[data-phys="${i}"]`));
+ $('#physDetailTitle').textContent=physDetails[i].title;$('#physDetailText').textContent=physDetails[i].text;
+ if(charts.physical)replayChart(charts.physical,true);
+ $('#physDetailBox').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('#physDetailBox').classList.add('pulse'));
+}
+$$('[data-phys]').forEach(b=>{b.addEventListener('click',()=>selectPhys(+b.dataset.phys));b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')selectPhys(+b.dataset.phys)})});
+
+function ensureCharts(n){
+ if(n===2&&!charts.finance)makeFinance();
+ if(n===3&&!charts.annualRevenue)makeAnnual();
+ if(n===4&&!charts.delivery){
+  let o=structuredClone(base);o.scales.y.suggestedMax=40;o.scales.y.ticks.callback=v=>'$'+v+'B';o.plugins.tooltip.callbacks={label:ctx=>`데이터센터 매출: $${ctx.raw.toFixed(2)}B`};
+  charts.delivery=new Chart($('#deliveryChart'),{type:'line',data:{labels:['Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],datasets:[{label:'데이터센터 매출',data:[22.56,26.27,30.77,35.58],borderColor:pink,backgroundColor:'#e8176810',fill:true,tension:.25,pointBackgroundColor:['#fff','#fff','#fff',pink],pointBorderColor:pink,pointRadius:5,pointHoverRadius:8,borderWidth:2.5}]},options:o});
+  let e=structuredClone(base);e.scales.y.suggestedMax=4.5;e.scales.y.ticks.callback=v=>'$'+v+'B';e.plugins.tooltip.callbacks={label:ctx=>`네트워킹 매출: $${ctx.raw.toFixed(2)}B`};
+  charts.storage=new Chart($('#storageChart'),{type:'bar',data:{labels:['Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],datasets:[{label:'네트워킹 매출',data:[3.17,3.66,3.13,3.60],backgroundColor:[pale,wine,pale,pink],borderRadius:3,maxBarThickness:55}]},options:e});
+ }
+ if(n===5&&!charts.stack)makeStack();
+ if(n===9&&!charts.inference)makeInference();
+ if(n===10&&!charts.sovereign)makeSovereign();
+ if(n===11&&!charts.physical)makePhysical();
+}
+
+const numberFrames=new WeakMap();
+function countText(el,value){const decimals=+(el.dataset.decimals||0);return (el.dataset.countSign||'')+value.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals})}
+function finishCount(el){const frame=numberFrames.get(el);if(frame)cancelAnimationFrame(frame);numberFrames.delete(el);el.textContent=countText(el,+el.dataset.count);el.dataset.countProgress='1';delete el.dataset.running}
+function count(el,force=false){if(window.deckEditor?.active||el.closest("[data-text-override]"))return;if(reduce.matches){finishCount(el);return}if(el.dataset.running&&!force)return;const old=numberFrames.get(el);if(old)cancelAnimationFrame(old);const value=+el.dataset.count;el.dataset.running='true';el.dataset.countProgress='0';el.textContent=countText(el,0);const started=performance.now();function frame(now){const progress=Math.min((now-started)/1100,1);el.dataset.countProgress=progress.toFixed(3);el.textContent=countText(el,value*(1-(1-progress)**3));if(progress<1)numberFrames.set(el,requestAnimationFrame(frame));else finishCount(el)}numberFrames.set(el,requestAnimationFrame(frame))}
+
+function go(n,hash=true){
+ n=Math.max(0,Math.min(slides.length-1,n));if(n===current)return;
+ current=n;
+ slides.forEach((slide,i)=>{slide.hidden=i!==n;slide.classList.toggle('active',i===n);slide.setAttribute('aria-hidden',i!==n)});
+ rail.forEach((button,i)=>{if(i===n)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current')});
+ $('#currentPage').textContent=String(n+1).padStart(2,'0');$('#currentTitle').textContent=slides[n].dataset.title;
+ $('#prev').disabled=n===0;$('#next').disabled=n===slides.length-1;$('#progress').style.width=`${(n+1)/slides.length*100}%`;
+ if(hash)history.replaceState(null,'',`#${n+1}`);
+ ensureCharts(n);refreshReactiveNumbers(slides[n]);
+ Object.values(charts).forEach(chart=>{if(chart.canvas.closest('.slide')===slides[n]){chart.resize();chart.stop();chart.update('none')}});
+ document.body.classList.toggle('video-mode',n===1);
+ window.scrollTo({top:0,behavior:'instant'});
+ $('#live').textContent=`${n+1} / ${slides.length}장. ${slides[n].dataset.title}`;
+ syncVideoSlide(n===1);
+ window.brandFilm?.setActive(slides[n].classList.contains('brand-film-slide'));
+}
+$$('[data-go]').forEach(button=>button.addEventListener('click',()=>go(+button.dataset.go)));
+$('#prev').onclick=()=>go(current-1);$('#next').onclick=()=>go(current+1);
+document.addEventListener('keydown',event=>{
+ if(event.target.closest('[contenteditable="true"]'))return;
+ if($$('dialog[open]').length)return;
+ if(current===1&&['Enter',' '].includes(event.key)&&!event.target.closest('button,a,input,select,textarea')){event.preventDefault();if(!event.repeat)togglePromoVideo();return}
+ if(event.target.closest('button,a,input,select,textarea')&&[' ','Enter'].includes(event.key))return;
+ if(['ArrowRight','PageDown'].includes(event.key)){event.preventDefault();go(current+1)}
+ if(['ArrowLeft','PageUp'].includes(event.key)){event.preventDefault();go(current-1)}
+ if(event.key==='Home')go(0);if(event.key==='End')go(slides.length-1);
+});
+
+const promoVideo=$('#promoVideo'),videoStage=$('#videoStage');
+let videoSeekActive=false;
+function mediaTime(seconds){seconds=Math.max(0,Math.floor(seconds||0));return Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0')}
+function updateVideoControls(){
+ const duration=Number.isFinite(promoVideo.duration)?promoVideo.duration:15;
+ $('#videoSeek').max=String(duration);if(!videoSeekActive)$('#videoSeek').value=String(promoVideo.currentTime||0);
+ $('#videoTime').textContent=mediaTime(promoVideo.currentTime)+' / '+mediaTime(duration);
+ $('#videoToggle').textContent=promoVideo.ended?'↻ 다시 재생':promoVideo.paused?'▶ 재생':'Ⅱ 일시정지';
+ $('#videoToggle').setAttribute('aria-label',promoVideo.ended?'영상 다시 재생':promoVideo.paused?'영상 재생':'영상 일시정지');
+ const full=!!document.fullscreenElement;
+ $('#videoFullscreen').innerHTML=full?'전체화면 해제 <b aria-hidden="true">⛶</b>':'전체화면 <b aria-hidden="true">⛶</b>';
+ $('#videoFullscreen').setAttribute('aria-label',full?'영상 전체화면 해제':'영상 전체화면');
+}
+function playPromoVideo(restart=false){
+ if(current!==1||window.deckEditor?.active)return;
+ if(restart||promoVideo.ended)promoVideo.currentTime=0;
+ promoVideo.muted=true;
+ const play=promoVideo.play();if(play)play.catch(()=>{if(current===1)$('#videoPlayFallback').hidden=false});
+}
+function requestVideoFullscreen(){
+ if(document.fullscreenElement)return;
+ if(navigator.userActivation&&!navigator.userActivation.isActive)return;
+ if(videoStage.requestFullscreen)videoStage.requestFullscreen().catch(()=>{});
+}
+function syncVideoSlide(active){
+ promoVideo.autoplay=active;
+ if(active&&!window.deckEditor?.active){
+  $('#videoPlayFallback').hidden=true;playPromoVideo(true);videoStage.focus({preventScroll:true});
+ }else{
+  promoVideo.pause();$('#videoPlayFallback').hidden=true;
+  if(document.fullscreenElement===videoStage)document.exitFullscreen().catch(()=>{});
+ }
+ updateVideoControls();
+}
+function togglePromoVideo(){if(promoVideo.paused||promoVideo.ended)playPromoVideo();else promoVideo.pause()}
+$('#videoToggle').addEventListener('click',togglePromoVideo);
+$('#videoRestart').addEventListener('click',()=>playPromoVideo(true));
+$('#videoPlayFallback').addEventListener('click',()=>playPromoVideo());
+promoVideo.addEventListener('click',togglePromoVideo);
+promoVideo.addEventListener('play',()=>{if(current!==1){promoVideo.pause();return}$('#videoPlayFallback').hidden=true;updateVideoControls()});
+for(const event of ['pause','ended','loadedmetadata','timeupdate','durationchange'])promoVideo.addEventListener(event,updateVideoControls);
+$('#videoSeek').addEventListener('input',event=>{videoSeekActive=true;promoVideo.currentTime=+event.target.value;updateVideoControls()});
+$('#videoSeek').addEventListener('change',()=>{videoSeekActive=false;updateVideoControls()});
+$('#videoSeek').addEventListener('keydown',event=>event.stopPropagation());
+$('#videoFullscreen').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});else requestVideoFullscreen()});
+document.addEventListener('fullscreenchange',updateVideoControls);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)promoVideo.pause()});
+
+window.addEventListener('hashchange',()=>go((parseInt(location.hash.slice(1),10)||1)-1,false));
+function intent(selector,fn){$$(selector).forEach(b=>{b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')fn(b)});b.addEventListener('focus',()=>fn(b));b.addEventListener('click',()=>fn(b))})}
+function selectWithin(selector,b){$$(selector).forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',x===b)})}
+
+const financeInsights={
+ segments:['사업별 매출','데이터센터 매출 비중 88.3%','데이터센터 매출은 1,151.86억 달러로 전년 대비 142.4% 급증했습니다. 클라우드 CSP와 기업들의 AI 학습·추론 클러스터 구축이 성장을 주도했습니다.'],
+ profit:['GAAP 영업이익','영업이익 전년 대비 +147.0%','영업이익은 329.72억 달러에서 814.53억 달러로 2.47배 증가했습니다. 매출총이익률 75.0%와 영업이익률 62.4%라는 기록적인 수익성을 달성했습니다.'],
+ cash:['투자와 현금흐름','잉여현금흐름(FCF) 608.5억 달러','영업현금흐름은 640.89억 달러, 자본지출을 제외한 잉여현금흐름은 608.53억 달러로 전년 대비 125.2% 증가해 차세대 R&D와 주주환원을 뒷받침합니다.']
+};
+
+const roads=[
+ ['R','Vera Rubin NVL144와 HBM4 기반 AI 팩토리','Blackwell에 이어 차세대 Rubin GPU와 Vera CPU, HBM4 메모리를 결합한 랙 스케일 AI 팩토리 로드맵을 추진하고 있습니다.','TSMC CoWoS-L 패키징 및 HBM4 메모리 수율과 고객 인도 일정'],
+ ['N','NVIDIA AI Enterprise와 NIM 구독 확대','기업들이 파운데이션 모델을 즉시 배포할 수 있는 표준화된 추론 마이크로서비스(NIM)로 반복적인 소프트웨어 매출(ARR)을 확대합니다.','글로벌 엔터프라이즈 유료 라이선스 전환율과 연간 반복 매출 규모'],
+ ['C','Cosmos 월드 파운데이션 모델과 Omniverse','현실 세계의 물리 법칙을 학습한 Cosmos와 3D 디지털 트윈 Omniverse를 결합해 로봇·자율주행 훈련용 합성 데이터를 생성합니다.','제조·물류·완성차 기업의 디지털 트윈 채택 확산과 플랫폼 과금'],
+ ['G','Isaac GR00T 휴머노이드 로봇 파운데이션','범용 휴머노이드 로봇의 인지·제어를 담당하는 GR00T 모델과 Jetson Thor 칩셋을 글로벌 로봇 제조사에 공급합니다.','파트너사의 공장 내 휴머노이드 실증 배치와 로봇용 칩셋 양산 물량']
+];
+let selectedRoad=0,roadSheetOpener=null,roadFocusReturning=false,roadHoverReady=true;
+const roadSheet=$('#roadSheet');
+const roadDetails=[
+ {status:'차세대 랙 아키텍처 · 1년 주기 혁신',intro:'단일 GPU 성능을 넘어 랙 전체의 연산 밀도와 메모리 대역폭을 끌어올리는 차세대 플랫폼 계획입니다.',facts:['88코어 커스텀 ARM CPU(Vera)와 차세대 GPU(Rubin)를 결합한 슈퍼칩 아키텍처를 공개했습니다.','HBM4 초고대역폭 메모리와 3.6TB/s 속도의 NVLink 6 인터커넥트를 채택할 계획입니다.'],checks:['HBM4 메모리 공급망 확보와 양산 수율 안정화','기존 Blackwell 데이터센터 인프라와의 전력·냉각 호환성','초대형 CSP 고객사의 선주문 및 실제 배치 일정'],note:'차세대 아키텍처 제원은 회사의 기술 로드맵 기준이며, 실제 양산 시점의 클럭 및 구성은 달라질 수 있습니다.',pages:'GTC Roadmap'},
+ {status:'엔터프라이즈 AI 소프트웨어 · 반복 매출',intro:'하드웨어 판매 이후 설치된 수백만 개의 GPU 위에서 구동되는 엔터프라이즈 소프트웨어 생태계를 살펴봅니다.',facts:['GPU당 연간 라이선스 방식으로 제공되는 NVIDIA AI Enterprise와 NIM 컨테이너 배포를 확대하고 있습니다.','주요 클라우드 마켓플레이스와 글로벌 SI(시스템 통합) 파트너를 통해 기업 도입 장벽을 낮췄습니다.'],checks:['설치 기반(Installed Base) 대비 유료 엔터프라이즈 라이선스 채택률','오픈소스 추론 엔진 대비 NIM의 성능·관리 우위 유지','소프트웨어 및 서비스 부문의 연간 반복 매출(ARR) 성장 속도'],note:'소프트웨어 매출은 하드웨어 대비 매출총이익률이 높으나, 전체 매출에서 차지하는 비중은 아직 초기 성장 단계입니다.',pages:'Form 10-K, pp. 7–9'},
+ {status:'물리 AI 시뮬레이션 · 디지털 트윈',intro:'공장, 물류창고, 자율주행 환경을 가상 공간에 복제해 AI를 훈련시키는 시뮬레이션 플랫폼입니다.',facts:['물리 법칙을 이해하는 월드 파운데이션 모델(Cosmos)을 공개해 합성 데이터 생성 비용을 낮췄습니다.','현대차, 폭스바겐, 폭스콘 등 글로벌 제조사들이 공장 디지털 트윈에 Omniverse를 도입하고 있습니다.'],checks:['가상 시뮬레이션 학습 결과의 현실 전이(Sim-to-Real) 정확도','산업용 디지털 트윈의 실제 공장 가동률 및 수율 개선 효과','Cosmos 모델 생태계 확산과 엔터프라이즈 상용 계약'],note:'물리 시뮬레이션은 로보틱스와 자율주행 상용화를 앞당기는 핵심 도구이며, 중장기 플랫폼 락인 효과를 목표로 합니다.',pages:'Physical AI Overview'},
+ {status:'범용 휴머노이드 로보틱스 · 엣지 AI',intro:'언어와 영상을 이해하고 실제 물리적 행동을 수행하는 휴머노이드 로봇 플랫폼 전략입니다.',facts:['휴머노이드 로봇 개발을 위한 파운데이션 모델 Isaac GR00T와 시뮬레이션 프레임워크를 발표했습니다.','Blackwell 기반 로봇 전용 프로세서 Jetson Thor를 통해 온디바이스 실시간 추론을 지원합니다.'],checks:['글로벌 로봇 제조사들의 GR00T 및 Jetson Thor 채택 규모','제조·물류 현장에서의 휴머노이드 작업 안전성과 경제성 입증','오토모티브·로보틱스 부문의 중장기 매출 기여도 상승'],note:'휴머노이드 로봇은 초기 실증 단계에서 양산 단계로 넘어가는 과정에 있으며, 상용화 속도는 산업 현장 검증에 달려 있습니다.',pages:'Robotics Keynote'}
+];
+function selectRoad(i){if(i===selectedRoad)return;selectedRoad=i;selectWithin('[data-road]',$(`[data-road="${i}"]`));const d=roads[i];$('.road-index').textContent=d[0];$('#roadTitle').textContent=d[1];$('#roadText').textContent=d[2];$('#roadNext').textContent=d[3];$('.road-detail').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('.road-detail').classList.add('pulse'))}
+function renderRoadSheet(i){selectRoad(i);const d=roadDetails[i];selectWithin('[data-sheet-road]',$(`[data-sheet-road="${i}"]`));$('#roadSheetLetter').textContent=roads[i][0];$('#roadSheetTitle').textContent=roads[i][1];$('#roadSheetStatus').textContent=d.status;$('#roadSheetIntro').textContent=d.intro;$('#roadSheetNote').textContent=d.note;$('#roadSheetPages').textContent=d.pages;for(const [id,items] of [['#roadSheetFacts',d.facts],['#roadSheetChecks',d.checks]]){$(id).replaceChildren(...items.map(text=>{const li=document.createElement('li');li.textContent=text;return li}))}$$('[data-road]').forEach(b=>b.setAttribute('aria-expanded',String(roadSheet.open&&+b.dataset.road===i)));$('#roadDetailOpen').setAttribute('aria-expanded',String(roadSheet.open));$('.road-sheet-scroll').scrollTop=0}
+function openRoadSheet(i,opener){roadSheetOpener=opener;renderRoadSheet(i);roadSheet.classList.remove('is-closing');roadSheet.showModal();$('.road-sheet-scroll').scrollTop=0;document.documentElement.classList.add('road-sheet-open');$('#roadDetailOpen').setAttribute('aria-expanded','true');$(`[data-road="${i}"]`).setAttribute('aria-expanded','true')}
+async function closeRoadSheet(){if(!roadSheet.open||roadSheet.classList.contains('is-closing'))return;roadSheet.classList.add('is-closing');if(!reduce.matches)await Promise.allSettled(roadSheet.getAnimations().map(animation=>animation.finished));roadFocusReturning=true;roadHoverReady=false;roadSheet.close();roadSheet.classList.remove('is-closing');document.documentElement.classList.remove('road-sheet-open');$$('[data-road],#roadDetailOpen').forEach(b=>b.setAttribute('aria-expanded','false'));if(roadSheetOpener?.isConnected)roadSheetOpener.focus({preventScroll:true});queueMicrotask(()=>roadFocusReturning=false)}
+$$('[data-road]').forEach(button=>{button.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&!roadSheet.open&&!roadFocusReturning&&roadHoverReady)selectRoad(+button.dataset.road)});button.addEventListener('pointermove',event=>{if(event.pointerType!=='touch'&&!roadSheet.open&&!roadFocusReturning){roadHoverReady=true;selectRoad(+button.dataset.road)}});button.addEventListener('focus',()=>{if(!roadSheet.open&&!roadFocusReturning)selectRoad(+button.dataset.road)});button.addEventListener('click',()=>openRoadSheet(+button.dataset.road,button))});
+$('#roadDetailOpen').addEventListener('click',event=>openRoadSheet(selectedRoad,event.currentTarget));
+$$('[data-sheet-road]').forEach(button=>button.addEventListener('click',()=>renderRoadSheet(+button.dataset.sheetRoad)));
+$('#roadSheetClose').addEventListener('click',closeRoadSheet);
+roadSheet.addEventListener('keydown',event=>{if(event.key!=='Tab')return;const items=[...roadSheet.querySelectorAll('button:not([disabled]),a[href]')],first=items[0],last=items[items.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}else if(!roadSheet.contains(document.activeElement)){event.preventDefault();(event.shiftKey?last:first).focus()}});
+roadSheet.addEventListener('cancel',event=>{event.preventDefault();closeRoadSheet()});
+roadSheet.addEventListener('click',event=>{if(event.target!==roadSheet)return;const r=roadSheet.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeRoadSheet()});
+
+const trims=[
+ ['주력 양산 모델 · HBM3e 192GB','72개 GPU를 하나로 묶은 표준 AI 팩토리','36개의 Grace CPU와 72개의 Blackwell GPU를 NVLink 5로 연결해 1.44 ExaFLOPS의 FP4 추론 성능과 130TB/s 대역폭을 제공합니다.','랙당 전력 밀도가 최대 120kW에 달해 데이터센터의 직수 액체 냉각(DLC) 인프라 구축이 함께 요구됩니다.'],
+ ['업그레이드 사양 · HBM3e 288GB (12-Hi)','추론과 에이전틱 AI를 강화한 Blackwell Ultra','GPU당 HBM3e 메모리를 288GB로 50% 확장하고 FP4 연산 성능을 높여 긴 문맥(Long-Context) 추론 워크로드 처리량을 극대화합니다.','아래 범위 차트는 기존 192GB 대비 확장된 288GB 메모리 및 추론 성능 향상 폭을 보여줍니다.'],
+ ['차세대 로드맵 · HBM4 & NVLink 6','차세대 아키텍처 Vera Rubin NVL144','88코어 Vera CPU와 Rubin GPU, 초고대역폭 HBM4 메모리를 결합해 랙당 최대 3.6 ExaFLOPS의 FP4 추론 성능을 목표로 합니다.','차세대 로드맵 발표 사양이며, 최종 양산 클럭과 고객 인도 일정은 후속 공시를 통해 확인해야 합니다.']
+];
+function acceleration(){if(charts.acceleration){charts.acceleration.resize();return}let o=structuredClone(base);o.indexAxis='y';o.plugins.tooltip={enabled:false};o.plugins.legend={display:false};o.scales={x:{min:0,max:320,ticks:{stepSize:80,callback:v=>v+'GB',font:{size:11}},grid:{color:'#eee9ee'},border:{display:false}},y:{grid:{display:false},border:{display:false},ticks:{display:false}}};const bound={id:'bound',afterDraw(c){let {ctx,scales:{x,y}}=c;ctx.save();ctx.strokeStyle=pink;ctx.lineWidth=2;ctx.setLineDash([3,3]);let a=x.getPixelForValue(288);ctx.beginPath();ctx.moveTo(a,c.chartArea.top);ctx.lineTo(a,c.chartArea.bottom);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=wine;ctx.font='bold 14px NanumSquare';ctx.textAlign='center';ctx.fillText('HBM3e 12-Hi · 288GB / GPU (+50%)',x.getPixelForValue(144),y.getPixelForValue(0)+4);ctx.restore()}};charts.acceleration=new Chart($('#accelerationChart'),{type:'bar',data:{labels:['B-Ultra'],datasets:[{data:[[0,288]],backgroundColor:'#e8176827',barThickness:22}]},options:o,plugins:[bound]})}
+let selectedTrim=0;const trimNames=['Blackwell','Blackwell Ultra','Vera Rubin'];const trimVisualCaptions=['GB200 NVL72 · 표준 액체냉각 랙','GB300 NVL72 · 288GB HBM3e 추론 특화','Vera Rubin NVL144 · HBM4 차세대 플랫폼'];
+function selectTrim(value,animate=true){const i=Math.max(0,Math.min(2,Number(value))),changed=i!==selectedTrim;selectedTrim=i;const lever=$('#trimLever');lever.value=String(i);lever.setAttribute('aria-valuetext',trimNames[i]);lever.style.setProperty('--lever-fill',`${i*50}%`);selectWithin('[data-trim]',$(`[data-trim="${i}"]`));$$('[data-trim-image]').forEach(image=>image.hidden=+image.dataset.trimImage!==i);$('#trimVisual').dataset.activeTrim=String(i);$('#trimVisual').setAttribute('aria-label',trimNames[i]+' 아키텍처 이미지');$('#trimVisualTag').textContent=trimNames[i];$('#trimVisualCaption').textContent=trimVisualCaptions[i];$('#trimVisualSource').textContent='NVIDIA ARCHITECTURE · 랙 스케일 스펙 비주얼';if(!changed)return;const d=trims[i];$('#trimName').textContent=trimNames[i];$('#trimLabel').textContent=d[0];$('#trimTitle').textContent=d[1];$('#trimText').textContent=d[2];$('#trimNote').textContent=d[3];$('#trimChartArea').hidden=i!==1;if(i===1){acceleration();replayChart(charts.acceleration,true)}if(animate&&!reduce.matches){$('#trimDetails').classList.remove('pulse');requestAnimationFrame(()=>$('#trimDetails').classList.add('pulse'))}}
+$$('[data-trim]').forEach(button=>button.addEventListener('click',()=>selectTrim(button.dataset.trim)));
+$('#trimLever').addEventListener('input',event=>selectTrim(event.target.value));
+$('#trimLever').addEventListener('keydown',event=>{let next=selectedTrim;if(['ArrowUp','ArrowRight'].includes(event.key))next++;else if(['ArrowDown','ArrowLeft'].includes(event.key))next--;else if(event.key==='Home')next=0;else if(event.key==='End')next=2;else if(event.key===' '){event.preventDefault();event.stopPropagation();return}else return;event.preventDefault();event.stopPropagation();selectTrim(next)});
+
+const techs=[
+ ['72~144개 GPU를 단일 메모리 공간으로 연결','랙 내부의 모든 GPU가 NVSwitch 스파인을 통해 초당 1.8~3.6TB 속도로 직접 통신하며, 거대 모델 추론 시 발생하는 통신 병목을 제거합니다.'],
+ ['정밀도를 지키면서 추론 속도를 2배 높이는 4비트 연산','마이크로 텐서 스케일링 기술로 모델 가중치를 FP4(4비트)로 양자화해 메모리 사용량은 절반으로 줄이고 처리량은 극대화합니다.'],
+ ['랙당 120kW 이상의 고밀도 열을 식히는 직수 냉각','칩 위의 콜드플레이트(Cold Plate)로 냉각수를 직접 순환시켜 공랭식 한계를 돌파하고 데이터센터 냉각 전력을 최대 25% 절감합니다.']
+];
+let selectedTech=1,techModalOpener=null,techFocusReturning=false,techHoverReady=true;
+const techModal=$('#techModal');
+const techDetails=[
+ {letter:'N',title:'NVLink & NVSwitch 패브릭',english:'ALL-TO-ALL GPU INTERCONNECT',intro:'수십 개의 GPU가 마치 하나의 거대한 GPU처럼 메모리를 공유하며 통신하게 만드는 초고속 인터커넥트 기술입니다.',steps:[['구리 백플레인 연결','랙 내부 72개 GPU를 5,000가닥 이상의 무손실 구리 케이블로 연결합니다.'],['NVSwitch 올투올 스위칭','9개의 NVSwitch 트레이가 모든 GPU 간 1.8TB/s 대역폭을 동시에 보장합니다.'],['단일 공유 메모리 구동','최대 30TB의 통합 메모리를 형성해 수조 파라미터 모델을 실시간 추론합니다.']],effect:'모델 파라미터가 여러 GPU에 나뉘어 있을 때 발생하는 토큰 생성 지연(Latency)을 획기적으로 줄여 실시간 추론 처리량을 높입니다.',application:'랙 내부(Scale-Up)에는 NVLink를, 여러 랙을 묶는 클러스터(Scale-Out)에는 Quantum InfiniBand 또는 Spectrum-X 이더넷을 결합합니다.',note:'핵심 구분: NVLink는 랙 내부 GPU를 하나의 거대한 칩으로 묶는 기술이며, 일반 PCIe 대비 14배 이상 빠른 대역폭을 제공합니다.'},
+ {letter:'T',title:'2세대 FP4 트랜스포머 엔진',english:'MICRO-TENSOR SCALING FP4',intro:'AI 모델의 정확도 손실을 최소화하면서 연산 단위를 4비트 부동소수점(FP4)으로 압축해 처리량과 메모리 효율을 2배로 높이는 기술입니다.',steps:[['마이크로 블록 분석','텐서 데이터를 미세 블록 단위로 쪼개어 동적 범위(Dynamic Range)를 실시간 분석합니다.'],['동적 스케일링 변환','각 마이크로 블록에 최적화된 스케일 팩터를 곱해 4비트(FP4) 정밀도로 안전하게 양자화합니다.'],['텐서 코어 고속 연산','Blackwell·Rubin 텐서 코어에서 FP8 대비 2배 빠른 속도와 절반의 메모리로 추론을 수행합니다.']],effect:'동일한 HBM 메모리 용량 안에 2배 큰 AI 모델을 적재할 수 있으며, 와트당 생성 가능한 토큰 수를 극적으로 끌어올립니다.',application:'거대언어모델(LLM) 및 전문가 혼합(MoE) 모델의 실시간 추론(Inference)과 긴 문맥 처리에 핵심적으로 적용됩니다.',note:'정밀도 보정 하드웨어가 텐서 코어 내부에 통합되어 있어 소프트웨어 오버헤드 없이 FP4 가속이 이루어집니다.'},
+ {letter:'L',title:'100% 직수 액체 냉각 (DLC)',english:'DIRECT-TO-CHIP LIQUID COOLING',intro:'랙당 120kW를 넘어서는 초고밀도 AI 팩토리의 발열을 공기가 아닌 액체 순환으로 직접 제어하는 열관리 아키텍처입니다.',steps:[['콜드플레이트 열 흡수','GPU·CPU·NVSwitch 칩 표면에 밀착된 구리 냉각판이 발열을 즉시 흡수합니다.'],['매니폴드 온수 순환','랙 수직 배관(Manifold)과 CDU(냉각수 분배 장치)가 데워진 냉각수를 외부로 배출합니다.'],['전력 절감 및 고밀도 배치','대형 냉각 팬을 제거해 데이터센터 전력(PUE)을 낮추고 상면 공간 효율을 극대화합니다.']],effect:'공랭식으로는 불가능한 초고밀도 GPU 배치를 가능하게 하여 구리선 도달 거리 안에 72~144개의 GPU를 밀집시킬 수 있습니다.',application:'GB200/GB300 NVL72 및 차세대 Vera Rubin NVL144 랙 스케일 시스템의 표준 냉각 방식으로 적용됩니다.',note:'액체 냉각은 단순 발열 제어를 넘어 GPU 간 물리적 거리를 좁혀 초고속 NVLink 구리 배선을 가능케 한 숨은 일등공신입니다.'}
+];
+function selectTech(i){if(i===selectedTech)return;selectedTech=i;selectWithin('[data-tech]',$(`[data-tech="${i}"]`));const d=techs[i];$('#techTitle').textContent=d[0];$('#techText').textContent=d[1];$('.tech-explain').classList.remove('pulse');if(!reduce.matches)requestAnimationFrame(()=>$('.tech-explain').classList.add('pulse'))}
+function renderTechModal(i){selectTech(i);const d=techDetails[i];selectWithin('[data-modal-tech]',$(`[data-modal-tech="${i}"]`));$('#techModalLetter').textContent=d.letter;$('#techModalTitle').textContent=d.title;$('#techModalEnglish').textContent=d.english;$('#techModalIntro').textContent=d.intro;$('#techModalEffect').textContent=d.effect;$('#techModalApplication').textContent=d.application;$('#techModalNote').textContent=d.note;$('#techModalFlow').replaceChildren(...d.steps.map(([title,text])=>{const li=document.createElement('li'),strong=document.createElement('strong'),p=document.createElement('p');strong.textContent=title;p.textContent=text;li.append(strong,p);return li}));$$('[data-tech]').forEach(b=>b.setAttribute('aria-expanded',String(techModal.open&&+b.dataset.tech===i)));$('.tech-modal-scroll').scrollTop=0}
+function openTechModal(i,opener){techModalOpener=opener;renderTechModal(i);techModal.classList.remove('is-closing');techModal.showModal();$('.tech-modal-scroll').scrollTop=0;document.documentElement.classList.add('tech-modal-open');$(`[data-tech="${i}"]`).setAttribute('aria-expanded','true')}
+async function closeTechModal(){if(!techModal.open||techModal.classList.contains('is-closing'))return;techModal.classList.add('is-closing');if(!reduce.matches)await Promise.allSettled(techModal.getAnimations().map(a=>a.finished));techFocusReturning=true;techHoverReady=false;techModal.close();techModal.classList.remove('is-closing');document.documentElement.classList.remove('tech-modal-open');$$('[data-tech]').forEach(b=>b.setAttribute('aria-expanded','false'));if(techModalOpener?.isConnected)techModalOpener.focus({preventScroll:true});queueMicrotask(()=>techFocusReturning=false)}
+$$('[data-tech]').forEach(button=>{button.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&!techModal.open&&!techFocusReturning&&techHoverReady)selectTech(+button.dataset.tech)});button.addEventListener('pointermove',event=>{if(event.pointerType!=='touch'&&!techModal.open&&!techFocusReturning){techHoverReady=true;selectTech(+button.dataset.tech)}});button.addEventListener('focus',()=>{if(!techModal.open&&!roadFocusReturning)selectTech(+button.dataset.tech)});button.addEventListener('click',()=>openTechModal(+button.dataset.tech,button))});
+$$('[data-modal-tech]').forEach(button=>button.addEventListener('click',()=>renderTechModal(+button.dataset.modalTech)));
+$('#techModalClose').addEventListener('click',closeTechModal);
+techModal.addEventListener('cancel',event=>{event.preventDefault();closeTechModal()});
+techModal.addEventListener('click',event=>{if(event.target!==techModal)return;const r=techModal.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeTechModal()});
+techModal.addEventListener('keydown',event=>{if(event.key!=='Tab')return;const items=[...techModal.querySelectorAll('button:not([disabled]),a[href]')],first=items[0],last=items[items.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}else if(!techModal.contains(document.activeElement)){event.preventDefault();(event.shiftKey?last:first).focus()}});
+
+$('#closingSources').onclick=()=>{$('#sources').showModal()};$('#sourceClose').onclick=()=>$('#sources').close();$('#sources').addEventListener('click',e=>{if(e.target===$('#sources')){let r=$('#sources').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('#sources').close()}});$('#fullscreen').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{}};
+reduce.addEventListener('change',()=>{Chart.defaults.animation.duration=reduce.matches?0:850;if(reduce.matches)$$('[data-count]').forEach(finishCount);Object.values(charts).forEach(c=>{c.stop();c.options.animation=reduce.matches?false:{duration:1100};c.canvas.dataset.filling='false';c.canvas.dataset.fillProgress='1';c.update('none')})});
+
+const annualData=[
+ {"year":"FY24","revenue":26974,"datacenter":15005,"grossProfit":15356,"operatingIncome":4224,"netIncome":4368,"operatingMargin":15.7,"operatingCashFlow":5641,"capex":1833,"freeCashFlow":3808,"cashInvestments":13296},
+ {"year":"FY25","revenue":60922,"datacenter":47525,"grossProfit":44301,"operatingIncome":32972,"netIncome":29760,"operatingMargin":54.1,"operatingCashFlow":28090,"capex":1069,"freeCashFlow":27021,"cashInvestments":25984},
+ {"year":"FY26","revenue":130497,"datacenter":115186,"grossProfit":97858,"operatingIncome":81453,"netIncome":72880,"operatingMargin":62.4,"operatingCashFlow":64089,"capex":3236,"freeCashFlow":60853,"cashInvestments":43210}
+];
+let annualSelected=2,annualFinanceMode='profit';
+const annualFinanceGroups={profit:{title:'수익성',keys:['grossProfit','operatingIncome','netIncome'],labels:['매출총이익','영업이익','순이익 (GAAP)'],max:110},cash:{title:'현금흐름',keys:['operatingCashFlow','capex','freeCashFlow'],labels:['영업현금흐름','자본지출(CapEx)','잉여현금흐름'],max:75}};
+const annualFinancialLabels={id:'annualFinancialLabels',afterDatasetsDraw(chart){const {ctx}=chart;ctx.save();ctx.font='bold 15px NanumSquare';ctx.fillStyle=wine;ctx.textAlign='left';ctx.textBaseline='middle';chart.getDatasetMeta(0).data.forEach((bar,i)=>ctx.fillText('$'+chart.data.datasets[0].data[i].toFixed(2)+'B',bar.x+8,bar.y));ctx.restore()}};
+function updateAnnualFinancial(){
+ const d=annualData[annualSelected],g=annualFinanceGroups[annualFinanceMode],values=g.keys.map(k=>d[k]/1000);
+ $('#annualFinancialTitle').textContent=d.year+' '+g.title;
+ $('#annualLinkedYear').textContent=d.year+' 실적 선택';
+ $('#annualFinancialChart').setAttribute('aria-label',d.year+' '+g.labels.map((label,i)=>label+' '+d[g.keys[i]].toLocaleString('ko-KR')+'백만 달러').join(', '));
+ $('#annualFinancialSummaryLabel').textContent=annualFinanceMode==='profit'?'GAAP 영업이익률':'기말 현금·현금성자산·단기투자';
+ $('#annualFinancialSummaryValue').innerHTML=annualFinanceMode==='profit'?d.operatingMargin.toFixed(1)+'<small>%</small>':(d.cashInvestments/1000).toFixed(2)+'<small>십억 달러</small>';
+ $('#annualFinancialNote').textContent=annualFinanceMode==='profit'?'순이익은 GAAP 기준이며, AI 데이터센터 호황으로 영업 레버리지가 극대화됐습니다.':'FCF = 영업현금흐름 − 자본지출. 팹리스 구조 덕분에 설비투자 부담이 낮고 현금 창출력이 높습니다.';
+ $('#annualYearNote').textContent=[
+  'FY24는 게이밍 재고 조정 속에서도 데이터센터 매출이 150억 달러를 돌파하며 전환점을 마련한 해입니다.',
+  'FY25는 생성형 AI 학습 수요 폭발로 데이터센터 매출이 3배 이상 급증하며 영업이익률 54.1%를 달성했습니다.',
+  'FY26은 매출 1,304.97억 달러(+114.2%), 영업이익률 62.4%를 기록하며 AI 인프라 투자의 최대 수혜를 입증했습니다.'
+ ][annualSelected];
+ if(charts.annualFinancial){const c=charts.annualFinancial;c.data.labels=g.labels;c.data.datasets[0].data=values;c.options.scales.x.max=g.max;replayChart(c,true)}else{
+  const o=structuredClone(base);o.indexAxis='y';o.layout={padding:{right:78}};o.scales={x:{beginAtZero:true,max:g.max,ticks:{stepSize:20,font:{size:12}},grid:{color:'#f0edf2'},border:{display:false}},y:{ticks:{font:{size:14},color:ink},grid:{display:false},border:{display:false}}};o.plugins.tooltip.callbacks={label:ctx=>ctx.label+': '+(ctx.raw*1000).toLocaleString('ko-KR')+'백만 달러'};
+  charts.annualFinancial=new Chart($('#annualFinancialChart'),{type:'bar',data:{labels:g.labels,datasets:[{data:values,backgroundColor:pink,borderColor:wine,borderWidth:1,barThickness:23}]},options:o,plugins:[annualFinancialLabels]});
+ }
+ refreshReactiveNumbers($('.annual-financial-area'),true);
+}
+$$('[data-annual-finance]').forEach(button=>button.addEventListener('click',()=>{if(annualFinanceMode===button.dataset.annualFinance)return;annualFinanceMode=button.dataset.annualFinance;selectWithin('[data-annual-finance]',button);updateAnnualFinancial()}));
+const annualLabels={id:'annualLabels',afterDatasetsDraw(c){const {ctx}=c;ctx.save();ctx.textAlign='center';ctx.textBaseline='bottom';ctx.font='bold 14px NanumSquare';c.getDatasetMeta(0).data.forEach((bar,i)=>{ctx.fillStyle=i===annualSelected?wine:'#88828f';const value='$'+c.data.datasets[0].data[i].toFixed(1)+'B';ctx.fillText(value,bar.x,bar.y-8)});ctx.restore()}};
+function makeAnnual(){
+ let r=structuredClone(base);r.layout={padding:{top:22}};r.scales.y.max=150;r.scales.y.ticks.callback=v=>'$'+v+'B';r.plugins.tooltip.callbacks={label:c=>`연결 매출: ${annualData[c.dataIndex].revenue.toLocaleString('ko-KR')}백만 달러`};r.datasets={bar:{maxBarThickness:66}};
+ charts.annualRevenue=new Chart($('#annualRevenueChart'),{type:'bar',data:{labels:annualData.map(d=>d.year),datasets:[{label:'연간 매출',data:annualData.map(d=>d.revenue/1000),backgroundColor:annualData.map((_,i)=>i===annualSelected?pink:pale),borderRadius:3}]},options:r,plugins:[annualLabels]});
+ let p=structuredClone(base);p.layout={padding:{top:22}};p.scales.y.max=140;p.scales.y.ticks.callback=v=>'$'+v+'B';p.plugins.tooltip.callbacks={label:c=>`데이터센터 매출: ${annualData[c.dataIndex].datacenter.toLocaleString('ko-KR')}백만 달러`};p.datasets={bar:{maxBarThickness:66}};
+ charts.annualProduction=new Chart($('#annualProductionChart'),{type:'bar',data:{labels:annualData.map(d=>d.year),datasets:[{label:'데이터센터 매출',data:annualData.map(d=>d.datacenter/1000),backgroundColor:annualData.map((_,i)=>i===annualSelected?wine:pale),borderRadius:3}]},options:p,plugins:[annualLabels]});
+ updateAnnualFinancial();
+}
+function replayAnnualSelection(chart,index){
+ if(!chart)return;const canvas=chart.canvas;chart.stop();chart.update('none');canvas.dataset.replayIndex=String(index);
+ if(reduce.matches){chart.options.animation=false;canvas.dataset.fillProgress='1';canvas.dataset.filling='false';return}
+ canvas.dataset.filling='true';canvas.dataset.fillProgress='0';canvas.dataset.replayCount=String(+(canvas.dataset.replayCount||0)+1);
+ const started=performance.now();
+ chart.options.animation={duration:0,onProgress:()=>{canvas.dataset.fillProgress=Math.min(1,(performance.now()-started)/1100).toFixed(3)},onComplete:()=>{canvas.dataset.fillProgress='1';canvas.dataset.filling='false'}};
+ chart.options.transitions.annualSelection={animation:{duration:0},animations:{y:{type:'number',duration:context=>context.dataIndex===index?1100:0,easing:'easeOutCubic',from:context=>context.dataIndex===index?context.chart.scales.y.getBasePixel():undefined}}};
+ chart.update('annualSelection');
+}
+function annualChange(value,prev){let pct=(value/prev-1)*100;return '전년 대비 '+(pct>=0?'+':'−')+Math.abs(pct).toFixed(1)+'%'}
+intent('[data-year]',b=>{let i=+b.dataset.year;if(i===annualSelected)return;annualSelected=i;selectWithin('[data-year]',b);let d=annualData[i],prev=annualData[i-1];$('#annualYearLabel').textContent=d.year+' 연결 매출';$('#annualProductionLabel').textContent=d.year+' 데이터센터 매출';$('#annualRevenueValue').innerHTML=(d.revenue/100).toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'<small>억 달러</small>';$('#annualProductionValue').innerHTML=(d.datacenter/100).toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'<small>억 달러</small>';$('#annualRevenueChange').textContent=prev?annualChange(d.revenue,prev.revenue):'비교 기간의 시작 연도';$('#annualProductionChange').textContent=prev?annualChange(d.datacenter,prev.datacenter):'비교 기간의 시작 연도';refreshReactiveNumbers($('.annual-slide'),true);updateAnnualFinancial();if(charts.annualRevenue){charts.annualRevenue.data.datasets[0].backgroundColor=annualData.map((_,j)=>j===i?pink:pale);charts.annualProduction.data.datasets[0].backgroundColor=annualData.map((_,j)=>j===i?wine:pale);replayAnnualSelection(charts.annualRevenue,i);replayAnnualSelection(charts.annualProduction,i)}});
+
+const reactiveNumbers='.big-stat,.op-head strong,.annual-metric strong,.growth,.delta,#financeInsightTitle,.caution strong,#annualRevenueChange,#annualProductionChange,#annualFinancialSummaryValue';
+function prepareReactiveNumber(target){if(target.hasAttribute("data-text-override")){target.classList.remove("replay-number");target.removeAttribute("aria-label");return []}if(!target.querySelector('[data-count]')){const walker=document.createTreeWalker(target,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){if(node.parentElement.closest('small'))continue;const match=node.textContent.match(/([+−-]?)(\d[\d,]*(?:\.\d+)?)/);if(!match)continue;const number=document.createElement('span');number.dataset.count=match[2].replaceAll(',','');number.dataset.decimals=(match[2].split('.')[1]||'').length;if(match[1])number.dataset.countSign=match[1];number.textContent=match[0];const before=node.textContent.slice(0,match.index),after=node.textContent.slice(match.index+match[0].length);node.replaceWith(document.createTextNode(before),number,document.createTextNode(after));break}}const counters=[...target.querySelectorAll('[data-count]')];if(counters.length){target.classList.add('replay-number');target.tabIndex=0;const label=target.cloneNode(true);label.querySelectorAll('[data-count]').forEach(el=>el.textContent=countText(el,+el.dataset.count));target.setAttribute('aria-label',label.textContent);counters.forEach(el=>el.setAttribute('aria-hidden','true'))}else{target.classList.remove('replay-number');target.removeAttribute('tabindex');target.removeAttribute('aria-label')}return counters}
+function refreshReactiveNumbers(root,animate=false){root.querySelectorAll(reactiveNumbers).forEach(target=>prepareReactiveNumber(target).forEach(el=>{if(animate)count(el,true)}))}
+function replayChart(chart,force=false){if(!chart)return;const canvas=chart.canvas;if(reduce.matches){chart.stop();chart.options.animation=false;canvas.dataset.fillProgress='1';canvas.dataset.filling='false';chart.update('none');return}if(canvas.dataset.filling==='true'&&!force)return;chart.stop();canvas.dataset.filling='true';canvas.dataset.fillProgress='0';canvas.dataset.replayCount=String(+(canvas.dataset.replayCount||0)+1);chart.options.animation={duration:1100,easing:'easeOutCubic',onProgress:animation=>{canvas.dataset.fillProgress=(animation.currentStep/Math.max(1,animation.numSteps)).toFixed(3)},onComplete:()=>{canvas.dataset.fillProgress='1';canvas.dataset.filling='false'}};chart.reset();chart.update()}
+function replayOnIntent(target,replay){target.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')replay()});target.addEventListener('focus',replay);target.addEventListener('click',replay);target.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();replay()}})}
+$$(reactiveNumbers).forEach(target=>{prepareReactiveNumber(target);replayOnIntent(target,()=>prepareReactiveNumber(target).forEach(el=>count(el)))});
+$$('canvas').forEach(canvas=>{canvas.classList.add('replay-chart');canvas.tabIndex=0;canvas.setAttribute('aria-description','마우스를 올리거나 Enter 키를 눌러 채워지는 효과를 다시 볼 수 있습니다.');replayOnIntent(canvas,()=>replayChart(Chart.getChart(canvas)))});
+
+$('#startPresentation').addEventListener('click',()=>go(1));
+window.deckPresentation={editModeChanged(active){
+ window.brandFilm?.editModeChanged(active);
+ if(active){promoVideo.pause();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});$$('[data-count]').forEach(finishCount);Object.values(charts).forEach(chart=>{chart.stop();chart.update('none')})}
+ else if(current===1)syncVideoSlide(true);
+ else refreshReactiveNumbers(slides[current]);
+}};
+
+go((parseInt(location.hash.slice(1),10)||1)-1,false);
+document.fonts.ready.then(()=>Object.values(charts).forEach(chart=>chart.update('none')));
+
+</script>
+<script>
+(() => {
+ 'use strict';
+ const source='https://investor.nvidia.com/';
+ const businesses=[
+  {name:'데이터센터',now:115186,prior:47525,ytd:115186,scope:'HGX/DGX/NVL72 AI 서버 컴퓨팅 플랫폼, NVLink·InfiniBand·Spectrum-X 네트워킹, NVIDIA AI Enterprise 소프트웨어를 포함합니다.',change:'Hopper H200 수요 지속과 Blackwell 초기 대량 양산이 맞물리며 컴퓨팅 매출이 전년 대비 162% 급증했습니다.',composition:'컴퓨팅(Compute) 1,021.96억 달러 · 네트워킹(Networking) 129.90억 달러'},
+  {name:'게이밍·AI PC',now:11350,prior:10447,ytd:11350,scope:'GeForce RTX 외장 GPU, 노트북용 RTX GPU, 콘솔용 SoC 및 GeForce NOW 클라우드 게이밍 매출입니다.',change:'온디바이스 AI 추론을 지원하는 RTX AI PC 수요와 하이엔드 게이밍 GPU 업그레이드 수요가 성장을 뒷받침했습니다.',composition:'데스크톱·노트북 GeForce RTX 시리즈 및 AI PC 가속 솔루션'},
+  {name:'전문시각화·오토',now:3961,prior:2950,ytd:3961,scope:'RTX 워크스테이션, Omniverse 디지털 트윈, 자율주행(DRIVE Orin/Thor) 및 로보틱스(Isaac) 플랫폼을 포함합니다.',change:'글로벌 완성차의 자율주행 채택 확대로 오토모티브 매출이 전년 대비 55% 성장하며 역대 최대치를 경신했습니다.',composition:'전문 시각화 18.78억 · 오토모티브 16.94억 · OEM 및 기타 3.89억 달러'}
+ ];
+ const modes=['segments','profit','cash'];
+ let mode='segments',selectedBusiness=0;
+ const dialogs=[$('#financeRevenueDrawer'),$('#financeSectorSheet'),$('#financeMetricModal')];
+ const openers=new WeakMap(),detailCharts={};
+ const eok=v=>(v/100).toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'억 달러';
+ const percent=v=>v.toFixed(1)+'%';
+ function show(dialog,opener){
+  if(dialog.open)return;
+  openers.set(dialog,opener);dialog.classList.remove('is-closing');dialog.showModal();
+  document.documentElement.classList.add('finance-detail-open');
+  dialog.querySelector('.fin-scroll').scrollTop=0;
+  if(dialog.id==='financeRevenueDrawer')$('#financeRevenueTrigger').setAttribute('aria-expanded','true');
+ }
+ async function close(dialog){
+  if(!dialog.open||dialog.classList.contains('is-closing'))return;
+  dialog.classList.add('is-closing');
+  if(!reduce.matches)await Promise.allSettled(dialog.getAnimations().map(a=>a.finished));
+  dialog.close();dialog.classList.remove('is-closing');
+  if(!dialogs.some(d=>d.open))document.documentElement.classList.remove('finance-detail-open');
+  $('#financeRevenueTrigger').setAttribute('aria-expanded','false');
+  const opener=openers.get(dialog);if(opener?.isConnected)opener.focus({preventScroll:true});
+ }
+ dialogs.forEach(dialog=>{
+  dialog.querySelector('[data-fin-close]').addEventListener('click',()=>close(dialog));
+  dialog.addEventListener('cancel',event=>{event.preventDefault();close(dialog)});
+  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close(dialog)});
+  dialog.addEventListener('close',()=>{if(!dialogs.some(d=>d.open))document.documentElement.classList.remove('finance-detail-open')});
+ });
+ function draw(id,type,data,options){
+  if(detailCharts[id])detailCharts[id].destroy();
+  detailCharts[id]=new Chart($('#'+id),{type,data,options});
+ }
+ function detailOptions(){
+  const o=structuredClone(base);o.plugins.tooltip.callbacks={label:c=>`${c.dataset.label||c.label}: $${Array.isArray(c.raw)?Math.abs(c.raw[1]-c.raw[0]).toFixed(2):Number(c.raw).toFixed(2)}B`};
+  o.scales.y.ticks.callback=v=>'$'+v+'B';o.datasets={bar:{maxBarThickness:64}};
+  return o;
+ }
+ function openRevenue(opener){
+  show($('#financeRevenueDrawer'),opener);
+  const o=detailOptions();o.plugins.legend={display:true,position:'bottom',labels:{boxWidth:10,font:{size:12}}};o.scales.x.stacked=true;o.scales.y.stacked=true;
+  draw('financeYtdChart','bar',{labels:['FY2025 연간','FY2026 연간'],datasets:[{label:'상반기 (H1)',data:[20.70,56.08],backgroundColor:pale,borderRadius:3},{label:'하반기 (H2)',data:[40.22,74.41],backgroundColor:pink,borderRadius:3}]},o);
+ }
+ function openBusiness(index,opener){
+  selectedBusiness=Math.max(0,Math.min(2,index));const d=businesses[selectedBusiness],dialog=$('#financeSectorSheet');
+  dialog.dataset.business=String(selectedBusiness);
+  $$('[data-fin-business]').forEach(b=>{const selected=+b.dataset.finBusiness===selectedBusiness;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected))});
+  $('#finSectorTitle').textContent=d.name+' 부문 자세히 보기';$('#finSectorRevenue').textContent=eok(d.now);$('#finSectorYtd').textContent=eok(d.prior);$('#finSectorShare').textContent=percent(d.now/130497*100);
+  $('#finSectorScope').textContent=d.scope;$('#finSectorChange').textContent=d.change;$('#finSectorComposition').textContent=d.composition;
+  $('#finSectorGrowth').textContent='전년 대비 +'+percent((d.now/d.prior-1)*100);
+  $('#financeBusinessChart').setAttribute('aria-label',`${d.name} 매출: FY25 ${eok(d.prior)}, FY26 ${eok(d.now)}`);
+  if(!dialog.open)show(dialog,opener);
+  const o=detailOptions();o.plugins.tooltip.callbacks={label:c=>eok(c.raw*1000)};
+  draw('financeBusinessChart','bar',{labels:['FY2025','FY2026'],datasets:[{label:d.name+' 매출',data:[d.prior/1000,d.now/1000],backgroundColor:[pale,pink],borderRadius:4}]},o);
+ }
+ function openMetric(opener){
+  const cash=mode==='cash',dialog=$('#financeMetricModal');dialog.dataset.metric=cash?'cash':'profit';
+  $('#finMetricTitle').textContent=cash?'투자와 현금흐름 자세히 보기':'영업이익 자세히 보기';
+  $('#finMetricLead').textContent=cash?'영업에서 창출한 현금에서 자본지출(CapEx)을 차감하면 잉여현금흐름이 남습니다.':'매출총이익에서 연구개발비(R&D)와 판매관리비(SG&A)를 빼면 영업이익이 남습니다.';
+  $('#finMetricValue').textContent=cash?'608.53억 달러':'814.53억 달러';
+  $('#finMetricValueLabel').textContent=cash?'FY2026 잉여현금흐름 (FCF)':'FY2026 GAAP 영업이익';
+  $('#finMetricCompare').textContent=cash?'영업현금흐름 640.89억 − 자본지출 32.36억 달러':'전년 329.72억 달러 대비 +147.0% · 영업이익률 54.1% → 62.4%';
+  $('#finMetricFormula').textContent=cash?'640.89억 − 32.36억 = 608.53억 달러':'978.58억 − 129.14억 − 34.91억 = 814.53억 달러';
+  $('#finMetricDetail').textContent=cash?'엔비디아는 팹리스(Fabless) 구조로 직접 파운드리 팹을 짓지 않아 자본지출 비율이 낮으며, 창출된 현금은 차세대 AI 칩 R&D와 공급망 장기 예약에 투입됩니다.':'매출총이익은 978.58억 달러(이익률 75.0%), 영업비용 합계는 164.05억 달러입니다. 매출이 2배 이상 늘어나면서 고정비 레버리지 효과가 극대화됐습니다.';
+  $('#finMetricNote').textContent=cash?'기말 현금·현금성자산 및 단기금융상품 잔액은 432.10억 달러입니다.':'GAAP 순이익은 728.80억 달러입니다. 영업이익은 이자수익 및 법인세 비용 반영 전 지표입니다.';
+  $('#finMetricChartTitle').textContent=cash?'영업현금 창출에서 잉여현금흐름까지':'매출총이익에서 영업이익까지';
+  show(dialog,opener);
+  const o=detailOptions();o.plugins.tooltip.callbacks={label:c=>`${c.label}: ${eok(Math.abs(c.raw[1]-c.raw[0])*1000)}`};
+  const labels=cash?['영업현금흐름','자본지출(CapEx)','잉여현금흐름']:['매출총이익','연구개발비(R&D)','판매관리비','영업이익'];
+  const values=cash?[[0,64.089],[60.853,64.089],[0,60.853]]:[[0,97.858],[84.944,97.858],[81.453,84.944],[0,81.453]];
+  $('#financeBridgeChart').setAttribute('aria-label',labels.join(', ')+' · '+$('#finMetricFormula').textContent);
+  draw('financeBridgeChart','bar',{labels,datasets:[{data:values,backgroundColor:cash?[wine,pale,pink]:[wine,pale,pale,pink],borderRadius:3}]},o);
+ }
+ function selectMode(value){
+  const index=Math.max(0,Math.min(2,Number(value)));mode=modes[index];
+  $('#financeLever').value=String(index);$('#financeLever').style.setProperty('--finance-fill',index*50+'%');$('#financeLever').setAttribute('aria-valuetext',financeInsights[mode][0]);
+  selectWithin('[data-finance]',$(`[data-finance="${mode}"]`));makeFinance(mode);
+  $('#financeChartTitle').textContent=financeInsights[mode][0];$('#financeInsightTitle').textContent=financeInsights[mode][1];$('#financeInsight').textContent=financeInsights[mode][2];prepareReactiveNumber($('#financeInsightTitle'));
+  $('#financeBusinessLabels').hidden=mode!=='segments';$('#financeMetricOpen').hidden=mode==='segments';
+  $('#financeChartHint').textContent=mode==='segments'?'사업 이름이나 막대를 눌러 세부 내용을 확인하세요.':'그래프를 누르면 비용과 현금흐름의 세부 내용이 열립니다.';
+  $('#financeChart').setAttribute('aria-label',financeInsights[mode][0]+' · 클릭 또는 Enter로 세부 내용 보기');
+ }
+ window.financeDetails={chartClick(event,elements,chart){
+  const a=chart.chartArea;if(!a||event.x<a.left||event.x>a.right||event.y<a.top||event.y>a.bottom)return;
+  if(mode==='segments'){const index=elements[0]?.index??Math.min(2,Math.max(0,Math.floor((event.x-a.left)/(a.right-a.left)*3)));openBusiness(index,chart.canvas)}else openMetric(chart.canvas);
+ }};
+ $('#financeRevenueTrigger').addEventListener('click',event=>openRevenue(event.currentTarget));
+ $('#financeRevenueTrigger').addEventListener('keydown',event=>{if(window.deckEditor?.active&&event.target.closest('[contenteditable="true"]'))return;if(['Enter',' '].includes(event.key)){event.preventDefault();event.stopImmediatePropagation();openRevenue(event.currentTarget)}},true);
+ $$('[data-fin-business-open]').forEach(b=>b.addEventListener('click',()=>openBusiness(+b.dataset.finBusinessOpen,b)));
+ $$('[data-fin-business]').forEach(b=>b.addEventListener('click',()=>openBusiness(+b.dataset.finBusiness,openers.get($('#financeSectorSheet')))));
+ $$('[data-finance]').forEach(b=>b.addEventListener('click',()=>selectMode(modes.indexOf(b.dataset.finance))));
+ $('#financeLever').addEventListener('input',event=>selectMode(event.target.value));
+ $('#financeLever').addEventListener('keydown',event=>{let i=modes.indexOf(mode);if(['ArrowRight','ArrowUp'].includes(event.key))i++;else if(['ArrowLeft','ArrowDown'].includes(event.key))i--;else if(event.key==='Home')i=0;else if(event.key==='End')i=2;else return;event.preventDefault();event.stopPropagation();selectMode(i)});
+ $('#financeMetricOpen').addEventListener('click',event=>openMetric(event.currentTarget));
+ $('#financeChart').setAttribute('role','button');$('#financeChart').setAttribute('aria-haspopup','dialog');$('#financeChart').setAttribute('aria-description','사업별 매출은 사업 상세 패널, 영업이익과 현금흐름은 상세 팝업을 엽니다.');
+ $('#financeChart').addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key)){event.preventDefault();if(mode==='segments')openBusiness(selectedBusiness,event.currentTarget);else openMetric(event.currentTarget)}});
+ dialogs.forEach(dialog=>dialog.querySelectorAll('[data-fin-source]').forEach(a=>a.href=source));
+ if(charts.finance){charts.finance.options.onClick=window.financeDetails.chartClick;charts.finance.options.scales.x.ticks.display=false;charts.finance.update('none')}
+})();
+</script>
+<script>
+(() => {
+ function initializeEditor(){
+ 'use strict';
+ const q=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)];
+ let embedded={};try{embedded=JSON.parse(q('#savedTextEdits').textContent)}catch{}
+ const storageKey='tesla-deck-text-edits-v1'+(typeof embedded.documentId==='string'?':'+embedded.documentId.slice(0,80):'');
+ const state={active:false,records:{},originals:new Map(),last:new WeakMap(),focused:null,selected:null,storageOK:true,exporting:false};
+ let pristine=null;
+ const fields=[
+  '.slide h1','.slide h2','.slide h3','.slide h4','.slide p','.slide figcaption','.slide figcaption > span',
+  '.slide .cover-flow span','.slide .stamp','.slide .road-node strong','.slide .road-node small',
+  '.slide .tech-option small','.slide .big-stat','.slide .op-head strong','.slide .annual-metric strong',
+  '.slide .caution > strong','#annualFinancialSummaryValue','#trimVisualCaption','#trimVisualTag','#trimNote','#roadTitle',
+  'dialog h2','dialog h3','dialog p','dialog .fin-stat strong','#roadSheetFacts','#roadSheetChecks','#techModalFlow'
+ ].join(',');
+ const additionalFields='.slide .road-title-button > span:first-child,.slide .tech-option > span:first-child';
+ let serial=0,observer;
+ const roots=()=>[q('#slides'),...all('dialog')];
+ function cleanHTML(html){
+  const template=document.createElement('template');template.innerHTML=html;
+  const allowed=new Set(['BR','EM','STRONG','B','I','SMALL','SPAN','A','UL','OL','LI','P']);
+  function clean(node){
+   if(node.nodeType===Node.TEXT_NODE)return document.createTextNode(node.textContent);
+   if(node.nodeType!==Node.ELEMENT_NODE||['SCRIPT','STYLE','IFRAME','OBJECT','SVG','MATH','IMG','VIDEO','INPUT'].includes(node.tagName))return document.createDocumentFragment();
+   if(!allowed.has(node.tagName)){const fragment=document.createDocumentFragment();node.childNodes.forEach(child=>fragment.append(clean(child)));if(node.tagName==='DIV')fragment.append(document.createElement('br'));return fragment}
+   const el=document.createElement(node.tagName.toLowerCase());
+   if(node.tagName==='BR'&&node.classList.contains('mobile-br'))el.className='mobile-br';
+   if(node.tagName==='A'){
+    try{const href=new URL(node.getAttribute('href')||'',location.href);if(['https:','http:'].includes(href.protocol)){el.href=href.href;el.target='_blank';el.rel='noopener'}}catch{}
+   }
+   node.childNodes.forEach(child=>el.append(clean(child)));return el;
+  }
+  const box=document.createElement('div');template.content.childNodes.forEach(node=>box.append(clean(node)));return box.innerHTML;
+ }
+ function context(el){
+  const id=el.id,slide=el.closest('.slide');
+  if(id.startsWith('annual')&&!['annualSelector'].includes(id)){
+   const year=slide?.querySelector('[data-year].selected')?.dataset.year||'2';
+   if(id.startsWith('annualFinancial'))return 'year:'+year+';finance:'+(slide?.querySelector('[data-annual-finance].selected')?.dataset.annualFinance||'profit');
+   return 'year:'+year;
+  }
+  if(el.closest('#financeSectorSheet'))return 'business:'+(el.closest('#financeSectorSheet').dataset.business||'0');
+  if(el.closest('#financeMetricModal'))return 'metric:'+(el.closest('#financeMetricModal').dataset.metric||'profit');
+  if(['financeChartTitle','financeInsightTitle','financeInsight'].includes(id))return 'finance:'+(slide?.querySelector('[data-finance].selected')?.dataset.finance||'segments');
+  if(['trimName','trimLabel','trimTitle','trimText','trimNote','trimVisualCaption','trimVisualTag'].includes(id))return 'trim:'+(slide?.querySelector('#trimLever')?.value||'0');
+  if(['roadTitle','roadText','roadNext'].includes(id))return 'road:'+(slide?.querySelector('[data-road].selected')?.dataset.road||'0');
+  if(el.closest('#roadSheet')&&id.startsWith('roadSheet'))return 'road:'+(el.closest('#roadSheet').querySelector('[data-sheet-road].selected')?.dataset.sheetRoad||'0');
+  if(['techTitle','techText'].includes(id))return 'tech:'+(slide?.querySelector('[data-tech].selected')?.dataset.tech||'1');
+  if(el.closest('#techModal')&&id.startsWith('techModal'))return 'tech:'+(el.closest('#techModal').querySelector('[data-modal-tech].selected')?.dataset.modalTech||'1');
+  return 'static';
+ }
+ function key(el){return el.dataset.textEdit+'|'+context(el)}
+ function recordFor(el,id){
+  const record=state.records[id];
+  // A published wording revision supersedes edits saved for an older revision.
+  return el.dataset.textRevision&&record?.revision!==el.dataset.textRevision?undefined:record;
+ }
+ function register(){
+  const used=new Set(all('[data-text-edit]').map(el=>el.dataset.textEdit));
+  // Register additions after the original fields to keep saved text IDs stable.
+  [...all(fields),...all(additionalFields)].forEach(el=>{
+   if(el.closest('.video-slide')||el.parentElement?.closest('[data-text-edit]')||el.querySelector('button,input,select,textarea,canvas,video,[id]'))return;
+   if(!el.dataset.textEdit){let id=el.id?'id:'+el.id:'';if(!id){do{id='text:'+String(++serial).padStart(3,'0')}while(used.has(id))}el.dataset.textEdit=id;used.add(id)}
+   if(state.active){el.contentEditable='true';el.spellcheck=false}
+  });
+ }
+ function loadRecords(value){
+  if(value?.version!==1||!value.records||typeof value.records!=='object')return {};
+  const result={};Object.entries(value.records).slice(0,1000).forEach(([id,record])=>{
+   if(id.length<180&&typeof record?.html==='string'&&typeof record?.original==='string'&&record.html.length<50000&&record.original.length<50000)result[id]={html:cleanHTML(record.html),original:cleanHTML(record.original),...(typeof record.revision==='string'&&record.revision.length<=80?{revision:record.revision}:{})};
+  });return result;
+ }
+ state.records=loadRecords(embedded);
+ try{const local=localStorage.getItem(storageKey);if(local)state.records=loadRecords(JSON.parse(local))}catch{state.storageOK=false}
+ function status(message){
+  q('#editorSaveStatus').textContent=message||(state.storageOK?`이 브라우저에 자동 저장 · ${Object.keys(state.records).length}개 문구`:'브라우저 저장을 사용할 수 없습니다 · HTML로 보관하세요');
+  q('#editorRestore').disabled=!state.selected||!state.records[key(state.selected)];
+ }
+ function persist(){
+  try{localStorage.setItem(storageKey,JSON.stringify({version:1,records:state.records}));state.storageOK=true}catch{state.storageOK=false}
+  status();
+ }
+ function observe(){roots().forEach(root=>observer.observe(root,{childList:true,characterData:true,subtree:true}))}
+ function apply(){
+  observer?.disconnect();register();if(!pristine&&q('#editorToggle'))pristine=document.documentElement.cloneNode(true);
+  all('[data-text-edit]').forEach(el=>{
+   if(state.active&&el===state.focused)return;
+   const id=key(el),previous=state.last.get(el),record=recordFor(el,id),raw=el.innerHTML;
+   if(!previous||previous.id!==id||previous.html!==raw)state.originals.set(id,record?.original??cleanHTML(raw));
+   if(record){
+    if(el.innerHTML!==record.html)el.innerHTML=record.html;
+    el.dataset.textOverride='true';el.removeAttribute('aria-label');
+   }else delete el.dataset.textOverride;
+   state.last.set(el,{id,html:el.innerHTML});
+  });
+  if(observer)observe();
+ }
+ function saveField(el){
+  const id=key(el),html=cleanHTML(el.innerHTML),original=state.originals.get(id)??recordFor(el,id)?.original??html;
+  if(html===original)delete state.records[id];else state.records[id]={html,original,...(el.dataset.textRevision?{revision:el.dataset.textRevision}:{})};
+  if(state.records[id])el.dataset.textOverride='true';else delete el.dataset.textOverride;
+  state.last.set(el,{id,html:el.innerHTML});persist();
+ }
+ function setMode(active){
+  if(state.focused)saveField(state.focused);
+  state.focused=null;state.active=active;document.body.classList.toggle('text-edit-mode',active);
+  q('#editorToggle').setAttribute('aria-pressed',String(active));q('#editorToggle').textContent=active?'편집 중':'글자 편집';q('#textEditorBar').hidden=!active;
+  window.deckPresentation?.editModeChanged(active);apply();
+  all('[data-text-edit]').forEach(el=>{if(active){el.contentEditable='true';el.spellcheck=false}else{el.removeAttribute('contenteditable');el.removeAttribute('spellcheck')}});
+  status();
+ }
+ window.deckEditor={get active(){return state.active}};
+ observer=new MutationObserver(apply);apply();observe();
+ // Saved text also renders in presentation mode; editing is an explicit toggle.
+ if(!q('#editorToggle'))return;
+
+ document.addEventListener('focusin',event=>{
+  if(!state.active)return;const el=event.target.closest('[data-text-edit]');if(!el)return;
+  state.focused=state.selected=el;status();
+ },true);
+ document.addEventListener('focusout',event=>{
+  if(!state.active)return;const el=event.target.closest('[data-text-edit]');if(!el)return;
+  saveField(el);state.focused=null;queueMicrotask(apply);
+ },true);
+ document.addEventListener('input',event=>{if(state.active){const el=event.target.closest('[data-text-edit]');if(el)saveField(el)}},true);
+ document.addEventListener('click',event=>{
+  const el=state.active&&event.target.closest('[data-text-edit]');
+  if(el){if(document.activeElement!==el)el.focus({preventScroll:true});event.preventDefault();event.stopImmediatePropagation()}
+ },true);
+ for(const type of ['pointerenter','pointermove','focus'])document.addEventListener(type,event=>{
+  if(!state.active)return;const el=event.target;if(el.closest?.('[data-text-edit]')||el.matches?.('button')&&el.querySelector('[data-text-edit]'))event.stopImmediatePropagation();
+ },true);
+ document.addEventListener('keydown',event=>{
+  if(!state.active||!event.target.closest('[data-text-edit]'))return;
+  event.stopImmediatePropagation();
+  if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();downloadHTML()}
+ },true);
+ document.addEventListener('paste',event=>{
+  if(!state.active||!event.target.closest('[data-text-edit]'))return;
+  event.preventDefault();document.execCommand('insertText',false,event.clipboardData.getData('text/plain'));
+ },true);
+ q('#editorToggle').addEventListener('click',()=>setMode(!state.active));
+ q('#editorDone').addEventListener('click',()=>setMode(false));
+ q('#editorRestore').addEventListener('click',()=>{
+  const el=state.selected;if(!el)return;const id=key(el),record=state.records[id];if(!record)return;
+  observer.disconnect();el.innerHTML=record.original;delete state.records[id];delete el.dataset.textOverride;state.originals.set(id,record.original);state.last.set(el,{id,html:el.innerHTML});persist();observe();el.focus();
+ });
+
+ const assets=new Map();
+ function assetURL(ref){const url=new URL(ref,location.href);if(url.origin!==location.origin)throw new Error('현재 발표자료의 파일만 포함할 수 있습니다.');return url.href}
+ async function fetchText(ref){const response=await fetch(assetURL(ref),{credentials:'same-origin'});if(!response.ok)throw new Error('발표자료 파일을 불러오지 못했습니다.');return response.text()}
+ function asDataURL(ref){
+  if(ref.startsWith('data:'))return Promise.resolve(ref);
+  const url=assetURL(ref);if(assets.has(url))return assets.get(url);
+  const promise=fetch(url,{credentials:'same-origin'}).then(async response=>{
+   if(!response.ok)throw new Error('이미지·영상 파일을 불러오지 못했습니다.');
+   const blob=await response.blob();return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob)});
+  });assets.set(url,promise);promise.catch(()=>assets.delete(url));return promise;
+ }
+ async function embedCSS(css,base){
+  const matches=[...css.matchAll(/url\((['"]?)([^)'"\s]+)\1\)/g)];
+  for(const match of matches){if(match[2].startsWith('data:')||match[2].startsWith('#'))continue;const value=await asDataURL(new URL(match[2],base).href);css=css.replaceAll(match[0],`url('${value}')`)}
+  return css;
+ }
+ async function downloadHTML(){
+  if(state.exporting)return;if(state.focused)saveField(state.focused);
+  state.exporting=true;q('#editorDownload').disabled=true;q('#editorDownload').setAttribute('aria-busy','true');status('HTML 준비 중 · 이미지와 영상까지 포함합니다');
+  try{
+   const clone=pristine.cloneNode(true);
+   clone.querySelectorAll('[contenteditable]').forEach(el=>{el.removeAttribute('contenteditable');el.removeAttribute('spellcheck')});
+   clone.querySelector('body').classList.remove('text-edit-mode','video-mode');
+   clone.querySelectorAll('.slide').forEach((slide,i)=>{slide.hidden=i!==0;slide.classList.toggle('active',i===0);});
+   clone.querySelectorAll('[data-count]').forEach(el=>{const value=+el.dataset.count,decimals=+(el.dataset.decimals||0);el.textContent=(el.dataset.countSign||'')+value.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});delete el.dataset.running});
+   clone.querySelector('#textEditorBar').hidden=true;
+   clone.querySelector('#editorToggle').setAttribute('aria-pressed','false');clone.querySelector('#editorToggle').textContent='글자 편집';
+   clone.querySelectorAll('video').forEach(video=>video.removeAttribute('autoplay'));
+   clone.querySelector('#currentPage').textContent='01';clone.querySelector('#currentTitle').textContent=clone.querySelector('.slide').dataset.title;
+   clone.querySelector('#prev').disabled=true;clone.querySelector('#next').disabled=false;clone.querySelector('#progress').style.width=(100/clone.querySelectorAll('.slide').length)+'%';
+   clone.querySelectorAll('.rail button').forEach((button,i)=>{if(i===0)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current')});
+   const payload=JSON.stringify({version:1,documentId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),records:state.records}).replaceAll('<','\\u003c');clone.querySelector('#savedTextEdits').textContent=payload;
+   for(const link of [...clone.querySelectorAll('link[rel="stylesheet"][href]')]){const href=link.getAttribute('href'),style=document.createElement('style');style.textContent=await embedCSS(await fetchText(href),new URL(href,location.href));link.replaceWith(style)}
+   for(const el of clone.querySelectorAll('img[src],video[src],[poster]')){
+    for(const attribute of ['src','poster']){const ref=el.getAttribute(attribute);if(ref&&!ref.startsWith('data:'))el.setAttribute(attribute,await asDataURL(ref))}
+   }
+   for(const script of [...clone.querySelectorAll('script[src]')]){const inline=document.createElement('script');inline.textContent=(await fetchText(script.getAttribute('src'))).replace(/<\/script/gi,'<\\/script');script.replaceWith(inline)}
+   const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob);
+   const anchor=document.createElement('a');anchor.href=url;anchor.download='엔비디아_발표자료_'+clone.querySelectorAll('.slide').length+'장_편집본.html';anchor.hidden=true;document.body.append(anchor);anchor.click();
+   setTimeout(()=>{URL.revokeObjectURL(url);anchor.remove()},60000);status('HTML 다운로드 완료 · 영상과 수정한 문구를 포함했습니다');
+  }catch(error){status('다운로드하지 못했습니다 · '+(error.message||'다시 시도해 주세요'))}
+  finally{state.exporting=false;q('#editorDownload').disabled=false;q('#editorDownload').removeAttribute('aria-busy')}
+ }
+ q('#editorDownload').addEventListener('click',downloadHTML);
+ }
+ // Capture the export template only after all player scripts have been parsed.
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initializeEditor,{once:true});else initializeEditor();
+})();
+
+</script>
+<script>
+(() => {
+ 'use strict';
+ const video=document.querySelector('#brandFilmVideo'),player=document.querySelector('#brandFilmPlayer');
+ if(!video||!player)return;
+ const q=id=>document.getElementById(id),toggle=q('brandFilmToggle'),restart=q('brandFilmRestart'),seek=q('brandFilmSeek'),fullscreen=q('brandFilmFullscreen'),fallback=q('brandFilmFallback');
+ let active=false,seeking=false;
+ const time=value=>{const s=Math.max(0,Math.floor(value||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+ function update(){const duration=Number.isFinite(video.duration)?video.duration:15;seek.max=String(duration);if(!seeking)seek.value=String(video.currentTime||0);q('brandFilmTime').textContent=time(video.currentTime)+' / '+time(duration);toggle.textContent=video.ended?'↻ 다시 재생':video.paused?'▶ 재생':'Ⅱ 일시정지';toggle.setAttribute('aria-label',video.ended?'브랜드 영상 다시 재생':video.paused?'브랜드 영상 재생':'브랜드 영상 일시정지');const full=document.fullscreenElement===player;fullscreen.textContent=full?'전체화면 해제 ⛶':'전체화면 ⛶';fullscreen.setAttribute('aria-label',full?'브랜드 영상 전체화면 해제':'브랜드 영상 전체화면')}
+ function play(fromStart=false){if(!active||window.deckEditor?.active)return;if(fromStart||video.ended)video.currentTime=0;video.muted=true;fallback.hidden=true;const promise=video.play();if(promise)promise.catch(()=>{if(active&&!window.deckEditor?.active)fallback.hidden=false});update()}
+ function flip(){if(video.paused||video.ended)play();else video.pause()}
+ window.brandFilm={setActive(value){const entering=value&&!active;active=value;video.autoplay=value&&!window.deckEditor?.active;if(entering)play(true);else if(!value){video.pause();fallback.hidden=true;if(document.fullscreenElement===player)document.exitFullscreen().catch(()=>{})}update()},editModeChanged(editing){if(editing){video.pause();fallback.hidden=true}else if(active)play();update()}};
+ toggle.addEventListener('click',flip);video.addEventListener('click',flip);fallback.addEventListener('click',()=>play());restart.addEventListener('click',()=>play(true));
+ for(const name of ['play','pause','ended','loadedmetadata','timeupdate','durationchange'])video.addEventListener(name,()=>{if(name==='play'&&!active){video.pause();return}if(name==='play')fallback.hidden=true;update()});
+ seek.addEventListener('input',event=>{seeking=true;video.currentTime=+event.target.value;update()});seek.addEventListener('change',()=>{seeking=false;update()});seek.addEventListener('keydown',event=>event.stopPropagation());
+ fullscreen.addEventListener('click',()=>{if(document.fullscreenElement===player)document.exitFullscreen().catch(()=>{});else player.requestFullscreen?.().catch(()=>{})});
+ document.addEventListener('fullscreenchange',update);document.addEventListener('visibilitychange',()=>{if(document.hidden)video.pause()});
+ document.addEventListener('keydown',event=>{if(!active||document.querySelector('dialog[open]')||!['Enter',' '].includes(event.key)||event.target.closest('button,a,input,select,textarea,[contenteditable="true"]'))return;event.preventDefault();if(!event.repeat)flip()});
+ update();
+ // app.js initializes the route before this optional player module loads.
+ window.brandFilm.setActive(!video.closest('.slide').hidden);
+})();
+
+</script>
+</body></html>
